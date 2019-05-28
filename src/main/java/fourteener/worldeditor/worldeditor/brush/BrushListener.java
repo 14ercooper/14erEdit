@@ -1,0 +1,69 @@
+package fourteener.worldeditor.worldeditor.brush;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.BlockIterator;
+
+public class BrushListener implements Listener {
+	
+	// Store all active brushes
+	public static List<Brush> brushes = new ArrayList<Brush>();
+	
+	@EventHandler
+	public void onPlayerInteract (PlayerInteractEvent event) {
+		// Check the player is holding a brush
+		// Do a quick check first (so this is a bit faster)
+		if (event.getAction().equals(Action.PHYSICAL))
+			return;
+		if (!event.getHand().equals(EquipmentSlot.HAND))
+			return;
+		
+		// Actually verify now
+		Player player = event.getPlayer();
+		ItemStack item = player.getInventory().getItemInMainHand();
+		Brush brush = null;
+		for (Brush b : brushes) {
+			if (b.owner.equals(player) && b.item.equals(item)) {
+				brush = b;
+			}
+		}
+		if (brush == null)
+			return;
+		
+		// The event has been verified, take control of it
+		event.setCancelled(true);
+		
+		// Then get the location where the brush should operate
+		// This is a block where the player is looking, at a range no more than 256 blocks away
+		Block block = getTargetBlock(player, 256);
+		// If it's air, return
+		if (block.getType().equals(Material.AIR))
+			return;
+		
+		// And perform the operation there
+		brush.operate(block.getX(), block.getY(), block.getZ());
+	}
+	
+	private Block getTargetBlock(Player player, int range) {
+        BlockIterator iter = new BlockIterator(player, range);
+        Block lastBlock = iter.next();
+        while (iter.hasNext()) {
+            lastBlock = iter.next();
+            if (lastBlock.getType() == Material.AIR) {
+                continue;
+            }
+            break;
+        }
+        return lastBlock;
+    }
+}

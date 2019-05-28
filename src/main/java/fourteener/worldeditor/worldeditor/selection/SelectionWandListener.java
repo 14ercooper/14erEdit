@@ -1,4 +1,4 @@
-package fourteener.worldeditor.commands.fx;
+package fourteener.worldeditor.worldeditor.selection;
 
 import java.util.ArrayList;
 import java.util.List;
