@@ -50,6 +50,10 @@ public class Brush {
 		brush.op = brushOperation;
 		brush.operator = Operator.newOperator(brush.op);
 		
+		// Invalid operator?
+		if (brush.operator == null)
+			return false;
+		
 		// Parse the brush radius and store it
 		try {
 			brush.radius = Integer.parseInt(brushRadius);
