@@ -1,5 +1,7 @@
 package fourteener.worldeditor.worldeditor.selection;
 
+import org.bukkit.entity.Player;
+
 public class SelectionManager {
 	private double positionOne[] = {-1.0, -1.0, -1.0};
 	private double positionTwo[] = {-1.0, -1.0, -1.0};
@@ -8,20 +10,24 @@ public class SelectionManager {
 	private double mostNegativeCorner[] = new double[3];
 	private double mostPositiveCorner[] = new double[3];
 	
-	public boolean updatePositionOne (double x, double y, double z) {
+	public boolean updatePositionOne (double x, double y, double z, Player player) {
 		positionOne[0] = x;
 		// Use nested ternary operators to clamp y between 0 and 255
 		positionOne[1] = y < 0 ? 0 : y > 255 ? 255 : y;
 		positionOne[2] = z;
+		player.sendMessage("§dFirst position updated to (" + Double.toString(x) + ", " + Double.toString(y) + ", " + Double.toString(z) + "); giving a volume of "
+				+ Double.toString(Math.abs(positionOne[0] - positionTwo[0] + 1) * Math.abs(positionOne[1] - positionTwo[1] + 1) * Math.abs(positionOne[2] - positionTwo[2] + 1)));
 		recalculateCorners();
 		return true;
 	}
 	
-	public boolean updatePositionTwo (double x, double y, double z) {
+	public boolean updatePositionTwo (double x, double y, double z, Player player) {
 		positionTwo[0] = x;
 		// Use nested ternary operators to clamp y between 0 and 255
 		positionTwo[1] = y < 0 ? 0 : y > 255 ? 255 : y;
 		positionTwo[2] = z;
+		player.sendMessage("§dSecond position updated to (" + Double.toString(x) + ", " + Double.toString(y) + ", " + Double.toString(z) + "); giving a volume of "
+				+ Double.toString(Math.abs(positionOne[0] - positionTwo[0] + 1) * Math.abs(positionOne[1] - positionTwo[1] + 1) * Math.abs(positionOne[2] - positionTwo[2] + 1)));
 		recalculateCorners();
 		return true;
 	}

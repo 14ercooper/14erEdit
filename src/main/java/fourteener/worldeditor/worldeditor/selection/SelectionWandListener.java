@@ -52,14 +52,14 @@ public class SelectionWandListener implements Listener {
 		// Player left clicked, update position one
 		if (event.getAction().equals(Action.LEFT_CLICK_BLOCK)) {
 			Block b = event.getClickedBlock();
-			wand.manager.updatePositionOne(b.getX(), b.getY(), b.getZ());
+			wand.manager.updatePositionOne(b.getX(), b.getY(), b.getZ(), p);
 			event.setCancelled(true);
 		}
 		
 		// Player right clicked, update position two
 		else if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
 			Block b = event.getClickedBlock();
-			wand.manager.updatePositionTwo(b.getX(), b.getY(), b.getZ());
+			wand.manager.updatePositionTwo(b.getX(), b.getY(), b.getZ(), p);
 			event.setCancelled(true);
 		}
 	}

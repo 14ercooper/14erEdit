@@ -1,5 +1,6 @@
 package fourteener.worldeditor.operations;
 
+import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 
 import fourteener.worldeditor.operations.operators.EntryNode;
@@ -25,6 +26,7 @@ public class Operator {
 		if (operator.entryNode == null) {
 			return null;
 		}
+		Bukkit.getServer().broadcastMessage("§c[DEBUG] Operator being returned"); // -----
 		return operator;
 	}
 }

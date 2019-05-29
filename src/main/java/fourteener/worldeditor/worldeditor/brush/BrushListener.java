@@ -10,7 +10,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.BlockIterator;
 
@@ -21,14 +20,13 @@ public class BrushListener implements Listener {
 	
 	@EventHandler
 	public void onPlayerInteract (PlayerInteractEvent event) {
+		
 		// Check the player is holding a brush
 		// Do a quick check first (so this is a bit faster)
 		if (event.getAction().equals(Action.PHYSICAL))
 			return;
-		if (!event.getHand().equals(EquipmentSlot.HAND))
-			return;
 		
-		// Actually verify now
+		// Then do a more detailed check
 		Player player = event.getPlayer();
 		ItemStack item = player.getInventory().getItemInMainHand();
 		Brush brush = null;

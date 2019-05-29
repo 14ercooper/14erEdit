@@ -12,9 +12,12 @@ import fourteener.worldeditor.worldeditor.selection.SelectionWandListener;
 // For the fx command
 public class CommandFx implements CommandExecutor {
 	
-	private static int argOffset = 1;
+	private static int argOffset = 0;
 
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+		if (args.length < argOffset + 1) {
+			return false;
+		}
 		if (sender instanceof Player) {
 			// Calls the wand command, giving the player a wand
 			if (args[argOffset].equalsIgnoreCase("wand")) {
@@ -31,15 +34,12 @@ public class CommandFx implements CommandExecutor {
 			else if (args[argOffset].equalsIgnoreCase("brush") || args[argOffset].equalsIgnoreCase("br")) {
 				// Unassign a brush if asked
 				if (args[argOffset + 1].equalsIgnoreCase("none")) {
+					sender.sendMessage("§dBrush removed.");
 					return Brush.removeBrush((Player) sender);
-				}
-				// Make sure there are the proper number of arguments
-				else if (args.length != argOffset + 3) {
-					return false;
 				}
 				// Create a new brush as requested
 				else {
-					return Brush.createBrush(args[argOffset + 1], args[argOffset + 2], args[argOffset + 3], (Player) sender);
+					return Brush.createBrush(args[argOffset + 1], args[argOffset + 2], args, argOffset, (Player) sender);
 				}
 			}
 			return false;

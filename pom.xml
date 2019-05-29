@@ -36,4 +36,15 @@
         </repository>
     </repositories>
   <url>https://14ercooper.com/edit</url>
+  
+  <build>
+    <resources>
+        <resource>
+            <directory>src/main/java</directory>
+            <includes>
+                <include>**/*.yml</include>
+            </includes>
+        </resource>
+    </resources>
+  </build>
 </project>

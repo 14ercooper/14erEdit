@@ -6,9 +6,9 @@ public class SetNode extends Node {
 
 	public BlockNode arg;
 	
-	public static SetNode newNode (BlockNode blockNode) {
+	public static SetNode newNode (Node blockNode) {
 		SetNode setNode = new SetNode();
-		setNode.arg = blockNode;
+		setNode.arg = (BlockNode) blockNode;
 		return setNode;
 	}
 	

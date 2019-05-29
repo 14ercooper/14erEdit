@@ -12,6 +12,9 @@ public class Main extends JavaPlugin {
 	// Global variables
 	public static World world;
 	
+	// For debugging
+	public static boolean isDebug = true;
+	
 	@Override
 	public void onEnable () {
 		// Register commands
