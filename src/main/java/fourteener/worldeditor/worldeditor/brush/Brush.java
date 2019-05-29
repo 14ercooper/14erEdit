@@ -11,6 +11,8 @@ import org.bukkit.inventory.ItemStack;
 
 import fourteener.worldeditor.main.Main;
 import fourteener.worldeditor.operations.Operator;
+import fourteener.worldeditor.worldeditor.undo.UndoElement;
+import fourteener.worldeditor.worldeditor.undo.UndoManager;
 
 public class Brush {
 	// Together, these two parameters serve as the ID for the brush
@@ -120,6 +122,9 @@ public class Brush {
 				}
 			}
 			
+			// Store an undo
+			UndoManager.getUndo(owner).storeUndo(UndoElement.newUndoElement(blockArray));
+			
 			// Operate on them
 			for (Block b : blockArray) {
 				operator.operateOnBlock(b);
@@ -144,6 +149,8 @@ public class Brush {
 				}
 			}
 			
+			// Store an undo
+			UndoManager.getUndo(owner).storeUndo(UndoElement.newUndoElement(blockArray));
 			
 			// Operate on them
 			for (Block b : blockArray) {

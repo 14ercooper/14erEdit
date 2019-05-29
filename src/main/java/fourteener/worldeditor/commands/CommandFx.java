@@ -6,6 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import fourteener.worldeditor.worldeditor.brush.Brush;
+import fourteener.worldeditor.worldeditor.selection.SelectionCommand;
 import fourteener.worldeditor.worldeditor.selection.SelectionWand;
 import fourteener.worldeditor.worldeditor.selection.SelectionWandListener;
 
@@ -41,6 +42,11 @@ public class CommandFx implements CommandExecutor {
 				else {
 					return Brush.createBrush(args[argOffset + 1], args[argOffset + 2], args, argOffset, (Player) sender);
 				}
+			}
+			
+			// Calls the selection command, handling operating on selections
+			else if (args[argOffset].equalsIgnoreCase("selection") || args[argOffset].equalsIgnoreCase("sel")) {
+				SelectionCommand.performCommand(args, (Player) sender);
 			}
 			return false;
 		}
