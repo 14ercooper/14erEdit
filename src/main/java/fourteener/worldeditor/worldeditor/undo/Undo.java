@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 public class Undo {
 	// Whose undo is this?
 	public Player owner;
+	public static int undoSize = 25;
 	
 	// Stores undo and redo elements
 	private LinkedList<UndoElement> undoElements = new LinkedList<UndoElement>();
@@ -22,11 +23,15 @@ public class Undo {
 	// Store a world change into the tracker
 	public boolean storeUndo (UndoElement e) {
 		undoElements.add(e);
+		if (undoElements.size() > undoSize)
+			undoElements.removeFirst();
 		return true;
 	}
 	// Store a world change into the tracker
 	private boolean storeRedo (UndoElement e) {
 		redoElements.add(e);
+		if (redoElements.size() > undoSize)
+			redoElements.removeFirst();
 		return true;
 	}
 	
