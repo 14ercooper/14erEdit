@@ -3,8 +3,11 @@ package fourteener.worldeditor.worldeditor.macros.macros;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 
 import fourteener.worldeditor.main.Main;
@@ -14,10 +17,10 @@ import fourteener.worldeditor.worldeditor.undo.UndoManager;
 
 public class ErodeMacro extends Macro {
 	
-	private int erodeRadius = -1; // The radius to actually erode within
-	private int erodeType = -1; // 0 for melt, 1 for blendball
-	private int erodeSubtype = -1; // -1 if no subtype, 0 for more subtractive, 1 for more additive
-	private Location erodeCenter;
+	public int erodeRadius = -1; // The radius to actually erode within
+	public int erodeType = -1; // 0 for melt, 1 for blendball
+	public int erodeSubtype = -1; // -1 if no subtype, 0 for more subtractive, 1 for more additive, 2 for neutral
+	public Location erodeCenter;
 	
 	public static ErodeMacro createMacro (String[] args, Location loc) {
 		ErodeMacro macro = new ErodeMacro();
@@ -26,17 +29,24 @@ public class ErodeMacro extends Macro {
 		
 		// Determine the type of the erode brush
 		if (args[1].equalsIgnoreCase("melt")) {
+			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Erode type: melt"); // ----
 			macro.erodeType = 0;
 		} else if (args[1].equalsIgnoreCase("blend")) {
+			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Erode type: blend"); // ----
 			macro.erodeType = 1;
 		}
 		
 		// Cut or raise melt?
 		if (macro.erodeType == 0) {
 			if (args[2].equalsIgnoreCase("cut")) {
+				if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Melt type: cut"); // ----
 				macro.erodeSubtype = 0;
 			} else if (args[2].equalsIgnoreCase("raise")) {
+				if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Melt type: raise"); // ----
 				macro.erodeSubtype = 1;
+			} else if (args[2].equalsIgnoreCase("smooth")) {
+				if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Melt type: smooth"); // ----
+				macro.erodeSubtype = 2;
 			}
 		}
 		
@@ -60,6 +70,7 @@ public class ErodeMacro extends Macro {
 				}
 			}
 		}
+		if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Erosion array size: " + Integer.toString(erosionArray.size())); // ----
 		
 		// Generate a snapshot to use for eroding (erode in this, read from world)
 		List<BlockState> snapshotArray = new ArrayList<BlockState>();
@@ -73,17 +84,214 @@ public class ErodeMacro extends Macro {
 		
 		// Melt cut erosion
 		if (erodeType == 0 && erodeSubtype == 0) {
-			// TODO Implement
+			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Starting melt cut erode"); // ----
+			int airCut = 3; // Nearby air to make air
+			int solidCut = 4; // Nearby solid to make solid
+			// Iterate through each block
+			List<BlockState> snapshotCopy = new ArrayList<BlockState>();
+			for (BlockState b : snapshotArray) {
+				// First get the adjacent blocks
+				Block current = Main.world.getBlockAt(b.getLocation());
+				BlockState currentState = b;
+				List<Block> adjBlocks = new ArrayList<Block>();
+				adjBlocks.add(current.getRelative(BlockFace.UP));
+				adjBlocks.add(current.getRelative(BlockFace.DOWN));
+				adjBlocks.add(current.getRelative(BlockFace.NORTH));
+				adjBlocks.add(current.getRelative(BlockFace.SOUTH));
+				adjBlocks.add(current.getRelative(BlockFace.EAST));
+				adjBlocks.add(current.getRelative(BlockFace.WEST));
+				
+				// Logic for non-air blocks
+				if (b.getType() != Material.AIR) {
+					// Count how many adjacent blocks are air
+					int airCount = 0;
+					for (Block adjBlock : adjBlocks) {
+						if (adjBlock == null)
+							continue;
+						if (adjBlock.getType() == Material.AIR)
+							airCount++;
+					}
+					
+					// If air count is large, make this air
+					if (airCount >= airCut) {
+						currentState.setType(Material.AIR);
+						snapshotCopy.add(currentState);
+					}
+					// Otherwise return in place
+					else {
+						snapshotCopy.add(currentState);
+					}
+				}
+				
+				// Logic for air blocks
+				else {
+					int blockCount = 0;
+					Material adjMaterial = Material.AIR;
+					for (Block adjBlock : adjBlocks) {
+						if (adjBlock == null)
+							continue;
+						if (adjBlock.getType() != Material.AIR) {
+							blockCount++;
+							adjMaterial = adjBlock.getType();
+						}
+					}
+					
+					// If there are a lot of blocks nearby, make this solid
+					if (blockCount >= solidCut) {
+						currentState.setType(adjMaterial);
+						snapshotCopy.add(currentState);
+					}
+					
+					// Otherwise return in place
+					else {
+						snapshotCopy.add(currentState);
+					}
+				}
+			}
+			snapshotArray = snapshotCopy;
 		}
 		
 		// Melt raise erosion
 		if (erodeType == 0 && erodeSubtype == 1) {
-			// TODO Implement
+			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Starting melt cut erode"); // ----
+			int airCut = 4; // Nearby air to make air
+			int solidCut = 2; // Nearby solid to make solid
+			// Iterate through each block
+			List<BlockState> snapshotCopy = new ArrayList<BlockState>();
+			for (BlockState b : snapshotArray) {
+				// First get the adjacent blocks
+				Block current = Main.world.getBlockAt(b.getLocation());
+				BlockState currentState = b;
+				List<Block> adjBlocks = new ArrayList<Block>();
+				adjBlocks.add(current.getRelative(BlockFace.UP));
+				adjBlocks.add(current.getRelative(BlockFace.DOWN));
+				adjBlocks.add(current.getRelative(BlockFace.NORTH));
+				adjBlocks.add(current.getRelative(BlockFace.SOUTH));
+				adjBlocks.add(current.getRelative(BlockFace.EAST));
+				adjBlocks.add(current.getRelative(BlockFace.WEST));
+				
+				// Logic for non-air blocks
+				if (b.getType() != Material.AIR) {
+					// Count how many adjacent blocks are air
+					int airCount = 0;
+					for (Block adjBlock : adjBlocks) {
+						if (adjBlock == null)
+							continue;
+						if (adjBlock.getType() == Material.AIR)
+							airCount++;
+					}
+					
+					// If air count is large, make this air
+					if (airCount >= airCut) {
+						currentState.setType(Material.AIR);
+						snapshotCopy.add(currentState);
+					}
+					// Otherwise return in place
+					else {
+						snapshotCopy.add(currentState);
+					}
+				}
+				
+				// Logic for air blocks
+				else {
+					int blockCount = 0;
+					Material adjMaterial = Material.AIR;
+					for (Block adjBlock : adjBlocks) {
+						if (adjBlock == null)
+							continue;
+						if (adjBlock.getType() != Material.AIR) {
+							blockCount++;
+							adjMaterial = adjBlock.getType();
+						}
+					}
+					
+					// If there are a lot of blocks nearby, make this solid
+					if (blockCount >= solidCut) {
+						currentState.setType(adjMaterial);
+						snapshotCopy.add(currentState);
+					}
+					
+					// Otherwise return in place
+					else {
+						snapshotCopy.add(currentState);
+					}
+				}
+			}
+			snapshotArray = snapshotCopy;
+		}
+		
+		// Melt smooth erosion
+		if (erodeType == 0 && erodeSubtype == 2) {
+			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Starting melt cut erode"); // ----
+			int airCut = 4; // Nearby air to make air
+			int solidCut = 3; // Nearby solid to make solid
+			// Iterate through each block
+			List<BlockState> snapshotCopy = new ArrayList<BlockState>();
+			for (BlockState b : snapshotArray) {
+				// First get the adjacent blocks
+				Block current = Main.world.getBlockAt(b.getLocation());
+				BlockState currentState = b;
+				List<Block> adjBlocks = new ArrayList<Block>();
+				adjBlocks.add(current.getRelative(BlockFace.UP));
+				adjBlocks.add(current.getRelative(BlockFace.DOWN));
+				adjBlocks.add(current.getRelative(BlockFace.NORTH));
+				adjBlocks.add(current.getRelative(BlockFace.SOUTH));
+				adjBlocks.add(current.getRelative(BlockFace.EAST));
+				adjBlocks.add(current.getRelative(BlockFace.WEST));
+				
+				// Logic for non-air blocks
+				if (b.getType() != Material.AIR) {
+					// Count how many adjacent blocks are air
+					int airCount = 0;
+					for (Block adjBlock : adjBlocks) {
+						if (adjBlock == null)
+							continue;
+						if (adjBlock.getType() == Material.AIR)
+							airCount++;
+					}
+					
+					// If air count is large, make this air
+					if (airCount >= airCut) {
+						currentState.setType(Material.AIR);
+						snapshotCopy.add(currentState);
+					}
+					// Otherwise return in place
+					else {
+						snapshotCopy.add(currentState);
+					}
+				}
+				
+				// Logic for air blocks
+				else {
+					int blockCount = 0;
+					Material adjMaterial = Material.AIR;
+					for (Block adjBlock : adjBlocks) {
+						if (adjBlock == null)
+							continue;
+						if (adjBlock.getType() != Material.AIR) {
+							blockCount++;
+							adjMaterial = adjBlock.getType();
+						}
+					}
+					
+					// If there are a lot of blocks nearby, make this solid
+					if (blockCount >= solidCut) {
+						currentState.setType(adjMaterial);
+						snapshotCopy.add(currentState);
+					}
+					
+					// Otherwise return in place
+					else {
+						snapshotCopy.add(currentState);
+					}
+				}
+			}
+			snapshotArray = snapshotCopy;
 		}
 		
 		// Blend erosion
 		if (erodeType == 1) {
-			// TODO Implement
+			Bukkit.getServer().broadcastMessage("§cThat feature isn't implemented yet");
 		}
 		
 		// Apply the snapshot to the world, thus completing the erosion
