@@ -56,7 +56,7 @@ public class Parser {
 			return NotNode.newNode(parsePart());
 		} else if (parts[index].equals("%")) {
 			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Odds node created"); // -----
-			return OddsNode.newNode(parseNumberNode(), parsePart(), parsePart());
+			return OddsNode.newNode(parseNumberNode());
 		} else if (parts[index].equals("&")) {
 			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] And node created"); // -----
 			return AndNode.newNode(parsePart(), parsePart());
@@ -77,10 +77,10 @@ public class Parser {
 			return TrueNode.newNode();
 		} else if (parts[index].equals("*")) {
 			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Faces exposed node created"); // -----
-			return FacesExposedNode.newNode(parseNumberNode(), parsePart(), parsePart());
+			return FacesExposedNode.newNode(parseNumberNode());
 		} else if (parts[index].equals("@")) {
 			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Block adjacent node created"); // -----
-			return BlockAdjacentNode.newNode(parsePart(), parsePart(), parsePart());
+			return BlockAdjacentNode.newNode(parsePart(), parseNumberNode());
 		} else if (parts[index].equals("<")) {
 			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] XOR node created"); // -----
 			return XorNode.newNode(parsePart(), parsePart());

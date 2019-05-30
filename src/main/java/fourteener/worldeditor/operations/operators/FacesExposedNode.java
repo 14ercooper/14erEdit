@@ -10,13 +10,10 @@ import fourteener.worldeditor.operations.Operator;
 public class FacesExposedNode extends Node {
 	
 	public NumberNode arg1;
-	public Node arg2, arg3;
 	
-	public static FacesExposedNode newNode (NumberNode count, Node ifTrue, Node ifFalse) {
+	public static FacesExposedNode newNode (NumberNode count) {
 		FacesExposedNode facesNode = new FacesExposedNode();
 		facesNode.arg1 = count;
-		facesNode.arg2 = ifTrue;
-		facesNode.arg3 = ifFalse;
 		return facesNode;
 	}
 	
@@ -47,11 +44,7 @@ public class FacesExposedNode extends Node {
 		if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Faces exposed: " + Integer.toString(faceCount)); // -----
 		
 		// Perform the node
-		if (faceCount >= arg1.getValue() - 0.1) {
-			return arg2.performNode();
-		} else {
-			return arg3.performNode();
-		}
+		return (faceCount >= arg1.getValue() - 0.1);
 	}
 	
 	public static int getArgCount () {

@@ -9,13 +9,13 @@ import fourteener.worldeditor.operations.Operator;
 
 public class BlockAdjacentNode extends Node {
 	
-	public Node arg1, arg2, arg3;
+	public Node arg1;
+	public NumberNode arg2;
 	
-	public static BlockAdjacentNode newNode (Node block, Node ifTrue, Node ifFalse) {
+	public static BlockAdjacentNode newNode (Node block, NumberNode count) {
 		BlockAdjacentNode baNode = new BlockAdjacentNode();
 		baNode.arg1 = block;
-		baNode.arg2 = ifTrue;
-		baNode.arg3 = ifFalse;
+		baNode.arg2 = count;
 		return baNode;
 	}
 	
@@ -24,46 +24,39 @@ public class BlockAdjacentNode extends Node {
 		
 		// Check if any adjacent blocks match arg1
 		// Set up some variables
-		boolean hasAdjacentBlock = false;
+		int numAdjacentBlocks = 0;
 		Block curBlock = Operator.currentBlock;
 		
 		// Check each direction
 		Block blockAdj = curBlock.getRelative(BlockFace.NORTH);
 		Operator.currentBlock = blockAdj;
 		if (arg1.performNode())
-			hasAdjacentBlock = true;
+			numAdjacentBlocks++;
 		blockAdj = curBlock.getRelative(BlockFace.SOUTH);
 		Operator.currentBlock = blockAdj;
 		if (arg1.performNode())
-			hasAdjacentBlock = true;
+			numAdjacentBlocks++;
 		blockAdj = curBlock.getRelative(BlockFace.EAST);
 		Operator.currentBlock = blockAdj;
 		if (arg1.performNode())
-			hasAdjacentBlock = true;
+			numAdjacentBlocks++;
 		blockAdj = curBlock.getRelative(BlockFace.WEST);
 		Operator.currentBlock = blockAdj;
 		if (arg1.performNode())
-			hasAdjacentBlock = true;
+			numAdjacentBlocks++;
 		blockAdj = curBlock.getRelative(BlockFace.UP);
 		Operator.currentBlock = blockAdj;
 		if (arg1.performNode())
-			hasAdjacentBlock = true;
+			numAdjacentBlocks++;
 		blockAdj = curBlock.getRelative(BlockFace.DOWN);
 		Operator.currentBlock = blockAdj;
 		if (arg1.performNode())
-			hasAdjacentBlock = true;
+			numAdjacentBlocks++;
 		
 		// Reset the current block
 		Operator.currentBlock = curBlock;
 		
-		
-		
-		// Perform the node
-		if (hasAdjacentBlock) {
-			return arg2.performNode();
-		} else {
-			return arg3.performNode();
-		}
+		return (numAdjacentBlocks >= arg2.getValue() - 0.1);
 	}
 	
 	public static int getArgCount () {
