@@ -14,16 +14,16 @@ public class MacroLauncher {
 		String macroName = split1[0];
 		String temp1 = split1[0].replace("{", "");
 		String[] macroArgs = temp1.split(",");
-		return runMacro(macroName, macroArgs);
+		return runMacro(macroName, macroArgs, location);
 	}
 	
-	private static boolean runMacro (String macroName, String[] macroArgs) {
+	private static boolean runMacro (String macroName, String[] macroArgs, Location location) {
 		
 		// Determine which macro to run
 		if (macroName.equalsIgnoreCase("erode")) {
-			return ErodeMacro.createMacro(macroArgs).performMacro();
+			return ErodeMacro.createMacro(macroArgs, location).performMacro();
 		} else if (macroName.equalsIgnoreCase("basictree")) {
-			return BasicTreeMacro.createMacro(macroArgs).performMacro();
+			return BasicTreeMacro.createMacro(macroArgs, location).performMacro();
 		} else {
 			return false;
 		}

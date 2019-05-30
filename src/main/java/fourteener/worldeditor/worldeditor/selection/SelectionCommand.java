@@ -82,7 +82,7 @@ public class SelectionCommand {
 			return false;
 		if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Operating on selection"); // -----
 		for (Block b : blockArray) {
-			operator.operateOnBlock(b);
+			operator.operateOnBlock(b, wand.owner);
 		}
 		return true;
 	}

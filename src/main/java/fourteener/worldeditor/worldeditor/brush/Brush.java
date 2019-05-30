@@ -129,7 +129,7 @@ public class Brush {
 			
 			// Operate on them
 			for (Block b : blockArray) {
-				operator.operateOnBlock(b);
+				operator.operateOnBlock(b, owner);
 			}
 			return true;
 		}
@@ -157,7 +157,7 @@ public class Brush {
 			
 			// Operate on them
 			for (Block b : blockArray) {
-				operator.operateOnBlock(b);
+				operator.operateOnBlock(b, owner);
 			}
 			return true;
 		}
