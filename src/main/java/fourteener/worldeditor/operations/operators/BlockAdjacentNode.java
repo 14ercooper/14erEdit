@@ -60,6 +60,6 @@ public class BlockAdjacentNode extends Node {
 	}
 	
 	public static int getArgCount () {
-		return 3;
+		return 2;
 	}
 }
