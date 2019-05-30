@@ -13,6 +13,7 @@ import fourteener.worldeditor.operations.operators.EntryNode;
 import fourteener.worldeditor.operations.operators.FacesExposedNode;
 import fourteener.worldeditor.operations.operators.FalseNode;
 import fourteener.worldeditor.operations.operators.IfNode;
+import fourteener.worldeditor.operations.operators.MacroNode;
 import fourteener.worldeditor.operations.operators.Node;
 import fourteener.worldeditor.operations.operators.NotNode;
 import fourteener.worldeditor.operations.operators.NumberNode;
@@ -56,7 +57,7 @@ public class Parser {
 			return NotNode.newNode(parsePart());
 		} else if (parts[index].equals("%")) {
 			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Odds node created"); // -----
-			return OddsNode.newNode(parseNumberNode(), parsePart(), parsePart());
+			return OddsNode.newNode(parseNumberNode());
 		} else if (parts[index].equals("&")) {
 			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] And node created"); // -----
 			return AndNode.newNode(parsePart(), parsePart());
@@ -77,16 +78,19 @@ public class Parser {
 			return TrueNode.newNode();
 		} else if (parts[index].equals("*")) {
 			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Faces exposed node created"); // -----
-			return FacesExposedNode.newNode(parseNumberNode(), parsePart(), parsePart());
+			return FacesExposedNode.newNode(parseNumberNode());
 		} else if (parts[index].equals("@")) {
 			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Block adjacent node created"); // -----
-			return BlockAdjacentNode.newNode(parsePart(), parsePart(), parsePart());
+			return BlockAdjacentNode.newNode(parsePart(), parseNumberNode());
 		} else if (parts[index].equals("<")) {
 			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] XOR node created"); // -----
 			return XorNode.newNode(parsePart(), parsePart());
 		} else if (parts[index].equals("-")) {
 			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Range node created"); // -----
 			return RangeNode.newNode(parseNumberNode(), parseNumberNode());
+		} else if (parts[index].equals("$")) {
+			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Macro node created"); // -----
+			return MacroNode.newNode(parseStringNode());
 		} else if (parts[index].equals("^")) {
 			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Blocks above node created"); // -----
 			return BlocksAboveNode.newNode(parseRangeNode(), parsePart());
@@ -116,5 +120,11 @@ public class Parser {
 		index ++;
 		if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Range node created"); // -----
 		return RangeNode.newNode(parseNumberNode(), parseNumberNode());
+	}
+	
+	private static String parseStringNode () {
+		index ++;
+		if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] String node created"); // -----
+		return parts[index];
 	}
 }
