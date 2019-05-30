@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -121,6 +122,7 @@ public class Brush {
 					}
 				}
 			}
+			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Block array size is " + Integer.toString(blockArray.size())); // -----
 			
 			// Store an undo
 			UndoManager.getUndo(owner).storeUndo(UndoElement.newUndoElement(blockArray));
@@ -148,6 +150,7 @@ public class Brush {
 					}
 				}
 			}
+			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Block array size is " + Integer.toString(blockArray.size())); // -----
 			
 			// Store an undo
 			UndoManager.getUndo(owner).storeUndo(UndoElement.newUndoElement(blockArray));

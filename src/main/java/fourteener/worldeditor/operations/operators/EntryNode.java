@@ -1,9 +1,5 @@
 package fourteener.worldeditor.operations.operators;
 
-import org.bukkit.Bukkit;
-
-import fourteener.worldeditor.main.Main;
-
 public class EntryNode {
 	public Node node = null;
 	
@@ -14,7 +10,6 @@ public class EntryNode {
 	}
 	
 	public boolean performNode () {
-		if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Performing entry node"); // -----
 		return node.performNode();
 	}
 }

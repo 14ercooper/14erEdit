@@ -11,9 +11,3 @@ commands:
     fx:
         description: This is the root command for editing the world
         usage: "Usage: /fx <subcommands>"
-    undo:
-        description: Undo edits made to the world
-        usage: "Usage: /undo <number>"
-    redo:
-        description: Redo edits made to the world
-        usage: "Usage: /redo <number>"

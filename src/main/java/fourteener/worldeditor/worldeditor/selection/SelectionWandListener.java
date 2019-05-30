@@ -57,6 +57,7 @@ public class SelectionWandListener implements Listener {
 		}
 		
 		// Player right clicked, update position two
+		// For some reason this gets called twice
 		else if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
 			Block b = event.getClickedBlock();
 			wand.manager.updatePositionTwo(b.getX(), b.getY(), b.getZ(), p);

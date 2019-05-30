@@ -9,6 +9,7 @@ import fourteener.worldeditor.worldeditor.brush.Brush;
 import fourteener.worldeditor.worldeditor.selection.SelectionCommand;
 import fourteener.worldeditor.worldeditor.selection.SelectionWand;
 import fourteener.worldeditor.worldeditor.selection.SelectionWandListener;
+import fourteener.worldeditor.worldeditor.undo.UndoManager;
 
 // For the fx command
 public class CommandFx implements CommandExecutor {
@@ -46,7 +47,11 @@ public class CommandFx implements CommandExecutor {
 			
 			// Calls the selection command, handling operating on selections
 			else if (args[argOffset].equalsIgnoreCase("selection") || args[argOffset].equalsIgnoreCase("sel")) {
-				SelectionCommand.performCommand(args, (Player) sender);
+				return SelectionCommand.performCommand(args, (Player) sender);
+			} else if (args[argOffset].equalsIgnoreCase("undo")) {
+				return UndoManager.getUndo((Player) sender).undoChanges(Integer.parseInt(args[argOffset + 1]));
+			} else if (args[argOffset].equalsIgnoreCase("redo")) {
+				return UndoManager.getUndo((Player) sender).redoChanges(Integer.parseInt(args[argOffset + 1]));
 			}
 			return false;
 		}

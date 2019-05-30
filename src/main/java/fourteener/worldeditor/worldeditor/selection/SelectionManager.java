@@ -16,7 +16,9 @@ public class SelectionManager {
 		positionOne[1] = y < 0 ? 0 : y > 255 ? 255 : y;
 		positionOne[2] = z;
 		player.sendMessage("§dFirst position updated to (" + Double.toString(x) + ", " + Double.toString(y) + ", " + Double.toString(z) + "); giving a volume of "
-				+ Double.toString(Math.abs(positionOne[0] - positionTwo[0] + 1) * Math.abs(positionOne[1] - positionTwo[1] + 1) * Math.abs(positionOne[2] - positionTwo[2] + 1)));
+				+ Double.toString(Math.abs(positionOne[0] - positionTwo[0] * Math.signum(positionTwo[0]) + Math.signum(positionTwo[0]))
+						* Math.abs(positionOne[1] - positionTwo[1] * Math.signum(positionTwo[1]) + Math.signum(positionTwo[1]))
+						* Math.abs(positionOne[2] - positionTwo[2] * Math.signum(positionTwo[2]) + Math.signum(positionTwo[2]))));
 		recalculateCorners();
 		return true;
 	}
@@ -27,7 +29,9 @@ public class SelectionManager {
 		positionTwo[1] = y < 0 ? 0 : y > 255 ? 255 : y;
 		positionTwo[2] = z;
 		player.sendMessage("§dSecond position updated to (" + Double.toString(x) + ", " + Double.toString(y) + ", " + Double.toString(z) + "); giving a volume of "
-				+ Double.toString(Math.abs(positionOne[0] - positionTwo[0] + 1) * Math.abs(positionOne[1] - positionTwo[1] + 1) * Math.abs(positionOne[2] - positionTwo[2] + 1)));
+				+ Double.toString(Math.abs(positionOne[0] - positionTwo[0] * Math.signum(positionTwo[0]) + Math.signum(positionTwo[0]))
+						* Math.abs(positionOne[1] - positionTwo[1] * Math.signum(positionTwo[1]) + Math.signum(positionTwo[1]))
+						* Math.abs(positionOne[2] - positionTwo[2] * Math.signum(positionTwo[2]) + Math.signum(positionTwo[2]))));
 		recalculateCorners();
 		return true;
 	}
@@ -71,5 +75,64 @@ public class SelectionManager {
 			mostNegativeCorner[2] = positionTwo[2];
 			mostPositiveCorner[2] = positionOne[2];
 		}
+	}
+	
+	// Getter for the position
+	public double[] getMostNegativeCorner () {
+		return mostNegativeCorner;
+	}
+	
+	// Getter for the position
+	public double[] getMostPositiveCorner () {
+		return mostPositiveCorner;
+	}
+	
+	// Expands the selection in direction by amt
+	public boolean expandSelection (double amt, String direction, Player player) {
+		if (direction.equalsIgnoreCase("north")) { // -z
+			mostNegativeCorner[2] = mostNegativeCorner[2] - amt;
+			expandSelectionMessage(player);
+			return true;
+		} else if (direction.equalsIgnoreCase("south")) { // +z
+			mostPositiveCorner[2] = mostPositiveCorner[2] + amt;
+			expandSelectionMessage(player);
+			return true;
+		} else if (direction.equalsIgnoreCase("east")) { // +x
+			mostPositiveCorner[0] = mostPositiveCorner[0] + amt;
+			expandSelectionMessage(player);
+			return true;
+		} else if (direction.equalsIgnoreCase("west")) { // -x
+			mostNegativeCorner[0] = mostNegativeCorner[0] - amt;
+			expandSelectionMessage(player);
+			return true;
+		} else if (direction.equalsIgnoreCase("up")) { // +y
+			mostPositiveCorner[1] = mostPositiveCorner[1] + amt;
+			expandSelectionMessage(player);
+			return true;
+		} else if (direction.equalsIgnoreCase("down")) { // -y
+			mostNegativeCorner[1] = mostNegativeCorner[1] - amt;
+			expandSelectionMessage(player);
+			return true;
+		}
+		return false;
+	}
+	
+	// Message for the selection expansion
+	private void expandSelectionMessage (Player player) {
+		player.sendMessage("§dRegion expanded to "
+				+ Double.toString(Math.abs(mostNegativeCorner[0] - mostPositiveCorner[0] * Math.signum(mostPositiveCorner[0]) + Math.signum(mostPositiveCorner[0]))
+						* Math.abs(mostNegativeCorner[1] - mostPositiveCorner[1] * Math.signum(mostPositiveCorner[1]) + Math.signum(mostPositiveCorner[1]))
+						* Math.abs(mostNegativeCorner[2] - mostPositiveCorner[2] * Math.signum(mostPositiveCorner[2]) + Math.signum(mostPositiveCorner[2])))
+				+ " blocks.");
+	}
+	
+	public boolean resetSelection () {
+		double[] positionOneNew = {-1.0, -1.0, -1.0};
+		double[] positionTwoNew = {-1.0, -1.0, -1.0};
+		positionOne = positionOneNew;
+		positionTwo = positionTwoNew;
+		mostNegativeCorner = new double[3];
+		mostPositiveCorner = new double[3];
+		return true;
 	}
 }
