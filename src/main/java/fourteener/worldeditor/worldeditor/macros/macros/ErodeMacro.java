@@ -224,7 +224,7 @@ public class ErodeMacro extends Macro {
 		if (erodeType == 0 && erodeSubtype == 2) {
 			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Starting melt cut erode"); // ----
 			int airCut = 4; // Nearby air to make air
-			int solidCut = 3; // Nearby solid to make solid
+			int solidCut = 4; // Nearby solid to make solid
 			// Iterate through each block
 			List<BlockState> snapshotCopy = new ArrayList<BlockState>();
 			for (BlockState b : snapshotArray) {

@@ -13,6 +13,7 @@ import fourteener.worldeditor.operations.operators.EntryNode;
 import fourteener.worldeditor.operations.operators.FacesExposedNode;
 import fourteener.worldeditor.operations.operators.FalseNode;
 import fourteener.worldeditor.operations.operators.IfNode;
+import fourteener.worldeditor.operations.operators.IgnorePhysicsNode;
 import fourteener.worldeditor.operations.operators.MacroNode;
 import fourteener.worldeditor.operations.operators.Node;
 import fourteener.worldeditor.operations.operators.NotNode;
@@ -97,6 +98,9 @@ public class Parser {
 		} else if (parts[index].equals("_")) {
 			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Blocks below node created"); // -----
 			return BlocksBelowNode.newNode(parseRangeNode(), parsePart());
+		} else if (parts[index].equals("!")) {
+			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Ignore physics node created"); // -----
+			return IgnorePhysicsNode.newNode(parsePart());
 		} else if (parts[index].equals("same")) {
 			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Same node created"); // -----
 			return SameNode.newNode();
