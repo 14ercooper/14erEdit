@@ -22,6 +22,13 @@ public class UndoElement {
 		return e;
 	}
 	
+	// Create a new undo element using block states
+	public static UndoElement newUndoElementFromStates (List<BlockState> blockList) {
+		UndoElement e = new UndoElement();
+		e.blocks = blockList;
+		return e;
+	}
+	
 	// Revert the slice of the world where this undo element is from back to how it was when this element was registered
 	public boolean applyElement () {
 		for (BlockState b : blocks) {
