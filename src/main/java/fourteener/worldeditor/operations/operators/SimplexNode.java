@@ -6,8 +6,7 @@ import fourteener.worldeditor.main.Main;
 import fourteener.worldeditor.operations.Operator;
 
 // This node currently accepts both 2 and 3 as dimensions using worldspace
-// 4 dimensions uses worldspace plus average of the three other dimensions, creating interesting results
-// Maybe figure out something better to do with the 4th dimension?
+// 4 dimensions uses worldspace plus average of the three other dimensions, creating good looking results
 public class SimplexNode extends Node {
 	
 	public NumberNode arg1, arg2;

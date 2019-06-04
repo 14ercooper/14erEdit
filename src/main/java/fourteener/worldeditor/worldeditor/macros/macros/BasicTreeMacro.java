@@ -44,7 +44,7 @@ public class BasicTreeMacro extends Macro {
 			Random rand = new Random();
 			double actVariance = ((rand.nextDouble() * 2.0) - 1.0) * variance;
 			double treeHeight = size + actVariance;
-			double leafBallSize = (treeHeight * 0.411235) + 1.35425;	// First number is what portion of the tree's height should be leaves (magic)
+			double leafBallSize = (treeHeight * 0.461235) + 1.35425;	// First number is what portion of the tree's height should be leaves (magic)
 																		//second number is radius correction for sphere (also magic)
 			
 			// Register an undo
@@ -82,8 +82,8 @@ public class BasicTreeMacro extends Macro {
 						if (distFromCenter <= leafBallSize) {
 							// Okay, all blocks in here are in the sphere
 							// Randomness based on distance from center
-							// Further leaves have a lower chance of being placed, with a maximum of 20%-[epsilon] chance to not place
-							if ((distFromCenter * invLeafBallSize) < (rand.nextDouble() * 5.0)) {
+							// Further leaves have a lower chance of being placed
+							if (1.0 - (distFromCenter * invLeafBallSize) < (rand.nextDouble() * 0.333)) {
 								continue;
 							}
 							// Set leaves

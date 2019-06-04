@@ -12,7 +12,7 @@ public class CommandUndo implements CommandExecutor {
 
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		if (sender instanceof Player) {
-			if (label.equalsIgnoreCase("undo")) {
+			if (command.getName().equalsIgnoreCase("undo")) {
 				int numToUndo = 1;
 				try {
 					numToUndo = Integer.parseInt(args[0]);
@@ -20,7 +20,7 @@ public class CommandUndo implements CommandExecutor {
 					numToUndo = 1;
 				}
 				return UndoManager.getUndo((Player) sender).undoChanges(numToUndo);
-			} else if (label.equalsIgnoreCase("redo")) {
+			} else if (command.getName().equalsIgnoreCase("redo")) {
 				int numToRedo = 1;
 				try {
 					numToRedo = Integer.parseInt(args[0]);
