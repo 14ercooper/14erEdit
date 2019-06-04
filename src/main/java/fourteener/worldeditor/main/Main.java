@@ -30,7 +30,7 @@ public class Main extends JavaPlugin {
 		
 		// These are needed by the plugin, but should only be loaded once as they are very slow to load
 		world = Bukkit.getWorlds().get(0);
-		simplexNoise = new SimplexNoise (world.getSeed());
+		simplexNoise = new SimplexNoise (world.getSeed()); // Seeded using the world seed for variance between worlds but consistency in the same world
 	}
 	
 	@Override
