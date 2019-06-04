@@ -13,6 +13,7 @@ import fourteener.worldeditor.operations.operators.EntryNode;
 import fourteener.worldeditor.operations.operators.FacesExposedNode;
 import fourteener.worldeditor.operations.operators.FalseNode;
 import fourteener.worldeditor.operations.operators.IfNode;
+import fourteener.worldeditor.operations.operators.IgnorePhysicsNode;
 import fourteener.worldeditor.operations.operators.MacroNode;
 import fourteener.worldeditor.operations.operators.Node;
 import fourteener.worldeditor.operations.operators.NotNode;
@@ -20,8 +21,10 @@ import fourteener.worldeditor.operations.operators.NumberNode;
 import fourteener.worldeditor.operations.operators.OddsNode;
 import fourteener.worldeditor.operations.operators.OrNode;
 import fourteener.worldeditor.operations.operators.RangeNode;
+import fourteener.worldeditor.operations.operators.RemainderNode;
 import fourteener.worldeditor.operations.operators.SameNode;
 import fourteener.worldeditor.operations.operators.SetNode;
+import fourteener.worldeditor.operations.operators.SimplexNode;
 import fourteener.worldeditor.operations.operators.TrueNode;
 import fourteener.worldeditor.operations.operators.XorNode;
 
@@ -97,6 +100,15 @@ public class Parser {
 		} else if (parts[index].equals("_")) {
 			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Blocks below node created"); // -----
 			return BlocksBelowNode.newNode(parseRangeNode(), parsePart());
+		} else if (parts[index].equals("!")) {
+			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Ignore physics node created"); // -----
+			return IgnorePhysicsNode.newNode(parsePart());
+		} else if (parts[index].equals("#")) {
+			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Simplex noise node created"); // -----
+			return SimplexNode.newNode(parseNumberNode(), parseNumberNode());
+		} else if (parts[index].equals(";")) {
+			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Remainder node created"); // -----
+			return RemainderNode.newNode(parseStringNode(), parseNumberNode());
 		} else if (parts[index].equals("same")) {
 			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Same node created"); // -----
 			return SameNode.newNode();

@@ -13,7 +13,7 @@ public class SetNode extends Node {
 	}
 	
 	public boolean performNode () {
-		Operator.currentBlock.setType(arg.getBlock());
+		Operator.currentBlock.setType(arg.getBlock(), Operator.ignoringPhysics);
 		return true;
 	}
 	

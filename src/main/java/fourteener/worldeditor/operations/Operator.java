@@ -10,6 +10,7 @@ public class Operator {
 	public static Operator currentOperator;
 	public static Block currentBlock;
 	public static Player currentPlayer;
+	public static boolean ignoringPhysics = false;
 	
 	public EntryNode entryNode;
 	
