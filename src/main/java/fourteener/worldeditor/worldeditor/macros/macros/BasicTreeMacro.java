@@ -394,30 +394,764 @@ public class BasicTreeMacro extends Macro {
 			// Variables needed by the generator
 			List<Location> endPoints = new ArrayList<Location>();
 			double leafBallSize = (treeHeight * 0.46) + 1.3;
-			double split1 = treeHeight * 0.5, split2 = treeHeight * 0.75, split3 = treeHeight * 0.875, split4 = treeHeight * 0.9375, split5 = treeHeight * 0.96875;
 			
 			// Generate the trunk of the tree
 			// This is done by generating a "stick" up (with some curves) then creating circles around it
 			int branchThickness = baseSize;
 			List<Location> branchStarts = new ArrayList<Location>();
 			branchStarts.add(Main.world.getBlockAt(plantOn).getRelative(BlockFace.UP).getLocation());
+			double branchHeight = treeHeight;
 			for (int i = 1; i <= numSplits; i++) {
 				List<Location> theseBranches = branchStarts;
 				branchStarts = new ArrayList<Location>();
+				// Adjust the length of branch to generate accordingly
+				if (numSplits == 1) {
+					branchHeight *= 0.75;
+				} else if (numSplits == 2) {
+					branchHeight *= 0.6666;
+				} else if (numSplits == 3) {
+					branchHeight *= 0.59;
+				} else if (numSplits == 4) {
+					branchHeight *= 0.54;
+				} else {
+					branchHeight *= 0.5;
+				}
 				
 				// Generate the stick up with circles around each layer
 				// For the first branch, build up
-				if (i == numSplits) {
+				if (i == 1) {
+					for (Location startLoc : theseBranches) {
+						// Grow up
+						Block currentBlock = Main.world.getBlockAt(startLoc);
+						for (int j = 1; j <= branchHeight; j++) {
+							// Place the central block
+							if (currentBlock.getType() == Material.AIR) {
+								undoList.add(currentBlock.getState());
+								currentBlock.setType(trunk);
+							}
+							
+							// Build the disk
+							double thicknessSquared = (branchThickness + 0.5) * (branchThickness + 0.5); // 0.5 for radius correction
+							int x = currentBlock.getX(), y = currentBlock.getY(), z = currentBlock.getZ();
+							for (int rx = -(int)branchThickness; rx <= branchThickness; rx++) {
+								for (int rz = -(int)branchThickness; rz <= branchThickness; rz++) {
+									if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
+										Block b = Main.world.getBlockAt(x + rx, y, z + rz);	
+										if (b.getType() == Material.AIR) {
+											undoList.add(b.getState());
+											b.setType(trunk);
+										}
+									}
+								}
+							}
+							
+							// Update the current block
+							if (rand.nextDouble() <= 0.2) { // 20% chance to move a block to the side by 1 in a random direction
+								double randNum = rand.nextDouble();
+								if (randNum <= 0.125) {
+									currentBlock = currentBlock.getRelative(BlockFace.UP).getRelative(BlockFace.NORTH);
+								}
+								else if (randNum <= 0.25) {
+									currentBlock = currentBlock.getRelative(BlockFace.UP).getRelative(BlockFace.NORTH_EAST);
+								}
+								else if (randNum <= 0.375) {
+									currentBlock = currentBlock.getRelative(BlockFace.UP).getRelative(BlockFace.EAST);
+								}
+								else if (randNum <= 0.5) {
+									currentBlock = currentBlock.getRelative(BlockFace.UP).getRelative(BlockFace.SOUTH_EAST);
+								}
+								else if (randNum <= 0.625) {
+									currentBlock = currentBlock.getRelative(BlockFace.UP).getRelative(BlockFace.SOUTH);
+								}
+								else if (randNum <= 0.75) {
+									currentBlock = currentBlock.getRelative(BlockFace.UP).getRelative(BlockFace.SOUTH_WEST);
+								}
+								else if (randNum <= 0.875) {
+									currentBlock = currentBlock.getRelative(BlockFace.UP).getRelative(BlockFace.WEST);
+								}
+								else {
+									currentBlock = currentBlock.getRelative(BlockFace.UP).getRelative(BlockFace.NORTH_WEST);
+								}
+							}
+							else {
+								currentBlock = currentBlock.getRelative(BlockFace.UP);
+							}
+						}
+						
+						// Store a branch start
+						branchStarts.add(currentBlock.getLocation());
+					}
 				}
 					
 				// For branches 2, 4, grow out N/S or E/W
 				else if (i % 2 == 0) {
-					
+					for (Location startLoc : branchStarts) {
+						// Case N/S
+						if (rand.nextBoolean()) {
+							// North branch
+							Block currentBlock = Main.world.getBlockAt(startLoc);
+							for (int j = 1; j <= branchHeight; j++) {
+								// Place the central block
+								if (currentBlock.getType() == Material.AIR) {
+									undoList.add(currentBlock.getState());
+									currentBlock.setType(trunk);
+								}
+								
+								// Build the disk
+								double thicknessSquared = (branchThickness + 0.5) * (branchThickness + 0.5); // 0.5 for radius correction
+								int x = currentBlock.getX(), y = currentBlock.getY(), z = currentBlock.getZ();
+								for (int rx = -(int)branchThickness; rx <= branchThickness; rx++) {
+									for (int rz = -(int)branchThickness; rz <= branchThickness; rz++) {
+										if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
+											Block b = Main.world.getBlockAt(x + rx, y, z + rz);	
+											if (b.getType() == Material.AIR) {
+												undoList.add(b.getState());
+												b.setType(trunk);
+											}
+										}
+									}
+								}
+								
+								// Update the current block
+								if (rand.nextDouble() <= 0.2) { // 20% chance to shift to the side
+									if (rand.nextBoolean()) {
+										currentBlock = currentBlock.getRelative(BlockFace.NORTH).getRelative(BlockFace.UP).getRelative(BlockFace.EAST);
+									}
+									else {
+										currentBlock = currentBlock.getRelative(BlockFace.NORTH).getRelative(BlockFace.UP).getRelative(BlockFace.WEST);
+									}
+								}
+								else {
+									currentBlock = currentBlock.getRelative(BlockFace.NORTH).getRelative(BlockFace.UP);
+								}
+							}
+							// Store a branch start
+							branchStarts.add(currentBlock.getLocation());
+							
+							// South branch
+							currentBlock = Main.world.getBlockAt(startLoc);
+							for (int j = 1; j <= branchHeight; j++) {
+								// Place the central block
+								if (currentBlock.getType() == Material.AIR) {
+									undoList.add(currentBlock.getState());
+									currentBlock.setType(trunk);
+								}
+								
+								// Build the disk
+								double thicknessSquared = (branchThickness + 0.5) * (branchThickness + 0.5); // 0.5 for radius correction
+								int x = currentBlock.getX(), y = currentBlock.getY(), z = currentBlock.getZ();
+								for (int rx = -(int)branchThickness; rx <= branchThickness; rx++) {
+									for (int rz = -(int)branchThickness; rz <= branchThickness; rz++) {
+										if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
+											Block b = Main.world.getBlockAt(x + rx, y, z + rz);	
+											if (b.getType() == Material.AIR) {
+												undoList.add(b.getState());
+												b.setType(trunk);
+											}
+										}
+									}
+								}
+								
+								// Update the current block
+								if (rand.nextDouble() <= 0.2) { // 20% chance to shift to the side
+									if (rand.nextBoolean()) {
+										currentBlock = currentBlock.getRelative(BlockFace.SOUTH).getRelative(BlockFace.UP).getRelative(BlockFace.EAST);
+									}
+									else {
+										currentBlock = currentBlock.getRelative(BlockFace.SOUTH).getRelative(BlockFace.UP).getRelative(BlockFace.WEST);
+									}
+								}
+								else {
+									currentBlock = currentBlock.getRelative(BlockFace.SOUTH).getRelative(BlockFace.UP);
+								}
+							}
+							// Store a branch start
+							branchStarts.add(currentBlock.getLocation());
+						}
+						
+						// Case E/W
+						else {
+							// East branch
+							Block currentBlock = Main.world.getBlockAt(startLoc);
+							for (int j = 1; j <= branchHeight; j++) {
+								// Place the central block
+								if (currentBlock.getType() == Material.AIR) {
+									undoList.add(currentBlock.getState());
+									currentBlock.setType(trunk);
+								}
+								
+								// Build the disk
+								double thicknessSquared = (branchThickness + 0.5) * (branchThickness + 0.5); // 0.5 for radius correction
+								int x = currentBlock.getX(), y = currentBlock.getY(), z = currentBlock.getZ();
+								for (int rx = -(int)branchThickness; rx <= branchThickness; rx++) {
+									for (int rz = -(int)branchThickness; rz <= branchThickness; rz++) {
+										if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
+											Block b = Main.world.getBlockAt(x + rx, y, z + rz);	
+											if (b.getType() == Material.AIR) {
+												undoList.add(b.getState());
+												b.setType(trunk);
+											}
+										}
+									}
+								}
+								
+								// Update the current block
+								if (rand.nextDouble() <= 0.2) { // 20% chance to shift to the side
+									if (rand.nextBoolean()) {
+										currentBlock = currentBlock.getRelative(BlockFace.EAST).getRelative(BlockFace.UP).getRelative(BlockFace.NORTH);
+									}
+									else {
+										currentBlock = currentBlock.getRelative(BlockFace.EAST).getRelative(BlockFace.UP).getRelative(BlockFace.SOUTH);
+									}
+								}
+								else {
+									currentBlock = currentBlock.getRelative(BlockFace.EAST).getRelative(BlockFace.UP);
+								}
+							}
+							// Store a branch start
+							branchStarts.add(currentBlock.getLocation());
+							
+							// West branch
+							currentBlock = Main.world.getBlockAt(startLoc);
+							for (int j = 1; j <= branchHeight; j++) {
+								// Place the central block
+								if (currentBlock.getType() == Material.AIR) {
+									undoList.add(currentBlock.getState());
+									currentBlock.setType(trunk);
+								}
+								
+								// Build the disk
+								double thicknessSquared = (branchThickness + 0.5) * (branchThickness + 0.5); // 0.5 for radius correction
+								int x = currentBlock.getX(), y = currentBlock.getY(), z = currentBlock.getZ();
+								for (int rx = -(int)branchThickness; rx <= branchThickness; rx++) {
+									for (int rz = -(int)branchThickness; rz <= branchThickness; rz++) {
+										if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
+											Block b = Main.world.getBlockAt(x + rx, y, z + rz);	
+											if (b.getType() == Material.AIR) {
+												undoList.add(b.getState());
+												b.setType(trunk);
+											}
+										}
+									}
+								}
+								
+								// Update the current block
+								if (rand.nextDouble() <= 0.2) { // 20% chance to shift to the side
+									if (rand.nextBoolean()) {
+										currentBlock = currentBlock.getRelative(BlockFace.WEST).getRelative(BlockFace.UP).getRelative(BlockFace.NORTH);
+									}
+									else {
+										currentBlock = currentBlock.getRelative(BlockFace.WEST).getRelative(BlockFace.UP).getRelative(BlockFace.SOUTH);
+									}
+								}
+								else {
+									currentBlock = currentBlock.getRelative(BlockFace.WEST).getRelative(BlockFace.UP);
+								}
+							}
+							// Store a branch start
+							branchStarts.add(currentBlock.getLocation());
+						}
+					}
 				}
 				
-				// For branches 3, 5, grow out wiht one branch N/W/E/S and the other two rotated 120 degrees
+				// For branches 3, 5, grow out with one branch N/W/E/S and the other two rotated 120 degrees
 				else if (i % 2 == 1) {
-					
+					for (Location startLoc : branchStarts) {
+						if (rand.nextBoolean()) {
+							// Case N
+							if (rand.nextBoolean()) {
+								// North branch
+								Block currentBlock = Main.world.getBlockAt(startLoc);
+								for (int j = 1; j <= branchHeight; j++) {
+									// Place the central block
+									if (currentBlock.getType() == Material.AIR) {
+										undoList.add(currentBlock.getState());
+										currentBlock.setType(trunk);
+									}
+									
+									// Build the disk
+									double thicknessSquared = (branchThickness + 0.5) * (branchThickness + 0.5); // 0.5 for radius correction
+									int x = currentBlock.getX(), y = currentBlock.getY(), z = currentBlock.getZ();
+									for (int rx = -(int)branchThickness; rx <= branchThickness; rx++) {
+										for (int rz = -(int)branchThickness; rz <= branchThickness; rz++) {
+											if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
+												Block b = Main.world.getBlockAt(x + rx, y, z + rz);	
+												if (b.getType() == Material.AIR) {
+													undoList.add(b.getState());
+													b.setType(trunk);
+												}
+											}
+										}
+									}
+									
+									// Update the current block
+									if (rand.nextDouble() <= 0.2) { // 20% chance to shift to the side
+										if (rand.nextBoolean()) {
+											currentBlock = currentBlock.getRelative(BlockFace.NORTH).getRelative(BlockFace.UP).getRelative(BlockFace.EAST);
+										}
+										else {
+											currentBlock = currentBlock.getRelative(BlockFace.NORTH).getRelative(BlockFace.UP).getRelative(BlockFace.WEST);
+										}
+									}
+									else {
+										currentBlock = currentBlock.getRelative(BlockFace.NORTH).getRelative(BlockFace.UP);
+									}
+								}
+								// Store a branch start
+								branchStarts.add(currentBlock.getLocation());
+								
+								// Southeast branch
+								currentBlock = Main.world.getBlockAt(startLoc);
+								for (int j = 1; j <= branchHeight; j++) {
+									// Place the central block
+									if (currentBlock.getType() == Material.AIR) {
+										undoList.add(currentBlock.getState());
+										currentBlock.setType(trunk);
+									}
+									
+									// Build the disk
+									double thicknessSquared = (branchThickness + 0.5) * (branchThickness + 0.5); // 0.5 for radius correction
+									int x = currentBlock.getX(), y = currentBlock.getY(), z = currentBlock.getZ();
+									for (int rx = -(int)branchThickness; rx <= branchThickness; rx++) {
+										for (int rz = -(int)branchThickness; rz <= branchThickness; rz++) {
+											if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
+												Block b = Main.world.getBlockAt(x + rx, y, z + rz);	
+												if (b.getType() == Material.AIR) {
+													undoList.add(b.getState());
+													b.setType(trunk);
+												}
+											}
+										}
+									}
+									
+									// Update the current block
+									if (rand.nextDouble() <= 0.2) { // 20% chance to shift to the side
+										if (rand.nextBoolean()) {
+											currentBlock = currentBlock.getRelative(BlockFace.SOUTH_EAST).getRelative(BlockFace.UP).getRelative(BlockFace.NORTH_EAST);
+										}
+										else {
+											currentBlock = currentBlock.getRelative(BlockFace.SOUTH_EAST).getRelative(BlockFace.UP).getRelative(BlockFace.SOUTH_WEST);
+										}
+									}
+									else {
+										currentBlock = currentBlock.getRelative(BlockFace.SOUTH_EAST).getRelative(BlockFace.UP);
+									}
+								}
+								// Store a branch start
+								branchStarts.add(currentBlock.getLocation());
+								
+								// Southwest branch
+								currentBlock = Main.world.getBlockAt(startLoc);
+								for (int j = 1; j <= branchHeight; j++) {
+									// Place the central block
+									if (currentBlock.getType() == Material.AIR) {
+										undoList.add(currentBlock.getState());
+										currentBlock.setType(trunk);
+									}
+									
+									// Build the disk
+									double thicknessSquared = (branchThickness + 0.5) * (branchThickness + 0.5); // 0.5 for radius correction
+									int x = currentBlock.getX(), y = currentBlock.getY(), z = currentBlock.getZ();
+									for (int rx = -(int)branchThickness; rx <= branchThickness; rx++) {
+										for (int rz = -(int)branchThickness; rz <= branchThickness; rz++) {
+											if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
+												Block b = Main.world.getBlockAt(x + rx, y, z + rz);	
+												if (b.getType() == Material.AIR) {
+													undoList.add(b.getState());
+													b.setType(trunk);
+												}
+											}
+										}
+									}
+									
+									// Update the current block
+									if (rand.nextDouble() <= 0.2) { // 20% chance to shift to the side
+										if (rand.nextBoolean()) {
+											currentBlock = currentBlock.getRelative(BlockFace.SOUTH_WEST).getRelative(BlockFace.UP).getRelative(BlockFace.SOUTH_EAST);
+										}
+										else {
+											currentBlock = currentBlock.getRelative(BlockFace.SOUTH_WEST).getRelative(BlockFace.UP).getRelative(BlockFace.NORTH_WEST);
+										}
+									}
+									else {
+										currentBlock = currentBlock.getRelative(BlockFace.SOUTH_WEST).getRelative(BlockFace.UP);
+									}
+								}
+								// Store a branch start
+								branchStarts.add(currentBlock.getLocation());
+							}
+							
+							// Case S
+							else {
+								// South branch
+								Block currentBlock = Main.world.getBlockAt(startLoc);
+								for (int j = 1; j <= branchHeight; j++) {
+									// Place the central block
+									if (currentBlock.getType() == Material.AIR) {
+										undoList.add(currentBlock.getState());
+										currentBlock.setType(trunk);
+									}
+									
+									// Build the disk
+									double thicknessSquared = (branchThickness + 0.5) * (branchThickness + 0.5); // 0.5 for radius correction
+									int x = currentBlock.getX(), y = currentBlock.getY(), z = currentBlock.getZ();
+									for (int rx = -(int)branchThickness; rx <= branchThickness; rx++) {
+										for (int rz = -(int)branchThickness; rz <= branchThickness; rz++) {
+											if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
+												Block b = Main.world.getBlockAt(x + rx, y, z + rz);	
+												if (b.getType() == Material.AIR) {
+													undoList.add(b.getState());
+													b.setType(trunk);
+												}
+											}
+										}
+									}
+									
+									// Update the current block
+									if (rand.nextDouble() <= 0.2) { // 20% chance to shift to the side
+										if (rand.nextBoolean()) {
+											currentBlock = currentBlock.getRelative(BlockFace.SOUTH).getRelative(BlockFace.UP).getRelative(BlockFace.EAST);
+										}
+										else {
+											currentBlock = currentBlock.getRelative(BlockFace.SOUTH).getRelative(BlockFace.UP).getRelative(BlockFace.WEST);
+										}
+									}
+									else {
+										currentBlock = currentBlock.getRelative(BlockFace.SOUTH).getRelative(BlockFace.UP);
+									}
+								}
+								// Store a branch start
+								branchStarts.add(currentBlock.getLocation());
+								
+								// Northeast branch
+								currentBlock = Main.world.getBlockAt(startLoc);
+								for (int j = 1; j <= branchHeight; j++) {
+									// Place the central block
+									if (currentBlock.getType() == Material.AIR) {
+										undoList.add(currentBlock.getState());
+										currentBlock.setType(trunk);
+									}
+									
+									// Build the disk
+									double thicknessSquared = (branchThickness + 0.5) * (branchThickness + 0.5); // 0.5 for radius correction
+									int x = currentBlock.getX(), y = currentBlock.getY(), z = currentBlock.getZ();
+									for (int rx = -(int)branchThickness; rx <= branchThickness; rx++) {
+										for (int rz = -(int)branchThickness; rz <= branchThickness; rz++) {
+											if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
+												Block b = Main.world.getBlockAt(x + rx, y, z + rz);	
+												if (b.getType() == Material.AIR) {
+													undoList.add(b.getState());
+													b.setType(trunk);
+												}
+											}
+										}
+									}
+									
+									// Update the current block
+									if (rand.nextDouble() <= 0.2) { // 20% chance to shift to the side
+										if (rand.nextBoolean()) {
+											currentBlock = currentBlock.getRelative(BlockFace.NORTH_EAST).getRelative(BlockFace.UP).getRelative(BlockFace.SOUTH_EAST);
+										}
+										else {
+											currentBlock = currentBlock.getRelative(BlockFace.NORTH_EAST).getRelative(BlockFace.UP).getRelative(BlockFace.NORTH_WEST);
+										}
+									}
+									else {
+										currentBlock = currentBlock.getRelative(BlockFace.NORTH_EAST).getRelative(BlockFace.UP);
+									}
+								}
+								// Store a branch start
+								branchStarts.add(currentBlock.getLocation());
+								
+								// Northwest branch
+								currentBlock = Main.world.getBlockAt(startLoc);
+								for (int j = 1; j <= branchHeight; j++) {
+									// Place the central block
+									if (currentBlock.getType() == Material.AIR) {
+										undoList.add(currentBlock.getState());
+										currentBlock.setType(trunk);
+									}
+									
+									// Build the disk
+									double thicknessSquared = (branchThickness + 0.5) * (branchThickness + 0.5); // 0.5 for radius correction
+									int x = currentBlock.getX(), y = currentBlock.getY(), z = currentBlock.getZ();
+									for (int rx = -(int)branchThickness; rx <= branchThickness; rx++) {
+										for (int rz = -(int)branchThickness; rz <= branchThickness; rz++) {
+											if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
+												Block b = Main.world.getBlockAt(x + rx, y, z + rz);	
+												if (b.getType() == Material.AIR) {
+													undoList.add(b.getState());
+													b.setType(trunk);
+												}
+											}
+										}
+									}
+									
+									// Update the current block
+									if (rand.nextDouble() <= 0.2) { // 20% chance to shift to the side
+										if (rand.nextBoolean()) {
+											currentBlock = currentBlock.getRelative(BlockFace.NORTH_WEST).getRelative(BlockFace.UP).getRelative(BlockFace.NORTH_EAST);
+										}
+										else {
+											currentBlock = currentBlock.getRelative(BlockFace.NORTH_WEST).getRelative(BlockFace.UP).getRelative(BlockFace.SOUTH_WEST);
+										}
+									}
+									else {
+										currentBlock = currentBlock.getRelative(BlockFace.NORTH_WEST).getRelative(BlockFace.UP);
+									}
+								}
+								// Store a branch start
+								branchStarts.add(currentBlock.getLocation());
+							}
+						}
+						else {
+							// Case E
+							if (rand.nextBoolean()) {
+								// East branch
+								Block currentBlock = Main.world.getBlockAt(startLoc);
+								for (int j = 1; j <= branchHeight; j++) {
+									// Place the central block
+									if (currentBlock.getType() == Material.AIR) {
+										undoList.add(currentBlock.getState());
+										currentBlock.setType(trunk);
+									}
+									
+									// Build the disk
+									double thicknessSquared = (branchThickness + 0.5) * (branchThickness + 0.5); // 0.5 for radius correction
+									int x = currentBlock.getX(), y = currentBlock.getY(), z = currentBlock.getZ();
+									for (int rx = -(int)branchThickness; rx <= branchThickness; rx++) {
+										for (int rz = -(int)branchThickness; rz <= branchThickness; rz++) {
+											if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
+												Block b = Main.world.getBlockAt(x + rx, y, z + rz);	
+												if (b.getType() == Material.AIR) {
+													undoList.add(b.getState());
+													b.setType(trunk);
+												}
+											}
+										}
+									}
+									
+									// Update the current block
+									if (rand.nextDouble() <= 0.2) { // 20% chance to shift to the side
+										if (rand.nextBoolean()) {
+											currentBlock = currentBlock.getRelative(BlockFace.EAST).getRelative(BlockFace.UP).getRelative(BlockFace.NORTH);
+										}
+										else {
+											currentBlock = currentBlock.getRelative(BlockFace.EAST).getRelative(BlockFace.UP).getRelative(BlockFace.SOUTH);
+										}
+									}
+									else {
+										currentBlock = currentBlock.getRelative(BlockFace.EAST).getRelative(BlockFace.UP);
+									}
+								}
+								// Store a branch start
+								branchStarts.add(currentBlock.getLocation());
+								
+								// North branch
+								currentBlock = Main.world.getBlockAt(startLoc);
+								for (int j = 1; j <= branchHeight; j++) {
+									// Place the central block
+									if (currentBlock.getType() == Material.AIR) {
+										undoList.add(currentBlock.getState());
+										currentBlock.setType(trunk);
+									}
+									
+									// Build the disk
+									double thicknessSquared = (branchThickness + 0.5) * (branchThickness + 0.5); // 0.5 for radius correction
+									int x = currentBlock.getX(), y = currentBlock.getY(), z = currentBlock.getZ();
+									for (int rx = -(int)branchThickness; rx <= branchThickness; rx++) {
+										for (int rz = -(int)branchThickness; rz <= branchThickness; rz++) {
+											if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
+												Block b = Main.world.getBlockAt(x + rx, y, z + rz);	
+												if (b.getType() == Material.AIR) {
+													undoList.add(b.getState());
+													b.setType(trunk);
+												}
+											}
+										}
+									}
+									
+									// Update the current block
+									if (rand.nextDouble() <= 0.2) { // 20% chance to shift to the side
+										if (rand.nextBoolean()) {
+											currentBlock = currentBlock.getRelative(BlockFace.NORTH_WEST).getRelative(BlockFace.UP).getRelative(BlockFace.NORTH_EAST);
+										}
+										else {
+											currentBlock = currentBlock.getRelative(BlockFace.NORTH_WEST).getRelative(BlockFace.UP).getRelative(BlockFace.SOUTH_WEST);
+										}
+									}
+									else {
+										currentBlock = currentBlock.getRelative(BlockFace.NORTH_WEST).getRelative(BlockFace.UP);
+									}
+								}
+								// Store a branch start
+								branchStarts.add(currentBlock.getLocation());
+								
+								// Southwest branch
+								currentBlock = Main.world.getBlockAt(startLoc);
+								for (int j = 1; j <= branchHeight; j++) {
+									// Place the central block
+									if (currentBlock.getType() == Material.AIR) {
+										undoList.add(currentBlock.getState());
+										currentBlock.setType(trunk);
+									}
+									
+									// Build the disk
+									double thicknessSquared = (branchThickness + 0.5) * (branchThickness + 0.5); // 0.5 for radius correction
+									int x = currentBlock.getX(), y = currentBlock.getY(), z = currentBlock.getZ();
+									for (int rx = -(int)branchThickness; rx <= branchThickness; rx++) {
+										for (int rz = -(int)branchThickness; rz <= branchThickness; rz++) {
+											if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
+												Block b = Main.world.getBlockAt(x + rx, y, z + rz);	
+												if (b.getType() == Material.AIR) {
+													undoList.add(b.getState());
+													b.setType(trunk);
+												}
+											}
+										}
+									}
+									
+									// Update the current block
+									if (rand.nextDouble() <= 0.2) { // 20% chance to shift to the side
+										if (rand.nextBoolean()) {
+											currentBlock = currentBlock.getRelative(BlockFace.SOUTH_WEST).getRelative(BlockFace.UP).getRelative(BlockFace.SOUTH_EAST);
+										}
+										else {
+											currentBlock = currentBlock.getRelative(BlockFace.SOUTH_WEST).getRelative(BlockFace.UP).getRelative(BlockFace.NORTH_WEST);
+										}
+									}
+									else {
+										currentBlock = currentBlock.getRelative(BlockFace.SOUTH_WEST).getRelative(BlockFace.UP);
+									}
+								}
+								// Store a branch start
+								branchStarts.add(currentBlock.getLocation());
+							}
+							
+							// Case W
+							else {
+								// West branch
+								Block currentBlock = Main.world.getBlockAt(startLoc);
+								for (int j = 1; j <= branchHeight; j++) {
+									// Place the central block
+									if (currentBlock.getType() == Material.AIR) {
+										undoList.add(currentBlock.getState());
+										currentBlock.setType(trunk);
+									}
+									
+									// Build the disk
+									double thicknessSquared = (branchThickness + 0.5) * (branchThickness + 0.5); // 0.5 for radius correction
+									int x = currentBlock.getX(), y = currentBlock.getY(), z = currentBlock.getZ();
+									for (int rx = -(int)branchThickness; rx <= branchThickness; rx++) {
+										for (int rz = -(int)branchThickness; rz <= branchThickness; rz++) {
+											if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
+												Block b = Main.world.getBlockAt(x + rx, y, z + rz);	
+												if (b.getType() == Material.AIR) {
+													undoList.add(b.getState());
+													b.setType(trunk);
+												}
+											}
+										}
+									}
+									
+									// Update the current block
+									if (rand.nextDouble() <= 0.2) { // 20% chance to shift to the side
+										if (rand.nextBoolean()) {
+											currentBlock = currentBlock.getRelative(BlockFace.WEST).getRelative(BlockFace.UP).getRelative(BlockFace.NORTH);
+										}
+										else {
+											currentBlock = currentBlock.getRelative(BlockFace.WEST).getRelative(BlockFace.UP).getRelative(BlockFace.SOUTH);
+										}
+									}
+									else {
+										currentBlock = currentBlock.getRelative(BlockFace.WEST).getRelative(BlockFace.UP);
+									}
+								}
+								// Store a branch start
+								branchStarts.add(currentBlock.getLocation());
+								
+								// Northeast branch
+								currentBlock = Main.world.getBlockAt(startLoc);
+								for (int j = 1; j <= branchHeight; j++) {
+									// Place the central block
+									if (currentBlock.getType() == Material.AIR) {
+										undoList.add(currentBlock.getState());
+										currentBlock.setType(trunk);
+									}
+									
+									// Build the disk
+									double thicknessSquared = (branchThickness + 0.5) * (branchThickness + 0.5); // 0.5 for radius correction
+									int x = currentBlock.getX(), y = currentBlock.getY(), z = currentBlock.getZ();
+									for (int rx = -(int)branchThickness; rx <= branchThickness; rx++) {
+										for (int rz = -(int)branchThickness; rz <= branchThickness; rz++) {
+											if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
+												Block b = Main.world.getBlockAt(x + rx, y, z + rz);	
+												if (b.getType() == Material.AIR) {
+													undoList.add(b.getState());
+													b.setType(trunk);
+												}
+											}
+										}
+									}
+									
+									// Update the current block
+									if (rand.nextDouble() <= 0.2) { // 20% chance to shift to the side
+										if (rand.nextBoolean()) {
+											currentBlock = currentBlock.getRelative(BlockFace.NORTH_EAST).getRelative(BlockFace.UP).getRelative(BlockFace.SOUTH_EAST);
+										}
+										else {
+											currentBlock = currentBlock.getRelative(BlockFace.NORTH_EAST).getRelative(BlockFace.UP).getRelative(BlockFace.NORTH_WEST);
+										}
+									}
+									else {
+										currentBlock = currentBlock.getRelative(BlockFace.NORTH_EAST).getRelative(BlockFace.UP);
+									}
+								}
+								// Store a branch start
+								branchStarts.add(currentBlock.getLocation());
+								
+								// Southeast branch
+								currentBlock = Main.world.getBlockAt(startLoc);
+								for (int j = 1; j <= branchHeight; j++) {
+									// Place the central block
+									if (currentBlock.getType() == Material.AIR) {
+										undoList.add(currentBlock.getState());
+										currentBlock.setType(trunk);
+									}
+									
+									// Build the disk
+									double thicknessSquared = (branchThickness + 0.5) * (branchThickness + 0.5); // 0.5 for radius correction
+									int x = currentBlock.getX(), y = currentBlock.getY(), z = currentBlock.getZ();
+									for (int rx = -(int)branchThickness; rx <= branchThickness; rx++) {
+										for (int rz = -(int)branchThickness; rz <= branchThickness; rz++) {
+											if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
+												Block b = Main.world.getBlockAt(x + rx, y, z + rz);	
+												if (b.getType() == Material.AIR) {
+													undoList.add(b.getState());
+													b.setType(trunk);
+												}
+											}
+										}
+									}
+									
+									// Update the current block
+									if (rand.nextDouble() <= 0.2) { // 20% chance to shift to the side
+										if (rand.nextBoolean()) {
+											currentBlock = currentBlock.getRelative(BlockFace.SOUTH_EAST).getRelative(BlockFace.UP).getRelative(BlockFace.NORTH_EAST);
+										}
+										else {
+											currentBlock = currentBlock.getRelative(BlockFace.SOUTH_EAST).getRelative(BlockFace.UP).getRelative(BlockFace.SOUTH_WEST);
+										}
+									}
+									else {
+										currentBlock = currentBlock.getRelative(BlockFace.SOUTH_EAST).getRelative(BlockFace.UP);
+									}
+								}
+								// Store a branch start
+								branchStarts.add(currentBlock.getLocation());
+							}
+						}
+					}
 				}
 				
 				// Update variables for the new branches
@@ -427,6 +1161,9 @@ public class BasicTreeMacro extends Macro {
 					branchThickness /= 2;
 				
 			}
+			
+			// Where to build leaves from
+			endPoints = branchStarts;
 			
 			// Jesus that's a lot of leaves to generate
 			for (Location startLoc : endPoints) {
