@@ -11,6 +11,7 @@ import fourteener.worldeditor.worldeditor.selection.SelectionWandListener;
 public class Main extends JavaPlugin {
 	// Global variables
 	public static World world;
+	public static SimplexNoise simplexNoise;
 	
 	// For debugging
 	public static boolean isDebug = true;
@@ -29,6 +30,7 @@ public class Main extends JavaPlugin {
 		
 		// These are needed by the plugin, but should only be loaded once as they are very slow to load
 		world = Bukkit.getWorlds().get(0);
+		simplexNoise = new SimplexNoise (world.getSeed());
 	}
 	
 	@Override

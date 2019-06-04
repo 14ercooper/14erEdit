@@ -23,6 +23,7 @@ import fourteener.worldeditor.operations.operators.OrNode;
 import fourteener.worldeditor.operations.operators.RangeNode;
 import fourteener.worldeditor.operations.operators.SameNode;
 import fourteener.worldeditor.operations.operators.SetNode;
+import fourteener.worldeditor.operations.operators.SimplexNode;
 import fourteener.worldeditor.operations.operators.TrueNode;
 import fourteener.worldeditor.operations.operators.XorNode;
 
@@ -101,6 +102,9 @@ public class Parser {
 		} else if (parts[index].equals("!")) {
 			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Ignore physics node created"); // -----
 			return IgnorePhysicsNode.newNode(parsePart());
+		} else if (parts[index].equals("#")) {
+			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Simplex noise node created"); // -----
+			return SimplexNode.newNode(parseNumberNode(), parseNumberNode());
 		} else if (parts[index].equals("same")) {
 			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Same node created"); // -----
 			return SameNode.newNode();
