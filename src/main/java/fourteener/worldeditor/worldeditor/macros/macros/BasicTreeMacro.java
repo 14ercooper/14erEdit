@@ -144,9 +144,9 @@ public class BasicTreeMacro extends Macro {
 			double branchSize1 = size + actVariance; // This acts like the trunk
 			double leafSize1 = (branchSize1 * 0.461235) + 1.35425;
 			double branchSize2 = branchSize1 * (0.8 * rand.nextDouble());
-			double leafSize2 = (branchSize2 * 0.461235) + 1.35425;
+			double leafSize2 = (branchSize2 * 0.411235) + 1.35425;
 			double branchSize3 = branchSize2 * (0.8 * rand.nextDouble());
-			double leafSize3 = (branchSize3 * 0.461235) + 1.35425;
+			double leafSize3 = (branchSize3 * 0.361235) + 1.35425;
 			
 			// These determine the density of branches
 			double branch2StartDensity = 0.4;
@@ -367,7 +367,96 @@ public class BasicTreeMacro extends Macro {
 			// Start tracking BlockStates for an undo
 			List<BlockState> undoList = new ArrayList<BlockState>();
 			
-			// Generator logic & code here
+			// Calculate the dimensions of the tree, other needed variables
+			Random rand = new Random();
+			double actVariance = ((rand.nextDouble() * 2.0) - 1.0) * variance;
+			double treeHeight = size + actVariance;
+			int numSplits, baseSize;
+			// Splits should be at 1/2; 3/4; 7/8; 15/16; and 31/32 of the tree
+			// Preserve the same number of blocks per layer before and after the split (1,3,5 are triple; 2,4 are double)
+			if (treeHeight <= 15) {
+				numSplits = 1;
+				baseSize = 3;
+			} else if (treeHeight <= 30) {
+				numSplits = 2;
+				baseSize = 6;
+			} else if (treeHeight <= 60) {
+				numSplits = 3;
+				baseSize = 18;
+			} else if (treeHeight <= 90) {
+				numSplits = 4;
+				baseSize = 36;
+			} else {
+				numSplits = 5;
+				baseSize = 108;
+			}
+			
+			// Variables needed by the generator
+			List<Location> endPoints = new ArrayList<Location>();
+			double leafBallSize = (treeHeight * 0.46) + 1.3;
+			double split1 = treeHeight * 0.5, split2 = treeHeight * 0.75, split3 = treeHeight * 0.875, split4 = treeHeight * 0.9375, split5 = treeHeight * 0.96875;
+			
+			// Generate the trunk of the tree
+			// This is done by generating a "stick" up (with some curves) then creating circles around it
+			int branchThickness = baseSize;
+			List<Location> branchStarts = new ArrayList<Location>();
+			branchStarts.add(Main.world.getBlockAt(plantOn).getRelative(BlockFace.UP).getLocation());
+			for (int i = 1; i <= numSplits; i++) {
+				List<Location> theseBranches = branchStarts;
+				branchStarts = new ArrayList<Location>();
+				
+				// Generate the stick up with circles around each layer
+				// For the first branch, build up
+				if (i == numSplits) {
+				}
+					
+				// For branches 2, 4, grow out N/S or E/W
+				else if (i % 2 == 0) {
+					
+				}
+				
+				// For branches 3, 5, grow out wiht one branch N/W/E/S and the other two rotated 120 degrees
+				else if (i % 2 == 1) {
+					
+				}
+				
+				// Update variables for the new branches
+				if (i == 5 || i == 3)
+					branchThickness /= 3;
+				else
+					branchThickness /= 2;
+				
+			}
+			
+			// Jesus that's a lot of leaves to generate
+			for (Location startLoc : endPoints) {
+				double invLeafBallSize = 1 / leafBallSize; // Multiplication is fast, division is slow, and this is used for every leaf block
+				// The -(int) ordering stops issues with how integers truncate in different directions when positive versus negative
+				int x = startLoc.getBlockX();
+				int y = startLoc.getBlockY();
+				int z = startLoc.getBlockZ();
+				for (int rx =  -(int)leafBallSize; rx <= (int) leafBallSize; rx++) {
+					for (int ry = -(int)leafBallSize; ry <= (int) leafBallSize; ry++) {
+						for (int rz = -(int)leafBallSize; rz <= (int) leafBallSize; rz++) {
+							double distFromCenter = Math.sqrt((rx * rx) + (ry * ry) + (rz * rz));
+							if (distFromCenter <= leafBallSize) {
+								// Okay, all blocks in here are in the sphere
+								// Randomness based on distance from center
+								// Further leaves have a lower chance of being placed
+								if (1.0 - (distFromCenter * invLeafBallSize) < (rand.nextDouble() * 0.333)) {
+									continue;
+								}
+								// Set leaves
+								Block toSet = Main.world.getBlockAt(x + rx, y + ry, z + rz);
+								if (toSet.getType() == Material.AIR) {
+									undoList.add(toSet.getState());
+									toSet.setType(leaves);
+								}
+							}
+						}
+					}
+				}
+			}
 			
 			// Actually register the undo
 			UndoManager.getUndo(Operator.currentPlayer).storeUndo(UndoElement.newUndoElementFromStates(undoList));
