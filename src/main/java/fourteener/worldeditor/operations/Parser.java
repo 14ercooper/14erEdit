@@ -77,7 +77,7 @@ public class Parser {
 			return SetNode.newNode(parsePart());
 		} else if (parts[index].equals(">>")) {
 			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Set plus node created"); // -----
-			return SetPlusNode.newNode(parsePart(), parseStringNode());
+			return SetPlusNode.newNode(parseStringNode());
 		} else if (parts[index].equals("<<")) {
 			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Get block data node created"); // -----
 			return GetBlockDataNode.newNode();
