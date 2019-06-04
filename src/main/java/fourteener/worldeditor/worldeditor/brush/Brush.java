@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -26,6 +27,12 @@ public class Brush {
 	public int shape = -1; // 0 is radius sphere, 1 is sphere, 2 is square, 3 is diamond
 	public String op = "";
 	public Operator operator = null;
+	
+	// For the ellipse brush only
+	public int eX, eY, eZ;
+	
+	// For hollow shapes
+	public double thickness;
 	
 	public static boolean removeBrush (Player player) {
 		ItemStack item = player.getInventory().getItemInMainHand();
@@ -74,6 +81,32 @@ public class Brush {
 			brush.shape = 1;
 			brushOpOffset++;
 			brush.radiusCorrection = Double.parseDouble(brushOperation[3]);
+		}
+		else if (brushShape.equalsIgnoreCase("cube")
+				|| brushShape.equalsIgnoreCase("square")) {
+			brush.shape = 2;
+			brush.radiusCorrection = 0;
+		}
+		else if (brushShape.equalsIgnoreCase("diamond")
+				|| brushShape.equalsIgnoreCase("d")) {
+			brush.shape = 3;
+			brush.radiusCorrection = 0;
+		}
+		else if (brushShape.equalsIgnoreCase("hsphere")
+				|| brushShape.equalsIgnoreCase("hs")) {
+			brush.shape = 4;
+			brushOpOffset += 2;
+			brush.thickness = Double.parseDouble(brushOperation[3]);
+			brush.radiusCorrection = Double.parseDouble(brushOperation[4]);
+		}
+		else if (brushShape.equalsIgnoreCase("ellipse")
+				|| brushShape.equalsIgnoreCase("e")) {
+			brush.shape = 5;
+			brushOpOffset += 3;
+			brush.eX = Integer.parseInt(brushOperation[2]);
+			brush.eY = Integer.parseInt(brushOperation[3]);
+			brush.eZ = Integer.parseInt(brushOperation[4]);
+			brush.radiusCorrection = Double.parseDouble(brushOperation[5]);
 		}
 		else {
 			return false;
@@ -127,7 +160,7 @@ public class Brush {
 			// Store an undo
 			UndoManager.getUndo(owner).storeUndo(UndoElement.newUndoElement(blockArray));
 			
-			// Operate on them
+			// Operate on the blocks
 			for (Block b : blockArray) {
 				operator.operateOnBlock(b, owner);
 			}
@@ -155,7 +188,133 @@ public class Brush {
 			// Store an undo
 			UndoManager.getUndo(owner).storeUndo(UndoElement.newUndoElement(blockArray));
 			
-			// Operate on them
+			// Operate on the blocks
+			for (Block b : blockArray) {
+				operator.operateOnBlock(b, owner);
+			}
+			return true;
+		}
+		// We're working with a cube
+		if (shape == 2) {
+			// Build an array of all blocks to operate on
+			List<Block> blockArray = new ArrayList<Block>();
+			
+			// Generate the cube
+			int cubeRad = radius / 2;
+			for (int rx = -cubeRad; rx <= cubeRad; rx++) {
+				for (int rz = -cubeRad; rz <= cubeRad; rz++) {
+					for (int ry = -cubeRad; ry <= cubeRad; ry++) {
+						blockArray.add(Main.world.getBlockAt((int) x + rx, (int) y + ry, (int) z + rz));
+					}
+				}
+			}
+			
+			// Store an undo
+			UndoManager.getUndo(owner).storeUndo(UndoElement.newUndoElement(blockArray));
+			
+			// Operate on the blocks
+			for (Block b : blockArray) {
+				operator.operateOnBlock(b, owner);
+			}
+			return true;
+		}
+		// We're working with a diamond
+		if (shape == 3) {
+			// Build an array of all blocks to operate on
+			List<Block> blockArray = new ArrayList<Block>();
+			
+			// Generate the diamond
+			List<Block> lastStep = new ArrayList<Block>();
+			lastStep.add(Main.world.getBlockAt((int) x, (int) y, (int) z));
+			for (int step = 1; step <= radius; step++) {
+				List<Block> thisStep = new ArrayList<Block>();
+				for (Block b : lastStep) {
+					Block bl = b.getRelative(BlockFace.UP);
+					if (!blockArray.contains(bl)) {
+						thisStep.add(bl);
+					}
+					bl = b.getRelative(BlockFace.DOWN);
+					if (!blockArray.contains(bl)) {
+						thisStep.add(bl);
+					}
+					bl = b.getRelative(BlockFace.NORTH);
+					if (!blockArray.contains(bl)) {
+						thisStep.add(bl);
+					}
+					bl = b.getRelative(BlockFace.SOUTH);
+					if (!blockArray.contains(bl)) {
+						thisStep.add(bl);
+					}
+					bl = b.getRelative(BlockFace.EAST);
+					if (!blockArray.contains(bl)) {
+						thisStep.add(bl);
+					}
+					bl = b.getRelative(BlockFace.WEST);
+					if (!blockArray.contains(bl)) {
+						thisStep.add(bl);
+					}
+				}
+				for (Block b : thisStep) {
+					blockArray.add(b);
+				}
+				lastStep = thisStep;
+			}
+			
+			// Store an undo
+			UndoManager.getUndo(owner).storeUndo(UndoElement.newUndoElement(blockArray));
+			
+			// Operate on the blocks
+			for (Block b : blockArray) {
+				operator.operateOnBlock(b, owner);
+			}
+			return true;
+		}
+		// We're working with a hollow sphere
+		if (shape == 4) {
+			// Build an array of all blocks to operate on
+			List<Block> blockArray = new ArrayList<Block>();
+			
+			// Generate the hollow sphere
+			for (int rx = -radius; rx <= radius; rx++) {
+				for (int rz = -radius; rz <= radius; rz++) {
+					for (int ry = -radius; ry <= radius; ry++) {
+						if ((rx*rx + ry*ry + rz*rz <= (radius + radiusCorrection)*(radius + radiusCorrection)) &&
+								(rx*rx + ry*ry + rz*rz >= (radius - thickness - radiusCorrection)*(radius - thickness - radiusCorrection))) {
+							blockArray.add(Main.world.getBlockAt((int) x + rx, (int) y + ry, (int) z + rz));
+						}
+					}
+				}
+			}
+			
+			// Store an undo
+			UndoManager.getUndo(owner).storeUndo(UndoElement.newUndoElement(blockArray));
+			
+			// Operate on the blocks
+			for (Block b : blockArray) {
+				operator.operateOnBlock(b, owner);
+			}
+			return true;
+		}
+		// We're working with an ellipse
+		if (shape == 5) {
+			// Build an array of all blocks to operate on
+			List<Block> blockArray = new ArrayList<Block>();
+			
+			// Generate the ellipse
+			for (int rx = -eX; rx <= eX; rx++) {
+				for (int ry = -eY; ry <= eY; ry++) {
+					for (int rz = -eZ; rz <= eZ; rz++) {
+						if (((rx * rx) / (eX * eX)) + ((ry * ry) / (eY * eY)) + ((rz * rz) / (eZ * eZ)) <= (1 + radiusCorrection)) {
+							blockArray.add(Main.world.getBlockAt((int) x + rx, (int) y + ry, (int) z + rz));
+						}
+					}
+				}
+			}
+			
+			// Store an undo
+			UndoManager.getUndo(owner).storeUndo(UndoElement.newUndoElement(blockArray));
+			
+			// Operate on the blocks
 			for (Block b : blockArray) {
 				operator.operateOnBlock(b, owner);
 			}
