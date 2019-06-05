@@ -29,7 +29,7 @@ public class Brush {
 	public Operator operator = null;
 	
 	// For the ellipse brush only
-	public int eX, eY, eZ;
+	public double eX, eY, eZ;
 	
 	// For hollow shapes
 	public double thickness;
@@ -103,9 +103,9 @@ public class Brush {
 				|| brushShape.equalsIgnoreCase("e")) {
 			brush.shape = 5;
 			brushOpOffset += 3;
-			brush.eX = Integer.parseInt(brushOperation[2]);
-			brush.eY = Integer.parseInt(brushOperation[3]);
-			brush.eZ = Integer.parseInt(brushOperation[4]);
+			brush.eX = Double.parseDouble(brushOperation[2]);
+			brush.eY = Double.parseDouble(brushOperation[3]);
+			brush.eZ = Double.parseDouble(brushOperation[4]);
 			brush.radiusCorrection = Double.parseDouble(brushOperation[5]);
 		}
 		else {
@@ -301,11 +301,11 @@ public class Brush {
 			List<Block> blockArray = new ArrayList<Block>();
 			
 			// Generate the ellipse
-			for (int rx = -eX; rx <= eX; rx++) {
-				for (int ry = -eY; ry <= eY; ry++) {
-					for (int rz = -eZ; rz <= eZ; rz++) {
-						if (((rx * rx) / (eX * eX)) + ((ry * ry) / (eY * eY)) + ((rz * rz) / (eZ * eZ)) <= (1 + radiusCorrection)) {
-							blockArray.add(Main.world.getBlockAt((int) x + rx, (int) y + ry, (int) z + rz));
+			for (double rx = -eX; rx <= eX; rx++) {
+				for (double ry = -eY; ry <= eY; ry++) {
+					for (double rz = -eZ; rz <= eZ; rz++) {
+						if ((((rx * rx) / (eX * eX)) + ((ry * ry) / (eY * eY)) + ((rz * rz) / (eZ * eZ))) <= (1 + radiusCorrection)) {
+							blockArray.add(Main.world.getBlockAt((int) (x + rx), (int) (y + ry), (int) (z + rz)));
 						}
 					}
 				}

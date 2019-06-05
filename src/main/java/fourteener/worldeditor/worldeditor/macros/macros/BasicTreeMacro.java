@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -393,15 +394,16 @@ public class BasicTreeMacro extends Macro {
 			
 			// Variables needed by the generator
 			List<Location> endPoints = new ArrayList<Location>();
-			double leafBallSize = (treeHeight * 0.46) + 1.3;
+			double leafBallSize = (treeHeight * 0.56) + 1.3;
 			
 			// Generate the trunk of the tree
 			// This is done by generating a "stick" up (with some curves) then creating circles around it
-			int branchThickness = baseSize;
+			int branchThickness = baseSize, nextBranchThickness = 0;
 			List<Location> branchStarts = new ArrayList<Location>();
 			branchStarts.add(Main.world.getBlockAt(plantOn).getRelative(BlockFace.UP).getLocation());
 			double branchHeight = treeHeight;
-			for (int i = 1; i <= numSplits; i++) {
+			for (int i = 1; i <= (numSplits + 1); i++) {
+				if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] i value of " + Integer.toString(i)); // -----
 				List<Location> theseBranches = branchStarts;
 				branchStarts = new ArrayList<Location>();
 				// Adjust the length of branch to generate accordingly
@@ -416,10 +418,16 @@ public class BasicTreeMacro extends Macro {
 				} else {
 					branchHeight *= 0.5;
 				}
+
+				if (i % 2 == 1)
+					nextBranchThickness /= 3;
+				else
+					nextBranchThickness /= 2;
 				
 				// Generate the stick up with circles around each layer
 				// For the first branch, build up
 				if (i == 1) {
+					if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] First branch growing, number of locations equals " + Integer.toString(theseBranches.size())); // -----
 					for (Location startLoc : theseBranches) {
 						// Grow up
 						Block currentBlock = Main.world.getBlockAt(startLoc);
@@ -485,7 +493,9 @@ public class BasicTreeMacro extends Macro {
 					
 				// For branches 2, 4, grow out N/S or E/W
 				else if (i % 2 == 0) {
-					for (Location startLoc : branchStarts) {
+
+					if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Even branch growing, number of locations " + Integer.toString(theseBranches.size())); // -----
+					for (Location startLoc : theseBranches) {
 						// Case N/S
 						if (rand.nextBoolean()) {
 							// North branch
@@ -656,7 +666,8 @@ public class BasicTreeMacro extends Macro {
 				
 				// For branches 3, 5, grow out with one branch N/W/E/S and the other two rotated 120 degrees
 				else if (i % 2 == 1) {
-					for (Location startLoc : branchStarts) {
+					if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Odd branch growing, number of locations " + Integer.toString(theseBranches.size())); // -----
+					for (Location startLoc : theseBranches) {
 						if (rand.nextBoolean()) {
 							// Case N
 							if (rand.nextBoolean()) {
@@ -1155,17 +1166,14 @@ public class BasicTreeMacro extends Macro {
 				}
 				
 				// Update variables for the new branches
-				if (i == 5 || i == 3)
-					branchThickness /= 3;
-				else
-					branchThickness /= 2;
-				
+				branchThickness = nextBranchThickness;
 			}
 			
 			// Where to build leaves from
 			endPoints = branchStarts;
 			
 			// Jesus that's a lot of leaves to generate
+			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Generating leaf spheres"); // -----
 			for (Location startLoc : endPoints) {
 				double invLeafBallSize = 1 / leafBallSize; // Multiplication is fast, division is slow, and this is used for every leaf block
 				// The -(int) ordering stops issues with how integers truncate in different directions when positive versus negative
