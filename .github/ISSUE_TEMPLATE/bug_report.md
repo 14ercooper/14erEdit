@@ -21,6 +21,7 @@ Steps to reproduce the behavior:
 A clear and concise description of what you expected to happen.
 
 **Attempted Workarounds (please note if any workarounds were successful**
+A clear description of any and all troubleshooting you've already completed.
 
 **Screenshots**
 If applicable, add screenshots to help explain your problem.
