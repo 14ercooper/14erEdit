@@ -2,7 +2,7 @@
 
 The plugin is currently not accepting additions beyond the following three cases:
 1. A feature from the documentation that is not yet implemented
-2. A bugfix from a known issue
+2. A bugfix from a known issue or implementation of an enhancement requested for an existing feature
 3. An optimization of existing code
 
 If you would like to contribute code to the plugin, do not push directly to the master branch.
