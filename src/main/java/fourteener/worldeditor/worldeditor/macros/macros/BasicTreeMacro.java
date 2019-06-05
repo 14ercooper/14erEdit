@@ -1242,7 +1242,39 @@ public class BasicTreeMacro extends Macro {
 			// Start tracking BlockStates for an undo
 			List<BlockState> undoList = new ArrayList<BlockState>();
 			
-			// Generator logic & code here
+			// Place the log block
+			Block baseBlock = Main.world.getBlockAt(plantOn).getRelative(BlockFace.UP);
+			if (baseBlock.getType() == Material.AIR) {
+				undoList.add(baseBlock.getState());
+				baseBlock.setType(trunk);
+			}
+			
+			// Generate the ellipsoid of leaves
+			Random rand = new Random();
+			double actVariance = ((rand.nextDouble() * 2.0) - 1.0) * variance;
+			double bushSize = size + actVariance;
+			double eX = bushSize * 0.55;
+			double eY = eX * 0.333;
+			double eZ = eX;
+			int x = baseBlock.getX(), y = baseBlock.getY(), z = baseBlock.getZ();
+			for (double rx = -eX; rx <= eX; rx++) {
+				for (double ry = -eY; ry <= eY; ry++) {
+					for (double rz = -eZ; rz <= eZ; rz++) {
+						double ellipsoidValue = (((rx * rx) / (eX * eX)) + ((ry * ry) / (eY * eY)) + ((rz * rz) / (eZ * eZ)));
+						if (ellipsoidValue <= (1.15)) {
+							Block toPlace = Main.world.getBlockAt((int) (x + rx), (int) (y + ry), (int) (z + rz));
+							// Further leaves are less likely to get placed
+							if (1.0 - (ellipsoidValue * 0.869565217) < (rand.nextDouble() * 0.5)) {
+								continue;
+							}
+							if (toPlace.getType() == Material.AIR) {
+								undoList.add(toPlace.getState());
+								toPlace.setType(leaves);
+							}
+						}
+					}
+				}
+			}
 			
 			// Actually register the undo
 			UndoManager.getUndo(Operator.currentPlayer).storeUndo(UndoElement.newUndoElementFromStates(undoList));
@@ -1253,7 +1285,113 @@ public class BasicTreeMacro extends Macro {
 			// Start tracking BlockStates for an undo
 			List<BlockState> undoList = new ArrayList<BlockState>();
 			
-			// Generator logic & code here
+			// Create the vertical log
+			Random rand = new Random();
+			double actVariance = ((rand.nextDouble() * 2.0) - 1.0) * variance;
+			double treeSize = size + actVariance;
+			Block currentBlock = Main.world.getBlockAt(plantOn);
+			for (int i = 1; i <= treeSize; i++) {
+				currentBlock = currentBlock.getRelative(BlockFace.UP);
+				if (currentBlock.getType() == Material.AIR) {
+					undoList.add(currentBlock.getState());
+					currentBlock.setType(trunk);
+				}
+			}
+			
+			// Create the leaves
+			// First create an array of locations where leaves will go
+			List<Block> leafList = new ArrayList<Block>();
+			// These leaves are guaranteed
+			leafList.add(currentBlock.getRelative(BlockFace.UP));
+			leafList.add(currentBlock.getRelative(BlockFace.UP).getRelative(BlockFace.NORTH));
+			leafList.add(currentBlock.getRelative(BlockFace.UP).getRelative(BlockFace.SOUTH));
+			leafList.add(currentBlock.getRelative(BlockFace.UP).getRelative(BlockFace.EAST));
+			leafList.add(currentBlock.getRelative(BlockFace.UP).getRelative(BlockFace.WEST));
+			leafList.add(currentBlock.getRelative(BlockFace.NORTH));
+			leafList.add(currentBlock.getRelative(BlockFace.SOUTH));
+			leafList.add(currentBlock.getRelative(BlockFace.EAST));
+			leafList.add(currentBlock.getRelative(BlockFace.WEST));
+			leafList.add(currentBlock.getRelative(BlockFace.DOWN).getRelative(BlockFace.NORTH));
+			leafList.add(currentBlock.getRelative(BlockFace.DOWN).getRelative(BlockFace.SOUTH));
+			leafList.add(currentBlock.getRelative(BlockFace.DOWN).getRelative(BlockFace.EAST));
+			leafList.add(currentBlock.getRelative(BlockFace.DOWN).getRelative(BlockFace.WEST));
+			leafList.add(currentBlock.getRelative(BlockFace.DOWN).getRelative(BlockFace.NORTH).getRelative(BlockFace.DOWN));
+			leafList.add(currentBlock.getRelative(BlockFace.DOWN).getRelative(BlockFace.SOUTH).getRelative(BlockFace.DOWN));
+			leafList.add(currentBlock.getRelative(BlockFace.DOWN).getRelative(BlockFace.EAST).getRelative(BlockFace.DOWN));
+			leafList.add(currentBlock.getRelative(BlockFace.DOWN).getRelative(BlockFace.WEST).getRelative(BlockFace.DOWN));
+			leafList.add(currentBlock.getRelative(BlockFace.DOWN).getRelative(BlockFace.NORTH).getRelative(BlockFace.EAST));
+			leafList.add(currentBlock.getRelative(BlockFace.DOWN).getRelative(BlockFace.SOUTH).getRelative(BlockFace.EAST));
+			leafList.add(currentBlock.getRelative(BlockFace.DOWN).getRelative(BlockFace.EAST).getRelative(BlockFace.NORTH));
+			leafList.add(currentBlock.getRelative(BlockFace.DOWN).getRelative(BlockFace.WEST).getRelative(BlockFace.NORTH));
+			leafList.add(currentBlock.getRelative(BlockFace.DOWN).getRelative(BlockFace.NORTH).getRelative(BlockFace.WEST));
+			leafList.add(currentBlock.getRelative(BlockFace.DOWN).getRelative(BlockFace.SOUTH).getRelative(BlockFace.WEST));
+			leafList.add(currentBlock.getRelative(BlockFace.DOWN).getRelative(BlockFace.EAST).getRelative(BlockFace.SOUTH));
+			leafList.add(currentBlock.getRelative(BlockFace.DOWN).getRelative(BlockFace.WEST).getRelative(BlockFace.SOUTH));
+			leafList.add(currentBlock.getRelative(BlockFace.DOWN).getRelative(BlockFace.NORTH).getRelative(BlockFace.DOWN).getRelative(BlockFace.EAST));
+			leafList.add(currentBlock.getRelative(BlockFace.DOWN).getRelative(BlockFace.SOUTH).getRelative(BlockFace.DOWN).getRelative(BlockFace.EAST));
+			leafList.add(currentBlock.getRelative(BlockFace.DOWN).getRelative(BlockFace.EAST).getRelative(BlockFace.DOWN).getRelative(BlockFace.NORTH));
+			leafList.add(currentBlock.getRelative(BlockFace.DOWN).getRelative(BlockFace.WEST).getRelative(BlockFace.DOWN).getRelative(BlockFace.NORTH));
+			leafList.add(currentBlock.getRelative(BlockFace.DOWN).getRelative(BlockFace.NORTH).getRelative(BlockFace.DOWN).getRelative(BlockFace.WEST));
+			leafList.add(currentBlock.getRelative(BlockFace.DOWN).getRelative(BlockFace.SOUTH).getRelative(BlockFace.DOWN).getRelative(BlockFace.WEST));
+			leafList.add(currentBlock.getRelative(BlockFace.DOWN).getRelative(BlockFace.EAST).getRelative(BlockFace.DOWN).getRelative(BlockFace.SOUTH));
+			leafList.add(currentBlock.getRelative(BlockFace.DOWN).getRelative(BlockFace.WEST).getRelative(BlockFace.DOWN).getRelative(BlockFace.SOUTH));
+			leafList.add(currentBlock.getRelative(BlockFace.DOWN).getRelative(BlockFace.NORTH).getRelative(BlockFace.EAST).getRelative(BlockFace.NORTH));
+			leafList.add(currentBlock.getRelative(BlockFace.DOWN).getRelative(BlockFace.SOUTH).getRelative(BlockFace.EAST).getRelative(BlockFace.SOUTH));
+			leafList.add(currentBlock.getRelative(BlockFace.DOWN).getRelative(BlockFace.EAST).getRelative(BlockFace.NORTH).getRelative(BlockFace.EAST));
+			leafList.add(currentBlock.getRelative(BlockFace.DOWN).getRelative(BlockFace.WEST).getRelative(BlockFace.NORTH).getRelative(BlockFace.WEST));
+			leafList.add(currentBlock.getRelative(BlockFace.DOWN).getRelative(BlockFace.NORTH).getRelative(BlockFace.WEST).getRelative(BlockFace.NORTH));
+			leafList.add(currentBlock.getRelative(BlockFace.DOWN).getRelative(BlockFace.SOUTH).getRelative(BlockFace.WEST).getRelative(BlockFace.SOUTH));
+			leafList.add(currentBlock.getRelative(BlockFace.DOWN).getRelative(BlockFace.EAST).getRelative(BlockFace.SOUTH).getRelative(BlockFace.EAST));
+			leafList.add(currentBlock.getRelative(BlockFace.DOWN).getRelative(BlockFace.WEST).getRelative(BlockFace.SOUTH).getRelative(BlockFace.WEST));
+			leafList.add(currentBlock.getRelative(BlockFace.DOWN).getRelative(BlockFace.NORTH).getRelative(BlockFace.DOWN).getRelative(BlockFace.EAST).getRelative(BlockFace.NORTH));
+			leafList.add(currentBlock.getRelative(BlockFace.DOWN).getRelative(BlockFace.SOUTH).getRelative(BlockFace.DOWN).getRelative(BlockFace.EAST).getRelative(BlockFace.SOUTH));
+			leafList.add(currentBlock.getRelative(BlockFace.DOWN).getRelative(BlockFace.EAST).getRelative(BlockFace.DOWN).getRelative(BlockFace.NORTH).getRelative(BlockFace.EAST));
+			leafList.add(currentBlock.getRelative(BlockFace.DOWN).getRelative(BlockFace.WEST).getRelative(BlockFace.DOWN).getRelative(BlockFace.NORTH).getRelative(BlockFace.WEST));
+			leafList.add(currentBlock.getRelative(BlockFace.DOWN).getRelative(BlockFace.NORTH).getRelative(BlockFace.DOWN).getRelative(BlockFace.WEST).getRelative(BlockFace.NORTH));
+			leafList.add(currentBlock.getRelative(BlockFace.DOWN).getRelative(BlockFace.SOUTH).getRelative(BlockFace.DOWN).getRelative(BlockFace.WEST).getRelative(BlockFace.SOUTH));
+			leafList.add(currentBlock.getRelative(BlockFace.DOWN).getRelative(BlockFace.EAST).getRelative(BlockFace.DOWN).getRelative(BlockFace.SOUTH).getRelative(BlockFace.EAST));
+			leafList.add(currentBlock.getRelative(BlockFace.DOWN).getRelative(BlockFace.WEST).getRelative(BlockFace.DOWN).getRelative(BlockFace.SOUTH).getRelative(BlockFace.WEST));
+			leafList.add(currentBlock.getRelative(BlockFace.DOWN, 2).getRelative(BlockFace.NORTH, 2));
+			leafList.add(currentBlock.getRelative(BlockFace.DOWN, 2).getRelative(BlockFace.EAST, 2));
+			leafList.add(currentBlock.getRelative(BlockFace.DOWN, 2).getRelative(BlockFace.SOUTH, 2));
+			leafList.add(currentBlock.getRelative(BlockFace.DOWN, 2).getRelative(BlockFace.WEST, 2));
+			leafList.add(currentBlock.getRelative(BlockFace.DOWN).getRelative(BlockFace.NORTH, 2));
+			leafList.add(currentBlock.getRelative(BlockFace.DOWN).getRelative(BlockFace.EAST, 2));
+			leafList.add(currentBlock.getRelative(BlockFace.DOWN).getRelative(BlockFace.SOUTH, 2));
+			leafList.add(currentBlock.getRelative(BlockFace.DOWN).getRelative(BlockFace.WEST, 2));
+			// The eight corner leaves are 50/50
+			if (rand.nextBoolean()) {
+				leafList.add(currentBlock.getRelative(BlockFace.NORTH).getRelative(BlockFace.EAST));
+			}
+			if (rand.nextBoolean()) {
+				leafList.add(currentBlock.getRelative(BlockFace.NORTH).getRelative(BlockFace.WEST));
+			}
+			if (rand.nextBoolean()) {
+				leafList.add(currentBlock.getRelative(BlockFace.SOUTH).getRelative(BlockFace.EAST));
+			}
+			if (rand.nextBoolean()) {
+				leafList.add(currentBlock.getRelative(BlockFace.SOUTH).getRelative(BlockFace.WEST));
+			}
+			if (rand.nextBoolean()) {
+				leafList.add(currentBlock.getRelative(BlockFace.DOWN, 2).getRelative(BlockFace.NORTH, 2).getRelative(BlockFace.EAST, 2));
+			}
+			if (rand.nextBoolean()) {
+				leafList.add(currentBlock.getRelative(BlockFace.DOWN, 2).getRelative(BlockFace.NORTH, 2).getRelative(BlockFace.WEST, 2));
+			}
+			if (rand.nextBoolean()) {
+				leafList.add(currentBlock.getRelative(BlockFace.DOWN, 2).getRelative(BlockFace.SOUTH, 2).getRelative(BlockFace.EAST, 2));
+			}
+			if (rand.nextBoolean()) {
+				leafList.add(currentBlock.getRelative(BlockFace.DOWN, 2).getRelative(BlockFace.SOUTH, 2).getRelative(BlockFace.WEST, 2));
+			}
+			
+			// Then place the leaf blocks
+			for (Block b : leafList) {
+				if (b.getType() == Material.AIR) {
+					undoList.add(b.getState());
+					b.setType(leaves);
+				}
+			}
 			
 			// Actually register the undo
 			UndoManager.getUndo(Operator.currentPlayer).storeUndo(UndoElement.newUndoElementFromStates(undoList));
@@ -1263,6 +1401,117 @@ public class BasicTreeMacro extends Macro {
 		if (type == 6) {
 			// Start tracking BlockStates for an undo
 			List<BlockState> undoList = new ArrayList<BlockState>();
+			
+			// Generate the trunk of the tree (build up, with a 2-3 curves to the side; placing a shaft with blocks also the the N/E/NE)
+			// Make the trunk 3-wide for particularly large trees, with 6-7 curves to the side
+			Random rand = new Random();
+			double actVariance = ((rand.nextDouble() * 2.0) - 1.0) * variance;
+			double treeSize = size + actVariance;
+			Block currentBlock = Main.world.getBlockAt(plantOn);
+			BlockFace curveDirection;
+			// Determine the curve direction
+			double randNum = rand.nextDouble();
+			if (randNum <= 0.125) {
+				curveDirection = BlockFace.NORTH;
+			} else if (randNum <= 0.25) {
+				curveDirection = BlockFace.NORTH_EAST;
+			} else if (randNum <= 0.375) {
+				curveDirection = BlockFace.EAST;
+			} else if (randNum <= 0.5) {
+				curveDirection = BlockFace.SOUTH_EAST;
+			} else if (randNum <= 0.625) {
+				curveDirection = BlockFace.SOUTH;
+			} else if (randNum <= 0.75) {
+				curveDirection = BlockFace.SOUTH_WEST;
+			} else if (randNum <= 0.875) {
+				curveDirection = BlockFace.WEST;
+			} else {
+				curveDirection = BlockFace.NORTH_WEST;
+			}
+			// Cutoff for 3-wide trunk logic
+			int trunkSize = 1;
+			double curveGap = 1;
+			if (treeSize > 23) {
+				trunkSize = 3;
+				curveGap = (treeSize * 0.5) / 7.0;
+			} else if (treeSize > 12) {
+				trunkSize = 2;
+				curveGap = (treeSize * 0.5) / 3.0;
+			} else {
+				trunkSize = 2;
+				curveGap = (treeSize * 0.5) / 2.0;
+			}
+			
+			// Grow the tree trunk
+			double curveCut = 0;
+			boolean doCurve = false;
+			for (int i = 0; i <= treeSize; i++) {
+				// If over half the tree has been grown, curve logic takes effect
+				doCurve = false;
+				if (i >= (treeSize * 0.5)) {
+					if (curveCut >= curveGap) {
+						doCurve = true;
+						curveCut -= curveGap;
+					}
+					curveCut += 1;
+				}
+				
+				// Calculate the new corner block
+				if (doCurve) {
+					currentBlock = currentBlock.getRelative(BlockFace.UP).getRelative(curveDirection);
+				}
+				else {
+					currentBlock = currentBlock.getRelative(BlockFace.UP);
+				}
+				
+				// Place the blocks as needed
+				List<Block> blockList = new ArrayList<Block>();
+				if (trunkSize == 2) {
+					blockList.add(currentBlock);
+					blockList.add(currentBlock.getRelative(BlockFace.NORTH));
+					blockList.add(currentBlock.getRelative(BlockFace.EAST));
+					blockList.add(currentBlock.getRelative(BlockFace.NORTH_EAST));
+					for (Block b : blockList) {
+						undoList.add(b.getState());
+						b.setType(trunk);
+					}
+				}
+				if (trunkSize == 3) {
+					blockList.add(currentBlock);
+					blockList.add(currentBlock.getRelative(BlockFace.NORTH));
+					blockList.add(currentBlock.getRelative(BlockFace.EAST));
+					blockList.add(currentBlock.getRelative(BlockFace.NORTH_EAST));
+					blockList.add(currentBlock.getRelative(BlockFace.NORTH, 2));
+					blockList.add(currentBlock.getRelative(BlockFace.EAST, 2));
+					blockList.add(currentBlock.getRelative(BlockFace.NORTH_EAST, 2));
+					blockList.add(currentBlock.getRelative(BlockFace.NORTH_EAST).getRelative(BlockFace.NORTH));
+					blockList.add(currentBlock.getRelative(BlockFace.NORTH_EAST).getRelative(BlockFace.EAST));
+					for (Block b : blockList) {
+						undoList.add(b.getState());
+						b.setType(trunk);
+					}
+				}
+			}
+			
+			// Place the semi-ellipse of leaves
+			double eX = treeSize * 0.75;
+			double eY = eX * 0.42;
+			double eZ = eX;
+			int x = currentBlock.getX(), y = currentBlock.getY(), z = currentBlock.getZ();
+			for (double rx = -eX; rx <= eX; rx++) {
+				for (double ry = -(eY / 3.0); ry <= eY; ry++) {
+					for (double rz = -eZ; rz <= eZ; rz++) {
+						double ellipsoidValue = (((rx * rx) / (eX * eX)) + ((ry * ry) / (eY * eY)) + ((rz * rz) / (eZ * eZ)));
+						if (ellipsoidValue <= (1.15)) {
+							Block toPlace = Main.world.getBlockAt((int) (x + rx), (int) (y + ry), (int) (z + rz));
+							if (toPlace.getType() == Material.AIR) {
+								undoList.add(toPlace.getState());
+								toPlace.setType(leaves);
+							}
+						}
+					}
+				}
+			}
 			
 			// Generator logic & code here
 			
@@ -1275,7 +1524,117 @@ public class BasicTreeMacro extends Macro {
 			// Start tracking BlockStates for an undo
 			List<BlockState> undoList = new ArrayList<BlockState>();
 			
-			// Generator logic & code here
+			// Create the stem (with a slight curve)
+			Random rand = new Random ();
+			double actVariance = ((rand.nextDouble() * 2.0) - 1.0) * variance;
+			double treeSize = size + actVariance;
+			Block currentBlock = Main.world.getBlockAt(plantOn);
+			BlockFace currentDirection = BlockFace.DOWN;
+			for (int i = 1; i <= treeSize; i++) {
+				// Update the current block
+				double randNum = rand.nextDouble();
+				if (randNum <= 0.25) {
+					randNum = rand.nextDouble();
+					if (randNum <= 0.25 || currentDirection == BlockFace.DOWN) {
+						randNum = rand.nextDouble();
+						if (randNum <= 0.125) {
+							currentDirection = BlockFace.NORTH;
+						} else if (randNum <= 0.25) {
+							currentDirection = BlockFace.NORTH_EAST;
+						} else if (randNum <= 0.375) {
+							currentDirection = BlockFace.EAST;
+						} else if (randNum <= 0.5) {
+							currentDirection = BlockFace.SOUTH_EAST;
+						} else if (randNum <= 0.625) {
+							currentDirection = BlockFace.SOUTH;
+						} else if (randNum <= 0.75) {
+							currentDirection = BlockFace.SOUTH_WEST;
+						} else if (randNum <= 0.875) {
+							currentDirection = BlockFace.WEST;
+						} else {
+							currentDirection = BlockFace.NORTH_WEST;
+						}
+					}
+					currentBlock = currentBlock.getRelative(currentDirection);
+				}
+				currentBlock = currentBlock.getRelative(BlockFace.UP);
+				
+				// Place the current block
+				if (currentBlock.getType() == Material.AIR) {
+					undoList.add(currentBlock.getState());
+					currentBlock.setType(trunk);
+				}
+			}
+			
+			// Create the cap
+			List<Block> leafList = new ArrayList<Block>();
+			leafList.add(currentBlock.getRelative(BlockFace.UP));
+			leafList.add(currentBlock.getRelative(BlockFace.UP).getRelative(BlockFace.NORTH));
+			leafList.add(currentBlock.getRelative(BlockFace.UP).getRelative(BlockFace.NORTH_EAST));
+			leafList.add(currentBlock.getRelative(BlockFace.UP).getRelative(BlockFace.EAST));
+			leafList.add(currentBlock.getRelative(BlockFace.UP).getRelative(BlockFace.SOUTH_EAST));
+			leafList.add(currentBlock.getRelative(BlockFace.UP).getRelative(BlockFace.SOUTH));
+			leafList.add(currentBlock.getRelative(BlockFace.UP).getRelative(BlockFace.SOUTH_WEST));
+			leafList.add(currentBlock.getRelative(BlockFace.UP).getRelative(BlockFace.WEST));
+			leafList.add(currentBlock.getRelative(BlockFace.UP).getRelative(BlockFace.NORTH_WEST));
+			leafList.add(currentBlock.getRelative(BlockFace.NORTH,2));
+			leafList.add(currentBlock.getRelative(BlockFace.EAST,2));
+			leafList.add(currentBlock.getRelative(BlockFace.SOUTH,2));
+			leafList.add(currentBlock.getRelative(BlockFace.WEST,2));
+			leafList.add(currentBlock.getRelative(BlockFace.NORTH_EAST).getRelative(BlockFace.NORTH));
+			leafList.add(currentBlock.getRelative(BlockFace.NORTH_EAST).getRelative(BlockFace.EAST));
+			leafList.add(currentBlock.getRelative(BlockFace.SOUTH_EAST).getRelative(BlockFace.SOUTH));
+			leafList.add(currentBlock.getRelative(BlockFace.SOUTH_EAST).getRelative(BlockFace.EAST));
+			leafList.add(currentBlock.getRelative(BlockFace.NORTH_WEST).getRelative(BlockFace.NORTH));
+			leafList.add(currentBlock.getRelative(BlockFace.NORTH_WEST).getRelative(BlockFace.WEST));
+			leafList.add(currentBlock.getRelative(BlockFace.SOUTH_WEST).getRelative(BlockFace.SOUTH));
+			leafList.add(currentBlock.getRelative(BlockFace.SOUTH_WEST).getRelative(BlockFace.WEST));
+			/* leafList.add(currentBlock.getRelative(BlockFace.NORTH,2).getRelative(BlockFace.DOWN));
+			leafList.add(currentBlock.getRelative(BlockFace.EAST,2).getRelative(BlockFace.DOWN));
+			leafList.add(currentBlock.getRelative(BlockFace.SOUTH,2).getRelative(BlockFace.DOWN));
+			leafList.add(currentBlock.getRelative(BlockFace.WEST,2).getRelative(BlockFace.DOWN));
+			leafList.add(currentBlock.getRelative(BlockFace.NORTH_EAST).getRelative(BlockFace.NORTH).getRelative(BlockFace.DOWN));
+			leafList.add(currentBlock.getRelative(BlockFace.NORTH_EAST).getRelative(BlockFace.EAST).getRelative(BlockFace.DOWN));
+			leafList.add(currentBlock.getRelative(BlockFace.SOUTH_EAST).getRelative(BlockFace.SOUTH).getRelative(BlockFace.DOWN));
+			leafList.add(currentBlock.getRelative(BlockFace.SOUTH_EAST).getRelative(BlockFace.EAST).getRelative(BlockFace.DOWN));
+			leafList.add(currentBlock.getRelative(BlockFace.NORTH_WEST).getRelative(BlockFace.NORTH).getRelative(BlockFace.DOWN));
+			leafList.add(currentBlock.getRelative(BlockFace.NORTH_WEST).getRelative(BlockFace.WEST).getRelative(BlockFace.DOWN));
+			leafList.add(currentBlock.getRelative(BlockFace.SOUTH_WEST).getRelative(BlockFace.SOUTH).getRelative(BlockFace.DOWN));
+			leafList.add(currentBlock.getRelative(BlockFace.SOUTH_WEST).getRelative(BlockFace.WEST).getRelative(BlockFace.DOWN));
+			leafList.add(currentBlock.getRelative(BlockFace.NORTH,2).getRelative(BlockFace.DOWN, 2));
+			leafList.add(currentBlock.getRelative(BlockFace.EAST,2).getRelative(BlockFace.DOWN, 2));
+			leafList.add(currentBlock.getRelative(BlockFace.SOUTH,2).getRelative(BlockFace.DOWN, 2));
+			leafList.add(currentBlock.getRelative(BlockFace.WEST,2).getRelative(BlockFace.DOWN, 2));
+			leafList.add(currentBlock.getRelative(BlockFace.NORTH_EAST).getRelative(BlockFace.NORTH).getRelative(BlockFace.DOWN, 2));
+			leafList.add(currentBlock.getRelative(BlockFace.NORTH_EAST).getRelative(BlockFace.EAST).getRelative(BlockFace.DOWN, 2));
+			leafList.add(currentBlock.getRelative(BlockFace.SOUTH_EAST).getRelative(BlockFace.SOUTH).getRelative(BlockFace.DOWN, 2));
+			leafList.add(currentBlock.getRelative(BlockFace.SOUTH_EAST).getRelative(BlockFace.EAST).getRelative(BlockFace.DOWN, 2));
+			leafList.add(currentBlock.getRelative(BlockFace.NORTH_WEST).getRelative(BlockFace.NORTH).getRelative(BlockFace.DOWN, 2));
+			leafList.add(currentBlock.getRelative(BlockFace.NORTH_WEST).getRelative(BlockFace.WEST).getRelative(BlockFace.DOWN, 2));
+			leafList.add(currentBlock.getRelative(BlockFace.SOUTH_WEST).getRelative(BlockFace.SOUTH).getRelative(BlockFace.DOWN, 2));
+			leafList.add(currentBlock.getRelative(BlockFace.SOUTH_WEST).getRelative(BlockFace.WEST).getRelative(BlockFace.DOWN, 2)); */
+			double numCapDrops = (treeSize * 0.333 > 2) ? (treeSize * 0.333) : 2;
+			for (int j = 1; j <= numCapDrops; j++) {
+				leafList.add(currentBlock.getRelative(BlockFace.NORTH,2).getRelative(BlockFace.DOWN, j));
+				leafList.add(currentBlock.getRelative(BlockFace.EAST,2).getRelative(BlockFace.DOWN, j));
+				leafList.add(currentBlock.getRelative(BlockFace.SOUTH,2).getRelative(BlockFace.DOWN, j));
+				leafList.add(currentBlock.getRelative(BlockFace.WEST,2).getRelative(BlockFace.DOWN, j));
+				leafList.add(currentBlock.getRelative(BlockFace.NORTH_EAST).getRelative(BlockFace.NORTH).getRelative(BlockFace.DOWN, j));
+				leafList.add(currentBlock.getRelative(BlockFace.NORTH_EAST).getRelative(BlockFace.EAST).getRelative(BlockFace.DOWN, j));
+				leafList.add(currentBlock.getRelative(BlockFace.SOUTH_EAST).getRelative(BlockFace.SOUTH).getRelative(BlockFace.DOWN, j));
+				leafList.add(currentBlock.getRelative(BlockFace.SOUTH_EAST).getRelative(BlockFace.EAST).getRelative(BlockFace.DOWN, j));
+				leafList.add(currentBlock.getRelative(BlockFace.NORTH_WEST).getRelative(BlockFace.NORTH).getRelative(BlockFace.DOWN, j));
+				leafList.add(currentBlock.getRelative(BlockFace.NORTH_WEST).getRelative(BlockFace.WEST).getRelative(BlockFace.DOWN, j));
+				leafList.add(currentBlock.getRelative(BlockFace.SOUTH_WEST).getRelative(BlockFace.SOUTH).getRelative(BlockFace.DOWN, j));
+				leafList.add(currentBlock.getRelative(BlockFace.SOUTH_WEST).getRelative(BlockFace.WEST).getRelative(BlockFace.DOWN, j));
+			}
+			
+			// Place the cap
+			for (Block b : leafList) {
+				if (b.getType() == Material.AIR) {
+					undoList.add(b.getState());
+					b.setType(leaves);}
+			}
 			
 			// Actually register the undo
 			UndoManager.getUndo(Operator.currentPlayer).storeUndo(UndoElement.newUndoElementFromStates(undoList));
@@ -1286,7 +1645,164 @@ public class BasicTreeMacro extends Macro {
 			// Start tracking BlockStates for an undo
 			List<BlockState> undoList = new ArrayList<BlockState>();
 			
-			// Generator logic & code here
+			// Determine the size of the mushroom
+			Random rand = new Random();
+			double actVariance = ((rand.nextDouble() * 2.0) - 1.0) * variance;
+			double treeSize = size + actVariance;
+			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Generating mushroom of size " + Double.toString(treeSize)); // -----
+			
+			// One, two, or 3 layer cap?
+			// Also calculate cap circle cutoffs
+			int numCaps = 0;
+			if (treeSize > 60) {
+				if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] 5 cap mushroom"); // -----
+				numCaps = 5;
+			}
+			else if (treeSize > 40) {
+				if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] 4 cap mushroom"); // -----
+				numCaps = 4;
+			}
+			else if (treeSize > 27) {
+				if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] 3 cap mushroom"); // -----
+				numCaps = 3;
+			}
+			else if (treeSize > 15) {
+				if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] 2 cap mushroom"); // -----
+				numCaps = 2;
+			}
+			else {
+				if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] 1 cap mushroom"); // -----
+				numCaps = 1;
+			}
+			double radiusCorrection = 0.35;
+			double cap1Cut = 0, cap2Cut = 0, cap3Cut = 0, cap4Cut = 0, cap5Cut = 0; // These are radii
+			if (numCaps <= 3) {
+				if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Less than or equal to 3 caps will be generated"); // -----
+				cap1Cut = treeSize * 0.35;
+				cap2Cut = treeSize * 0.65;
+				cap3Cut = treeSize;
+			}
+			else {
+				if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] More than 3 caps will be generated"); // -----
+				cap1Cut = treeSize * 0.25;
+				cap2Cut = treeSize * 0.4;
+				cap3Cut = treeSize * 0.55;
+				cap4Cut = treeSize * 0.7;
+				cap5Cut = treeSize * 0.85;
+			}
+			
+			// Generate the stem of the mushroom
+			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Generating mushroom stem"); // -----
+			Block currentBlock = Main.world.getBlockAt(plantOn);
+			BlockFace currentDirection = BlockFace.DOWN;
+			for (int i = 1; i <= treeSize; i++) {
+				// Update the current block
+				double randNum = rand.nextDouble();
+				if (randNum <= 0.333) {
+					randNum = rand.nextDouble();
+					if (randNum <= 0.125 || currentDirection == BlockFace.DOWN) {
+						randNum = rand.nextDouble();
+						if (randNum <= 0.125) {
+							currentDirection = BlockFace.NORTH;
+						} else if (randNum <= 0.25) {
+							currentDirection = BlockFace.NORTH_EAST;
+						} else if (randNum <= 0.375) {
+							currentDirection = BlockFace.EAST;
+						} else if (randNum <= 0.5) {
+							currentDirection = BlockFace.SOUTH_EAST;
+						} else if (randNum <= 0.625) {
+							currentDirection = BlockFace.SOUTH;
+						} else if (randNum <= 0.75) {
+							currentDirection = BlockFace.SOUTH_WEST;
+						} else if (randNum <= 0.875) {
+							currentDirection = BlockFace.WEST;
+						} else {
+							currentDirection = BlockFace.NORTH_WEST;
+						}
+					}
+					currentBlock = currentBlock.getRelative(currentDirection);
+				}
+				currentBlock = currentBlock.getRelative(BlockFace.UP);
+				
+				// Place the current block
+				if (currentBlock.getType() == Material.AIR) {
+					undoList.add(currentBlock.getState());
+					currentBlock.setType(trunk);
+				}
+			}
+			currentBlock = currentBlock.getRelative(BlockFace.UP);
+			
+			// Generate the three cap layers as needed
+			double x = currentBlock.getX(), y = currentBlock.getY(), z = currentBlock.getZ();
+			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Generating cap at (" + Double.toString(x) + "," + Double.toString(y) + "," + Double.toString(z) + ")"); // -----
+			List<Block> capBlocks = new ArrayList<Block>();
+			if (numCaps >= 1) {
+				if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Size 1 cap generating"); // -----
+				for (double rx = -cap1Cut; rx <= cap1Cut; rx++) {
+					for (double rz = -cap1Cut; rz <= cap1Cut; rz++) {
+						if ((rx * rx) + (rz * rz) <= ((cap1Cut + radiusCorrection) * (cap1Cut + radiusCorrection))) {
+							capBlocks.add(Main.world.getBlockAt((int) (x + rx), (int) (y), (int) (z + rz)));
+						}
+					}
+				}
+				if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Number of blocks: " + Integer.toString(capBlocks.size())); // -----
+			}
+			if (numCaps >= 2) {
+				if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Size 2 cap generating"); // -----
+				for (int rx = -(int)cap2Cut; rx <= cap2Cut; rx++) {
+					for (int rz = -(int)cap2Cut; rz <= cap2Cut; rz++) {
+						if ((rx * rx) + (rz * rz) <= ((cap2Cut + radiusCorrection) * (cap2Cut + radiusCorrection))
+								&& (rx * rx) + (rz * rz) >= ((cap1Cut - radiusCorrection) * (cap1Cut - radiusCorrection))) {
+							capBlocks.add(Main.world.getBlockAt((int) (x + rx), (int) (y - 1), (int) (z + rz)));
+						}
+					}
+				}
+				if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Number of blocks: " + Integer.toString(capBlocks.size())); // -----
+			}
+			if (numCaps >= 3) {
+				if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Size 3 cap generating"); // -----
+				for (int rx = -(int)cap3Cut; rx <= cap3Cut; rx++) {
+					for (int rz = -(int)cap3Cut; rz <= cap3Cut; rz++) {
+						if ((rx * rx) + (rz * rz) <= ((cap3Cut + radiusCorrection) * (cap3Cut + radiusCorrection))
+								&& (rx * rx) + (rz * rz) >= ((cap2Cut - radiusCorrection) * (cap2Cut - radiusCorrection))) {
+							capBlocks.add(Main.world.getBlockAt((int) (x + rx), (int) (y - 2), (int) (z + rz)));
+						}
+					}
+				}
+				if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Number of blocks: " + Integer.toString(capBlocks.size())); // -----
+			}
+			if (numCaps >= 4) {
+				if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Size 4 cap generating"); // -----
+				for (int rx = -(int)cap4Cut; rx <= cap4Cut; rx++) {
+					for (int rz = -(int)cap4Cut; rz <= cap4Cut; rz++) {
+						if ((rx * rx) + (rz * rz) <= ((cap4Cut + radiusCorrection) * (cap4Cut + radiusCorrection))
+								&& (rx * rx) + (rz * rz) >= ((cap3Cut - radiusCorrection) * (cap3Cut - radiusCorrection))) {
+							capBlocks.add(Main.world.getBlockAt((int) (x + rx), (int) (y - 3), (int) (z + rz)));
+						}
+					}
+				}
+				if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Number of blocks: " + Integer.toString(capBlocks.size())); // -----
+			}
+			if (numCaps >= 5) {
+				if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Size 5 cap generating"); // -----
+				for (int rx = -(int)cap5Cut; rx <= cap5Cut; rx++) {
+					for (int rz = -(int)cap5Cut; rz <= cap5Cut; rz++) {
+						if ((rx * rx) + (rz * rz) <= ((cap5Cut + radiusCorrection) * (cap5Cut + radiusCorrection))
+								&& (rx * rx) + (rz * rz) >= ((cap4Cut - radiusCorrection) * (cap4Cut - radiusCorrection))) {
+							capBlocks.add(Main.world.getBlockAt((int) (x + rx), (int) (y - 2), (int) (z + rz)));
+						}
+					}
+				}
+				if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Number of blocks: " + Integer.toString(capBlocks.size())); // -----
+			}
+			
+			// Place the cap blocks
+			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Placing cap blocks"); // -----
+			for (Block bl : capBlocks) {
+				if (bl.getType() == Material.AIR) {
+					undoList.add(bl.getState());
+					bl.setType(leaves);}
+			}
 			
 			// Actually register the undo
 			UndoManager.getUndo(Operator.currentPlayer).storeUndo(UndoElement.newUndoElementFromStates(undoList));
