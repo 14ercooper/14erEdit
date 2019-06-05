@@ -398,7 +398,7 @@ public class BasicTreeMacro extends Macro {
 			
 			// Generate the trunk of the tree
 			// This is done by generating a "stick" up (with some curves) then creating circles around it
-			int branchThickness = baseSize, nextBranchThickness = 0;
+			double startBranchThickness = baseSize, nextBranchThickness = baseSize;
 			List<Location> branchStarts = new ArrayList<Location>();
 			branchStarts.add(Main.world.getBlockAt(plantOn).getRelative(BlockFace.UP).getLocation());
 			double branchHeight = treeHeight;
@@ -419,10 +419,13 @@ public class BasicTreeMacro extends Macro {
 					branchHeight *= 0.5;
 				}
 
-				if (i % 2 == 1)
+				if (i % 2 == 0)
 					nextBranchThickness /= 3;
 				else
 					nextBranchThickness /= 2;
+				
+				double branchTaper = (startBranchThickness - nextBranchThickness) / branchHeight;
+				double branchThickness = startBranchThickness;
 				
 				// Generate the stick up with circles around each layer
 				// For the first branch, build up
@@ -432,6 +435,7 @@ public class BasicTreeMacro extends Macro {
 						// Grow up
 						Block currentBlock = Main.world.getBlockAt(startLoc);
 						for (int j = 1; j <= branchHeight; j++) {
+							branchThickness -= branchTaper;
 							// Place the central block
 							if (currentBlock.getType() == Material.AIR) {
 								undoList.add(currentBlock.getState());
@@ -492,7 +496,7 @@ public class BasicTreeMacro extends Macro {
 				}
 					
 				// For branches 2, 4, grow out N/S or E/W
-				else if (i % 2 == 0) {
+				else if (i % 2 == 1) {
 
 					if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Even branch growing, number of locations " + Integer.toString(theseBranches.size())); // -----
 					for (Location startLoc : theseBranches) {
@@ -501,6 +505,7 @@ public class BasicTreeMacro extends Macro {
 							// North branch
 							Block currentBlock = Main.world.getBlockAt(startLoc);
 							for (int j = 1; j <= branchHeight; j++) {
+								branchThickness -= branchTaper;
 								// Place the central block
 								if (currentBlock.getType() == Material.AIR) {
 									undoList.add(currentBlock.getState());
@@ -540,7 +545,9 @@ public class BasicTreeMacro extends Macro {
 							
 							// South branch
 							currentBlock = Main.world.getBlockAt(startLoc);
+							branchThickness = startBranchThickness;
 							for (int j = 1; j <= branchHeight; j++) {
+								branchThickness -= branchTaper;
 								// Place the central block
 								if (currentBlock.getType() == Material.AIR) {
 									undoList.add(currentBlock.getState());
@@ -584,6 +591,7 @@ public class BasicTreeMacro extends Macro {
 							// East branch
 							Block currentBlock = Main.world.getBlockAt(startLoc);
 							for (int j = 1; j <= branchHeight; j++) {
+								branchThickness -= branchTaper;
 								// Place the central block
 								if (currentBlock.getType() == Material.AIR) {
 									undoList.add(currentBlock.getState());
@@ -623,7 +631,9 @@ public class BasicTreeMacro extends Macro {
 							
 							// West branch
 							currentBlock = Main.world.getBlockAt(startLoc);
+							branchThickness = startBranchThickness;
 							for (int j = 1; j <= branchHeight; j++) {
+								branchThickness -= branchTaper;
 								// Place the central block
 								if (currentBlock.getType() == Material.AIR) {
 									undoList.add(currentBlock.getState());
@@ -665,7 +675,7 @@ public class BasicTreeMacro extends Macro {
 				}
 				
 				// For branches 3, 5, grow out with one branch N/W/E/S and the other two rotated 120 degrees
-				else if (i % 2 == 1) {
+				else if (i % 2 == 0) {
 					if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Odd branch growing, number of locations " + Integer.toString(theseBranches.size())); // -----
 					for (Location startLoc : theseBranches) {
 						if (rand.nextBoolean()) {
@@ -674,6 +684,7 @@ public class BasicTreeMacro extends Macro {
 								// North branch
 								Block currentBlock = Main.world.getBlockAt(startLoc);
 								for (int j = 1; j <= branchHeight; j++) {
+									branchThickness -= branchTaper;
 									// Place the central block
 									if (currentBlock.getType() == Material.AIR) {
 										undoList.add(currentBlock.getState());
@@ -713,7 +724,9 @@ public class BasicTreeMacro extends Macro {
 								
 								// Southeast branch
 								currentBlock = Main.world.getBlockAt(startLoc);
+								branchThickness = startBranchThickness;
 								for (int j = 1; j <= branchHeight; j++) {
+									branchThickness -= branchTaper;
 									// Place the central block
 									if (currentBlock.getType() == Material.AIR) {
 										undoList.add(currentBlock.getState());
@@ -753,7 +766,9 @@ public class BasicTreeMacro extends Macro {
 								
 								// Southwest branch
 								currentBlock = Main.world.getBlockAt(startLoc);
+								branchThickness = startBranchThickness;
 								for (int j = 1; j <= branchHeight; j++) {
+									branchThickness -= branchTaper;
 									// Place the central block
 									if (currentBlock.getType() == Material.AIR) {
 										undoList.add(currentBlock.getState());
@@ -797,6 +812,7 @@ public class BasicTreeMacro extends Macro {
 								// South branch
 								Block currentBlock = Main.world.getBlockAt(startLoc);
 								for (int j = 1; j <= branchHeight; j++) {
+									branchThickness -= branchTaper;
 									// Place the central block
 									if (currentBlock.getType() == Material.AIR) {
 										undoList.add(currentBlock.getState());
@@ -836,7 +852,9 @@ public class BasicTreeMacro extends Macro {
 								
 								// Northeast branch
 								currentBlock = Main.world.getBlockAt(startLoc);
+								branchThickness = startBranchThickness;
 								for (int j = 1; j <= branchHeight; j++) {
+									branchThickness -= branchTaper;
 									// Place the central block
 									if (currentBlock.getType() == Material.AIR) {
 										undoList.add(currentBlock.getState());
@@ -876,7 +894,9 @@ public class BasicTreeMacro extends Macro {
 								
 								// Northwest branch
 								currentBlock = Main.world.getBlockAt(startLoc);
+								branchThickness = startBranchThickness;
 								for (int j = 1; j <= branchHeight; j++) {
+									branchThickness -= branchTaper;
 									// Place the central block
 									if (currentBlock.getType() == Material.AIR) {
 										undoList.add(currentBlock.getState());
@@ -921,6 +941,7 @@ public class BasicTreeMacro extends Macro {
 								// East branch
 								Block currentBlock = Main.world.getBlockAt(startLoc);
 								for (int j = 1; j <= branchHeight; j++) {
+									branchThickness -= branchTaper;
 									// Place the central block
 									if (currentBlock.getType() == Material.AIR) {
 										undoList.add(currentBlock.getState());
@@ -958,9 +979,11 @@ public class BasicTreeMacro extends Macro {
 								// Store a branch start
 								branchStarts.add(currentBlock.getLocation());
 								
-								// North branch
+								// Northwest branch
 								currentBlock = Main.world.getBlockAt(startLoc);
+								branchThickness = startBranchThickness;
 								for (int j = 1; j <= branchHeight; j++) {
+									branchThickness -= branchTaper;
 									// Place the central block
 									if (currentBlock.getType() == Material.AIR) {
 										undoList.add(currentBlock.getState());
@@ -1000,7 +1023,9 @@ public class BasicTreeMacro extends Macro {
 								
 								// Southwest branch
 								currentBlock = Main.world.getBlockAt(startLoc);
+								branchThickness = startBranchThickness;
 								for (int j = 1; j <= branchHeight; j++) {
+									branchThickness -= branchTaper;
 									// Place the central block
 									if (currentBlock.getType() == Material.AIR) {
 										undoList.add(currentBlock.getState());
@@ -1044,6 +1069,7 @@ public class BasicTreeMacro extends Macro {
 								// West branch
 								Block currentBlock = Main.world.getBlockAt(startLoc);
 								for (int j = 1; j <= branchHeight; j++) {
+									branchThickness -= branchTaper;
 									// Place the central block
 									if (currentBlock.getType() == Material.AIR) {
 										undoList.add(currentBlock.getState());
@@ -1083,7 +1109,9 @@ public class BasicTreeMacro extends Macro {
 								
 								// Northeast branch
 								currentBlock = Main.world.getBlockAt(startLoc);
+								branchThickness = startBranchThickness;
 								for (int j = 1; j <= branchHeight; j++) {
+									branchThickness -= branchTaper;
 									// Place the central block
 									if (currentBlock.getType() == Material.AIR) {
 										undoList.add(currentBlock.getState());
@@ -1123,7 +1151,9 @@ public class BasicTreeMacro extends Macro {
 								
 								// Southeast branch
 								currentBlock = Main.world.getBlockAt(startLoc);
+								branchThickness = startBranchThickness;
 								for (int j = 1; j <= branchHeight; j++) {
+									branchThickness -= branchTaper;
 									// Place the central block
 									if (currentBlock.getType() == Material.AIR) {
 										undoList.add(currentBlock.getState());
@@ -1166,7 +1196,7 @@ public class BasicTreeMacro extends Macro {
 				}
 				
 				// Update variables for the new branches
-				branchThickness = nextBranchThickness;
+				startBranchThickness = nextBranchThickness;
 			}
 			
 			// Where to build leaves from
