@@ -67,10 +67,6 @@ public class BasicTreeMacro extends Macro {
 		if (args[0].equalsIgnoreCase("jungle")) {
 			macro.type = 9;
 		}
-		// Type 10 - Vanilla spruce tree style (spruce)
-		if (args[0].equalsIgnoreCase("spruce")) {
-			macro.type = 10;
-		}
 		
 		return macro;
 	}
@@ -1589,30 +1585,6 @@ public class BasicTreeMacro extends Macro {
 			leafList.add(currentBlock.getRelative(BlockFace.NORTH_WEST).getRelative(BlockFace.WEST));
 			leafList.add(currentBlock.getRelative(BlockFace.SOUTH_WEST).getRelative(BlockFace.SOUTH));
 			leafList.add(currentBlock.getRelative(BlockFace.SOUTH_WEST).getRelative(BlockFace.WEST));
-			/* leafList.add(currentBlock.getRelative(BlockFace.NORTH,2).getRelative(BlockFace.DOWN));
-			leafList.add(currentBlock.getRelative(BlockFace.EAST,2).getRelative(BlockFace.DOWN));
-			leafList.add(currentBlock.getRelative(BlockFace.SOUTH,2).getRelative(BlockFace.DOWN));
-			leafList.add(currentBlock.getRelative(BlockFace.WEST,2).getRelative(BlockFace.DOWN));
-			leafList.add(currentBlock.getRelative(BlockFace.NORTH_EAST).getRelative(BlockFace.NORTH).getRelative(BlockFace.DOWN));
-			leafList.add(currentBlock.getRelative(BlockFace.NORTH_EAST).getRelative(BlockFace.EAST).getRelative(BlockFace.DOWN));
-			leafList.add(currentBlock.getRelative(BlockFace.SOUTH_EAST).getRelative(BlockFace.SOUTH).getRelative(BlockFace.DOWN));
-			leafList.add(currentBlock.getRelative(BlockFace.SOUTH_EAST).getRelative(BlockFace.EAST).getRelative(BlockFace.DOWN));
-			leafList.add(currentBlock.getRelative(BlockFace.NORTH_WEST).getRelative(BlockFace.NORTH).getRelative(BlockFace.DOWN));
-			leafList.add(currentBlock.getRelative(BlockFace.NORTH_WEST).getRelative(BlockFace.WEST).getRelative(BlockFace.DOWN));
-			leafList.add(currentBlock.getRelative(BlockFace.SOUTH_WEST).getRelative(BlockFace.SOUTH).getRelative(BlockFace.DOWN));
-			leafList.add(currentBlock.getRelative(BlockFace.SOUTH_WEST).getRelative(BlockFace.WEST).getRelative(BlockFace.DOWN));
-			leafList.add(currentBlock.getRelative(BlockFace.NORTH,2).getRelative(BlockFace.DOWN, 2));
-			leafList.add(currentBlock.getRelative(BlockFace.EAST,2).getRelative(BlockFace.DOWN, 2));
-			leafList.add(currentBlock.getRelative(BlockFace.SOUTH,2).getRelative(BlockFace.DOWN, 2));
-			leafList.add(currentBlock.getRelative(BlockFace.WEST,2).getRelative(BlockFace.DOWN, 2));
-			leafList.add(currentBlock.getRelative(BlockFace.NORTH_EAST).getRelative(BlockFace.NORTH).getRelative(BlockFace.DOWN, 2));
-			leafList.add(currentBlock.getRelative(BlockFace.NORTH_EAST).getRelative(BlockFace.EAST).getRelative(BlockFace.DOWN, 2));
-			leafList.add(currentBlock.getRelative(BlockFace.SOUTH_EAST).getRelative(BlockFace.SOUTH).getRelative(BlockFace.DOWN, 2));
-			leafList.add(currentBlock.getRelative(BlockFace.SOUTH_EAST).getRelative(BlockFace.EAST).getRelative(BlockFace.DOWN, 2));
-			leafList.add(currentBlock.getRelative(BlockFace.NORTH_WEST).getRelative(BlockFace.NORTH).getRelative(BlockFace.DOWN, 2));
-			leafList.add(currentBlock.getRelative(BlockFace.NORTH_WEST).getRelative(BlockFace.WEST).getRelative(BlockFace.DOWN, 2));
-			leafList.add(currentBlock.getRelative(BlockFace.SOUTH_WEST).getRelative(BlockFace.SOUTH).getRelative(BlockFace.DOWN, 2));
-			leafList.add(currentBlock.getRelative(BlockFace.SOUTH_WEST).getRelative(BlockFace.WEST).getRelative(BlockFace.DOWN, 2)); */
 			double numCapDrops = (treeSize * 0.333 > 2) ? (treeSize * 0.333) : 2;
 			for (int j = 1; j <= numCapDrops; j++) {
 				leafList.add(currentBlock.getRelative(BlockFace.NORTH,2).getRelative(BlockFace.DOWN, j));
@@ -1801,7 +1773,8 @@ public class BasicTreeMacro extends Macro {
 			for (Block bl : capBlocks) {
 				if (bl.getType() == Material.AIR) {
 					undoList.add(bl.getState());
-					bl.setType(leaves);}
+					bl.setType(leaves);
+				}
 			}
 			
 			// Actually register the undo
@@ -1813,18 +1786,147 @@ public class BasicTreeMacro extends Macro {
 			// Start tracking BlockStates for an undo
 			List<BlockState> undoList = new ArrayList<BlockState>();
 			
-			// Generator logic & code here
+			// Calculate the size of the tree
+			Random rand = new Random();
+			double actVariance = ((rand.nextDouble() * 2.0) - 1.0) * variance;
+			double treeSize = size + actVariance;
+			double eTopX = treeSize * 0.9;
+			double eTopZ = eTopX, eTopY = eTopX * 0.5;
 			
-			// Actually register the undo
-			UndoManager.getUndo(Operator.currentPlayer).storeUndo(UndoElement.newUndoElementFromStates(undoList));
-		}
-		
-		// Generator for spruce tree
-		if (type == 10) {
-			// Start tracking BlockStates for an undo
-			List<BlockState> undoList = new ArrayList<BlockState>();
+			// Calculate the size and frequency of branches
+			double branchSize = treeSize * 0.35;
+			double branchVariance = variance * 0.35;
+			double branchStartHeight = treeSize * 0.4;
+			double branchFrequency = ((270.0 / treeSize) / (treeSize - branchStartHeight)) * 0.5;
+			double eBranchX = branchSize * 1.25;
+			double eBranchZ = eBranchX, eBranchY = eBranchX * 0.7;
 			
-			// Generator logic & code here
+			// Stores the centers of the various ellipoids and starts of branches
+			Block currentBlock = Main.world.getBlockAt(plantOn);
+			Block topBlock;
+			List<Block> branchEnds = new ArrayList<Block>();
+			List<Block> branchStarts = new ArrayList<Block>();
+			List<Block> trunkBlocks = new ArrayList<Block>();
+			List<Block> leafBlocks = new ArrayList<Block>();
+			
+			// Generate the central trunk
+			for (int i = 1; i <= treeSize + ((treeSize * 0.25 > 7) ? (treeSize * 0.25) : 7); i++) {
+				// Move the current block
+				currentBlock = currentBlock.getRelative(BlockFace.UP);
+				
+				// Set the current block and other trunk blocks
+				trunkBlocks.add(currentBlock);
+				trunkBlocks.add(currentBlock.getRelative(BlockFace.NORTH));
+				trunkBlocks.add(currentBlock.getRelative(BlockFace.EAST));
+				trunkBlocks.add(currentBlock.getRelative(BlockFace.NORTH_EAST));
+				
+				// Add a new branch if needed
+				if (rand.nextDouble() <= branchFrequency && i >= branchStartHeight && i <= treeSize) {
+					branchStarts.add(currentBlock);
+				}
+			}
+			topBlock = currentBlock.getRelative(BlockFace.UP);
+			
+			// Generate the branches
+			for (Block b : branchStarts) {
+				currentBlock = b;
+				boolean firstBlock = true;
+				BlockFace branchDir;
+				double randNum = rand.nextDouble();
+				if (randNum <= 0.25) {
+					branchDir = BlockFace.NORTH;
+					currentBlock = currentBlock.getRelative(BlockFace.NORTH, 2);
+				} else if (randNum <= 0.5) {
+					branchDir = BlockFace.EAST;
+					currentBlock = currentBlock.getRelative(BlockFace.EAST, 2);
+				} else if (randNum <= 0.75) {
+					branchDir = BlockFace.SOUTH;
+					currentBlock = currentBlock.getRelative(BlockFace.SOUTH);
+				} else {
+					branchDir = BlockFace.WEST;
+					currentBlock = currentBlock.getRelative(BlockFace.WEST);
+				}
+				
+				double branchLength = branchSize + (((rand.nextDouble() * 2.0) - 1.0) * branchVariance);
+				for (int i = 1; i <= branchLength; i++) {
+					// Maybe curve the branch?
+					if (!firstBlock) {
+						currentBlock = currentBlock.getRelative(branchDir);
+						if (rand.nextDouble() <= 0.33) {
+							if (branchDir == BlockFace.NORTH || branchDir == BlockFace.SOUTH) {
+								if (rand.nextBoolean()) {
+									currentBlock = currentBlock.getRelative(BlockFace.EAST);
+								}
+								else {
+									currentBlock = currentBlock.getRelative(BlockFace.WEST);
+								}
+							}
+							if (branchDir == BlockFace.EAST || branchDir == BlockFace.WEST) {
+								if (rand.nextBoolean()) {
+									currentBlock = currentBlock.getRelative(BlockFace.NORTH);
+								}
+								else {
+									currentBlock = currentBlock.getRelative(BlockFace.SOUTH);
+								}
+							}
+						}
+						if (rand.nextDouble() <= 0.15) {
+							currentBlock = currentBlock.getRelative(BlockFace.UP);
+						}
+					}
+					
+					// Add the block to the array
+					trunkBlocks.add(currentBlock);
+					firstBlock = false;
+				}
+				branchEnds.add(currentBlock.getRelative(BlockFace.UP));
+			}
+			
+			// Generate the top leaf semi-ellipse
+			int x = topBlock.getX(), y = topBlock.getY(), z = topBlock.getZ();
+			for (double rx = -eTopX; rx <= eTopX; rx++) {
+				for (double ry = -(eTopY / 3.0); ry <= eTopY; ry++) {
+					for (double rz = -eTopZ; rz <= eTopZ; rz++) {
+						double ellipsoidValue = (((rx * rx) / (eTopX * eTopX)) + ((ry * ry) / (eTopY * eTopY)) + ((rz * rz) / (eTopZ * eTopZ)));
+						if (ellipsoidValue <= (1.15)) {
+							leafBlocks.add(Main.world.getBlockAt((int) (x + rx), (int) (y + ry), (int) (z + rz)));
+						}
+					}
+				}
+			}
+			
+			// Generate the leaf semi-ellipses for the branches
+			for (Block b : branchEnds) {
+				x = b.getX();
+				y = b.getY();
+				z = b.getZ();
+				for (double rx = -eBranchX; rx <= eBranchX; rx++) {
+					for (double ry = -(eBranchY / 3.0); ry <= eBranchY / 2.0; ry++) {
+						for (double rz = -eBranchZ; rz <= eBranchZ; rz++) {
+							double ellipsoidValue = (((rx * rx) / (eBranchX * eBranchX)) + ((ry * ry) / (eBranchY * eBranchY)) + ((rz * rz) / (eBranchZ * eBranchZ)));
+							if (ellipsoidValue <= (1.15)) {
+								leafBlocks.add(Main.world.getBlockAt((int) (x + rx), (int) (y + ry), (int) (z + rz)));
+							}
+						}
+					}
+				}
+			}
+			
+			// Place the trunk blocks
+			for (Block b : trunkBlocks) {
+				if (b.getType() == Material.AIR) {
+					undoList.add(b.getState());
+					b.setType(trunk);
+				}
+			}
+			
+			// Place the leaf blocks
+			for (Block b : leafBlocks) {
+				if (b.getType() == Material.AIR) {
+					undoList.add(b.getState());
+					b.setType(leaves);
+				}
+			}
 			
 			// Actually register the undo
 			UndoManager.getUndo(Operator.currentPlayer).storeUndo(UndoElement.newUndoElementFromStates(undoList));
