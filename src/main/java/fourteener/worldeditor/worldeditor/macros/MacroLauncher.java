@@ -26,7 +26,7 @@ public class MacroLauncher {
 		if (macroName.equalsIgnoreCase("erode")) {
 			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Running erode macro"); // ----
 			return ErodeMacro.createMacro(macroArgs, location).performMacro();
-		} else if (macroName.equalsIgnoreCase("basictree")) {
+		} else if (macroName.equalsIgnoreCase("tree")) {
 			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Running tree macro"); // ----
 			return BasicTreeMacro.createMacro(macroArgs, location).performMacro();
 		} else {

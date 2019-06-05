@@ -5,6 +5,7 @@ import org.bukkit.World;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import fourteener.worldeditor.commands.CommandFx;
+import fourteener.worldeditor.commands.CommandUndo;
 import fourteener.worldeditor.worldeditor.brush.BrushListener;
 import fourteener.worldeditor.worldeditor.selection.SelectionWandListener;
 
@@ -20,9 +21,9 @@ public class Main extends JavaPlugin {
 	public void onEnable () {
 		// Register commands
 		this.getCommand("fx").setExecutor(new CommandFx());
-		//UndoCommand undoCmd = new UndoCommand();
-		//this.getCommand("undo").setExecutor(undoCmd);
-		//this.getCommand("redo").setExecutor(undoCmd);
+		CommandUndo undoCmd = new CommandUndo();
+		this.getCommand("undo").setExecutor(undoCmd);
+		this.getCommand("redo").setExecutor(undoCmd);
 		
 		// Register listeners
 		getServer().getPluginManager().registerEvents(new SelectionWandListener(), this);

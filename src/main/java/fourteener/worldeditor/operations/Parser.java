@@ -12,6 +12,7 @@ import fourteener.worldeditor.operations.operators.BlocksBelowNode;
 import fourteener.worldeditor.operations.operators.EntryNode;
 import fourteener.worldeditor.operations.operators.FacesExposedNode;
 import fourteener.worldeditor.operations.operators.FalseNode;
+import fourteener.worldeditor.operations.operators.GetBlockDataNode;
 import fourteener.worldeditor.operations.operators.IfNode;
 import fourteener.worldeditor.operations.operators.IgnorePhysicsNode;
 import fourteener.worldeditor.operations.operators.MacroNode;
@@ -24,6 +25,7 @@ import fourteener.worldeditor.operations.operators.RangeNode;
 import fourteener.worldeditor.operations.operators.RemainderNode;
 import fourteener.worldeditor.operations.operators.SameNode;
 import fourteener.worldeditor.operations.operators.SetNode;
+import fourteener.worldeditor.operations.operators.SetPlusNode;
 import fourteener.worldeditor.operations.operators.SimplexNode;
 import fourteener.worldeditor.operations.operators.TrueNode;
 import fourteener.worldeditor.operations.operators.XorNode;
@@ -73,6 +75,12 @@ public class Parser {
 		} else if (parts[index].equals(">")) {
 			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Set node created"); // -----
 			return SetNode.newNode(parsePart());
+		} else if (parts[index].equals(">>")) {
+			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Set plus node created"); // -----
+			return SetPlusNode.newNode(parseStringNode());
+		} else if (parts[index].equals("<<")) {
+			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Get block data node created"); // -----
+			return GetBlockDataNode.newNode();
 		} else if (parts[index].equals("false")) {
 			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] False node created"); // -----
 			return FalseNode.newNode();

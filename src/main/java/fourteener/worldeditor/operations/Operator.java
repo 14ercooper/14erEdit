@@ -10,7 +10,7 @@ public class Operator {
 	public static Operator currentOperator;
 	public static Block currentBlock;
 	public static Player currentPlayer;
-	public static boolean ignoringPhysics = false;
+	public static boolean ignoringPhysics = false; // False to ignore physics, true to perform physics 'cause Minecraft is screwy
 	
 	public EntryNode entryNode;
 	

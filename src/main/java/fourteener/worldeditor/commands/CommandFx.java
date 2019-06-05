@@ -48,7 +48,10 @@ public class CommandFx implements CommandExecutor {
 			// Calls the selection command, handling operating on selections
 			else if (args[argOffset].equalsIgnoreCase("selection") || args[argOffset].equalsIgnoreCase("sel")) {
 				return SelectionCommand.performCommand(args, (Player) sender);
-			} else if (args[argOffset].equalsIgnoreCase("undo")) {
+			}
+			
+			// Undo and redo commands
+			else if (args[argOffset].equalsIgnoreCase("undo")) {
 				return UndoManager.getUndo((Player) sender).undoChanges(Integer.parseInt(args[argOffset + 1]));
 			} else if (args[argOffset].equalsIgnoreCase("redo")) {
 				return UndoManager.getUndo((Player) sender).redoChanges(Integer.parseInt(args[argOffset + 1]));
