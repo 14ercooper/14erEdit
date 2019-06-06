@@ -31,15 +31,50 @@ public class SelectionCommand {
 		// Then get the applicable wand manager
 		SelectionManager manager = wand.manager;
 		
-		// This switch statement calls the various commands that can be done to the selection
+		// Perform an operation
 		if (args[1].equalsIgnoreCase("op")) {
 			return operate(manager, wand, args);
-		} else if (args[1].equalsIgnoreCase("expand")) {
+		}
+		
+		// Expand a selection
+		else if (args[1].equalsIgnoreCase("expand")) {
 			return expand(manager, Double.parseDouble(args[2]), args[3], wand.owner);
-		} else if (args[1].equalsIgnoreCase("reset")) {
+		}
+		
+		// Copy a selection
+		else if (args[1].equalsIgnoreCase("copy")) {
+			double[] pos1 = manager.getMostNegativeCorner();
+			double[] pos2 = manager.getMostPositiveCorner();
+			List<Block> blockArray = new ArrayList<Block>();
+			for (int x = (int) pos1[0]; x <= pos2[0]; x++) {
+				for (int y = (int) pos1[1]; y <= pos2[1]; y++) {
+					for (int z = (int) pos1[2]; z <= pos2[2]; z++) {
+						blockArray.add(Main.world.getBlockAt(x, y, z));
+					}
+				}
+			}
+			return ClipboardManager.getClipboard(wand.owner).saveToClipboard(
+					wand.owner.getLocation().getBlockX(),
+					wand.owner.getLocation().getBlockY(),
+					wand.owner.getLocation().getBlockZ(), blockArray);
+		}
+		
+		// Paste a selection
+		else if (args[1].equalsIgnoreCase("paste")) {
+			return ClipboardManager.getClipboard(wand.owner).pasteClipboard(
+					wand.owner.getLocation().getBlockX(),
+					wand.owner.getLocation().getBlockY(),
+					wand.owner.getLocation().getBlockZ(),
+					true);
+		}
+		
+		// Reset a selection
+		else if (args[1].equalsIgnoreCase("reset")) {
 			player.sendMessage("§dRegion reset");
 			return manager.resetSelection();
-		} else {
+		}
+		
+		else {
 			return false;
 		}
 	}
