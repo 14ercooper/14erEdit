@@ -224,41 +224,17 @@ public class Brush {
 			List<Block> blockArray = new ArrayList<Block>();
 			
 			// Generate the diamond
-			List<Block> lastStep = new ArrayList<Block>();
-			lastStep.add(Main.world.getBlockAt((int) x, (int) y, (int) z));
-			for (int step = 1; step <= radius; step++) {
-				List<Block> thisStep = new ArrayList<Block>();
-				for (Block b : lastStep) {
-					Block bl = b.getRelative(BlockFace.UP);
-					if (!blockArray.contains(bl)) {
-						thisStep.add(bl);
-					}
-					bl = b.getRelative(BlockFace.DOWN);
-					if (!blockArray.contains(bl)) {
-						thisStep.add(bl);
-					}
-					bl = b.getRelative(BlockFace.NORTH);
-					if (!blockArray.contains(bl)) {
-						thisStep.add(bl);
-					}
-					bl = b.getRelative(BlockFace.SOUTH);
-					if (!blockArray.contains(bl)) {
-						thisStep.add(bl);
-					}
-					bl = b.getRelative(BlockFace.EAST);
-					if (!blockArray.contains(bl)) {
-						thisStep.add(bl);
-					}
-					bl = b.getRelative(BlockFace.WEST);
-					if (!blockArray.contains(bl)) {
-						thisStep.add(bl);
+			for (int rx = -radius; rx <= radius; rx++) {
+				for (int rz = -radius; rz <= radius; rz++) {
+					for (int ry = -radius; ry <= radius; ry++) {
+						if (Math.abs(rx) + Math.abs(ry) + Math.abs(rz) <= radius) {
+							blockArray.add(Main.world.getBlockAt((int) x + rx, (int) y + ry, (int) z + rz));
+						}
 					}
 				}
-				for (Block b : thisStep) {
-					blockArray.add(b);
-				}
-				lastStep = thisStep;
 			}
+			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Block array size is " + Integer.toString(blockArray.size())); // -----
+
 			
 			// Store an undo
 			UndoManager.getUndo(owner).storeUndo(UndoElement.newUndoElement(blockArray));
