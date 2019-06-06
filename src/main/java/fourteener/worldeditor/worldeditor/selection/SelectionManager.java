@@ -16,7 +16,7 @@ public class SelectionManager {
 		positionOne[1] = y < 0 ? 0 : y > 255 ? 255 : y;
 		positionOne[2] = z;
 		player.sendMessage("§dFirst position updated to (" + Double.toString(x) + ", " + Double.toString(y) + ", " + Double.toString(z) + "); giving a volume of "
-				+ Double.toString((Math.abs(positionOne[0] - positionTwo[0])+ 1)
+				+ Double.toString((Math.abs(positionOne[0] - positionTwo[0]) + 1)
 						* (Math.abs(positionOne[1] - positionTwo[1]) + 1)
 						* (Math.abs(positionOne[2] - positionTwo[2]) + 1)));
 		recalculateCorners();
@@ -29,7 +29,7 @@ public class SelectionManager {
 		positionTwo[1] = y < 0 ? 0 : y > 255 ? 255 : y;
 		positionTwo[2] = z;
 		player.sendMessage("§dSecond position updated to (" + Double.toString(x) + ", " + Double.toString(y) + ", " + Double.toString(z) + "); giving a volume of "
-				+ Double.toString((Math.abs(positionOne[0] - positionTwo[0])+ 1)
+				+ Double.toString((Math.abs(positionOne[0] - positionTwo[0]) + 1)
 						* (Math.abs(positionOne[1] - positionTwo[1]) + 1)
 						* (Math.abs(positionOne[2] - positionTwo[2]) + 1)));
 		recalculateCorners();
