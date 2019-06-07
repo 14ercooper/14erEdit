@@ -26,16 +26,16 @@ public class RemainderNode extends Node {
 		int base = (int) arg2.getValue();
 		int modBase = base * 2;
 		if (arg1 == 0) {
-			int posVal = Math.abs(Operator.currentBlock.getX());
-			return (posVal % modBase) < base;
+			int value = Operator.currentBlock.getX();
+			return Math.floorMod(value, modBase) < base;
 		}
 		else if (arg1 == 1) {
-			int posVal = Math.abs(Operator.currentBlock.getY());
-			return (posVal % modBase) < base;
+			int value = Operator.currentBlock.getY();
+			return Math.floorMod(value, modBase) < base;
 		}
 		else if (arg1 == 2) {
-			int posVal = Math.abs(Operator.currentBlock.getZ());
-			return (posVal % modBase) < base;
+			int value =  Operator.currentBlock.getZ();
+			return Math.floorMod(value, modBase) < base;
 		}
 		return false;
 	}
