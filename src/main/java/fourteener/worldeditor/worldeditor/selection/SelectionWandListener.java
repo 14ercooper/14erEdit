@@ -38,12 +38,16 @@ public class SelectionWandListener implements Listener {
 		// Check the wand
 		ItemStack itemStack = p.getInventory().getItemInMainHand();
 		ItemMeta itemMeta = itemStack.getItemMeta();
-		if (itemMeta.getDisplayName().equals(SelectionWand.wandName)
-				&& itemStack.getType().equals(Material.WOODEN_AXE)
-				&& itemMeta.getEnchants().containsKey(Enchantment.MENDING)) {
-			isValidPlayer = true;
+		try {
+			if (itemMeta.getDisplayName().equals(SelectionWand.wandName)
+					&& itemStack.getType().equals(Material.WOODEN_AXE)
+					&& itemMeta.getEnchants().containsKey(Enchantment.MENDING)) {
+				isValidPlayer = true;
+			}
+			else isValidPlayer = false;
+		} catch (NullPointerException e) {
+			isValidPlayer = false;
 		}
-		else isValidPlayer = false;
 		
 		// If the player isn't holding a valid wand, return without furthur action
 		if (!isValidPlayer)
