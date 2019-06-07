@@ -24,6 +24,11 @@ public class SelectionCommand {
 				break;
 			}
 		}
+		if (wand == null && args[2].equalsIgnoreCase("load") && (args[1].equalsIgnoreCase("schematic") || args[1].equalsIgnoreCase("schem"))) {
+			SelectionWand newWand = (SelectionWand.giveNewWand((player).getPlayer()));
+			SelectionWandListener.wands.add(newWand);
+			wand = newWand;
+		}
 		if (wand == null) {
 			return false;
 		}
@@ -68,10 +73,62 @@ public class SelectionCommand {
 					true);
 		}
 		
+		// Shift the origin of the clipboard
+		else if (args[1].equalsIgnoreCase("origin")) {
+			if (args[2].equalsIgnoreCase("set")) {
+				if (args[3].equalsIgnoreCase("x")) {
+					ClipboardManager.getClipboard(wand.owner).x = Integer.parseInt(args[4]);
+					wand.owner.sendMessage("§dSelection origin set");
+					return true;
+				}
+				else if (args[3].equalsIgnoreCase("y")) {
+					ClipboardManager.getClipboard(wand.owner).y = Integer.parseInt(args[4]);
+					wand.owner.sendMessage("§dSelection origin set");
+					return true;
+				}
+				else if (args[3].equalsIgnoreCase("z")) {
+					ClipboardManager.getClipboard(wand.owner).z = Integer.parseInt(args[4]);
+					wand.owner.sendMessage("§dSelection origin set");
+					return true;
+				}
+			}
+			else if (args[2].equalsIgnoreCase("shift")) {
+				if (args[3].equalsIgnoreCase("x")) {
+					ClipboardManager.getClipboard(wand.owner).x = ClipboardManager.getClipboard(wand.owner).x + Integer.parseInt(args[4]);
+					wand.owner.sendMessage("§dSelection origin shifted");
+					return true;
+				}
+				else if (args[3].equalsIgnoreCase("y")) {
+					ClipboardManager.getClipboard(wand.owner).y = ClipboardManager.getClipboard(wand.owner).z + Integer.parseInt(args[4]);
+					wand.owner.sendMessage("§dSelection origin shifted");
+					return true;
+				}
+				else if (args[3].equalsIgnoreCase("z")) {
+					ClipboardManager.getClipboard(wand.owner).z = ClipboardManager.getClipboard(wand.owner).y + Integer.parseInt(args[4]);
+					wand.owner.sendMessage("§dSelection origin shifted");
+					return true;
+				}
+			}
+			return false;
+		}
+		
 		// Reset a selection
 		else if (args[1].equalsIgnoreCase("reset")) {
 			player.sendMessage("§dRegion reset");
 			return manager.resetSelection();
+		}
+		
+		// Handles schematics
+		else if (args[1].equalsIgnoreCase("schematic") || args[1].equalsIgnoreCase("schem")) {
+			if (args[2].equalsIgnoreCase("save")) {
+				wand.owner.sendMessage("§dSaving schematic");
+				return ClipboardManager.getClipboard(wand.owner).saveToFile(args[3]);
+			}
+			else if (args[2].equalsIgnoreCase("load")) {
+				wand.owner.sendMessage("§dLoading schematic");
+				return ClipboardManager.getClipboard(wand.owner).loadFromFile(args[3]);
+			}
+			return false;
 		}
 		
 		else {

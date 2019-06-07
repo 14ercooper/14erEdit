@@ -1,5 +1,6 @@
 package fourteener.worldeditor.worldeditor.selection;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -10,6 +11,8 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Player;
+
+import com.fourteener.schematics.Schematic;
 
 import fourteener.worldeditor.main.Main;
 import fourteener.worldeditor.worldeditor.undo.UndoElement;
@@ -149,11 +152,67 @@ public class Clipboard {
 	
 	// Save a schematic to a file
 	public boolean saveToFile (String path) {
-		return false;
+		path = ("plugins/14erEdit/schematics/" + path).replace("/", File.separator);
+		Schematic schem = new Schematic(x, y, z, width, height, length, blockData);
+		return schem.saveSchematic(path);
 	}
 	
 	// Load a schematic from a file, setting an offset
 	public boolean loadFromFile (String path, int xOff, int yOff, int zOff) {
+		path = ("plugins/14erEdit/schematics/" + path).replace("/", File.separator);
+		String[] splitPath = path.split(".");
+		// Using materials format
+		if (splitPath[splitPath.length - 1].equals("matschem")) {
+			Schematic schem = Schematic.loadSchematic(path);
+			x = schem.getOrigin()[0] + xOff;
+			y = schem.getOrigin()[1] + yOff;
+			z = schem.getOrigin()[2] + zOff;
+			width = schem.getDimensions()[0];
+			height = schem.getDimensions()[1];
+			length = schem.getDimensions()[2];
+			blockData = schem.getBlocks();
+		}
+		// Using MCEdit format
+		else if (splitPath[splitPath.length - 1].equals("schematic")) {
+			owner.sendMessage("§dMCEdit format schematics are not supported at this time.");
+		}
+		// Using Sponge format
+		else if (splitPath[splitPath.length - 1].equals("schem")) {
+			owner.sendMessage("§dSponge format schematics are not supported at this time.");
+		}
+		return true;
+	}
+	
+	// Load a schematic from a file, without setting an offset
+	// This code, violating DRY, is also in the macro
+	public boolean loadFromFile (String path) {
+		path = ("plugins/14erEdit/schematics/" + path).replace("/", File.separator);
+		if (!(path.contains(".matschem") || path.contains(".schematic") || path.contains(".schem"))) {
+			path = path + ".matschem";
+		}
+		// Using materials format
+		if (path.contains(".matschem")) {
+			path.replace(".matschem", "");
+			Schematic schem = Schematic.loadSchematic(path);
+			x = schem.getOrigin()[0];
+			y = schem.getOrigin()[1];
+			z = schem.getOrigin()[2];
+			width = schem.getDimensions()[0];
+			height = schem.getDimensions()[1];
+			length = schem.getDimensions()[2];
+			blockData = schem.getBlocks();
+			return true;
+		}
+		// Using MCEdit format
+		else if (path.contains(".schematic")) {
+			owner.sendMessage("§dMCEdit format schematics are not supported at this time.");
+			return true;
+		}
+		// Using Sponge format
+		else if (path.contains(".schem")) {
+			owner.sendMessage("§dSponge format schematics are not supported at this time.");
+			return true;
+		}
 		return false;
 	}
 }

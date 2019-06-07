@@ -146,6 +146,7 @@ public class Schematic implements Serializable {
 	// Returns true upon a successful save, false otherwise
 	public boolean saveSchematic (String filePath) {
 		filePath = filePath.concat(".matschem");
+		(new File(filePath)).mkdirs();
 		try {
 			// Delete any schematics existing at the location
 			Files.deleteIfExists((new File(filePath).toPath()));
@@ -174,10 +175,10 @@ public class Schematic implements Serializable {
 	// No file extension should be specified
 	// Returns a schematic upon successful load, null otherwise
 	public static Schematic loadSchematic (String filePath) {
-		filePath = filePath.concat(".matschem");
+		System.out.println((new File(filePath).toPath()).toString());
 		Schematic schem = null;
 		try {
-			ObjectInputStream oi = new ObjectInputStream(new FileInputStream("save.ser"));
+			ObjectInputStream oi = new ObjectInputStream(new FileInputStream(filePath));
 	    	Object schematicObj = oi.readObject();
 	    	schem = (Schematic) schematicObj;
 	    	oi.close();

@@ -291,7 +291,7 @@ public class ErodeMacro extends Macro {
 		
 		// Blend erosion
 		if (erodeType == 1) {
-			Bukkit.getServer().broadcastMessage("§cThat feature isn't implemented yet");
+			Bukkit.getServer().broadcastMessage("§cBlend erosion is not yet implemented");
 		}
 		
 		// Apply the snapshot to the world, thus completing the erosion

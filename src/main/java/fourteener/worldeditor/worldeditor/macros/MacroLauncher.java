@@ -6,6 +6,7 @@ import org.bukkit.Location;
 import fourteener.worldeditor.main.Main;
 import fourteener.worldeditor.worldeditor.macros.macros.BasicTreeMacro;
 import fourteener.worldeditor.worldeditor.macros.macros.ErodeMacro;
+import fourteener.worldeditor.worldeditor.macros.macros.SchematicMacro;
 
 public class MacroLauncher {
 	
@@ -26,10 +27,16 @@ public class MacroLauncher {
 		if (macroName.equalsIgnoreCase("erode")) {
 			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Running erode macro"); // ----
 			return ErodeMacro.createMacro(macroArgs, location).performMacro();
-		} else if (macroName.equalsIgnoreCase("tree")) {
+		}
+		else if (macroName.equalsIgnoreCase("tree")) {
 			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Running tree macro"); // ----
 			return BasicTreeMacro.createMacro(macroArgs, location).performMacro();
-		} else {
+		}
+		else if (macroName.equalsIgnoreCase("schem")) {
+			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Running schematic macro"); // ----
+			return SchematicMacro.createMacro(macroArgs, location).performMacro();
+		}
+		else {
 			return false;
 		}
 	}
