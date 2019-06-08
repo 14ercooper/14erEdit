@@ -143,6 +143,7 @@ public class SelectionCommand {
 		if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Block array size is " + Integer.toString(blockArray.size())); // -----
 		
 		// Store an undo
+		UndoManager.getUndo(wand.owner).startTrackingConsolidatedUndo();
 		UndoManager.getUndo(wand.owner).storeUndo(UndoElement.newUndoElement(blockArray));
 		
 		// Construct the operation
@@ -167,7 +168,7 @@ public class SelectionCommand {
 		for (Block b : blockArray) {
 			operator.operateOnBlock(b, wand.owner);
 		}
-		return true;
+		return UndoManager.getUndo(wand.owner).storeConsolidatedUndo();
 	}
 	
 	// Expand the selection

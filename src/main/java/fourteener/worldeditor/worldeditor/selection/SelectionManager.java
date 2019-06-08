@@ -132,6 +132,7 @@ public class SelectionManager {
 				+ " blocks.");
 	}
 	
+	// Reset the selection
 	public boolean resetSelection () {
 		double[] positionOneNew = {-1.0, -1.0, -1.0};
 		double[] positionTwoNew = {-1.0, -1.0, -1.0};
@@ -142,6 +143,7 @@ public class SelectionManager {
 		return true;
 	}
 	
+	// Get a list of blocks contained by this selection
 	public List<Block> getBlocks () {
 		double[] pos1 = mostNegativeCorner;
 		double[]pos2 = mostPositiveCorner;
