@@ -7,7 +7,7 @@
 ### Developers
 
 - 14er
-ー　NotQuiteAmish
+- NotQuiteAmish
 
 To compile the plugin, please read [COMPILING.md](COMPILING.md).
 
