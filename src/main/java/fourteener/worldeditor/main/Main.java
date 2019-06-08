@@ -5,14 +5,17 @@ import org.bukkit.World;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import fourteener.worldeditor.commands.CommandFx;
+import fourteener.worldeditor.commands.CommandScript;
 import fourteener.worldeditor.commands.CommandUndo;
 import fourteener.worldeditor.worldeditor.brush.BrushListener;
+import fourteener.worldeditor.worldeditor.scripts.CraftscriptManager;
 import fourteener.worldeditor.worldeditor.selection.SelectionWandListener;
 
 public class Main extends JavaPlugin {
 	// Global variables
 	public static World world;
 	public static SimplexNoise simplexNoise;
+	public static CraftscriptManager scriptManager;
 	
 	// For debugging
 	public static boolean isDebug = true;
@@ -24,6 +27,7 @@ public class Main extends JavaPlugin {
 		CommandUndo undoCmd = new CommandUndo();
 		this.getCommand("undo").setExecutor(undoCmd);
 		this.getCommand("redo").setExecutor(undoCmd);
+		this.getCommand("script").setExecutor(new CommandScript());
 		
 		// Register listeners
 		getServer().getPluginManager().registerEvents(new SelectionWandListener(), this);
@@ -32,6 +36,11 @@ public class Main extends JavaPlugin {
 		// These are needed by the plugin, but should only be loaded once as they are very slow to load
 		world = Bukkit.getWorlds().get(0);
 		simplexNoise = new SimplexNoise (world.getSeed()); // Seeded using the world seed for variance between worlds but consistency in the same world
+		
+		// Load the craftscripts manager
+		scriptManager = CraftscriptManager.newManager ();
+		
+		// Register the prepackaged craftscripts
 	}
 	
 	@Override
