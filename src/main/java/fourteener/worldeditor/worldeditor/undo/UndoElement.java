@@ -47,4 +47,8 @@ public class UndoElement {
 		}
 		return newUndoElement(blockList);
 	}
+	
+	public List<BlockState> getBlocks () {
+		return blocks;
+	}
 }

@@ -1,12 +1,13 @@
 # 14erEdit
 
-## Current version: 0.0.5-SNAPSHOT (in development)
+## Current version: 0.0.6-SNAPSHOT (in development)
 
 #### A Minecraft world-editing plugin featuring native 1.14 support and lots of power to the user.
 
 ### Developers
 
 - 14er
+- NotQuiteAmish
 
 To compile the plugin, please read [COMPILING.md](COMPILING.md).
 

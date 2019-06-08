@@ -7,7 +7,6 @@ import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -139,8 +138,13 @@ public class Brush {
 	}
 	
 	public boolean operate (double x, double y, double z) {
+		try {
+			UndoManager.getUndo(owner).cancelConsolidatedUndo();
+		}
+		catch (Exception e) {}
 		// We're working with a radius sphere
 		if (shape == 0) {
+			UndoManager.getUndo(owner).startTrackingConsolidatedUndo();
 			// Build an array of all blocks to operate on
 			List<Block> blockArray = new ArrayList<Block>();
 			
@@ -164,10 +168,11 @@ public class Brush {
 			for (Block b : blockArray) {
 				operator.operateOnBlock(b, owner);
 			}
-			return true;
+			return UndoManager.getUndo(owner).storeConsolidatedUndo();
 		}
 		// We're working with a sphere
 		if (shape == 1) {
+			UndoManager.getUndo(owner).startTrackingConsolidatedUndo();
 			// Build an array of all blocks to operate on
 			List<Block> blockArray = new ArrayList<Block>();
 
@@ -192,10 +197,11 @@ public class Brush {
 			for (Block b : blockArray) {
 				operator.operateOnBlock(b, owner);
 			}
-			return true;
+			return UndoManager.getUndo(owner).storeConsolidatedUndo();
 		}
 		// We're working with a cube
 		if (shape == 2) {
+			UndoManager.getUndo(owner).startTrackingConsolidatedUndo();
 			// Build an array of all blocks to operate on
 			List<Block> blockArray = new ArrayList<Block>();
 			
@@ -216,10 +222,11 @@ public class Brush {
 			for (Block b : blockArray) {
 				operator.operateOnBlock(b, owner);
 			}
-			return true;
+			return UndoManager.getUndo(owner).storeConsolidatedUndo();
 		}
 		// We're working with a diamond
 		if (shape == 3) {
+			UndoManager.getUndo(owner).startTrackingConsolidatedUndo();
 			// Build an array of all blocks to operate on
 			List<Block> blockArray = new ArrayList<Block>();
 			
@@ -243,10 +250,11 @@ public class Brush {
 			for (Block b : blockArray) {
 				operator.operateOnBlock(b, owner);
 			}
-			return true;
+			return UndoManager.getUndo(owner).storeConsolidatedUndo();
 		}
 		// We're working with a hollow sphere
 		if (shape == 4) {
+			UndoManager.getUndo(owner).startTrackingConsolidatedUndo();
 			// Build an array of all blocks to operate on
 			List<Block> blockArray = new ArrayList<Block>();
 			
@@ -269,10 +277,11 @@ public class Brush {
 			for (Block b : blockArray) {
 				operator.operateOnBlock(b, owner);
 			}
-			return true;
+			return UndoManager.getUndo(owner).storeConsolidatedUndo();
 		}
 		// We're working with an ellipse
 		if (shape == 5) {
+			UndoManager.getUndo(owner).startTrackingConsolidatedUndo();
 			// Build an array of all blocks to operate on
 			List<Block> blockArray = new ArrayList<Block>();
 			
@@ -294,7 +303,7 @@ public class Brush {
 			for (Block b : blockArray) {
 				operator.operateOnBlock(b, owner);
 			}
-			return true;
+			return UndoManager.getUndo(owner).storeConsolidatedUndo();
 		}
 		return false;
 	}
