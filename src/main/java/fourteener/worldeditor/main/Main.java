@@ -62,6 +62,21 @@ public class Main extends JavaPlugin {
 		
 		// Replace script bundle
 		scriptManager.registerCraftscript("replace", new ScriptReplace());
+		ScriptBallBrushReplace bbrep = new ScriptBallBrushReplace();
+		scriptManager.registerCraftscript("ballreplace", bbrep);
+		scriptManager.registerCraftscript("brep", bbrep);
+		ScriptSquareBrushReplace bsrep = new ScriptSquareBrushReplace();
+		scriptManager.registerCraftscript("squarereplace", bsrep);
+		scriptManager.registerCraftscript("srep", bsrep);
+		ScriptDiamondBrushReplace bdrep = new ScriptDiamondBrushReplace();
+		scriptManager.registerCraftscript("diamondreplace", bdrep);
+		scriptManager.registerCraftscript("drep", bdrep);
+		ScriptHollowBrushReplace bhrep = new ScriptHollowBrushReplace();
+		scriptManager.registerCraftscript("hollowreplace", bhrep);
+		scriptManager.registerCraftscript("hrep", bhrep);
+		ScriptEllipseBrushReplace berep = new ScriptEllipseBrushReplace();
+		scriptManager.registerCraftscript("ellipsereplace", berep);
+		scriptManager.registerCraftscript("erep", berep);
 	}
 	
 	@Override
