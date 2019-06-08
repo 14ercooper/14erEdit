@@ -77,6 +77,10 @@ public class Main extends JavaPlugin {
 		ScriptEllipseBrushReplace berep = new ScriptEllipseBrushReplace();
 		scriptManager.registerCraftscript("ellipsereplace", berep);
 		scriptManager.registerCraftscript("erep", berep);
+		
+		// Other craftscripts
+		scriptManager.registerCraftscript("erode", new ScriptErode());
+		scriptManager.registerCraftscript("tree", new ScriptTree());
 	}
 	
 	@Override

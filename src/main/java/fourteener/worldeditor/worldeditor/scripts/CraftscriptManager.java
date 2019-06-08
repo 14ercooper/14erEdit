@@ -29,6 +29,10 @@ public class CraftscriptManager {
 	
 	// Run the Craftscript label, with arguments args, and player player
 	public boolean runCraftscript (String label, LinkedList<String> args, Player player) {
+		try {
+			UndoManager.getUndo(player).cancelConsolidatedUndo();
+		}
+		catch (Exception e) {}
 		UndoManager.getUndo(player).startTrackingConsolidatedUndo();
 		try {
 			List<BlockState> toStoreInUndo = registeredScripts.get(label).perform(args, player);

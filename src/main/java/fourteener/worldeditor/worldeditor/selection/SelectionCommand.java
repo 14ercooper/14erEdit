@@ -143,6 +143,10 @@ public class SelectionCommand {
 		if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Block array size is " + Integer.toString(blockArray.size())); // -----
 		
 		// Store an undo
+		try {
+			UndoManager.getUndo(wand.owner).cancelConsolidatedUndo();
+		}
+		catch (Exception e) {}
 		UndoManager.getUndo(wand.owner).startTrackingConsolidatedUndo();
 		UndoManager.getUndo(wand.owner).storeUndo(UndoElement.newUndoElement(blockArray));
 		

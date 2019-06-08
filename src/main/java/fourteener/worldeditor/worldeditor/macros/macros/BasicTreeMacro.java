@@ -27,7 +27,7 @@ public class BasicTreeMacro extends Macro {
 		BasicTreeMacro macro = new BasicTreeMacro();
 		macro.plantOn = loc;
 		macro.size = Integer.parseInt(args[3]);
-		macro.variance = Integer.parseInt(args[4]);
+		macro.variance = (int) Math.ceil(Double.parseDouble(args[4]));
 		macro.leaves = Material.matchMaterial(args[1]);
 		macro.trunk = Material.matchMaterial(args[2]);
 		

@@ -138,6 +138,10 @@ public class Brush {
 	}
 	
 	public boolean operate (double x, double y, double z) {
+		try {
+			UndoManager.getUndo(owner).cancelConsolidatedUndo();
+		}
+		catch (Exception e) {}
 		// We're working with a radius sphere
 		if (shape == 0) {
 			UndoManager.getUndo(owner).startTrackingConsolidatedUndo();
