@@ -9,7 +9,7 @@ import fourteener.worldeditor.commands.CommandScript;
 import fourteener.worldeditor.commands.CommandUndo;
 import fourteener.worldeditor.worldeditor.brush.BrushListener;
 import fourteener.worldeditor.worldeditor.scripts.CraftscriptManager;
-import fourteener.worldeditor.worldeditor.scripts.bundled.ScriptSet;
+import fourteener.worldeditor.worldeditor.scripts.bundled.*;
 import fourteener.worldeditor.worldeditor.selection.SelectionWandListener;
 
 public class Main extends JavaPlugin {
@@ -42,7 +42,23 @@ public class Main extends JavaPlugin {
 		scriptManager = CraftscriptManager.newManager ();
 		
 		// Register the prepackaged craftscripts
+		// Set script bundle
 		scriptManager.registerCraftscript("set", new ScriptSet());
+		ScriptBallBrushSet bbset = new ScriptBallBrushSet();
+		scriptManager.registerCraftscript("ballset", bbset);
+		scriptManager.registerCraftscript("bset", bbset);
+		ScriptSquareBrushSet bsset = new ScriptSquareBrushSet();
+		scriptManager.registerCraftscript("squareset", bsset);
+		scriptManager.registerCraftscript("sset", bsset);
+		ScriptDiamondBrushSet bdset = new ScriptDiamondBrushSet();
+		scriptManager.registerCraftscript("diamondset", bdset);
+		scriptManager.registerCraftscript("dset", bdset);
+		ScriptHollowBrushSet bhset = new ScriptHollowBrushSet();
+		scriptManager.registerCraftscript("hollowset", bhset);
+		scriptManager.registerCraftscript("hset", bhset);
+		ScriptEllipseBrushSet beset = new ScriptEllipseBrushSet();
+		scriptManager.registerCraftscript("ellipseset", beset);
+		scriptManager.registerCraftscript("eset", beset);
 	}
 	
 	@Override

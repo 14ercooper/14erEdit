@@ -4,31 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 
 import fourteener.worldeditor.main.Main;
-import fourteener.worldeditor.operations.operators.AndNode;
-import fourteener.worldeditor.operations.operators.BlockAdjacentNode;
-import fourteener.worldeditor.operations.operators.BlockNode;
-import fourteener.worldeditor.operations.operators.BlocksAboveNode;
-import fourteener.worldeditor.operations.operators.BlocksBelowNode;
-import fourteener.worldeditor.operations.operators.EntryNode;
-import fourteener.worldeditor.operations.operators.FacesExposedNode;
-import fourteener.worldeditor.operations.operators.FalseNode;
-import fourteener.worldeditor.operations.operators.GetBlockDataNode;
-import fourteener.worldeditor.operations.operators.IfNode;
-import fourteener.worldeditor.operations.operators.IgnorePhysicsNode;
-import fourteener.worldeditor.operations.operators.MacroNode;
-import fourteener.worldeditor.operations.operators.Node;
-import fourteener.worldeditor.operations.operators.NotNode;
-import fourteener.worldeditor.operations.operators.NumberNode;
-import fourteener.worldeditor.operations.operators.OddsNode;
-import fourteener.worldeditor.operations.operators.OrNode;
-import fourteener.worldeditor.operations.operators.RangeNode;
-import fourteener.worldeditor.operations.operators.RemainderNode;
-import fourteener.worldeditor.operations.operators.SameNode;
-import fourteener.worldeditor.operations.operators.SetNode;
-import fourteener.worldeditor.operations.operators.SetPlusNode;
-import fourteener.worldeditor.operations.operators.SimplexNode;
-import fourteener.worldeditor.operations.operators.TrueNode;
-import fourteener.worldeditor.operations.operators.XorNode;
+import fourteener.worldeditor.operations.operators.*;
 
 public class Parser {
 	// This starts as -1 since the first thing the parser does is increment it

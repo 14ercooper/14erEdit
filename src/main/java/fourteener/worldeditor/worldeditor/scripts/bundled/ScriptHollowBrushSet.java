@@ -9,11 +9,13 @@ import org.bukkit.entity.Player;
 
 import fourteener.worldeditor.worldeditor.scripts.Craftscript;
 
-public class ScriptSet extends Craftscript {
+public class ScriptHollowBrushSet extends Craftscript {
 
 	@Override
 	public List<BlockState> perform(LinkedList<String> args, Player player) {
-		String blocksToSet = args.get(0);
+		double brushRadius = Double.parseDouble(args.get(0));
+		double thickness = Double.parseDouble(args.get(1));
+		String blocksToSet = args.get(2);
 		String[] individualBlocks = blocksToSet.split(",");
 		String opToRun = "";
 		if (individualBlocks.length == 1) {
@@ -67,7 +69,7 @@ public class ScriptSet extends Craftscript {
 			opToRun = opToRun.concat("false");
 		}
 		// Perform the set command
-		player.performCommand("fx sel op " + opToRun);
+		player.performCommand("fx br hsphere " + Double.toString(brushRadius) + " " + Double.toString(thickness) + " 0.5 " + opToRun);
 		return null;
 	}
 }
