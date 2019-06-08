@@ -1,6 +1,12 @@
 package fourteener.worldeditor.worldeditor.selection;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+
+import fourteener.worldeditor.main.Main;
 
 public class SelectionManager {
 	private double positionOne[] = {-1.0, -1.0, -1.0};
@@ -134,5 +140,19 @@ public class SelectionManager {
 		mostNegativeCorner = new double[3];
 		mostPositiveCorner = new double[3];
 		return true;
+	}
+	
+	public List<Block> getBlocks () {
+		double[] pos1 = mostNegativeCorner;
+		double[]pos2 = mostPositiveCorner;
+		List<Block> blockArray = new ArrayList<Block>();
+		for (int x = (int) pos1[0]; x <= pos2[0]; x++) {
+			for (int y = (int) pos1[1]; y <= pos2[1]; y++) {
+				for (int z = (int) pos1[2]; z <= pos2[2]; z++) {
+					blockArray.add(Main.world.getBlockAt(x, y, z));
+				}
+			}
+		}
+		return blockArray;
 	}
 }

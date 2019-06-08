@@ -139,16 +139,7 @@ public class SelectionCommand {
 	// Operate on the selection
 	private static boolean operate (SelectionManager manager, SelectionWand wand, String[] brushOperation) {
 		// Build an array of blocks within this selection
-		double[] pos1 = manager.getMostNegativeCorner();
-		double[] pos2 = manager.getMostPositiveCorner();
-		List<Block> blockArray = new ArrayList<Block>();
-		for (int x = (int) pos1[0]; x <= pos2[0]; x++) {
-			for (int y = (int) pos1[1]; y <= pos2[1]; y++) {
-				for (int z = (int) pos1[2]; z <= pos2[2]; z++) {
-					blockArray.add(Main.world.getBlockAt(x, y, z));
-				}
-			}
-		}
+		List<Block> blockArray = manager.getBlocks();
 		if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Block array size is " + Integer.toString(blockArray.size())); // -----
 		
 		// Store an undo
