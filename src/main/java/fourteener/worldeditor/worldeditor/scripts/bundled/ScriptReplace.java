@@ -9,18 +9,36 @@ import org.bukkit.entity.Player;
 
 import fourteener.worldeditor.worldeditor.scripts.Craftscript;
 
-public class ScriptSquareBrushSet extends Craftscript {
+public class ScriptReplace extends Craftscript {
 
 	@Override
 	public List<BlockState> perform(LinkedList<String> args, Player player) {
-		String brushRadius = args.get(0);
+		String blocksToReplace = args.get(0);
+		String[] replaceIndividual = blocksToReplace.split(",");
 		String blocksToSet = args.get(1);
 		String[] individualBlocks = blocksToSet.split(",");
 		String opToRun = "";
+		
+		// This section parses the mask portion of the command
+		if (replaceIndividual.length == 1) {
+			opToRun = "? " + replaceIndividual[0] + " ";
+		}
+		else {
+			int numOr = replaceIndividual.length - 1;
+			opToRun = "? ";
+			for (int i = 0; i < numOr; i++) {
+				opToRun = opToRun.concat("| ");
+			}
+			for (String s : replaceIndividual) {
+				opToRun = opToRun.concat(s) + " ";
+			}
+		}
+		
+		// This section parses the setting portion of the command
 		if (individualBlocks.length == 1) {
 			// Parse if it needs block data
 			if (individualBlocks[0].contains("[")) {
-				opToRun = ">> ";
+				opToRun = opToRun.concat(">> ");
 				if (individualBlocks[0].contains("mineacraft:")) {
 					opToRun = opToRun.concat(individualBlocks[0]);
 				}
@@ -31,7 +49,7 @@ public class ScriptSquareBrushSet extends Craftscript {
 			}
 			// Parse if no block data
 			else {
-				opToRun = "> " + individualBlocks[0];
+				opToRun = opToRun.concat("> ") + individualBlocks[0];
 			}
 		}
 		else {
@@ -67,8 +85,10 @@ public class ScriptSquareBrushSet extends Craftscript {
 			}
 			opToRun = opToRun.concat("false");
 		}
-		// Perform the set command
-		player.performCommand("fx br square " + brushRadius + " " + opToRun);
+		opToRun = opToRun.concat(" false");
+		
+		// Perform the replace command
+		player.performCommand("fx sel op " + opToRun);
 		return null;
 	}
 }

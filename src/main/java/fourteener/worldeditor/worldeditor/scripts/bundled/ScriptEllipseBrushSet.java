@@ -13,9 +13,9 @@ public class ScriptEllipseBrushSet extends Craftscript {
 
 	@Override
 	public List<BlockState> perform(LinkedList<String> args, Player player) {
-		double rx = Double.parseDouble(args.get(0));
-		double ry = Double.parseDouble(args.get(1));
-		double rz = Double.parseDouble(args.get(2));
+		String rx = args.get(0);
+		String ry = args.get(1);
+		String rz = args.get(2);
 		String blocksToSet = args.get(3);
 		String[] individualBlocks = blocksToSet.split(",");
 		String opToRun = "";
@@ -70,7 +70,7 @@ public class ScriptEllipseBrushSet extends Craftscript {
 			opToRun = opToRun.concat("false");
 		}
 		// Perform the set command
-		player.performCommand("fx br e " + Double.toString(rx) + " " + Double.toString(ry) + " " + Double.toString(rz) + " 0.5 " + opToRun);
+		player.performCommand("fx br e " + rx + " " + ry + " " + rz + " 0.5 " + opToRun);
 		return null;
 	}
 }

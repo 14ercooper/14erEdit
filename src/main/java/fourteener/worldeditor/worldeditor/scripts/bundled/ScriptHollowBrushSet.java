@@ -13,8 +13,8 @@ public class ScriptHollowBrushSet extends Craftscript {
 
 	@Override
 	public List<BlockState> perform(LinkedList<String> args, Player player) {
-		double brushRadius = Double.parseDouble(args.get(0));
-		double thickness = Double.parseDouble(args.get(1));
+		String brushRadius = args.get(0);
+		String thickness = args.get(1);
 		String blocksToSet = args.get(2);
 		String[] individualBlocks = blocksToSet.split(",");
 		String opToRun = "";
@@ -69,7 +69,7 @@ public class ScriptHollowBrushSet extends Craftscript {
 			opToRun = opToRun.concat("false");
 		}
 		// Perform the set command
-		player.performCommand("fx br hsphere " + Double.toString(brushRadius) + " " + Double.toString(thickness) + " 0.5 " + opToRun);
+		player.performCommand("fx br hsphere " + brushRadius + " " + thickness + " 0.5 " + opToRun);
 		return null;
 	}
 }

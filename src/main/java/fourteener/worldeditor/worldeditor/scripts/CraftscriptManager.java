@@ -30,13 +30,18 @@ public class CraftscriptManager {
 	// Run the Craftscript label, with arguments args, and player player
 	public boolean runCraftscript (String label, LinkedList<String> args, Player player) {
 		UndoManager.getUndo(player).startTrackingConsolidatedUndo();
-		List<BlockState> toStoreInUndo = registeredScripts.get(label).perform(args, player);
-		if (toStoreInUndo == null && UndoManager.getUndo(player).getNumToConsolidate() == 0) {
-			return UndoManager.getUndo(player).cancelConsolidatedUndo();
+		try {
+			List<BlockState> toStoreInUndo = registeredScripts.get(label).perform(args, player);
+			if (toStoreInUndo == null && UndoManager.getUndo(player).getNumToConsolidate() == 0) {
+				return UndoManager.getUndo(player).cancelConsolidatedUndo();
+			}
+			else {
+				UndoManager.getUndo(player).storeUndo(UndoElement.newUndoElementFromStates(toStoreInUndo));
+				return UndoManager.getUndo(player).storeConsolidatedUndo();
+			}
 		}
-		else {
-			UndoManager.getUndo(player).storeUndo(UndoElement.newUndoElementFromStates(toStoreInUndo));
-			return UndoManager.getUndo(player).storeConsolidatedUndo();
+		catch (Exception e) {
+			return UndoManager.getUndo(player).cancelConsolidatedUndo();
 		}
 	}
 }

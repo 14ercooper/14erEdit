@@ -59,6 +59,9 @@ public class Main extends JavaPlugin {
 		ScriptEllipseBrushSet beset = new ScriptEllipseBrushSet();
 		scriptManager.registerCraftscript("ellipseset", beset);
 		scriptManager.registerCraftscript("eset", beset);
+		
+		// Replace script bundle
+		scriptManager.registerCraftscript("replace", new ScriptReplace());
 	}
 	
 	@Override

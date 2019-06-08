@@ -13,7 +13,7 @@ public class ScriptDiamondBrushSet extends Craftscript{
 
 	@Override
 	public List<BlockState> perform(LinkedList<String> args, Player player) {
-		double brushRadius = Double.parseDouble(args.get(0));
+		String brushRadius = args.get(0);
 		String blocksToSet = args.get(1);
 		String[] individualBlocks = blocksToSet.split(",");
 		String opToRun = "";
@@ -68,7 +68,7 @@ public class ScriptDiamondBrushSet extends Craftscript{
 			opToRun = opToRun.concat("false");
 		}
 		// Perform the set command
-		player.performCommand("fx br d " + Double.toString(brushRadius) + " 0.5 " + opToRun);
+		player.performCommand("fx br d " + brushRadius + " 0.5 " + opToRun);
 		return null;
 	}
 }
