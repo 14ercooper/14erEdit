@@ -9,6 +9,7 @@ import fourteener.worldeditor.commands.CommandScript;
 import fourteener.worldeditor.commands.CommandUndo;
 import fourteener.worldeditor.worldeditor.brush.BrushListener;
 import fourteener.worldeditor.worldeditor.scripts.CraftscriptManager;
+import fourteener.worldeditor.worldeditor.scripts.bundled.ScriptSet;
 import fourteener.worldeditor.worldeditor.selection.SelectionWandListener;
 
 public class Main extends JavaPlugin {
@@ -41,6 +42,7 @@ public class Main extends JavaPlugin {
 		scriptManager = CraftscriptManager.newManager ();
 		
 		// Register the prepackaged craftscripts
+		scriptManager.registerCraftscript("set", new ScriptSet());
 	}
 	
 	@Override

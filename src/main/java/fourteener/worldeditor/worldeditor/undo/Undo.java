@@ -23,7 +23,7 @@ public class Undo {
 	private LinkedList<UndoElement> redoElements = new LinkedList<UndoElement>();
 	
 	// For consolidating undos
-	private boolean isConsolidating = false;
+	private int isConsolidating = 0;
 	private int numToConsolidate = 0;
 	private List<BlockState> consolidatedUndoStorage = new ArrayList<BlockState>();
 	private List<Location> storedLocations = new ArrayList<Location>();
@@ -39,7 +39,7 @@ public class Undo {
 	// Store a world change into the tracker
 	public boolean storeUndo (UndoElement e) {
 		// Not consolidating an undo
-		if (!isConsolidating) {
+		if (isConsolidating == 0) {
 			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Storing a normal undo"); // -----
 			undoElements.add(e);
 			if (undoElements.size() > undoSize)
@@ -50,7 +50,24 @@ public class Undo {
 		else {
 			List<BlockState> states = e.getBlocks();
 
+			try {
+				if (states == null) {
+					return true;
+				}
+				else if (states.isEmpty()) {
+					return true;
+				}
+				else if (states == (new ArrayList<BlockState>())) {
+					return true;
+				}
+			}
+			catch (NullPointerException error) {
+				if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Nullptr in Undo::storeUndo"); // -----
+				return true;
+			}
+			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Number of locations stored: " + Integer.toString(storedLocations.size())); // -----
 			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Storing " + Integer.toString(states.size()) + " blocks to the consolidated undo queue"); // -----
+			int c = 0;
 			for (BlockState bs : states) {
 				if (storedLocations.contains(bs.getLocation())) {
 					continue;
@@ -59,8 +76,10 @@ public class Undo {
 					storedLocations.add(bs.getLocation());
 					consolidatedUndoStorage.add(bs);
 					numToConsolidate++;
+					c++;
 				}
 			}
+			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Added " + Integer.toString(c) + " new blocks to the consolidated undo queue"); // -----
 			return true;
 		}
 	}
@@ -75,8 +94,8 @@ public class Undo {
 	// Start tracking a consolidated undo
 	public void startTrackingConsolidatedUndo () {
 		if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Now tracking consolidated undo"); // -----
-		isConsolidating = true;
-		numToConsolidate = 0;
+		isConsolidating++;
+		if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Consolidations nested: " + Integer.toString(isConsolidating)); // -----
 	}
 	
 	// Get the number of undos in the consolidation queue
@@ -87,10 +106,14 @@ public class Undo {
 	// Cancel a consolidated undo
 	public boolean cancelConsolidatedUndo () {
 		if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Cancelling consolidated undo"); // -----
-		isConsolidating = false;
-		numToConsolidate = 0;
-		consolidatedUndoStorage = new ArrayList<BlockState>();
-		storedLocations = new ArrayList<Location>();
+		isConsolidating--;
+		if (isConsolidating <= 0) {
+			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Full cancel"); // -----
+			isConsolidating = 0;
+			numToConsolidate = 0;
+			consolidatedUndoStorage = new ArrayList<BlockState>();
+			storedLocations = new ArrayList<Location>();
+		}
 		return true;
 	}
 	
@@ -100,11 +123,15 @@ public class Undo {
 		if (numToConsolidate == 0) {
 			return cancelConsolidatedUndo ();
 		}
-		isConsolidating = false;
-		numToConsolidate = 0;
-		this.storeUndo (UndoElement.newUndoElementFromStates(consolidatedUndoStorage));
-		consolidatedUndoStorage = new ArrayList<BlockState>();
-		storedLocations = new ArrayList<Location>();
+		isConsolidating--;
+		if (isConsolidating <= 0) {
+			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Writing to regular undo"); // -----
+			isConsolidating = 0;
+			this.storeUndo (UndoElement.newUndoElementFromStates(consolidatedUndoStorage));
+			numToConsolidate = 0;
+			consolidatedUndoStorage = new ArrayList<BlockState>();
+			storedLocations = new ArrayList<Location>();
+		}
 		return true;
 	}
 	
