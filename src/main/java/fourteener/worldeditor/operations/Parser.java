@@ -93,6 +93,10 @@ public class Parser {
 			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Macro node created"); // -----
 			return MacroNode.newNode(parseStringNode());
 		}
+		else if (parts[index].equals("$$")) {
+			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Craftscript node created"); // -----
+			return CraftscriptNode.newNode(parseStringNode());
+		}
 		else if (parts[index].equals("^")) {
 			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Blocks above node created"); // -----
 			return BlocksAboveNode.newNode(parseRangeNode(), parsePart());
