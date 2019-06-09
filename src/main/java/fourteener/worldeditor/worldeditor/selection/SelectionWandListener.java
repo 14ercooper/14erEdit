@@ -11,6 +11,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -60,12 +61,14 @@ public class SelectionWandListener implements Listener {
 			event.setCancelled(true);
 		}
 		
-		// Player right clicked, update position two
-		// For some reason this gets called twice
+		// Player right clicked, update position tgi
 		else if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
-			Block b = event.getClickedBlock();
-			wand.manager.updatePositionTwo(b.getX(), b.getY(), b.getZ(), p);
-			event.setCancelled(true);
+			EquipmentSlot e = event.getHand();
+			if (e.equals(EquipmentSlot.HAND)) {
+				Block b = event.getClickedBlock();
+				wand.manager.updatePositionTwo(b.getX(), b.getY(), b.getZ(), p);
+				event.setCancelled(true);
+			}
 		}
 	}
 }
