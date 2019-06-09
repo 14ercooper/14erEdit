@@ -50,7 +50,7 @@ public class SelectionWandListener implements Listener {
 			isValidPlayer = false;
 		}
 		
-		// If the player isn't holding a valid wand, return without furthur action
+		// If the player isn't holding a valid wand, return without further action
 		if (!isValidPlayer)
 			return;
 		
@@ -61,9 +61,10 @@ public class SelectionWandListener implements Listener {
 			event.setCancelled(true);
 		}
 		
-		// Player right clicked, update position tgi
+		// Player right clicked, update position two
 		else if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
 			EquipmentSlot e = event.getHand();
+			// This if clause prevents the update from happening twice (due to off-hand conflicts)
 			if (e.equals(EquipmentSlot.HAND)) {
 				Block b = event.getClickedBlock();
 				wand.manager.updatePositionTwo(b.getX(), b.getY(), b.getZ(), p);
