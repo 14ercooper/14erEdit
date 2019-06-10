@@ -6,7 +6,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 
 import fourteener.worldeditor.main.Main;
@@ -137,6 +139,7 @@ public class SelectionCommand {
 	}
 	
 	// Operate on the selection
+	@SuppressWarnings("static-access")
 	private static boolean operate (SelectionManager manager, SelectionWand wand, String[] brushOperation) {
 		// Build an array of blocks within this selection
 		List<Block> blockArray = manager.getBlocks();
@@ -148,7 +151,7 @@ public class SelectionCommand {
 		}
 		catch (Exception e) {}
 		UndoManager.getUndo(wand.owner).startTrackingConsolidatedUndo();
-		UndoManager.getUndo(wand.owner).storeUndo(UndoElement.newUndoElement(blockArray));
+		UndoManager.getUndo(wand.owner).storeUndo(UndoElement.newUndoElement(blockArray)); //-----------
 		
 		// Construct the operation
 		int brushOpOffset = 2;
@@ -165,13 +168,30 @@ public class SelectionCommand {
 		// And turn the string into an operation
 		Operator operator = Operator.newOperator(opStr);
 		
+		// Transform the block array to a state array
+		List<BlockState> snapshotArray = new ArrayList<BlockState>();
+		for (Block b : blockArray) {
+			snapshotArray.add(b.getState());
+		}
+		
 		// Finally, perform the operation
 		if (operator == null)
 			return false;
 		if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Operating on selection"); // -----
-		for (Block b : blockArray) {
-			operator.operateOnBlock(b, wand.owner);
+		List<BlockState> operatedList = new ArrayList<BlockState>();
+		for (BlockState bs : snapshotArray) {
+			operator.operateOnBlock(bs, wand.owner);
+			operatedList.add(operator.currentBlock);
 		}
+		
+		// Apply the changes to the world
+		for (BlockState bs : operatedList) {
+			Location l = bs.getLocation();
+			Block b = Main.world.getBlockAt(l);
+			b.setType(bs.getType(), Operator.ignoringPhysics);
+			b.setBlockData(bs.getBlockData(), Operator.ignoringPhysics);
+		}
+		
 		return UndoManager.getUndo(wand.owner).storeConsolidatedUndo();
 	}
 	

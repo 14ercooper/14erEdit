@@ -18,7 +18,7 @@ public class BlocksBelowNode extends Node {
 	}
 	
 	public boolean performNode () {
-		Block currBlock = Operator.currentBlock;
+		Block currBlock = Main.world.getBlockAt(Operator.currentBlock.getLocation());
 		int x = currBlock.getX();
 		int y = currBlock.getY();
 		int z = currBlock.getZ();
@@ -27,12 +27,12 @@ public class BlocksBelowNode extends Node {
 		boolean blockRangeMet = true;
 		
 		for (int dy = y - min; dy >= y - max; dy--) {
-			Operator.currentBlock = Main.world.getBlockAt(x, dy, z);
+			Operator.currentBlock = Main.world.getBlockAt(x, dy, z).getState();
 			if (!(arg2.performNode()))
 				blockRangeMet = false;
 		}
 		
-		Operator.currentBlock = currBlock;
+		Operator.currentBlock = currBlock.getState();
 		return blockRangeMet;
 	}
 	
