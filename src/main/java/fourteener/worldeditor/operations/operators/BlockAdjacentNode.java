@@ -20,7 +20,7 @@ public class BlockAdjacentNode extends Node {
 	}
 	
 	public boolean performNode () {
-		if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Performing faces exposed node"); // -----
+		Main.logDebug("Performing faces exposed node"); // -----
 		
 		// Check if any adjacent blocks match arg1
 		// Set up some variables

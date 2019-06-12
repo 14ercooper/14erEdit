@@ -236,7 +236,7 @@ public class Brush {
 		if (blockArray.isEmpty()) {
 			return false;
 		}
-		if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Block array size is " + Integer.toString(blockArray.size())); // -----
+		Main.logDebug("Block array size is " + Integer.toString(blockArray.size())); // -----
 		
 		List<BlockState> snapshotArray = new ArrayList<BlockState>();
 		for (Block b : blockArray) {

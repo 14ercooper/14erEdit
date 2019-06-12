@@ -399,7 +399,7 @@ public class BasicTreeMacro extends Macro {
 			branchStarts.add(Main.world.getBlockAt(plantOn).getRelative(BlockFace.UP).getLocation());
 			double branchHeight = treeHeight;
 			for (int i = 1; i <= (numSplits + 1); i++) {
-				if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] i value of " + Integer.toString(i)); // -----
+				Main.logDebug("i value of " + Integer.toString(i)); // -----
 				List<Location> theseBranches = branchStarts;
 				branchStarts = new ArrayList<Location>();
 				// Adjust the length of branch to generate accordingly
@@ -426,7 +426,7 @@ public class BasicTreeMacro extends Macro {
 				// Generate the stick up with circles around each layer
 				// For the first branch, build up
 				if (i == 1) {
-					if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] First branch growing, number of locations equals " + Integer.toString(theseBranches.size())); // -----
+					Main.logDebug("First branch growing, number of locations equals " + Integer.toString(theseBranches.size())); // -----
 					for (Location startLoc : theseBranches) {
 						// Grow up
 						Block currentBlock = Main.world.getBlockAt(startLoc);
@@ -494,7 +494,7 @@ public class BasicTreeMacro extends Macro {
 				// For branches 2, 4, grow out N/S or E/W
 				else if (i % 2 == 1) {
 
-					if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Even branch growing, number of locations " + Integer.toString(theseBranches.size())); // -----
+					Main.logDebug("Even branch growing, number of locations " + Integer.toString(theseBranches.size())); // -----
 					for (Location startLoc : theseBranches) {
 						// Case N/S
 						if (rand.nextBoolean()) {
@@ -672,7 +672,7 @@ public class BasicTreeMacro extends Macro {
 				
 				// For branches 3, 5, grow out with one branch N/W/E/S and the other two rotated 120 degrees
 				else if (i % 2 == 0) {
-					if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Odd branch growing, number of locations " + Integer.toString(theseBranches.size())); // -----
+					Main.logDebug("Odd branch growing, number of locations " + Integer.toString(theseBranches.size())); // -----
 					for (Location startLoc : theseBranches) {
 						if (rand.nextBoolean()) {
 							// Case N
@@ -1199,7 +1199,7 @@ public class BasicTreeMacro extends Macro {
 			endPoints = branchStarts;
 			
 			// Jesus that's a lot of leaves to generate
-			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Generating leaf spheres"); // -----
+			Main.logDebug("Generating leaf spheres"); // -----
 			for (Location startLoc : endPoints) {
 				double invLeafBallSize = 1 / leafBallSize; // Multiplication is fast, division is slow, and this is used for every leaf block
 				// The -(int) ordering stops issues with how integers truncate in different directions when positive versus negative
@@ -1621,41 +1621,41 @@ public class BasicTreeMacro extends Macro {
 			Random rand = new Random();
 			double actVariance = ((rand.nextDouble() * 2.0) - 1.0) * variance;
 			double treeSize = size + actVariance;
-			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Generating mushroom of size " + Double.toString(treeSize)); // -----
+			Main.logDebug("Generating mushroom of size " + Double.toString(treeSize)); // -----
 			
 			// One, two, or 3 layer cap?
 			// Also calculate cap circle cutoffs
 			int numCaps = 0;
 			if (treeSize > 60) {
-				if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] 5 cap mushroom"); // -----
+				Main.logDebug("5 cap mushroom"); // -----
 				numCaps = 5;
 			}
 			else if (treeSize > 40) {
-				if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] 4 cap mushroom"); // -----
+				Main.logDebug("4 cap mushroom"); // -----
 				numCaps = 4;
 			}
 			else if (treeSize > 27) {
-				if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] 3 cap mushroom"); // -----
+				Main.logDebug("3 cap mushroom"); // -----
 				numCaps = 3;
 			}
 			else if (treeSize > 15) {
-				if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] 2 cap mushroom"); // -----
+				Main.logDebug("2 cap mushroom"); // -----
 				numCaps = 2;
 			}
 			else {
-				if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] 1 cap mushroom"); // -----
+				Main.logDebug("1 cap mushroom"); // -----
 				numCaps = 1;
 			}
 			double radiusCorrection = 0.35;
 			double cap1Cut = 0, cap2Cut = 0, cap3Cut = 0, cap4Cut = 0, cap5Cut = 0; // These are radii
 			if (numCaps <= 3) {
-				if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Less than or equal to 3 caps will be generated"); // -----
+				Main.logDebug("Less than or equal to 3 caps will be generated"); // -----
 				cap1Cut = treeSize * 0.35;
 				cap2Cut = treeSize * 0.65;
 				cap3Cut = treeSize;
 			}
 			else {
-				if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] More than 3 caps will be generated"); // -----
+				Main.logDebug("More than 3 caps will be generated"); // -----
 				cap1Cut = treeSize * 0.25;
 				cap2Cut = treeSize * 0.4;
 				cap3Cut = treeSize * 0.55;
@@ -1664,7 +1664,7 @@ public class BasicTreeMacro extends Macro {
 			}
 			
 			// Generate the stem of the mushroom
-			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Generating mushroom stem"); // -----
+			Main.logDebug("Generating mushroom stem"); // -----
 			Block currentBlock = Main.world.getBlockAt(plantOn);
 			BlockFace currentDirection = BlockFace.DOWN;
 			for (int i = 1; i <= treeSize; i++) {
@@ -1706,10 +1706,10 @@ public class BasicTreeMacro extends Macro {
 			
 			// Generate the three cap layers as needed
 			double x = currentBlock.getX(), y = currentBlock.getY(), z = currentBlock.getZ();
-			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Generating cap at (" + Double.toString(x) + "," + Double.toString(y) + "," + Double.toString(z) + ")"); // -----
+			Main.logDebug("Generating cap at (" + Double.toString(x) + "," + Double.toString(y) + "," + Double.toString(z) + ")"); // -----
 			List<Block> capBlocks = new ArrayList<Block>();
 			if (numCaps >= 1) {
-				if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Size 1 cap generating"); // -----
+				Main.logDebug("Size 1 cap generating"); // -----
 				for (double rx = -cap1Cut; rx <= cap1Cut; rx++) {
 					for (double rz = -cap1Cut; rz <= cap1Cut; rz++) {
 						if ((rx * rx) + (rz * rz) <= ((cap1Cut + radiusCorrection) * (cap1Cut + radiusCorrection))) {
@@ -1717,10 +1717,10 @@ public class BasicTreeMacro extends Macro {
 						}
 					}
 				}
-				if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Number of blocks: " + Integer.toString(capBlocks.size())); // -----
+				Main.logDebug("Number of blocks: " + Integer.toString(capBlocks.size())); // -----
 			}
 			if (numCaps >= 2) {
-				if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Size 2 cap generating"); // -----
+				Main.logDebug("Size 2 cap generating"); // -----
 				for (int rx = -(int)cap2Cut; rx <= cap2Cut; rx++) {
 					for (int rz = -(int)cap2Cut; rz <= cap2Cut; rz++) {
 						if ((rx * rx) + (rz * rz) <= ((cap2Cut + radiusCorrection) * (cap2Cut + radiusCorrection))
@@ -1729,10 +1729,10 @@ public class BasicTreeMacro extends Macro {
 						}
 					}
 				}
-				if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Number of blocks: " + Integer.toString(capBlocks.size())); // -----
+				Main.logDebug("Number of blocks: " + Integer.toString(capBlocks.size())); // -----
 			}
 			if (numCaps >= 3) {
-				if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Size 3 cap generating"); // -----
+				Main.logDebug("Size 3 cap generating"); // -----
 				for (int rx = -(int)cap3Cut; rx <= cap3Cut; rx++) {
 					for (int rz = -(int)cap3Cut; rz <= cap3Cut; rz++) {
 						if ((rx * rx) + (rz * rz) <= ((cap3Cut + radiusCorrection) * (cap3Cut + radiusCorrection))
@@ -1741,10 +1741,10 @@ public class BasicTreeMacro extends Macro {
 						}
 					}
 				}
-				if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Number of blocks: " + Integer.toString(capBlocks.size())); // -----
+				Main.logDebug("Number of blocks: " + Integer.toString(capBlocks.size())); // -----
 			}
 			if (numCaps >= 4) {
-				if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Size 4 cap generating"); // -----
+				Main.logDebug("Size 4 cap generating"); // -----
 				for (int rx = -(int)cap4Cut; rx <= cap4Cut; rx++) {
 					for (int rz = -(int)cap4Cut; rz <= cap4Cut; rz++) {
 						if ((rx * rx) + (rz * rz) <= ((cap4Cut + radiusCorrection) * (cap4Cut + radiusCorrection))
@@ -1753,10 +1753,10 @@ public class BasicTreeMacro extends Macro {
 						}
 					}
 				}
-				if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Number of blocks: " + Integer.toString(capBlocks.size())); // -----
+				Main.logDebug("Number of blocks: " + Integer.toString(capBlocks.size())); // -----
 			}
 			if (numCaps >= 5) {
-				if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Size 5 cap generating"); // -----
+				Main.logDebug("Size 5 cap generating"); // -----
 				for (int rx = -(int)cap5Cut; rx <= cap5Cut; rx++) {
 					for (int rz = -(int)cap5Cut; rz <= cap5Cut; rz++) {
 						if ((rx * rx) + (rz * rz) <= ((cap5Cut + radiusCorrection) * (cap5Cut + radiusCorrection))
@@ -1765,11 +1765,11 @@ public class BasicTreeMacro extends Macro {
 						}
 					}
 				}
-				if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Number of blocks: " + Integer.toString(capBlocks.size())); // -----
+				Main.logDebug("Number of blocks: " + Integer.toString(capBlocks.size())); // -----
 			}
 			
 			// Place the cap blocks
-			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Placing cap blocks"); // -----
+			Main.logDebug("Placing cap blocks"); // -----
 			for (Block bl : capBlocks) {
 				if (bl.getType() == Material.AIR) {
 					undoList.add(bl.getState());

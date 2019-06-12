@@ -18,7 +18,7 @@ public class ScriptErode extends Craftscript {
 		if (modeArg.equalsIgnoreCase("cut") || modeArg.equalsIgnoreCase("raise") || modeArg.equalsIgnoreCase("smmoth")) {
 			mode = "melt";
 		}
-		player.performCommand("fx br s 0 0.5 $ erode{" + radius + "," + mode + "," + modeArg + "}");
+		player.performCommand("fx br s 0 0.5 $ erode{" + radius + ";" + mode + ";" + modeArg + "}");
 		return null;
 	}
 

@@ -40,7 +40,7 @@ public class Undo {
 	public boolean storeUndo (UndoElement e) {
 		// Not consolidating an undo
 		if (isConsolidating == 0) {
-			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Storing a normal undo"); // -----
+			Main.logDebug("Storing a normal undo"); // -----
 			undoElements.add(e);
 			if (undoElements.size() > undoSize)
 				undoElements.removeFirst();
@@ -62,11 +62,11 @@ public class Undo {
 				}
 			}
 			catch (NullPointerException error) {
-				if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Nullptr in Undo::storeUndo"); // -----
+				Main.logDebug("Nullptr in Undo::storeUndo"); // -----
 				return true;
 			}
-			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Number of locations stored: " + Integer.toString(storedLocations.size())); // -----
-			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Storing " + Integer.toString(states.size()) + " blocks to the consolidated undo queue"); // -----
+			Main.logDebug("Number of locations stored: " + Integer.toString(storedLocations.size())); // -----
+			Main.logDebug("Storing " + Integer.toString(states.size()) + " blocks to the consolidated undo queue"); // -----
 			int c = 0;
 			for (BlockState bs : states) {
 				if (storedLocations.contains(bs.getLocation())) {
@@ -79,7 +79,7 @@ public class Undo {
 					c++;
 				}
 			}
-			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Added " + Integer.toString(c) + " new blocks to the consolidated undo queue"); // -----
+			Main.logDebug("Added " + Integer.toString(c) + " new blocks to the consolidated undo queue"); // -----
 			return true;
 		}
 	}
@@ -93,9 +93,9 @@ public class Undo {
 	
 	// Start tracking a consolidated undo
 	public void startTrackingConsolidatedUndo () {
-		if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Now tracking consolidated undo"); // -----
+		Main.logDebug("Now tracking consolidated undo"); // -----
 		isConsolidating++;
-		if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Consolidations nested: " + Integer.toString(isConsolidating)); // -----
+		Main.logDebug("Consolidations nested: " + Integer.toString(isConsolidating)); // -----
 	}
 	
 	// Get the number of undos in the consolidation queue
@@ -105,10 +105,10 @@ public class Undo {
 	
 	// Cancel a consolidated undo
 	public boolean cancelConsolidatedUndo () {
-		if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Cancelling consolidated undo"); // -----
+		Main.logDebug("Cancelling consolidated undo"); // -----
 		isConsolidating--;
 		if (isConsolidating <= 0) {
-			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Full cancel"); // -----
+			Main.logDebug("Full cancel"); // -----
 			isConsolidating = 0;
 			numToConsolidate = 0;
 			consolidatedUndoStorage = new ArrayList<BlockState>();
@@ -119,13 +119,13 @@ public class Undo {
 	
 	// Store a consolidated undo
 	public boolean storeConsolidatedUndo () {
-		if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Storing a consolidated undo"); // -----
+		Main.logDebug("Storing a consolidated undo"); // -----
 		if (numToConsolidate == 0) {
 			return cancelConsolidatedUndo ();
 		}
 		isConsolidating--;
 		if (isConsolidating <= 0) {
-			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Writing to regular undo"); // -----
+			Main.logDebug("Writing to regular undo"); // -----
 			isConsolidating = 0;
 			this.storeUndo (UndoElement.newUndoElementFromStates(consolidatedUndoStorage));
 			numToConsolidate = 0;
@@ -148,7 +148,7 @@ public class Undo {
 		while (number-- > 0) {
 			// Grab the UndoElement
 			UndoElement element = undoElements.getLast();
-			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Undoing " + Integer.toString(element.getBlocks().size()) + " block changes"); // -----
+			Main.logDebug("Undoing " + Integer.toString(element.getBlocks().size()) + " block changes"); // -----
 			
 			// First, register a redo element
 			storeRedo(element.getInverseElement());
@@ -173,7 +173,7 @@ public class Undo {
 		while (number-- > 0) {
 			// This follows the same logic as the loop in undo changes
 			UndoElement element = redoElements.getLast();
-			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Redoing " + Integer.toString(element.getBlocks().size()) + " block changes"); // -----
+			Main.logDebug("Redoing " + Integer.toString(element.getBlocks().size()) + " block changes"); // -----
 			storeUndo(element.getInverseElement());
 			element.applyElement();
 			redoElements.removeLast();

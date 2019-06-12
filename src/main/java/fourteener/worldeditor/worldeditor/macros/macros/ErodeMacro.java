@@ -29,23 +29,23 @@ public class ErodeMacro extends Macro {
 		
 		// Determine the type of the erode brush
 		if (args[1].equalsIgnoreCase("melt")) {
-			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Erode type: melt"); // ----
+			Main.logDebug("Erode type: melt"); // ----
 			macro.erodeType = 0;
 		} else if (args[1].equalsIgnoreCase("blend")) {
-			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Erode type: blend"); // ----
+			Main.logDebug("Erode type: blend"); // ----
 			macro.erodeType = 1;
 		}
 		
 		// Cut or raise melt?
 		if (macro.erodeType == 0) {
 			if (args[2].equalsIgnoreCase("cut")) {
-				if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Melt type: cut"); // ----
+				Main.logDebug("Melt type: cut"); // ----
 				macro.erodeSubtype = 0;
 			} else if (args[2].equalsIgnoreCase("raise")) {
-				if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Melt type: raise"); // ----
+				Main.logDebug("Melt type: raise"); // ----
 				macro.erodeSubtype = 1;
 			} else if (args[2].equalsIgnoreCase("smooth")) {
-				if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Melt type: smooth"); // ----
+				Main.logDebug("Melt type: smooth"); // ----
 				macro.erodeSubtype = 2;
 			}
 		}
@@ -70,7 +70,7 @@ public class ErodeMacro extends Macro {
 				}
 			}
 		}
-		if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Erosion array size: " + Integer.toString(erosionArray.size())); // ----
+		Main.logDebug("Erosion array size: " + Integer.toString(erosionArray.size())); // ----
 		
 		// Generate a snapshot to use for eroding (erode in this, read from world)
 		List<BlockState> snapshotArray = new ArrayList<BlockState>();
@@ -84,7 +84,7 @@ public class ErodeMacro extends Macro {
 		
 		// Melt cut erosion
 		if (erodeType == 0 && erodeSubtype == 0) {
-			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Starting melt cut erode"); // ----
+			Main.logDebug("Starting melt cut erode"); // ----
 			int airCut = 3; // Nearby air to make air
 			int solidCut = 4; // Nearby solid to make solid
 			// Iterate through each block
@@ -153,7 +153,7 @@ public class ErodeMacro extends Macro {
 		
 		// Melt raise erosion
 		if (erodeType == 0 && erodeSubtype == 1) {
-			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Starting melt cut erode"); // ----
+			Main.logDebug("Starting melt cut erode"); // ----
 			int airCut = 4; // Nearby air to make air
 			int solidCut = 2; // Nearby solid to make solid
 			// Iterate through each block
@@ -222,7 +222,7 @@ public class ErodeMacro extends Macro {
 		
 		// Melt smooth erosion
 		if (erodeType == 0 && erodeSubtype == 2) {
-			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Starting melt cut erode"); // ----
+			Main.logDebug("Starting melt cut erode"); // ----
 			int airCut = 4; // Nearby air to make air
 			int solidCut = 4; // Nearby solid to make solid
 			// Iterate through each block

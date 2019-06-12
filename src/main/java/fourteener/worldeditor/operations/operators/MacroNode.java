@@ -17,7 +17,7 @@ public class MacroNode extends Node {
 	}
 	
 	public boolean performNode () {
-		if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Performing macro node"); // ----
+		Main.logDebug("Performing macro node"); // ----
 		return MacroLauncher.launchMacro(arg, Operator.currentBlock.getLocation());
 	}
 	

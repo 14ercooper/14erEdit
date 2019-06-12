@@ -43,7 +43,7 @@ public class Clipboard {
 			if (b.getZ() < zNeg)
 				zNeg = b.getZ();
 		}
-		if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Negative corner of (" + Integer.toString(xNeg) + "," + Integer.toString(yNeg) + "," + Integer.toString(zNeg) + ")"); // ----
+		Main.logDebug("Negative corner of (" + Integer.toString(xNeg) + "," + Integer.toString(yNeg) + "," + Integer.toString(zNeg) + ")"); // ----
 		// And the most positive corner
 		int xPos = Integer.MIN_VALUE, yPos = Integer.MIN_VALUE, zPos = Integer.MIN_VALUE;
 		for (Block b : blocks) {
@@ -54,7 +54,7 @@ public class Clipboard {
 			if (b.getZ() > zPos)
 				zPos = b.getZ();
 		}
-		if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Positive corner of (" + Integer.toString(xPos) + "," + Integer.toString(yPos) + "," + Integer.toString(zPos) + ")"); // ----
+		Main.logDebug("Positive corner of (" + Integer.toString(xPos) + "," + Integer.toString(yPos) + "," + Integer.toString(zPos) + ")"); // ----
 		
 		// Offset the origins appropriately and store them
 		x = Math.abs(xOrigin - xNeg);
@@ -67,14 +67,14 @@ public class Clipboard {
 		if (zOrigin < zNeg)
 			z *= -1;
 
-		if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Origin of (" + Integer.toString(x) + "," + Integer.toString(y) + "," + Integer.toString(z) + ")"); // ----
+		Main.logDebug("Origin of (" + Integer.toString(x) + "," + Integer.toString(y) + "," + Integer.toString(z) + ")"); // ----
 		
 		// Calculate the dimensions of the selection
 		length = Math.abs(zPos - zNeg) + 1;
 		width = Math.abs(xPos - xNeg) + 1;
 		height = Math.abs(yPos - yNeg) + 1;
 
-		if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Dimensions of (" + Integer.toString(width) + "," + Integer.toString(height) + "," + Integer.toString(length) + ")"); // ----
+		Main.logDebug("Dimensions of (" + Integer.toString(width) + "," + Integer.toString(height) + "," + Integer.toString(length) + ")"); // ----
 		
 		// Generate an array of blocks of the correct size
 		int size = length * width * height;
@@ -82,7 +82,7 @@ public class Clipboard {
 		for (int i = 0; i < size; i++) {
 			blockList.add("");
 		}
-		if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Block list of size " + Integer.toString(blockList.size())); // ----
+		Main.logDebug("Block list of size " + Integer.toString(blockList.size())); // ----
 		
 		// Then store the blocks (as data) into the array
 		for (Block b : blocks) {
@@ -95,7 +95,7 @@ public class Clipboard {
 		// And finally save that array to the clipboard
 		blockData = blockList;
 
-		if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] " + Integer.toString(blockData.size()) + " blocks of data stored"); // ----
+		Main.logDebug("" + Integer.toString(blockData.size()) + " blocks of data stored"); // ----
 		owner.sendMessage("§dSelection copied");
 		return true;
 	}
@@ -107,9 +107,9 @@ public class Clipboard {
 		
 		// Loop through the blocks, along X from negative to positive, Z negative to positive, Y negative to positive
 		int rx = 0, ry = 0, rz = 0;
-		if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Pasting blocks into the world"); // ----
-		if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Dimensions of (" + Integer.toString(width) + "," + Integer.toString(height) + "," + Integer.toString(length) + ")"); // ----
-		if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Offset of (" + Integer.toString(x) + "," + Integer.toString(y) + "," + Integer.toString(z) + ")"); // ----
+		Main.logDebug("Pasting blocks into the world"); // ----
+		Main.logDebug("Dimensions of (" + Integer.toString(width) + "," + Integer.toString(height) + "," + Integer.toString(length) + ")"); // ----
+		Main.logDebug("Offset of (" + Integer.toString(x) + "," + Integer.toString(y) + "," + Integer.toString(z) + ")"); // ----
 		
 		for (int i = 0; i < (length * width * height); i++) {
 			if (rx >= width) {
@@ -143,7 +143,7 @@ public class Clipboard {
 		
 		// Store an undo
 
-		if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Blocks pasted: " + undoList.size()); // ----
+		Main.logDebug("Blocks pasted: " + undoList.size()); // ----
 		UndoManager.getUndo(owner).storeUndo(UndoElement.newUndoElementFromStates(undoList));
 		
 		owner.sendMessage("§dSelection pasted");

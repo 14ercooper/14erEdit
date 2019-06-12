@@ -25,7 +25,7 @@ public class ScriptTree extends Craftscript{
 			treeLeaves = args.get(2);
 			treeWood = args.get(3);
 		}
-		player.performCommand("fx br s 0 0.5 $ tree{" + treeType + "," + treeLeaves + "," + treeWood + "," + treeSize + "," + treeSizeVariance + "}");
+		player.performCommand("fx br s 0 0.5 $ tree{" + treeType + ";" + treeLeaves + ";" + treeWood + ";" + treeSize + ";" + treeSizeVariance + "}");
 		return null;
 	}
 }

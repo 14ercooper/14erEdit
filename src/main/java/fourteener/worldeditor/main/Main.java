@@ -82,10 +82,15 @@ public class Main extends JavaPlugin {
 		scriptManager.registerCraftscript("erode", new ScriptErode());
 		scriptManager.registerCraftscript("tree", new ScriptTree());
 		scriptManager.registerCraftscript("grass", new ScriptGrass());
+		scriptManager.registerCraftscript("grassbrush", new ScriptGrassBrush());
 	}
 	
 	@Override
 	public void onDisable () {
 		
+	}
+	
+	public static void logDebug (String message) {
+		if (isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] " + message); // ----
 	}
 }
