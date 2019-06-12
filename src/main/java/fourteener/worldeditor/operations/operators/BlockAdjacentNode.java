@@ -25,36 +25,36 @@ public class BlockAdjacentNode extends Node {
 		// Check if any adjacent blocks match arg1
 		// Set up some variables
 		int numAdjacentBlocks = 0;
-		Block curBlock = Operator.currentBlock;
+		Block curBlock = Main.world.getBlockAt(Operator.currentBlock.getLocation());
 		
 		// Check each direction
 		Block blockAdj = curBlock.getRelative(BlockFace.NORTH);
-		Operator.currentBlock = blockAdj;
+		Operator.currentBlock = blockAdj.getState();
 		if (arg1.performNode())
 			numAdjacentBlocks++;
 		blockAdj = curBlock.getRelative(BlockFace.SOUTH);
-		Operator.currentBlock = blockAdj;
+		Operator.currentBlock = blockAdj.getState();
 		if (arg1.performNode())
 			numAdjacentBlocks++;
 		blockAdj = curBlock.getRelative(BlockFace.EAST);
-		Operator.currentBlock = blockAdj;
+		Operator.currentBlock = blockAdj.getState();
 		if (arg1.performNode())
 			numAdjacentBlocks++;
 		blockAdj = curBlock.getRelative(BlockFace.WEST);
-		Operator.currentBlock = blockAdj;
+		Operator.currentBlock = blockAdj.getState();
 		if (arg1.performNode())
 			numAdjacentBlocks++;
 		blockAdj = curBlock.getRelative(BlockFace.UP);
-		Operator.currentBlock = blockAdj;
+		Operator.currentBlock = blockAdj.getState();
 		if (arg1.performNode())
 			numAdjacentBlocks++;
 		blockAdj = curBlock.getRelative(BlockFace.DOWN);
-		Operator.currentBlock = blockAdj;
+		Operator.currentBlock = blockAdj.getState();
 		if (arg1.performNode())
 			numAdjacentBlocks++;
 		
 		// Reset the current block
-		Operator.currentBlock = curBlock;
+		Operator.currentBlock = curBlock.getState();
 		
 		return (numAdjacentBlocks >= arg2.getValue() - 0.1);
 	}

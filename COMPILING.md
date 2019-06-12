@@ -1,6 +1,8 @@
 # Compiling
 
-This plugin can be built using maven.
+This plugin can be built using maven assuming you have a full Spigot installed into your local maven repo.
+
+Do this by running build tools, going into the `Spigot` folder, and running `mvn install`
 
 Precompiled versions are available on occasion from the releases page.
 

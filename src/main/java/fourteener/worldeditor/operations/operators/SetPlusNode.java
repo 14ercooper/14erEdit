@@ -19,8 +19,8 @@ public class SetPlusNode extends Node {
 	}
 	
 	public boolean performNode () {
-		Operator.currentBlock.setType(arg1, Operator.ignoringPhysics);
-		Operator.currentBlock.setBlockData(arg2, Operator.ignoringPhysics);
+		Operator.currentBlock.setType(arg1);
+		Operator.currentBlock.setBlockData(arg2);
 		return true;
 	}
 	

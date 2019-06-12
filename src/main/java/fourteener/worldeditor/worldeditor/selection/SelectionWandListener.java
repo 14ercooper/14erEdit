@@ -11,6 +11,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -49,7 +50,7 @@ public class SelectionWandListener implements Listener {
 			isValidPlayer = false;
 		}
 		
-		// If the player isn't holding a valid wand, return without furthur action
+		// If the player isn't holding a valid wand, return without further action
 		if (!isValidPlayer)
 			return;
 		
@@ -61,11 +62,14 @@ public class SelectionWandListener implements Listener {
 		}
 		
 		// Player right clicked, update position two
-		// For some reason this gets called twice
 		else if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
-			Block b = event.getClickedBlock();
-			wand.manager.updatePositionTwo(b.getX(), b.getY(), b.getZ(), p);
-			event.setCancelled(true);
+			EquipmentSlot e = event.getHand();
+			// This if clause prevents the update from happening twice (due to off-hand conflicts)
+			if (e.equals(EquipmentSlot.HAND)) {
+				Block b = event.getClickedBlock();
+				wand.manager.updatePositionTwo(b.getX(), b.getY(), b.getZ(), p);
+				event.setCancelled(true);
+			}
 		}
 	}
 }

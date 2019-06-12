@@ -6,7 +6,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -137,17 +139,19 @@ public class Brush {
 		return true;
 	}
 	
+	@SuppressWarnings("static-access")
 	public boolean operate (double x, double y, double z) {
 		try {
 			UndoManager.getUndo(owner).cancelConsolidatedUndo();
 		}
 		catch (Exception e) {}
+		UndoManager.getUndo(owner).startTrackingConsolidatedUndo();
+		// Build an array of all blocks to operate on
+		List<Block> blockArray = new ArrayList<Block>();
+		
+		// Generate the appropriate block list
 		// We're working with a radius sphere
 		if (shape == 0) {
-			UndoManager.getUndo(owner).startTrackingConsolidatedUndo();
-			// Build an array of all blocks to operate on
-			List<Block> blockArray = new ArrayList<Block>();
-			
 			// This generates a list of all possible block positions, then filters them using the square of the distance to the center
 			// It then looks up the block at the location if needed, and stores it in the array
 			for (int rx = -radius; rx <= radius; rx++) {
@@ -159,23 +163,9 @@ public class Brush {
 					}
 				}
 			}
-			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Block array size is " + Integer.toString(blockArray.size())); // -----
-			
-			// Store an undo
-			UndoManager.getUndo(owner).storeUndo(UndoElement.newUndoElement(blockArray));
-			
-			// Operate on the blocks
-			for (Block b : blockArray) {
-				operator.operateOnBlock(b, owner);
-			}
-			return UndoManager.getUndo(owner).storeConsolidatedUndo();
 		}
 		// We're working with a sphere
 		if (shape == 1) {
-			UndoManager.getUndo(owner).startTrackingConsolidatedUndo();
-			// Build an array of all blocks to operate on
-			List<Block> blockArray = new ArrayList<Block>();
-
 			// Generate a better sphere
 			// This generates a list of all possible block positions, then filters them using the square of the distance to the center
 			// It then looks up the block at the location if needed, and stores it in the array
@@ -188,23 +178,9 @@ public class Brush {
 					}
 				}
 			}
-			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Block array size is " + Integer.toString(blockArray.size())); // -----
-			
-			// Store an undo
-			UndoManager.getUndo(owner).storeUndo(UndoElement.newUndoElement(blockArray));
-			
-			// Operate on the blocks
-			for (Block b : blockArray) {
-				operator.operateOnBlock(b, owner);
-			}
-			return UndoManager.getUndo(owner).storeConsolidatedUndo();
 		}
 		// We're working with a cube
 		if (shape == 2) {
-			UndoManager.getUndo(owner).startTrackingConsolidatedUndo();
-			// Build an array of all blocks to operate on
-			List<Block> blockArray = new ArrayList<Block>();
-			
 			// Generate the cube
 			int cubeRad = radius / 2;
 			for (int rx = -cubeRad; rx <= cubeRad; rx++) {
@@ -214,23 +190,11 @@ public class Brush {
 					}
 				}
 			}
-			
-			// Store an undo
-			UndoManager.getUndo(owner).storeUndo(UndoElement.newUndoElement(blockArray));
-			
-			// Operate on the blocks
-			for (Block b : blockArray) {
-				operator.operateOnBlock(b, owner);
-			}
-			return UndoManager.getUndo(owner).storeConsolidatedUndo();
 		}
 		// We're working with a diamond
 		if (shape == 3) {
-			UndoManager.getUndo(owner).startTrackingConsolidatedUndo();
-			// Build an array of all blocks to operate on
-			List<Block> blockArray = new ArrayList<Block>();
-			
 			// Generate the diamond
+			// This uses the Manhattan distance
 			for (int rx = -radius; rx <= radius; rx++) {
 				for (int rz = -radius; rz <= radius; rz++) {
 					for (int ry = -radius; ry <= radius; ry++) {
@@ -240,24 +204,9 @@ public class Brush {
 					}
 				}
 			}
-			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Block array size is " + Integer.toString(blockArray.size())); // -----
-
-			
-			// Store an undo
-			UndoManager.getUndo(owner).storeUndo(UndoElement.newUndoElement(blockArray));
-			
-			// Operate on the blocks
-			for (Block b : blockArray) {
-				operator.operateOnBlock(b, owner);
-			}
-			return UndoManager.getUndo(owner).storeConsolidatedUndo();
 		}
 		// We're working with a hollow sphere
 		if (shape == 4) {
-			UndoManager.getUndo(owner).startTrackingConsolidatedUndo();
-			// Build an array of all blocks to operate on
-			List<Block> blockArray = new ArrayList<Block>();
-			
 			// Generate the hollow sphere
 			for (int rx = -radius; rx <= radius; rx++) {
 				for (int rz = -radius; rz <= radius; rz++) {
@@ -269,22 +218,9 @@ public class Brush {
 					}
 				}
 			}
-			
-			// Store an undo
-			UndoManager.getUndo(owner).storeUndo(UndoElement.newUndoElement(blockArray));
-			
-			// Operate on the blocks
-			for (Block b : blockArray) {
-				operator.operateOnBlock(b, owner);
-			}
-			return UndoManager.getUndo(owner).storeConsolidatedUndo();
 		}
 		// We're working with an ellipse
 		if (shape == 5) {
-			UndoManager.getUndo(owner).startTrackingConsolidatedUndo();
-			// Build an array of all blocks to operate on
-			List<Block> blockArray = new ArrayList<Block>();
-			
 			// Generate the ellipse
 			for (double rx = -eX; rx <= eX; rx++) {
 				for (double ry = -eY; ry <= eY; ry++) {
@@ -295,16 +231,36 @@ public class Brush {
 					}
 				}
 			}
-			
-			// Store an undo
-			UndoManager.getUndo(owner).storeUndo(UndoElement.newUndoElement(blockArray));
-			
-			// Operate on the blocks
-			for (Block b : blockArray) {
-				operator.operateOnBlock(b, owner);
-			}
-			return UndoManager.getUndo(owner).storeConsolidatedUndo();
 		}
-		return false;
+		
+		if (blockArray.isEmpty()) {
+			return false;
+		}
+		if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Block array size is " + Integer.toString(blockArray.size())); // -----
+		
+		List<BlockState> snapshotArray = new ArrayList<BlockState>();
+		for (Block b : blockArray) {
+			snapshotArray.add(b.getState());
+		}
+		
+		// Store an undo
+		UndoManager.getUndo(owner).storeUndo(UndoElement.newUndoElementFromStates(snapshotArray));
+		
+		// Operate on the blocks
+		List<BlockState> operatedArray = new ArrayList<BlockState>();
+		for (BlockState bs : snapshotArray) {
+			operator.operateOnBlock(bs, owner);
+			operatedArray.add(operator.currentBlock);
+		}
+		
+		// Apply the blocks to the world
+		for (BlockState bs : operatedArray) {
+			Location l = bs.getLocation();
+			Block b = Main.world.getBlockAt(l);
+			b.setType(bs.getType(), Operator.ignoringPhysics);
+			b.setBlockData(bs.getBlockData(), Operator.ignoringPhysics);
+		}
+		
+		return UndoManager.getUndo(owner).storeConsolidatedUndo();
 	}
 }

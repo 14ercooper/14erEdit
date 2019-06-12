@@ -2,6 +2,7 @@ package fourteener.worldeditor.operations;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.block.data.BlockData;
 
 import fourteener.worldeditor.main.Main;
 import fourteener.worldeditor.operations.operators.*;
@@ -124,6 +125,12 @@ public class Parser {
 		else if (Material.matchMaterial(parts[index]) != null) {
 			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Block node created, type " + Material.matchMaterial(parts[index]).name()); // -----
 			return BlockNode.newNode(Material.matchMaterial(parts[index]));
+		}
+		else if (Material.matchMaterial(parts[index].split("[")[0]) != null && parts[index].split("[").length > 1) {
+			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Block node created, type " + Material.matchMaterial(parts[index]).name()); // -----
+			BlockData bd = Bukkit.getServer().createBlockData(parts[index]);
+			Material mat = Material.matchMaterial(parts[index].split("[")[0]);
+			return BlockNode.newNode(mat, bd);
 		}
 		else {
 			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] New node created"); // -----

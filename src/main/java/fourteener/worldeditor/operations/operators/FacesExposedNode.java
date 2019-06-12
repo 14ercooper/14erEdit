@@ -1,8 +1,10 @@
 package fourteener.worldeditor.operations.operators;
 
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 
+import fourteener.worldeditor.main.Main;
 import fourteener.worldeditor.operations.Operator;
 
 public class FacesExposedNode extends Node {
@@ -20,22 +22,23 @@ public class FacesExposedNode extends Node {
 		// Count the number of faces
 		// Basically check for air in each of the four directions
 		int faceCount = 0;
-		if (Operator.currentBlock.getRelative(BlockFace.NORTH).getType() == Material.AIR) {
+		Block b = Main.world.getBlockAt(Operator.currentBlock.getLocation());
+		if (b.getRelative(BlockFace.NORTH).getType() == Material.AIR) {
 			faceCount++;
 		}
-		if (Operator.currentBlock.getRelative(BlockFace.SOUTH).getType() == Material.AIR) {
+		if (b.getRelative(BlockFace.SOUTH).getType() == Material.AIR) {
 			faceCount++;
 		}
-		if (Operator.currentBlock.getRelative(BlockFace.EAST).getType() == Material.AIR) {
+		if (b.getRelative(BlockFace.EAST).getType() == Material.AIR) {
 			faceCount++;
 		}
-		if (Operator.currentBlock.getRelative(BlockFace.WEST).getType() == Material.AIR) {
+		if (b.getRelative(BlockFace.WEST).getType() == Material.AIR) {
 			faceCount++;
 		}
-		if (Operator.currentBlock.getRelative(BlockFace.UP).getType() == Material.AIR) {
+		if (b.getRelative(BlockFace.UP).getType() == Material.AIR) {
 			faceCount++;
 		}
-		if (Operator.currentBlock.getRelative(BlockFace.DOWN).getType() == Material.AIR) {
+		if (b.getRelative(BlockFace.DOWN).getType() == Material.AIR) {
 			faceCount++;
 		}
 		
