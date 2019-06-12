@@ -83,6 +83,7 @@ public class Main extends JavaPlugin {
 		scriptManager.registerCraftscript("tree", new ScriptTree());
 		scriptManager.registerCraftscript("grass", new ScriptGrass());
 		scriptManager.registerCraftscript("grassbrush", new ScriptGrassBrush());
+		scriptManager.registerCraftscript("vines", new ScriptVines());
 	}
 	
 	@Override

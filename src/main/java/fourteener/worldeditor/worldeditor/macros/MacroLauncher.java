@@ -37,6 +37,10 @@ public class MacroLauncher {
 			Main.logDebug("Running grass macro"); // ----
 			return GrassMacro.createMacro(macroArgs, location).performMacro();
 		}
+		else if (macroName.equalsIgnoreCase("vines")) {
+			Main.logDebug("Running vines macro"); // ----
+			return VinesMacro.createMacro(macroArgs, location).performMacro();
+		}
 		else {
 			return false;
 		}

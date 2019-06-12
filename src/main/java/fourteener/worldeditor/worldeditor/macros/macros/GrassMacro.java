@@ -135,13 +135,13 @@ public class GrassMacro extends Macro {
 			}
 			operatedBlocks.add(operated);
 		}
-		Main.logDebug("Operated on and now placing " + Integer.toString(operatedBlocks.size()) + " blocks");
 		
+		Main.logDebug("Operated on and now placing " + Integer.toString(operatedBlocks.size()) + " blocks");
 		// Apply the changes to the world
 		for (BlockState bs : operatedBlocks) {
 			Block b = Main.world.getBlockAt(bs.getLocation());
-			b.setType(bs.getType(), true);
-			b.setBlockData(bs.getBlockData(), true);
+			b.setType(bs.getType());
+			b.setBlockData(bs.getBlockData());
 		}
 		
 		return true;
