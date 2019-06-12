@@ -153,7 +153,9 @@ public class Clipboard {
 	// Save a schematic to a file
 	public boolean saveToFile (String path) {
 		path = ("plugins/14erEdit/schematics/" + path).replace("/", File.separator);
-		Schematic schem = new Schematic(x, y, z, width, height, length, blockData);
+		int[] origin = {x,y,z};
+		int[] dimensions = {width,height,length};
+		Schematic schem = new Schematic(origin, dimensions, blockData);
 		return schem.saveSchematic(path);
 	}
 	

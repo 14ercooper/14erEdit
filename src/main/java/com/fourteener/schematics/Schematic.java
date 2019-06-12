@@ -19,11 +19,14 @@ import java.util.LinkedList;
 // A material-based schematic system for Minecraft
 @SuppressWarnings("serial")
 public class Schematic implements Serializable {
-	private static int formatVersion = 1;		// Stores the format of this schematic
-	private int[] origin = {0, 0, 0};			// Stores the origin/offset of this schematic
-	private int[] dimensions = {0, 0, 0};		// Stores the dimensions of this schematic
-	String author = "Unset", name = "Unset";	// Stores the author and name of this schematic
-	private LinkedList<String> blockData;		// This is where the block data of the schematic gets stored
+	private static int formatVersion = 2;				// Stores the format of this schematic
+	private int[] origin = {0, 0, 0};					// Stores the origin/offset of this schematic
+	private int[] dimensions = {0, 0, 0};				// Stores the dimensions of this schematic
+	String author = "Unset", name = "Unset";			// Stores the author and name of this schematic
+	private LinkedList<String> blockData;				// This is where the block data of the schematic gets stored
+	private LinkedList<TileEntityData> tileEntityData;	// Not yet implemented
+	private LinkedList<EntityData> entityData;			// Not yet implemented
+	private LinkedList<BiomeData> biomeData;			// Not yet implemented
 	
 	/* On the storage of block data using this format
 	 * The blocks should be stored in a LinkedList<String>
@@ -34,30 +37,6 @@ public class Schematic implements Serializable {
 	 * After the creation of a schematic file, the file should not be modified.
 	 * */
 	
-	// A constructor for a schematic
-	public Schematic (int originX, int originY, int originZ, int sizeX, int sizeY, int sizeZ, LinkedList<String> blocks) {
-		origin[0] = originX;
-		origin[1] = originY;
-		origin[2] = originZ;
-		dimensions[0] = sizeX;
-		dimensions[1] = sizeY;
-		dimensions[2] = sizeZ;
-		blockData = blocks;
-	}
-
-	// A constructor for a schematic
-	public Schematic (String schematicName, String schematicAuthor, int originX, int originY, int originZ, int sizeX, int sizeY, int sizeZ, LinkedList<String> blocks) {
-		origin[0] = originX;
-		origin[1] = originY;
-		origin[2] = originZ;
-		dimensions[0] = sizeX;
-		dimensions[1] = sizeY;
-		dimensions[2] = sizeZ;
-		name = schematicName;
-		author = schematicAuthor;
-		blockData = blocks;
-	}
-
 	// A constructor for a schematic
 	// The arrays should be arranged as {x,y,z} and only have 3 elements
 	public Schematic (int[] schematicOrigin, int[] schematicDimensions, LinkedList<String> blocks) {
@@ -70,40 +49,6 @@ public class Schematic implements Serializable {
 	// The arrays should be arranged as {x,y,z} and only have 3 elements
 	public Schematic (String schematicName, String schematicAuthor, int[] schematicOrigin, int[] schematicDimensions, LinkedList<String> blocks) {
 		origin = schematicOrigin;
-		dimensions = schematicDimensions;
-		name = schematicName;
-		author = schematicAuthor;
-		blockData = blocks;
-	}
-
-	// A constructor for a schematic
-	public Schematic (int sizeX, int sizeY, int sizeZ, LinkedList<String> blocks) {
-		dimensions[0] = sizeX;
-		dimensions[1] = sizeY;
-		dimensions[2] = sizeZ;
-		blockData = blocks;
-	}
-
-	// A constructor for a schematic
-	public Schematic (String schematicName, String schematicAuthor, int sizeX, int sizeY, int sizeZ, LinkedList<String> blocks) {
-		dimensions[0] = sizeX;
-		dimensions[1] = sizeY;
-		dimensions[2] = sizeZ;
-		name = schematicName;
-		author = schematicAuthor;
-		blockData = blocks;
-	}
-
-	// A constructor for a schematic
-	// The array should be arranged as {x,y,z} and only have 3 elements
-	public Schematic (int[] schematicDimensions, LinkedList<String> blocks) {
-		dimensions = schematicDimensions;
-		blockData = blocks;
-	}
-
-	// A constructor for a schematic
-	// The array should be arranged as {x,y,z} and only have 3 elements
-	public Schematic (String schematicName, String schematicAuthor, int[] schematicDimensions, LinkedList<String> blocks) {
 		dimensions = schematicDimensions;
 		name = schematicName;
 		author = schematicAuthor;
@@ -167,7 +112,7 @@ public class Schematic implements Serializable {
 	// Get the version compatibility of the schematic loader
 	// If the schematic loaded has a version not in this list, it should not be used and instead loaded with a compatible loader
 	public static int[] getLoaderVersion () {
-		int[] fV = {1};
+		int[] fV = {2};
 		return fV;
 	}
 	
