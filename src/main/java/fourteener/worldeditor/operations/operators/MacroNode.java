@@ -1,7 +1,5 @@
 package fourteener.worldeditor.operations.operators;
 
-import org.bukkit.Bukkit;
-
 import fourteener.worldeditor.main.Main;
 import fourteener.worldeditor.operations.Operator;
 import fourteener.worldeditor.worldeditor.macros.MacroLauncher;
