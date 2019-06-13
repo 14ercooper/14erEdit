@@ -41,6 +41,10 @@ public class MacroLauncher {
 			Main.logDebug("Running vines macro"); // ----
 			return VinesMacro.createMacro(macroArgs, location).performMacro();
 		}
+		else if (macroName.equalsIgnoreCase("biome")) {
+			Main.logDebug("Running biome macro"); // ----
+			return BiomeMacro.createMacro(macroArgs, location).performMacro();
+		}
 		else {
 			return false;
 		}
