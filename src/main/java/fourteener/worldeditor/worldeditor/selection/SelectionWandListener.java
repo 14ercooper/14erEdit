@@ -3,6 +3,7 @@ package fourteener.worldeditor.worldeditor.selection;
 import java.util.ArrayList;
 import java.util.List;
 
+import fourteener.worldeditor.main.Main;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
