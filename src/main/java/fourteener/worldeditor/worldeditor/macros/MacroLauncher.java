@@ -45,6 +45,10 @@ public class MacroLauncher {
 			Main.logDebug("Running biome macro"); // ----
 			return BiomeMacro.createMacro(macroArgs, location).performMacro();
 		}
+		else if (macroName.equalsIgnoreCase("flatten")) {
+			Main.logDebug("Running flatten macro"); // ----
+			return FlattenMacro.createMacro(macroArgs, location).performMacro();
+		}
 		else {
 			return false;
 		}
