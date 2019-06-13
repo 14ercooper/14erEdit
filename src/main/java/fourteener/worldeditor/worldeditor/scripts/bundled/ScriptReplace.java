@@ -12,7 +12,7 @@ import fourteener.worldeditor.worldeditor.scripts.Craftscript;
 public class ScriptReplace extends Craftscript {
 
 	@Override
-	public List<BlockState> perform(LinkedList<String> args, Player player) {
+	public List<BlockState> perform(LinkedList<String> args, Player player, String label) {
 		String blocksToReplace = args.get(0);
 		String[] replaceIndividual = blocksToReplace.split(",");
 		String blocksToSet = args.get(1);

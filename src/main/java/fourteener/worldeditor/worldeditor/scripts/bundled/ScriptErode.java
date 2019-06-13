@@ -11,7 +11,7 @@ import fourteener.worldeditor.worldeditor.scripts.Craftscript;
 public class ScriptErode extends Craftscript {
 
 	@Override
-	public List<BlockState> perform(LinkedList<String> args, Player player) {
+	public List<BlockState> perform(LinkedList<String> args, Player player, String label) {
 		String radius = args.get(0);
 		String modeArg = args.get(1);
 		String mode = "";

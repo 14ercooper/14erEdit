@@ -12,7 +12,7 @@ import fourteener.worldeditor.worldeditor.scripts.Craftscript;
 public class ScriptEllipseBrushReplace extends Craftscript {
 
 	@Override
-	public List<BlockState> perform(LinkedList<String> args, Player player) {
+	public List<BlockState> perform(LinkedList<String> args, Player player, String label) {
 		String rx = args.get(0);
 		String ry = args.get(1);
 		String rz = args.get(2);

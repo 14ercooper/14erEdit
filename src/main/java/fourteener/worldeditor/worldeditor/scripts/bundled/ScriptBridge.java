@@ -12,7 +12,7 @@ import java.util.List;
 
 public class ScriptBridge extends Craftscript {
     @Override
-    public List<BlockState> perform(LinkedList<String> args, Player player) {
+    public List<BlockState> perform(LinkedList<String> args, Player player, String label) {
         SelectionWand wand = null;
         // Make sure this wand comes from the player
         for (SelectionWand s : SelectionWandListener.wands){

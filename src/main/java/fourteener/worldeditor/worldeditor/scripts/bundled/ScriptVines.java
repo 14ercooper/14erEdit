@@ -11,7 +11,7 @@ import fourteener.worldeditor.worldeditor.scripts.Craftscript;
 public class ScriptVines extends Craftscript {
 
 	@Override
-	public List<BlockState> perform(LinkedList<String> args, Player player) {
+	public List<BlockState> perform(LinkedList<String> args, Player player, String label) {
 		String radius = args.get(0);
 		String length = args.get(1);
 		String variance = args.get(2);

@@ -11,7 +11,7 @@ import fourteener.worldeditor.worldeditor.scripts.Craftscript;
 public class ScriptBiome extends Craftscript {
 
 	@Override
-	public List<BlockState> perform(LinkedList<String> args, Player player) {
+	public List<BlockState> perform(LinkedList<String> args, Player player, String label) {
 		String radius = args.get(1);
 		String biome = args.get(0);
 		player.performCommand("fx br s 0 0.5 $ biome{" + radius + ";" + biome + "}");
