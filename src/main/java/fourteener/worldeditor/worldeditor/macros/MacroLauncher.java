@@ -49,6 +49,10 @@ public class MacroLauncher {
 			Main.logDebug("Running flatten macro"); // ----
 			return FlattenMacro.createMacro(macroArgs, location).performMacro();
 		}
+		else if (macroName.equalsIgnoreCase("spike")) {
+			Main.logDebug("Running spike macro"); // ----
+			return SpikeMacro.createMacro(macroArgs, location).performMacro();
+		}
 		else {
 			return false;
 		}

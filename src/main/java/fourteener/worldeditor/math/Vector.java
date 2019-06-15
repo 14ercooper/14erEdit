@@ -17,7 +17,7 @@ public class Vector {
 		return contents;
 	}
 	
-	public double getMagnetude () {
+	public double getMagnitude () {
 		double x = contents[0];
 		double y = contents[1];
 		double z = contents[2];
@@ -25,7 +25,7 @@ public class Vector {
 		return Math.sqrt(x*x + y*y + z*z + w*w);
 	}
 	
-	public double getSquareMagnetude () {
+	public double getSquareMagnitude () {
 		double x = contents[0];
 		double y = contents[1];
 		double z = contents[2];
@@ -34,7 +34,18 @@ public class Vector {
 	}
 	
 	public static Vector normaize (Vector v) {
-		return mult(v, 1.0 / v.getMagnetude());
+		return mult(v, 1.0 / v.getMagnitude());
+	}
+	
+	public static Vector integerize (Vector v) {
+		double[] c = v.getContents();
+		return new Vector (Math.round(c[0]), Math.round(c[1]), Math.round(c[2]), Math.round(c[3]));
+	}
+	
+	public static Vector add (Vector a, Vector b) {
+		double[] aC = a.getContents();
+		double[] bC = b.getContents();
+		return new Vector (aC[0] + bC[0], aC[1] + bC[1], aC[2] + bC[2], aC[3] + bC[3]);
 	}
 	
 	public static double dot (Vector a, Vector b) {
