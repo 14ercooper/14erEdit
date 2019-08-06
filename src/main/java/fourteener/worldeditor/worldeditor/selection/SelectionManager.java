@@ -16,6 +16,20 @@ public class SelectionManager {
 	private double mostNegativeCorner[] = new double[3];
 	private double mostPositiveCorner[] = new double[3];
 	
+	public static SelectionManager getSelectionManager (Player player) {
+		SelectionWand wand = null;
+		for (SelectionWand sw : SelectionWandListener.wands) {
+			if (sw.owner.equals(player))
+				wand = sw;
+		}
+		if (wand != null) {
+			return wand.manager;
+		}
+		else {
+			return null;
+		}
+	}
+	
 	public boolean updatePositionOne (double x, double y, double z, Player player) {
 		positionOne[0] = x;
 		// Use nested ternary operators to clamp y between 0 and 255

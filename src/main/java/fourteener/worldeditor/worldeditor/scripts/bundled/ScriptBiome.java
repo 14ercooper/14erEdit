@@ -8,17 +8,13 @@ import org.bukkit.entity.Player;
 
 import fourteener.worldeditor.worldeditor.scripts.Craftscript;
 
-public class ScriptErode extends Craftscript {
+public class ScriptBiome extends Craftscript {
 
 	@Override
 	public List<BlockState> perform(LinkedList<String> args, Player player, String label) {
-		String radius = args.get(0);
-		String modeArg = args.get(1);
-		String mode = "";
-		if (modeArg.equalsIgnoreCase("cut") || modeArg.equalsIgnoreCase("raise") || modeArg.equalsIgnoreCase("smmoth")) {
-			mode = "melt";
-		}
-		player.performCommand("fx br s 0 0.5 $ erode{" + radius + ";" + mode + ";" + modeArg + "}");
+		String radius = args.get(1);
+		String biome = args.get(0);
+		player.performCommand("fx br s 0 0.5 $ biome{" + radius + ";" + biome + "}");
 		return null;
 	}
 

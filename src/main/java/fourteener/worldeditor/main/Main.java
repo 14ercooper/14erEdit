@@ -82,10 +82,21 @@ public class Main extends JavaPlugin {
 		scriptManager.registerCraftscript("erode", new ScriptErode());
 		scriptManager.registerCraftscript("tree", new ScriptTree());
 		scriptManager.registerCraftscript("grass", new ScriptGrass());
+		scriptManager.registerCraftscript("grassbrush", new ScriptGrassBrush());
+		scriptManager.registerCraftscript("vines", new ScriptVines());
+		scriptManager.registerCraftscript("bridge", new ScriptBridge());
+		scriptManager.registerCraftscript("biome", new ScriptBiome());
+		ScriptFlatten scriptFlatten = new ScriptFlatten();
+		scriptManager.registerCraftscript("flatten", scriptFlatten);
+		scriptManager.registerCraftscript("absflatten", scriptFlatten);
 	}
 	
 	@Override
 	public void onDisable () {
 		
+	}
+	
+	public static void logDebug (String message) {
+		if (isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] " + message); // ----
 	}
 }

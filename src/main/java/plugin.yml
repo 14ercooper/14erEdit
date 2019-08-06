@@ -1,6 +1,6 @@
 main: fourteener.worldeditor.main.Main
 name: 14erEdit
-version: 0.0.4-SNAPSHOT
+version: 0.1.0-SNAPSHOT
 api-version: 1.14
 description: A world editor created by 14er for use by the Minecraft mapmaking community, including the CTMC.
 load: POSTWORLD

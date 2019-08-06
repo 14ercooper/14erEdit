@@ -25,7 +25,7 @@ public class Parser {
 			return null;
 		
 		// Generate the entry node of the operation
-		if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Building entry node from root node"); // -----
+		Main.logDebug("Building entry node from root node"); // -----
 		EntryNode entryNode = EntryNode.createEntryNode(rootNode);
 		return entryNode;
 	}
@@ -35,124 +35,124 @@ public class Parser {
 		index++;
 		
 		if (parts[index].equals("~")) {
-			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Not node created"); // -----
+			Main.logDebug("Not node created"); // -----
 			return NotNode.newNode(parsePart());
 		}
 		else if (parts[index].equals("%")) {
-			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Odds node created"); // -----
+			Main.logDebug("Odds node created"); // -----
 			return OddsNode.newNode(parseNumberNode());
 		}
 		else if (parts[index].equals("&")) {
-			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] And node created"); // -----
+			Main.logDebug("And node created"); // -----
 			return AndNode.newNode(parsePart(), parsePart());
 		}
 		else if (parts[index].equals("|")) {
-			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Or node created"); // -----
+			Main.logDebug("Or node created"); // -----
 			return OrNode.newNode(parsePart(), parsePart());
 		}
 		else if (parts[index].equals("?")) {
-			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] If node created"); // -----
+			Main.logDebug("If node created"); // -----
 			return IfNode.newNode(parsePart(), parsePart(), parsePart());
 		}
 		else if (parts[index].equals(">")) {
-			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Set node created"); // -----
+			Main.logDebug("Set node created"); // -----
 			return SetNode.newNode(parsePart());
 		}
 		else if (parts[index].equals(">>")) {
-			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Set plus node created"); // -----
+			Main.logDebug("Set plus node created"); // -----
 			return SetPlusNode.newNode(parseStringNode());
 		}
 		else if (parts[index].equals("<<")) {
-			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Get block data node created"); // -----
+			Main.logDebug("Get block data node created"); // -----
 			return GetBlockDataNode.newNode();
 		}
 		else if (parts[index].equals("false")) {
-			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] False node created"); // -----
+			Main.logDebug("False node created"); // -----
 			return FalseNode.newNode();
 		}
 		else if (parts[index].equals("true")) {
-			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] True node created"); // -----
+			Main.logDebug("True node created"); // -----
 			return TrueNode.newNode();
 		}
 		else if (parts[index].equals("*")) {
-			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Faces exposed node created"); // -----
+			Main.logDebug("Faces exposed node created"); // -----
 			return FacesExposedNode.newNode(parseNumberNode());
 		}
 		else if (parts[index].equals("@")) {
-			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Block adjacent node created"); // -----
+			Main.logDebug("Block adjacent node created"); // -----
 			return BlockAdjacentNode.newNode(parsePart(), parseNumberNode());
 		}
 		else if (parts[index].equals("<")) {
-			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] XOR node created"); // -----
+			Main.logDebug("XOR node created"); // -----
 			return XorNode.newNode(parsePart(), parsePart());
 		}
 		else if (parts[index].equals("-")) {
-			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Range node created"); // -----
+			Main.logDebug("Range node created"); // -----
 			return RangeNode.newNode(parseNumberNode(), parseNumberNode());
 		}
 		else if (parts[index].equals("$")) {
-			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Macro node created"); // -----
+			Main.logDebug("Macro node created"); // -----
 			return MacroNode.newNode(parseStringNode());
 		}
 		else if (parts[index].equals("$$")) {
-			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Craftscript node created"); // -----
+			Main.logDebug("Craftscript node created"); // -----
 			return CraftscriptNode.newNode(parseStringNode());
 		}
 		else if (parts[index].equals("^")) {
-			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Blocks above node created"); // -----
+			Main.logDebug("Blocks above node created"); // -----
 			return BlocksAboveNode.newNode(parseRangeNode(), parsePart());
 		}
 		else if (parts[index].equals("_")) {
-			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Blocks below node created"); // -----
+			Main.logDebug("Blocks below node created"); // -----
 			return BlocksBelowNode.newNode(parseRangeNode(), parsePart());
 		}
 		else if (parts[index].equals("!")) {
-			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Ignore physics node created"); // -----
+			Main.logDebug("Ignore physics node created"); // -----
 			return IgnorePhysicsNode.newNode(parsePart());
 		}
 		else if (parts[index].equals("#")) {
-			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Simplex noise node created"); // -----
+			Main.logDebug("Simplex noise node created"); // -----
 			return SimplexNode.newNode(parseNumberNode(), parseNumberNode());
 		}
 		else if (parts[index].equals(";")) {
-			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Remainder node created"); // -----
+			Main.logDebug("Remainder node created"); // -----
 			return RemainderNode.newNode(parseStringNode(), parseNumberNode());
 		}
 		else if (parts[index].equals("same")) {
-			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Same node created"); // -----
+			Main.logDebug("Same node created"); // -----
 			return SameNode.newNode();
 		}
 		else if (Material.matchMaterial(parts[index]) != null) {
-			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Block node created, type " + Material.matchMaterial(parts[index]).name()); // -----
+			Main.logDebug("Block node created, type " + Material.matchMaterial(parts[index]).name()); // -----
 			return BlockNode.newNode(Material.matchMaterial(parts[index]));
 		}
-		else if (Material.matchMaterial(parts[index].split("[")[0]) != null && parts[index].split("[").length > 1) {
-			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Block node created, type " + Material.matchMaterial(parts[index]).name()); // -----
+		else if (Material.matchMaterial(parts[index].split("\\[")[0]) != null && parts[index].split("\\[").length > 1) {
+			Main.logDebug("Block node created, type " + Material.matchMaterial(parts[index].split("\\[")[0]).name()); // -----
 			BlockData bd = Bukkit.getServer().createBlockData(parts[index]);
-			Material mat = Material.matchMaterial(parts[index].split("[")[0]);
+			Material mat = Material.matchMaterial(parts[index].split("\\[")[0]);
 			return BlockNode.newNode(mat, bd);
 		}
 		else {
-			if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] New node created"); // -----
+			Main.logDebug("New node created"); // -----
 			return new Node();
 		}
 	}
 	
 	private static NumberNode parseNumberNode () {
 		index ++;
-		if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Number node created"); // -----
+		Main.logDebug("Number node created"); // -----
 		return NumberNode.newNode(parts[index]);
 	}
 	
 	private static RangeNode parseRangeNode () {
 		index ++;
-		if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Range node created"); // -----
+		Main.logDebug("Range node created"); // -----
 		return RangeNode.newNode(parseNumberNode(), parseNumberNode());
 	}
 	
 	private static String parseStringNode () {
 		index ++;
-		if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] String node created"); // -----
+		Main.logDebug("String node created"); // -----
 		return parts[index];
 	}
 }

@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
@@ -143,7 +142,7 @@ public class SelectionCommand {
 	private static boolean operate (SelectionManager manager, SelectionWand wand, String[] brushOperation) {
 		// Build an array of blocks within this selection
 		List<Block> blockArray = manager.getBlocks();
-		if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Block array size is " + Integer.toString(blockArray.size())); // -----
+		Main.logDebug("Block array size is " + Integer.toString(blockArray.size())); // -----
 		
 		// Store an undo
 		try {
@@ -177,7 +176,7 @@ public class SelectionCommand {
 		// Finally, perform the operation
 		if (operator == null)
 			return false;
-		if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Operating on selection"); // -----
+		Main.logDebug("Operating on selection"); // -----
 		List<BlockState> operatedList = new ArrayList<BlockState>();
 		for (BlockState bs : snapshotArray) {
 			operator.operateOnBlock(bs, wand.owner);

@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
@@ -236,7 +235,7 @@ public class Brush {
 		if (blockArray.isEmpty()) {
 			return false;
 		}
-		if (Main.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] Block array size is " + Integer.toString(blockArray.size())); // -----
+		Main.logDebug("Block array size is " + Integer.toString(blockArray.size())); // -----
 		
 		List<BlockState> snapshotArray = new ArrayList<BlockState>();
 		for (Block b : blockArray) {
@@ -244,7 +243,7 @@ public class Brush {
 		}
 		
 		// Store an undo
-		UndoManager.getUndo(owner).storeUndo(UndoElement.newUndoElementFromStates(snapshotArray));
+		UndoManager.getUndo(owner).storeUndo(UndoElement.newUndoElement(blockArray));
 		
 		// Operate on the blocks
 		List<BlockState> operatedArray = new ArrayList<BlockState>();

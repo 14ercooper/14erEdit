@@ -8,17 +8,21 @@ import org.bukkit.entity.Player;
 
 import fourteener.worldeditor.worldeditor.scripts.Craftscript;
 
-public class ScriptErode extends Craftscript {
+public class ScriptVines extends Craftscript {
 
 	@Override
 	public List<BlockState> perform(LinkedList<String> args, Player player, String label) {
 		String radius = args.get(0);
-		String modeArg = args.get(1);
-		String mode = "";
-		if (modeArg.equalsIgnoreCase("cut") || modeArg.equalsIgnoreCase("raise") || modeArg.equalsIgnoreCase("smmoth")) {
-			mode = "melt";
+		String length = args.get(1);
+		String variance = args.get(2);
+		String density;
+		if (args.size() > 3) {
+			density = args.get(3);
 		}
-		player.performCommand("fx br s 0 0.5 $ erode{" + radius + ";" + mode + ";" + modeArg + "}");
+		else {
+			density = "0.2";
+		}
+		player.performCommand("fx br s 0 0.5 $ vines{" + radius + ";" + length + ";" + variance + ";" + density + "}");
 		return null;
 	}
 

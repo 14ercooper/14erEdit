@@ -12,7 +12,7 @@ import java.lang.Double;
 
 public class ScriptGrass extends Craftscript {
     @Override
-    public List<BlockState> perform(LinkedList<String> args, Player player) {
+    public List<BlockState> perform(LinkedList<String> args, Player player, String label) {
         String opToRun = "";
         // Check for missing args to fill in with "default" brush
         // Example brush:   /fx sel op ? air ? _ - 1 1 ~ air ? ^ - 1 5 air ? % 50 ? % 80 > grass ? % 50 > tall_grass ? % 50 > poppy > dandelion false false false false
@@ -30,7 +30,7 @@ public class ScriptGrass extends Craftscript {
                 } catch (Exception e) {}
             }
             player.performCommand("fx sel op ? air ? _ - 1 1 ~ air ? ^ - 1 "+ blocksAbove +" air ? % "+ (density * 100.0) + " ? % 80 > grass ? % 50 > tall_grass ? % 50 > poppy > dandelion false false false false");
-            player.performCommand("fx sel op ? air ? _ - 1 1 minecraft:tall_grass[half=lower] >> minecraft:tall_grass[half=upper]");
+            player.performCommand("fx sel op ? air ? _ - 1 1 minecraft:tall_grass[half=lower] >> minecraft:tall_grass[half=upper] false false");
             return null;
         }
 

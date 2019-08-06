@@ -11,7 +11,7 @@ import fourteener.worldeditor.worldeditor.scripts.Craftscript;
 public class ScriptTree extends Craftscript{
 
 	@Override
-	public List<BlockState> perform(LinkedList<String> args, Player player) {
+	public List<BlockState> perform(LinkedList<String> args, Player player, String label) {
 		String treeType = args.get(0);
 		String treeSize = args.get(1);
 		String treeLeaves;
@@ -25,7 +25,7 @@ public class ScriptTree extends Craftscript{
 			treeLeaves = args.get(2);
 			treeWood = args.get(3);
 		}
-		player.performCommand("fx br s 0 0.5 $ tree{" + treeType + "," + treeLeaves + "," + treeWood + "," + treeSize + "," + treeSizeVariance + "}");
+		player.performCommand("fx br s 0 0.5 $ tree{" + treeType + ";" + treeLeaves + ";" + treeWood + ";" + treeSize + ";" + treeSizeVariance + "}");
 		return null;
 	}
 }

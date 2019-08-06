@@ -4,3 +4,5 @@ cbin/
 .settings/
 target/
 *.iml
+bash.exe.stackdump
+MovePlugin.bat

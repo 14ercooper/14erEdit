@@ -35,7 +35,7 @@ public class CraftscriptManager {
 		catch (Exception e) {}
 		UndoManager.getUndo(player).startTrackingConsolidatedUndo();
 		try {
-			List<BlockState> toStoreInUndo = registeredScripts.get(label).perform(args, player);
+			List<BlockState> toStoreInUndo = registeredScripts.get(label).perform(args, player, label);
 			if (toStoreInUndo == null && UndoManager.getUndo(player).getNumToConsolidate() == 0) {
 				return UndoManager.getUndo(player).cancelConsolidatedUndo();
 			}

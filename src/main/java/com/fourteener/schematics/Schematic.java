@@ -24,8 +24,11 @@ public class Schematic implements Serializable {
 	private int[] dimensions = {0, 0, 0};				// Stores the dimensions of this schematic
 	String author = "Unset", name = "Unset";			// Stores the author and name of this schematic
 	private LinkedList<String> blockData;				// This is where the block data of the schematic gets stored
+	@SuppressWarnings("unused")
 	private LinkedList<TileEntityData> tileEntityData;	// Not yet implemented
+	@SuppressWarnings("unused")
 	private LinkedList<EntityData> entityData;			// Not yet implemented
+	@SuppressWarnings("unused")
 	private LinkedList<BiomeData> biomeData;			// Not yet implemented
 	
 	/* On the storage of block data using this format

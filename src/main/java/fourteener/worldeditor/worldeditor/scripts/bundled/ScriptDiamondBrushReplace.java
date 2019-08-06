@@ -12,7 +12,7 @@ import fourteener.worldeditor.worldeditor.scripts.Craftscript;
 public class ScriptDiamondBrushReplace extends Craftscript{
 
 	@Override
-	public List<BlockState> perform(LinkedList<String> args, Player player) {
+	public List<BlockState> perform(LinkedList<String> args, Player player, String label) {
 		String brushRadius = args.get(0);
 		String blocksToReplace = args.get(1);
 		String[] replaceIndividual = blocksToReplace.split(",");

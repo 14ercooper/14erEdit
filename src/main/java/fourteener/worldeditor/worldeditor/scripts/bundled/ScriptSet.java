@@ -12,7 +12,7 @@ import fourteener.worldeditor.worldeditor.scripts.Craftscript;
 public class ScriptSet extends Craftscript {
 
 	@Override
-	public List<BlockState> perform(LinkedList<String> args, Player player) {
+	public List<BlockState> perform(LinkedList<String> args, Player player, String label) {
 		String blocksToSet = args.get(0);
 		String[] individualBlocks = blocksToSet.split(",");
 		String opToRun = "";

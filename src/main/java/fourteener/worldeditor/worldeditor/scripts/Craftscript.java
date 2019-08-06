@@ -7,5 +7,5 @@ import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 
 public abstract class Craftscript {
-	public abstract List<BlockState> perform (LinkedList<String> args, Player player);
+	public abstract List<BlockState> perform (LinkedList<String> args, Player player, String label);
 }
