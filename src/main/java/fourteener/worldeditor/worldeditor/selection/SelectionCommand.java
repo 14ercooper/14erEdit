@@ -125,6 +125,16 @@ public class SelectionCommand {
 			return ClipboardManager.getClipboard(wand.owner).mirrorClipboard(args[2].toLowerCase());
 		}
 		
+		// Update pos1
+		else if (args[1].equalsIgnoreCase("pos1")) {
+			return manager.updatePositionOne(player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getZ(), wand.owner);
+		}
+		
+		// Update pos2
+		else if (args[1].equalsIgnoreCase("pos2")) {
+			return manager.updatePositionOne(player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getZ(), wand.owner);
+		}
+		
 		// Handles schematics
 		else if (args[1].equalsIgnoreCase("schematic") || args[1].equalsIgnoreCase("schem")) {
 			if (args[2].equalsIgnoreCase("save")) {
