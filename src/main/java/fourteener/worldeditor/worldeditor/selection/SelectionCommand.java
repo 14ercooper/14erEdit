@@ -119,6 +119,12 @@ public class SelectionCommand {
 			return manager.resetSelection();
 		}
 		
+		// Mirror the clipboard
+		else if (args[1].equalsIgnoreCase("mirror")) {
+			player.sendMessage("§dSelection mirrored");
+			return ClipboardManager.getClipboard(wand.owner).mirrorClipboard(args[2].toLowerCase());
+		}
+		
 		// Handles schematics
 		else if (args[1].equalsIgnoreCase("schematic") || args[1].equalsIgnoreCase("schem")) {
 			if (args[2].equalsIgnoreCase("save")) {

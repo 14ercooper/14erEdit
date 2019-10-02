@@ -31,6 +31,97 @@ public class Clipboard {
 		return c;
 	}
 	
+	public boolean mirrorClipboard (String direction) {
+		// Get the mirror direction and mirrors the origin
+		// 2 is X, 3 is Y, 5 is Z
+		int dir = 1;
+		if (direction.indexOf("x") >= 0) {
+			dir *= 2;
+			x *= -1;
+		}
+		else if (direction.indexOf("y") >= 0) {
+			dir *= 3;
+			y *= -1;
+		}
+		else if (direction.indexOf("z") >= 0) {
+			dir *= 5;
+			z *= -1;
+		}
+		else {
+			Main.logDebug("Invalid flip direction");
+			return false;
+		}
+		
+		// Mirror the list
+		// Mirror over X
+		if (dir % 2 == 0) {
+			// Create a new array to store the mirror
+			int size = length * width * height;
+			LinkedList<String> blockList = new LinkedList<String>();
+			for (int i = 0; i < size; i++) {
+				blockList.add("");
+			}
+			
+			// Mirror into the new array
+			for (int xN = 0; xN < width; xN++) {
+				for (int yN = 0; yN < height; yN++) {
+					for (int zN = 0; zN < length; zN++) {
+						blockList.set((width - 1 - xN) + (zN * width) * (yN * width * length), blockData.get(xN + (zN * width) * (yN * width * length)));
+					}
+				}
+			}
+			
+			// Replace the old array with the new array
+			blockData = blockList;
+		}
+		
+		// Mirror over Y
+		else if (dir % 3 == 0) {
+			// Create a new array to store the mirror
+			int size = length * width * height;
+			LinkedList<String> blockList = new LinkedList<String>();
+			for (int i = 0; i < size; i++) {
+				blockList.add("");
+			}
+			
+			// Mirror into the new array
+			for (int xN = 0; xN < width; xN++) {
+				for (int yN = 0; yN < height; yN++) {
+					for (int zN = 0; zN < length; zN++) {
+						blockList.set(xN + (zN * width) * ((height - 1 - yN) * width * length), blockData.get(xN + (zN * width) * (yN * width * length)));
+					}
+				}
+			}
+			
+			// Replace the old array with the new array
+			blockData = blockList;
+		}
+		
+		// Mirror over Z
+		else if (dir % 5 == 0) {
+			// Create a new array to store the mirror
+			int size = length * width * height;
+			LinkedList<String> blockList = new LinkedList<String>();
+			for (int i = 0; i < size; i++) {
+				blockList.add("");
+			}
+			
+			// Mirror into the new array
+			for (int xN = 0; xN < width; xN++) {
+				for (int yN = 0; yN < height; yN++) {
+					for (int zN = 0; zN < length; zN++) {
+						blockList.set(xN + ((length - 1 - zN) * width) * (yN * width * length), blockData.get(xN + (zN * width) * (yN * width * length)));
+					}
+				}
+			}
+			
+			// Replace the old array with the new array
+			blockData = blockList;
+		}
+		
+		return true;
+	}
+	
 	// X,Y,Z stores the origin of the clipboard; blocks is the blocks to save
 	public boolean saveToClipboard (int xOrigin, int yOrigin, int zOrigin, List<Block> blocks) {
 		// First, figure out the most negative corner of the selection
