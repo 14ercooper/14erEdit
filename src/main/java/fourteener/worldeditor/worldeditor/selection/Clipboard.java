@@ -66,6 +66,7 @@ public class Clipboard {
 			for (int xN = 0; xN < width; xN++) {
 				for (int yN = 0; yN < height; yN++) {
 					for (int zN = 0; zN < length; zN++) {
+						// Index out of bounds on all of these (XYZ)
 						blockList.set((width - 1 - xN) + (zN * width) * (yN * width * length), blockData.get(xN + (zN * width) * (yN * width * length)));
 					}
 				}
