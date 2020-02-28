@@ -89,6 +89,10 @@ public class Main extends JavaPlugin {
 		ScriptFlatten scriptFlatten = new ScriptFlatten();
 		scriptManager.registerCraftscript("flatten", scriptFlatten);
 		scriptManager.registerCraftscript("absflatten", scriptFlatten);
+		ScriptOverlay scriptOverlay = new ScriptOverlay();
+		scriptManager.registerCraftscript("overlay", scriptOverlay);
+		ScriptLine scriptLine = new ScriptLine();
+		scriptManager.registerCraftscript("line", scriptLine);
 	}
 	
 	@Override

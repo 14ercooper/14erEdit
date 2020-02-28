@@ -127,12 +127,12 @@ public class SelectionCommand {
 		
 		// Update pos1
 		else if (args[1].equalsIgnoreCase("pos1")) {
-			return manager.updatePositionOne(player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getZ(), wand.owner);
+			return manager.updatePositionOne(player.getLocation().getBlockX(), player.getLocation().getBlockY(), player.getLocation().getBlockZ(), wand.owner);
 		}
 		
 		// Update pos2
 		else if (args[1].equalsIgnoreCase("pos2")) {
-			return manager.updatePositionOne(player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getZ(), wand.owner);
+			return manager.updatePositionOne(player.getLocation().getBlockX(), player.getLocation().getBlockY(), player.getLocation().getBlockZ(), wand.owner);
 		}
 		
 		// Handles schematics
