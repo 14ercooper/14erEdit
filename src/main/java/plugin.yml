@@ -16,8 +16,11 @@ commands:
         usage: "Usage: /undo [number]"
     redo:
         description: Redo edits to the world
-        usage: "Usage: /redo [number]]"
+        usage: "Usage: /redo [number]"
     script:
         description: Handles the ability to use craftscripts
-        usage: "Usage: /redo [number]]"
+        usage: "Usage: /script <script> [args]"
         aliases: [cs]
+    run:
+        description: Run an operation without a defined world position
+        usage: "Usage: /run <operation>"
