@@ -122,6 +122,62 @@ public class Parser {
 			Main.logDebug("Same node created"); // -----
 			return SameNode.newNode();
 		}
+		else if (parts[index].equals("num")) {
+			Main.logDebug("Numeric var node created"); // -----
+			return NumericVarNode.newNode(parseStringNode());
+		}
+		else if (parts[index].equals("blk")) {
+			Main.logDebug("Block var node created"); // -----
+			return BlockVarNode.newNode(parseStringNode());
+		}
+		else if (parts[index].equals("itm")) {
+			Main.logDebug("Item var node created"); // -----
+			return ItemVarNode.newNode(parseStringNode());
+		}
+		else if (parts[index].equals("/")) {
+			Main.logDebug("Linker node created"); // -----
+			return LinkerNode.newNode(parsePart(), parsePart());
+		}
+		else if (parts[index].equals(">>n")) {
+			Main.logDebug("Set NBT node created"); // -----
+			return SetNBTNode.newNode(parseStringNode());
+		}
+		else if (parts[index].equals("loop")) {
+			Main.logDebug("While loop node created"); // -----
+			return WhileNode.newNode(parsePart(), parsePart());
+		}
+		else if (parts[index].equals("-eq")) {
+			Main.logDebug("Numeric equality node created"); // -----
+			return NumericEqualityNode.newNode(parseStringNode(), parseNumberNode());
+		}
+		else if (parts[index].equals("-lt")) {
+			Main.logDebug("Numeric less than node created"); // -----
+			return NumericLessNode.newNode(parseStringNode(), parseNumberNode());
+		}
+		else if (parts[index].equals("-gt")) {
+			Main.logDebug("Numeric greater than node created"); // -----
+			return NumericGreaterNode.newNode(parseStringNode(), parseNumberNode());
+		}
+		else if (parts[index].equals("-lte")) {
+			Main.logDebug("Numeric less than or equal node created"); // -----
+			return NumericLessEqualNode.newNode(parseStringNode(), parseNumberNode());
+		}
+		else if (parts[index].equals("-gte")) {
+			Main.logDebug("Numeric greater than or equal node created"); // -----
+			return NumericGreaterEqualNode.newNode(parseStringNode(), parseNumberNode());
+		}
+		else if (parts[index].equals(">b")) {
+			Main.logDebug("Set block from variable node created"); // -----
+			return SetBlockVarNode.newNode(parseStringNode());
+		}
+		else if (parts[index].equals(">i")) {
+			Main.logDebug("Get item from variable node created"); // -----
+			return GetItemVarNode.newNode(parseStringNode());
+		}
+		else if (parts[index].equals("var")) {
+			Main.logDebug("Modify variable node created"); // -----
+			return ModifyVarNode.newNode(parseStringNode(), parseStringNode(), parseStringNode());
+		}
 		else if (Material.matchMaterial(parts[index]) != null) {
 			Main.logDebug("Block node created, type " + Material.matchMaterial(parts[index]).name()); // -----
 			return BlockNode.newNode(Material.matchMaterial(parts[index]));

@@ -8,6 +8,7 @@ import java.util.Map;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 
+import fourteener.worldeditor.main.Main;
 import fourteener.worldeditor.worldeditor.undo.UndoElement;
 import fourteener.worldeditor.worldeditor.undo.UndoManager;
 
@@ -29,6 +30,7 @@ public class CraftscriptManager {
 	
 	// Run the Craftscript label, with arguments args, and player player
 	public boolean runCraftscript (String label, LinkedList<String> args, Player player) {
+		Main.logDebug("Calling Craftsript: " + label);
 		try {
 			UndoManager.getUndo(player).cancelConsolidatedUndo();
 		}

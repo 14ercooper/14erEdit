@@ -119,6 +119,22 @@ public class SelectionCommand {
 			return manager.resetSelection();
 		}
 		
+		// Mirror the clipboard
+		else if (args[1].equalsIgnoreCase("mirror")) {
+			player.sendMessage("§dSelection mirrored");
+			return ClipboardManager.getClipboard(wand.owner).mirrorClipboard(args[2].toLowerCase());
+		}
+		
+		// Update pos1
+		else if (args[1].equalsIgnoreCase("pos1")) {
+			return manager.updatePositionOne(player.getLocation().getBlockX(), player.getLocation().getBlockY(), player.getLocation().getBlockZ(), wand.owner);
+		}
+		
+		// Update pos2
+		else if (args[1].equalsIgnoreCase("pos2")) {
+			return manager.updatePositionOne(player.getLocation().getBlockX(), player.getLocation().getBlockY(), player.getLocation().getBlockZ(), wand.owner);
+		}
+		
 		// Handles schematics
 		else if (args[1].equalsIgnoreCase("schematic") || args[1].equalsIgnoreCase("schem")) {
 			if (args[2].equalsIgnoreCase("save")) {

@@ -1,6 +1,6 @@
 main: fourteener.worldeditor.main.Main
 name: 14erEdit
-version: 0.1.0-SNAPSHOT
+version: 1.0.0
 api-version: 1.14
 description: A world editor created by 14er for use by the Minecraft mapmaking community, including the CTMC.
 load: POSTWORLD
@@ -16,8 +16,11 @@ commands:
         usage: "Usage: /undo [number]"
     redo:
         description: Redo edits to the world
-        usage: "Usage: /redo [number]]"
+        usage: "Usage: /redo [number]"
     script:
         description: Handles the ability to use craftscripts
-        usage: "Usage: /redo [number]]"
+        usage: "Usage: /script <script> [args]"
         aliases: [cs]
+    run:
+        description: Run an operation without a defined world position
+        usage: "Usage: /run <operation>"

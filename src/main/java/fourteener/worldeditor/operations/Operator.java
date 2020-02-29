@@ -1,16 +1,25 @@
 package fourteener.worldeditor.operations;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.bukkit.Bukkit;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 
 import fourteener.worldeditor.operations.operators.EntryNode;
+import fourteener.worldeditor.operations.type.BlockVar;
+import fourteener.worldeditor.operations.type.ItemVar;
+import fourteener.worldeditor.operations.type.NumericVar;
 
 public class Operator {
 	public static Operator currentOperator;
 	public static BlockState currentBlock;
 	public static Player currentPlayer;
 	public static boolean ignoringPhysics = false; // False to ignore physics, true to perform physics 'cause Minecraft is screwy
+	public static Map<String, BlockVar> blockVars;
+	public static Map<String, ItemVar> itemVars;
+	public static Map<String, NumericVar> numericVars;
 	
 	public EntryNode entryNode;
 	
@@ -19,6 +28,9 @@ public class Operator {
 		currentOperator = this;
 		currentBlock = block;
 		currentPlayer = p;
+		blockVars = new HashMap<String, BlockVar>();
+		itemVars = new HashMap<String, ItemVar>();
+		numericVars = new HashMap<String, NumericVar>();
 		
 		// Perform the operation
 		return entryNode.performNode();
