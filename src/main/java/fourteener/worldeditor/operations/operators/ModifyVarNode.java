@@ -151,7 +151,7 @@ public class ModifyVarNode extends Node {
 			// Count mod
 			if (mod.get(0).equalsIgnoreCase("cnt")) {
 				ItemVar var = Operator.itemVars.get(name);
-				var.setCount(Integer.parseInt(mod.get(0)));
+				var.setCount(Integer.parseInt(mod.get(1)));
 				Operator.itemVars.put(name, var);
 				return true;
 			}
