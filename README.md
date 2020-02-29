@@ -29,8 +29,6 @@ You can access a rudamentary documentation [here](https://docs.google.com/docume
 
 14erEdit on Spigot [here](https://www.spigotmc.org/resources/14eredit.75610/).
 
-Contribute to help me make more stuff [one time](https://www.paypal.me/14ercooper) or [repeated](https://www.patreon.com/14er).
-
 ### On version numbering
 
 ##### PREFIX vA.B.C-POSTFIX
