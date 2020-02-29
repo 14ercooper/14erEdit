@@ -138,6 +138,34 @@ public class Parser {
 			Main.logDebug("Linker node created"); // -----
 			return LinkerNode.newNode(parsePart(), parsePart());
 		}
+		else if (parts[index].equals(">>n")) {
+			Main.logDebug("Set NBT node created"); // -----
+			return SetNBTNode.newNode(parseStringNode());
+		}
+		else if (parts[index].equals("loop")) {
+			Main.logDebug("While loop node created"); // -----
+			return WhileNode.newNode(parsePart(), parsePart());
+		}
+		else if (parts[index].equals("-eq")) {
+			Main.logDebug("Numeric equality node created"); // -----
+			return NumericEqualityNode.newNode(parseStringNode(), parseNumberNode());
+		}
+		else if (parts[index].equals("-lt")) {
+			Main.logDebug("Numeric less than node created"); // -----
+			return NumericLessNode.newNode(parseStringNode(), parseNumberNode());
+		}
+		else if (parts[index].equals("-gt")) {
+			Main.logDebug("Numeric greater than node created"); // -----
+			return NumericGreaterNode.newNode(parseStringNode(), parseNumberNode());
+		}
+		else if (parts[index].equals("-lte")) {
+			Main.logDebug("Numeric less than or equal node created"); // -----
+			return NumericLessEqualNode.newNode(parseStringNode(), parseNumberNode());
+		}
+		else if (parts[index].equals("-gte")) {
+			Main.logDebug("Numeric greater than or equal node created"); // -----
+			return NumericGreaterEqualNode.newNode(parseStringNode(), parseNumberNode());
+		}
 		else if (Material.matchMaterial(parts[index]) != null) {
 			Main.logDebug("Block node created, type " + Material.matchMaterial(parts[index]).name()); // -----
 			return BlockNode.newNode(Material.matchMaterial(parts[index]));
