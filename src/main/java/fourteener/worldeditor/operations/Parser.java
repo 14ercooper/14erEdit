@@ -122,6 +122,22 @@ public class Parser {
 			Main.logDebug("Same node created"); // -----
 			return SameNode.newNode();
 		}
+		else if (parts[index].equals("num")) {
+			Main.logDebug("Numeric var node created"); // -----
+			return NumericVarNode.newNode(parseStringNode());
+		}
+		else if (parts[index].equals("blk")) {
+			Main.logDebug("Block var node created"); // -----
+			return BlockVarNode.newNode(parseStringNode());
+		}
+		else if (parts[index].equals("itm")) {
+			Main.logDebug("Item var node created"); // -----
+			return ItemVarNode.newNode(parseStringNode());
+		}
+		else if (parts[index].equals("/")) {
+			Main.logDebug("Linker node created"); // -----
+			return LinkerNode.newNode(parsePart(), parsePart());
+		}
 		else if (Material.matchMaterial(parts[index]) != null) {
 			Main.logDebug("Block node created, type " + Material.matchMaterial(parts[index]).name()); // -----
 			return BlockNode.newNode(Material.matchMaterial(parts[index]));
