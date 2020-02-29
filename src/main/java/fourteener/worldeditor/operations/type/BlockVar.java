@@ -1,9 +1,9 @@
 package fourteener.worldeditor.operations.type;
 
 public class BlockVar {
-	String type;
-	String data;
-	String nbt;
+	String type = "";
+	String data = "";
+	String nbt = "";
 	
 	public String getType() {
 		return type;

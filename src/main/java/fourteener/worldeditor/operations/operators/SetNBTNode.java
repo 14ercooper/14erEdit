@@ -3,6 +3,7 @@ package fourteener.worldeditor.operations.operators;
 import org.bukkit.Bukkit;
 
 import fourteener.worldeditor.operations.Operator;
+import net.md_5.bungee.api.ChatColor;
 
 public class SetNBTNode extends Node {
 	
@@ -19,7 +20,7 @@ public class SetNBTNode extends Node {
 		command += Operator.currentBlock.getLocation().getBlockX() + " ";
 		command += Operator.currentBlock.getLocation().getBlockY() + " ";
 		command += Operator.currentBlock.getLocation().getBlockZ() + " ";
-		command += nbt;
+		command += ChatColor.translateAlternateColorCodes('&', nbt);
 		Bukkit.dispatchCommand(Bukkit.getServer().getConsoleSender(), command);
 		return true;
 	}

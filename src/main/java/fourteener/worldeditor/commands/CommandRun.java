@@ -1,7 +1,5 @@
 package fourteener.worldeditor.commands;
 
-import java.util.Arrays;
-
 import org.bukkit.block.BlockState;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -16,10 +14,14 @@ public class CommandRun implements CommandExecutor {
 
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		if (sender instanceof Player) {
-			String str = Arrays.toString(args);
-			Operator op = Operator.newOperator(str);
+			String opStr = "";
+			for (String s : args) {
+				opStr = opStr.concat(s).concat(" ");
+			}
+			Operator op = Operator.newOperator(opStr);
 			BlockState bs = Main.world.getBlockAt(((Player) sender).getLocation()).getState();
 			op.operateOnBlock(bs, (Player) sender);
+			return true;
 		}
 		return false;
 	}

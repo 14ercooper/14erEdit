@@ -1,16 +1,18 @@
 package fourteener.worldeditor.operations.type;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class ItemVar {
-	String type;
-	String name;
-	List<String> lore;
-	Map<String, Integer> enchants;
-	Map<String, String> attributes;
-	int count;
-	List<String> flags;
+	String type = "";
+	String name = "";
+	List<String> lore = new ArrayList<String>();
+	Map<String, Integer> enchants = new HashMap<String, Integer>();
+	Map<String, String> attributes = new HashMap<String, String>();
+	int count = 1;
+	List<String> flags = new ArrayList<String>();
 	
 	public String getType() {
 		return type;
@@ -52,7 +54,7 @@ public class ItemVar {
 	public void setCount(int newVal) {
 		count = newVal;
 	}
-	public void setFlag(List<String> newVal) {
+	public void setFlags(List<String> newVal) {
 		flags = newVal;
 	}
 }

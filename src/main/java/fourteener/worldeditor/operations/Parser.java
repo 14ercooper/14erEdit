@@ -166,6 +166,18 @@ public class Parser {
 			Main.logDebug("Numeric greater than or equal node created"); // -----
 			return NumericGreaterEqualNode.newNode(parseStringNode(), parseNumberNode());
 		}
+		else if (parts[index].equals(">b")) {
+			Main.logDebug("Set block from variable node created"); // -----
+			return SetBlockVarNode.newNode(parseStringNode());
+		}
+		else if (parts[index].equals(">i")) {
+			Main.logDebug("Get item from variable node created"); // -----
+			return GetItemVarNode.newNode(parseStringNode());
+		}
+		else if (parts[index].equals("var")) {
+			Main.logDebug("Modify variable node created"); // -----
+			return ModifyVarNode.newNode(parseStringNode(), parseStringNode(), parseStringNode());
+		}
 		else if (Material.matchMaterial(parts[index]) != null) {
 			Main.logDebug("Block node created, type " + Material.matchMaterial(parts[index]).name()); // -----
 			return BlockNode.newNode(Material.matchMaterial(parts[index]));
