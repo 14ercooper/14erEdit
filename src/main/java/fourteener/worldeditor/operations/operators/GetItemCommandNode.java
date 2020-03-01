@@ -32,11 +32,13 @@ public class GetItemCommandNode extends Node {
 			File f = new File(path.replace('/', File.separatorChar));
 			if (!f.exists()) {
 				f.getParentFile().mkdir();
+				f.getParentFile().getParentFile().mkdir();
 				f.createNewFile();
 			}
 			else {
 				f.delete();
 				f.getParentFile().mkdir();
+				f.getParentFile().getParentFile().mkdir();
 				f.createNewFile();
 			}
 			Files.write(Paths.get(path.replace('/', File.separatorChar)), command.getBytes());

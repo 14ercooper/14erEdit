@@ -27,8 +27,8 @@ public class Main extends JavaPlugin {
 		// Register commands
 		this.getCommand("fx").setExecutor(new CommandFx());
 		CommandUndo undoCmd = new CommandUndo();
-		this.getCommand("undo").setExecutor(undoCmd);
-		this.getCommand("redo").setExecutor(undoCmd);
+		this.getCommand("un").setExecutor(undoCmd);
+		this.getCommand("re").setExecutor(undoCmd);
 		this.getCommand("script").setExecutor(new CommandScript());
 		this.getCommand("run").setExecutor(new CommandRun());
 		

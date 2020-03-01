@@ -60,7 +60,7 @@ public class MonsterVar {
 		}
 		// Gear and drop chances
 		// Hands
-		if (!(hand.isEmpty() || offhand.isEmpty())) {
+		if (!(hand.isEmpty() && offhand.isEmpty())) {
 			s += ",HandItems:[";
 			if (hand.isEmpty()) s += "{}";
 			else s += Operator.itemVars.get(hand).asNBT();
@@ -71,7 +71,7 @@ public class MonsterVar {
 			s += "]";
 		}
 		// Armor
-		if (!(head.isEmpty() || chest.isEmpty() || legs.isEmpty() || feet.isEmpty())) {
+		if (!(head.isEmpty() && chest.isEmpty() && legs.isEmpty() && feet.isEmpty())) {
 			s += ",ArmorItems:[";
 			if (feet.isEmpty()) s += "{}";
 			else s += "," + Operator.itemVars.get(feet).asNBT();
