@@ -8,6 +8,7 @@ import fourteener.worldeditor.operations.Operator;
 import fourteener.worldeditor.operations.type.BlockVar;
 import fourteener.worldeditor.operations.type.ColorText;
 import fourteener.worldeditor.operations.type.ItemVar;
+import fourteener.worldeditor.operations.type.MonsterVar;
 import fourteener.worldeditor.operations.type.NumericVar;
 
 public class ModifyVarNode extends Node {
@@ -224,6 +225,92 @@ public class ModifyVarNode extends Node {
 					var.setUnbreakable(false);
 				}
 				Operator.itemVars.put(name, var);
+				return true;
+			}
+			
+			return false;
+		}
+
+		
+		// Modify a monster
+		if (type.equalsIgnoreCase("mob")) {
+			// Type mod
+			if (mod.get(0).equalsIgnoreCase("type")) {
+				MonsterVar var = Operator.monsterVars.get(name);
+				var.setType(mod.get(1));
+				Operator.monsterVars.put(name, var);
+				return true;
+			}
+			// Name mod
+			if (mod.get(0).equalsIgnoreCase("name")) {
+				if (mod.get(1).equalsIgnoreCase("color")) {
+					MonsterVar var = Operator.monsterVars.get(name);
+					ColorText ct = new ColorText(mod.get(2), mod.get(3));
+					if (mod.size() > 4) {
+						ct.setBold(mod.get(4));
+					}
+					if (mod.size() > 5) {
+						ct.setItalic(mod.get(5));
+					}
+					if (mod.size() > 6) {
+						ct.setUnderlined(mod.get(6));
+					}
+					if (mod.size() > 7) {
+						ct.setStrikethrough(mod.get(7));
+					}
+					if (mod.size() > 8) {
+						ct.setObfuscated(mod.get(8));
+					}
+					var.setName(ct);
+					Operator.monsterVars.put(name, var);
+				}
+				else {
+					MonsterVar var = Operator.monsterVars.get(name);
+					var.setName(new ColorText(mod.get(1)));
+					Operator.monsterVars.put(name, var);
+				}
+				return true;
+			}
+			// Base mod
+			if (mod.get(0).equalsIgnoreCase("base")) {
+				MonsterVar var = Operator.monsterVars.get(name);
+				var.setBase(mod.get(1), mod.get(2));
+				Operator.monsterVars.put(name, var);
+				return true;
+			}
+			// Attribute mod
+			if (mod.get(0).equalsIgnoreCase("attr")) {
+				MonsterVar var = Operator.monsterVars.get(name);
+				var.setAttribute(mod.get(1), mod.get(2));
+				Operator.monsterVars.put(name, var);
+				return true;
+			}
+			// Gear mod
+			if (mod.get(0).equalsIgnoreCase("gear")) {
+				MonsterVar var = Operator.monsterVars.get(name);
+				var.setGear(mod.get(1), mod.get(2));
+				Operator.monsterVars.put(name, var);
+				return true;
+			}
+			// Drop chance mod
+			if (mod.get(0).equalsIgnoreCase("drop")) {
+				MonsterVar var = Operator.monsterVars.get(name);
+				var.setDrop(mod.get(1), mod.get(2));
+				Operator.monsterVars.put(name, var);
+				return true;
+			}
+			// Passenger mod
+			if (mod.get(0).equalsIgnoreCase("pass")) {
+				MonsterVar var = Operator.monsterVars.get(name);
+				var.addPassenger(mod.get(1));
+				Operator.monsterVars.put(name, var);
+				return true;
+			}
+			// Tag mod
+			if (mod.get(0).equalsIgnoreCase("tag")) {
+				MonsterVar var = Operator.monsterVars.get(name);
+				var.addTag(mod.get(1));
+				Operator.monsterVars.put(name, var);
 				return true;
 			}
 			

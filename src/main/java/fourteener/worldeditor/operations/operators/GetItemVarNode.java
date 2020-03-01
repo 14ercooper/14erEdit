@@ -1,5 +1,6 @@
 package fourteener.worldeditor.operations.operators;
 
+import fourteener.worldeditor.main.Main;
 import fourteener.worldeditor.operations.Operator;
 import fourteener.worldeditor.operations.type.ItemVar;
 
@@ -19,6 +20,7 @@ public class GetItemVarNode extends Node {
 		command += iv.getType().toLowerCase();
 		command += iv.getNBT() + " ";
 		command += iv.getCount();
+		Main.logDebug("Command: " + command);
 		Operator.currentPlayer.performCommand(command);
 		return true;
 	}
