@@ -6,6 +6,7 @@ import java.util.Map;
 
 import fourteener.worldeditor.operations.Operator;
 import fourteener.worldeditor.operations.type.BlockVar;
+import fourteener.worldeditor.operations.type.ColorText;
 import fourteener.worldeditor.operations.type.ItemVar;
 import fourteener.worldeditor.operations.type.NumericVar;
 
@@ -116,16 +117,60 @@ public class ModifyVarNode extends Node {
 			}
 			// Name mod
 			if (mod.get(0).equalsIgnoreCase("name")) {
-				ItemVar var = Operator.itemVars.get(name);
-				var.setName(mod.get(1));
-				Operator.itemVars.put(name, var);
+				if (mod.get(1).equalsIgnoreCase("color")) {
+					ItemVar var = Operator.itemVars.get(name);
+					ColorText ct = new ColorText(mod.get(2), mod.get(3));
+					if (mod.size() > 4) {
+						ct.setBold(mod.get(4));
+					}
+					if (mod.size() > 5) {
+						ct.setItalic(mod.get(5));
+					}
+					if (mod.size() > 6) {
+						ct.setUnderlined(mod.get(6));
+					}
+					if (mod.size() > 7) {
+						ct.setStrikethrough(mod.get(7));
+					}
+					if (mod.size() > 8) {
+						ct.setObfuscated(mod.get(8));
+					}
+					var.setName(ct);
+					Operator.itemVars.put(name, var);
+				}
+				else {
+					ItemVar var = Operator.itemVars.get(name);
+					var.setName(new ColorText(mod.get(1)));
+					Operator.itemVars.put(name, var);
+				}
 				return true;
 			}
 			// Lore mod
 			if (mod.get(0).equalsIgnoreCase("lore")) {
 				ItemVar var = Operator.itemVars.get(name);
-				List<String> ls = var.getLore();
-				ls.add(mod.get(1));
+				List<ColorText> ls = var.getLore();
+				if (mod.get(1).equalsIgnoreCase("color")) {
+					ColorText ct = new ColorText(mod.get(2), mod.get(3));
+					if (mod.size() > 4) {
+						ct.setBold(mod.get(4));
+					}
+					if (mod.size() > 5) {
+						ct.setItalic(mod.get(5));
+					}
+					if (mod.size() > 6) {
+						ct.setUnderlined(mod.get(6));
+					}
+					if (mod.size() > 7) {
+						ct.setStrikethrough(mod.get(7));
+					}
+					if (mod.size() > 8) {
+						ct.setObfuscated(mod.get(8));
+					}
+					ls.add(ct);
+				}
+				else {
+					ls.add(new ColorText(mod.get(1)));
+				}
 				var.setLore(ls);
 				Operator.itemVars.put(name, var);
 				return true;
@@ -143,7 +188,7 @@ public class ModifyVarNode extends Node {
 			if (mod.get(0).equalsIgnoreCase("attr")) {
 				ItemVar var = Operator.itemVars.get(name);
 				Map<String, String> mp = var.getAttributes();
-				mp.put(mod.get(1), mod.get(2) + " " + mod.get(3) + " " + mod.get(4));
+				mp.put(mod.get(1), mod.get(2) + "," + mod.get(3) + "," + mod.get(4));
 				var.setAttributes(mp);
 				Operator.itemVars.put(name, var);
 				return true;
@@ -155,12 +200,29 @@ public class ModifyVarNode extends Node {
 				Operator.itemVars.put(name, var);
 				return true;
 			}
+			// Damage mod
+			if (mod.get(0).equalsIgnoreCase("dmg")) {
+				ItemVar var = Operator.itemVars.get(name);
+				var.setDamage(Integer.parseInt(mod.get(1)));
+				Operator.itemVars.put(name, var);
+				return true;
+			}
 			// Flag mod
 			if (mod.get(0).equalsIgnoreCase("flag")) {
 				ItemVar var = Operator.itemVars.get(name);
-				List<String> ls = var.getFlags();
-				ls.add(mod.get(1));
-				var.setFlags(ls);
+				var.setFlags(Integer.parseInt(mod.get(1)));
+				Operator.itemVars.put(name, var);
+				return true;
+			}
+			// Unbreakable mod
+			if (mod.get(0).equalsIgnoreCase("unbreak")) {
+				ItemVar var = Operator.itemVars.get(name);
+				if (mod.get(1).equalsIgnoreCase("true")) {
+					var.setUnbreakable(true);
+				}
+				else if (mod.get(1).equalsIgnoreCase("false")) {
+					var.setUnbreakable(false);
+				}
 				Operator.itemVars.put(name, var);
 				return true;
 			}
