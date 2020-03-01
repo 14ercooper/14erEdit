@@ -20,7 +20,7 @@ public class Main extends JavaPlugin {
 	public static CraftscriptManager scriptManager;
 	
 	// For debugging
-	public static boolean isDebug = true;
+	public static boolean isDebug = false;
 	
 	@Override
 	public void onEnable () {
