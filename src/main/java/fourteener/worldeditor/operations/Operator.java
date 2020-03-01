@@ -3,10 +3,10 @@ package fourteener.worldeditor.operations;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.bukkit.Bukkit;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 
+import fourteener.worldeditor.main.Main;
 import fourteener.worldeditor.operations.operators.EntryNode;
 import fourteener.worldeditor.operations.type.BlockVar;
 import fourteener.worldeditor.operations.type.ItemVar;
@@ -48,7 +48,7 @@ public class Operator {
 		if (operator.entryNode == null) {
 			return null;
 		}
-		Bukkit.getServer().broadcastMessage("§c[DEBUG] Operator being returned"); // -----
+		Main.logDebug("Operator being returned");
 		return operator;
 	}
 }
