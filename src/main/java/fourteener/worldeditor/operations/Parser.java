@@ -145,6 +145,14 @@ public class Parser {
 			Main.logDebug("Monster spawn from var node created"); // -----
 			return SpawnMonsterNode.newNode(parseStringNode());
 		}
+		else if (parts.get(index).equals("spwn")) {
+			Main.logDebug("Spawner var node created"); // -----
+			return SpawnerVarNode.newNode(parseStringNode());
+		}
+		else if (parts.get(index).equals(">s")) {
+			Main.logDebug("Set spawner node created"); // -----
+			return SetSpawnerNode.newNode(parseStringNode());
+		}
 		else if (parts.get(index).equals("dealloc")) {
 			Main.logDebug("Deallocate variable node created"); // -----
 			return DeallocNode.newNode(parseStringNode(), parseStringNode());

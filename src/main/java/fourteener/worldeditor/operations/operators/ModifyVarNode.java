@@ -10,6 +10,7 @@ import fourteener.worldeditor.operations.type.ColorText;
 import fourteener.worldeditor.operations.type.ItemVar;
 import fourteener.worldeditor.operations.type.MonsterVar;
 import fourteener.worldeditor.operations.type.NumericVar;
+import fourteener.worldeditor.operations.type.SpawnerVar;
 
 public class ModifyVarNode extends Node {
 	
@@ -311,6 +312,67 @@ public class ModifyVarNode extends Node {
 				MonsterVar var = Operator.monsterVars.get(name);
 				var.addTag(mod.get(1));
 				Operator.monsterVars.put(name, var);
+				return true;
+			}
+			return false;
+		}
+		
+		// Modify a spawner
+		if (type.equalsIgnoreCase("spwn")) {
+			// Count mod
+			if (mod.get(0).equalsIgnoreCase("cnt")) {
+				SpawnerVar var = Operator.spawnerVars.get(name);
+				var.setCount(mod.get(1));
+				Operator.spawnerVars.put(name, var);
+				return true;
+			}
+			// Range mod
+			if (mod.get(0).equalsIgnoreCase("rng")) {
+				SpawnerVar var = Operator.spawnerVars.get(name);
+				var.setRange(mod.get(1));
+				Operator.spawnerVars.put(name, var);
+				return true;
+			}
+			// Delay mod
+			if (mod.get(0).equalsIgnoreCase("del")) {
+				SpawnerVar var = Operator.spawnerVars.get(name);
+				var.setDelay(mod.get(1));
+				Operator.spawnerVars.put(name, var);
+				return true;
+			}
+			// Min delay mod
+			if (mod.get(0).equalsIgnoreCase("mindel")) {
+				SpawnerVar var = Operator.spawnerVars.get(name);
+				var.setMinDelay(mod.get(1));
+				Operator.spawnerVars.put(name, var);
+				return true;
+			}
+			// Max delay mod
+			if (mod.get(0).equalsIgnoreCase("maxdel")) {
+				SpawnerVar var = Operator.spawnerVars.get(name);
+				var.setMaxDelay(mod.get(1));
+				Operator.spawnerVars.put(name, var);
+				return true;
+			}
+			// Max nearby mod
+			if (mod.get(0).equalsIgnoreCase("maxnear")) {
+				SpawnerVar var = Operator.spawnerVars.get(name);
+				var.setMaxNearby(mod.get(1));
+				Operator.spawnerVars.put(name, var);
+				return true;
+			}
+			// Player range mod
+			if (mod.get(0).equalsIgnoreCase("plrrng")) {
+				SpawnerVar var = Operator.spawnerVars.get(name);
+				var.setRequiredRange(mod.get(1));
+				Operator.spawnerVars.put(name, var);
+				return true;
+			}
+			// Add mob mod
+			if (mod.get(0).equalsIgnoreCase("mob")) {
+				SpawnerVar var = Operator.spawnerVars.get(name);
+				var.addMob(mod.get(1), mod.get(2));
+				Operator.spawnerVars.put(name, var);
 				return true;
 			}
 			
