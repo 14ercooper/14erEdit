@@ -17,9 +17,10 @@ public class Operator {
 	public static BlockState currentBlock;
 	public static Player currentPlayer;
 	public static boolean ignoringPhysics = false; // False to ignore physics, true to perform physics 'cause Minecraft is screwy
-	public static Map<String, BlockVar> blockVars;
-	public static Map<String, ItemVar> itemVars;
-	public static Map<String, NumericVar> numericVars;
+	public static Map<String, BlockVar> blockVars = new HashMap<String, BlockVar>();
+	public static Map<String, ItemVar> itemVars = new HashMap<String, ItemVar>();
+	public static Map<String, NumericVar> numericVars = new HashMap<String, NumericVar>();
+	public static Map<String, Operator> fileLoads = new HashMap<String, Operator>();
 	
 	public EntryNode entryNode;
 	
@@ -28,11 +29,12 @@ public class Operator {
 		currentOperator = this;
 		currentBlock = block;
 		currentPlayer = p;
-		blockVars = new HashMap<String, BlockVar>();
-		itemVars = new HashMap<String, ItemVar>();
-		numericVars = new HashMap<String, NumericVar>();
 		
 		// Perform the operation
+		return entryNode.performNode();
+	}
+	
+	public boolean messyOperate () {
 		return entryNode.performNode();
 	}
 	

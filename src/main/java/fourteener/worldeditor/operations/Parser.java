@@ -177,6 +177,10 @@ public class Parser {
 			Main.logDebug("Get item from variable node created"); // -----
 			return GetItemVarNode.newNode(parseStringNode());
 		}
+		else if (parts.get(index).equals(">f")) {
+			Main.logDebug("Load op from file node created"); // -----
+			return LoadFromFileNode.newNode(parseStringNode());
+		}
 		else if (parts.get(index).equals("var")) {
 			Main.logDebug("Modify variable node created"); // -----
 			return ModifyVarNode.newNode(parseStringNode(), parseStringNode(), parseStringNode());
