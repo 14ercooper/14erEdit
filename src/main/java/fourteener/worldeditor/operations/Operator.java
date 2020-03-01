@@ -10,7 +10,9 @@ import org.bukkit.entity.Player;
 import fourteener.worldeditor.operations.operators.EntryNode;
 import fourteener.worldeditor.operations.type.BlockVar;
 import fourteener.worldeditor.operations.type.ItemVar;
+import fourteener.worldeditor.operations.type.MonsterVar;
 import fourteener.worldeditor.operations.type.NumericVar;
+import fourteener.worldeditor.operations.type.SpawnerVar;
 
 public class Operator {
 	public static Operator currentOperator;
@@ -20,6 +22,8 @@ public class Operator {
 	public static Map<String, BlockVar> blockVars = new HashMap<String, BlockVar>();
 	public static Map<String, ItemVar> itemVars = new HashMap<String, ItemVar>();
 	public static Map<String, NumericVar> numericVars = new HashMap<String, NumericVar>();
+	public static Map<String, MonsterVar> monsterVars = new HashMap<String, MonsterVar>();
+	public static Map<String, SpawnerVar> spawnerVars = new HashMap<String, SpawnerVar>();
 	public static Map<String, Operator> fileLoads = new HashMap<String, Operator>();
 	
 	public EntryNode entryNode;
