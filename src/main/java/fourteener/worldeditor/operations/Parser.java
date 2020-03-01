@@ -137,6 +137,10 @@ public class Parser {
 			Main.logDebug("Item var node created"); // -----
 			return ItemVarNode.newNode(parseStringNode());
 		}
+		else if (parts.get(index).equals("dealloc")) {
+			Main.logDebug("Deallocate variable node created"); // -----
+			return DeallocNode.newNode(parseStringNode(), parseStringNode());
+		}
 		else if (parts.get(index).equals("/")) {
 			Main.logDebug("Linker node created"); // -----
 			return LinkerNode.newNode(parsePart(), parsePart());

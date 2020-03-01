@@ -2,7 +2,7 @@ package fourteener.worldeditor.operations.operators;
 
 import fourteener.worldeditor.operations.Operator;
 
-public class DeallocNode {
+public class DeallocNode extends Node {
 	
 	String type, name;
 	
