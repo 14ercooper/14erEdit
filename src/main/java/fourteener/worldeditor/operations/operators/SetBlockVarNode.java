@@ -5,7 +5,6 @@ import org.bukkit.Material;
 
 import fourteener.worldeditor.operations.Operator;
 import fourteener.worldeditor.operations.type.BlockVar;
-import net.md_5.bungee.api.ChatColor;
 
 public class SetBlockVarNode extends Node {
 
@@ -28,7 +27,7 @@ public class SetBlockVarNode extends Node {
 			command += Operator.currentBlock.getLocation().getBlockX() + " ";
 			command += Operator.currentBlock.getLocation().getBlockY() + " ";
 			command += Operator.currentBlock.getLocation().getBlockZ() + " ";
-			command += ChatColor.translateAlternateColorCodes('&' ,bv.getNBT());
+			command += bv.getNBT();
 			Bukkit.dispatchCommand(Bukkit.getServer().getConsoleSender(), command);
 		}
 		return true;

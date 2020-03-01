@@ -6,8 +6,11 @@ import java.util.Map;
 
 import fourteener.worldeditor.operations.Operator;
 import fourteener.worldeditor.operations.type.BlockVar;
+import fourteener.worldeditor.operations.type.ColorText;
 import fourteener.worldeditor.operations.type.ItemVar;
+import fourteener.worldeditor.operations.type.MonsterVar;
 import fourteener.worldeditor.operations.type.NumericVar;
+import fourteener.worldeditor.operations.type.SpawnerVar;
 
 public class ModifyVarNode extends Node {
 	
@@ -116,16 +119,60 @@ public class ModifyVarNode extends Node {
 			}
 			// Name mod
 			if (mod.get(0).equalsIgnoreCase("name")) {
-				ItemVar var = Operator.itemVars.get(name);
-				var.setName(mod.get(1));
-				Operator.itemVars.put(name, var);
+				if (mod.get(1).equalsIgnoreCase("color")) {
+					ItemVar var = Operator.itemVars.get(name);
+					ColorText ct = new ColorText(mod.get(2), mod.get(3));
+					if (mod.size() > 4) {
+						ct.setBold(mod.get(4));
+					}
+					if (mod.size() > 5) {
+						ct.setItalic(mod.get(5));
+					}
+					if (mod.size() > 6) {
+						ct.setUnderlined(mod.get(6));
+					}
+					if (mod.size() > 7) {
+						ct.setStrikethrough(mod.get(7));
+					}
+					if (mod.size() > 8) {
+						ct.setObfuscated(mod.get(8));
+					}
+					var.setName(ct);
+					Operator.itemVars.put(name, var);
+				}
+				else {
+					ItemVar var = Operator.itemVars.get(name);
+					var.setName(new ColorText(mod.get(1)));
+					Operator.itemVars.put(name, var);
+				}
 				return true;
 			}
 			// Lore mod
 			if (mod.get(0).equalsIgnoreCase("lore")) {
 				ItemVar var = Operator.itemVars.get(name);
-				List<String> ls = var.getLore();
-				ls.add(mod.get(1));
+				List<ColorText> ls = var.getLore();
+				if (mod.get(1).equalsIgnoreCase("color")) {
+					ColorText ct = new ColorText(mod.get(2), mod.get(3));
+					if (mod.size() > 4) {
+						ct.setBold(mod.get(4));
+					}
+					if (mod.size() > 5) {
+						ct.setItalic(mod.get(5));
+					}
+					if (mod.size() > 6) {
+						ct.setUnderlined(mod.get(6));
+					}
+					if (mod.size() > 7) {
+						ct.setStrikethrough(mod.get(7));
+					}
+					if (mod.size() > 8) {
+						ct.setObfuscated(mod.get(8));
+					}
+					ls.add(ct);
+				}
+				else {
+					ls.add(new ColorText(mod.get(1)));
+				}
 				var.setLore(ls);
 				Operator.itemVars.put(name, var);
 				return true;
@@ -143,7 +190,7 @@ public class ModifyVarNode extends Node {
 			if (mod.get(0).equalsIgnoreCase("attr")) {
 				ItemVar var = Operator.itemVars.get(name);
 				Map<String, String> mp = var.getAttributes();
-				mp.put(mod.get(1), mod.get(2) + " " + mod.get(3) + " " + mod.get(4));
+				mp.put(mod.get(1), mod.get(2) + "," + mod.get(3) + "," + mod.get(4));
 				var.setAttributes(mp);
 				Operator.itemVars.put(name, var);
 				return true;
@@ -155,13 +202,177 @@ public class ModifyVarNode extends Node {
 				Operator.itemVars.put(name, var);
 				return true;
 			}
+			// Damage mod
+			if (mod.get(0).equalsIgnoreCase("dmg")) {
+				ItemVar var = Operator.itemVars.get(name);
+				var.setDamage(Integer.parseInt(mod.get(1)));
+				Operator.itemVars.put(name, var);
+				return true;
+			}
 			// Flag mod
 			if (mod.get(0).equalsIgnoreCase("flag")) {
 				ItemVar var = Operator.itemVars.get(name);
-				List<String> ls = var.getFlags();
-				ls.add(mod.get(1));
-				var.setFlags(ls);
+				var.setFlags(Integer.parseInt(mod.get(1)));
 				Operator.itemVars.put(name, var);
+				return true;
+			}
+			// Unbreakable mod
+			if (mod.get(0).equalsIgnoreCase("unbreak")) {
+				ItemVar var = Operator.itemVars.get(name);
+				if (mod.get(1).equalsIgnoreCase("true")) {
+					var.setUnbreakable(true);
+				}
+				else if (mod.get(1).equalsIgnoreCase("false")) {
+					var.setUnbreakable(false);
+				}
+				Operator.itemVars.put(name, var);
+				return true;
+			}
+			
+			return false;
+		}
+
+		
+		// Modify a monster
+		if (type.equalsIgnoreCase("mob")) {
+			// Type mod
+			if (mod.get(0).equalsIgnoreCase("type")) {
+				MonsterVar var = Operator.monsterVars.get(name);
+				var.setType(mod.get(1));
+				Operator.monsterVars.put(name, var);
+				return true;
+			}
+			// Name mod
+			if (mod.get(0).equalsIgnoreCase("name")) {
+				if (mod.get(1).equalsIgnoreCase("color")) {
+					MonsterVar var = Operator.monsterVars.get(name);
+					ColorText ct = new ColorText(mod.get(2), mod.get(3));
+					if (mod.size() > 4) {
+						ct.setBold(mod.get(4));
+					}
+					if (mod.size() > 5) {
+						ct.setItalic(mod.get(5));
+					}
+					if (mod.size() > 6) {
+						ct.setUnderlined(mod.get(6));
+					}
+					if (mod.size() > 7) {
+						ct.setStrikethrough(mod.get(7));
+					}
+					if (mod.size() > 8) {
+						ct.setObfuscated(mod.get(8));
+					}
+					var.setName(ct);
+					Operator.monsterVars.put(name, var);
+				}
+				else {
+					MonsterVar var = Operator.monsterVars.get(name);
+					var.setName(new ColorText(mod.get(1)));
+					Operator.monsterVars.put(name, var);
+				}
+				return true;
+			}
+			// Base mod
+			if (mod.get(0).equalsIgnoreCase("base")) {
+				MonsterVar var = Operator.monsterVars.get(name);
+				var.setBase(mod.get(1), mod.get(2));
+				Operator.monsterVars.put(name, var);
+				return true;
+			}
+			// Attribute mod
+			if (mod.get(0).equalsIgnoreCase("attr")) {
+				MonsterVar var = Operator.monsterVars.get(name);
+				var.setAttribute(mod.get(1), mod.get(2));
+				Operator.monsterVars.put(name, var);
+				return true;
+			}
+			// Gear mod
+			if (mod.get(0).equalsIgnoreCase("gear")) {
+				MonsterVar var = Operator.monsterVars.get(name);
+				var.setGear(mod.get(1), mod.get(2));
+				Operator.monsterVars.put(name, var);
+				return true;
+			}
+			// Drop chance mod
+			if (mod.get(0).equalsIgnoreCase("drop")) {
+				MonsterVar var = Operator.monsterVars.get(name);
+				var.setDrop(mod.get(1), mod.get(2));
+				Operator.monsterVars.put(name, var);
+				return true;
+			}
+			// Passenger mod
+			if (mod.get(0).equalsIgnoreCase("pass")) {
+				MonsterVar var = Operator.monsterVars.get(name);
+				var.addPassenger(mod.get(1));
+				Operator.monsterVars.put(name, var);
+				return true;
+			}
+			// Tag mod
+			if (mod.get(0).equalsIgnoreCase("tag")) {
+				MonsterVar var = Operator.monsterVars.get(name);
+				var.addTag(mod.get(1));
+				Operator.monsterVars.put(name, var);
+				return true;
+			}
+			return false;
+		}
+		
+		// Modify a spawner
+		if (type.equalsIgnoreCase("spwn")) {
+			// Count mod
+			if (mod.get(0).equalsIgnoreCase("cnt")) {
+				SpawnerVar var = Operator.spawnerVars.get(name);
+				var.setCount(mod.get(1));
+				Operator.spawnerVars.put(name, var);
+				return true;
+			}
+			// Range mod
+			if (mod.get(0).equalsIgnoreCase("rng")) {
+				SpawnerVar var = Operator.spawnerVars.get(name);
+				var.setRange(mod.get(1));
+				Operator.spawnerVars.put(name, var);
+				return true;
+			}
+			// Delay mod
+			if (mod.get(0).equalsIgnoreCase("del")) {
+				SpawnerVar var = Operator.spawnerVars.get(name);
+				var.setDelay(mod.get(1));
+				Operator.spawnerVars.put(name, var);
+				return true;
+			}
+			// Min delay mod
+			if (mod.get(0).equalsIgnoreCase("mindel")) {
+				SpawnerVar var = Operator.spawnerVars.get(name);
+				var.setMinDelay(mod.get(1));
+				Operator.spawnerVars.put(name, var);
+				return true;
+			}
+			// Max delay mod
+			if (mod.get(0).equalsIgnoreCase("maxdel")) {
+				SpawnerVar var = Operator.spawnerVars.get(name);
+				var.setMaxDelay(mod.get(1));
+				Operator.spawnerVars.put(name, var);
+				return true;
+			}
+			// Max nearby mod
+			if (mod.get(0).equalsIgnoreCase("maxnear")) {
+				SpawnerVar var = Operator.spawnerVars.get(name);
+				var.setMaxNearby(mod.get(1));
+				Operator.spawnerVars.put(name, var);
+				return true;
+			}
+			// Player range mod
+			if (mod.get(0).equalsIgnoreCase("plrrng")) {
+				SpawnerVar var = Operator.spawnerVars.get(name);
+				var.setRequiredRange(mod.get(1));
+				Operator.spawnerVars.put(name, var);
+				return true;
+			}
+			// Add mob mod
+			if (mod.get(0).equalsIgnoreCase("mob")) {
+				SpawnerVar var = Operator.spawnerVars.get(name);
+				var.addMob(mod.get(1), mod.get(2));
+				Operator.spawnerVars.put(name, var);
 				return true;
 			}
 			
