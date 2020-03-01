@@ -153,6 +153,18 @@ public class Parser {
 			Main.logDebug("Set spawner node created"); // -----
 			return SetSpawnerNode.newNode(parseStringNode());
 		}
+		else if (parts.get(index).equals(">>i")) {
+			Main.logDebug("Get item command node created"); // -----
+			return GetItemCommandNode.newNode(parseStringNode(), parseStringNode());
+		}
+		else if (parts.get(index).equals(">>m")) {
+			Main.logDebug("Get monster command node created"); // -----
+			return GetMonsterCommandNode.newNode(parseStringNode(), parseStringNode());
+		}
+		else if (parts.get(index).equals(">>s")) {
+			Main.logDebug("Get spawner command node created"); // -----
+			return GetSpawnerCommandNode.newNode(parseStringNode(), parseStringNode());
+		}
 		else if (parts.get(index).equals("dealloc")) {
 			Main.logDebug("Deallocate variable node created"); // -----
 			return DeallocNode.newNode(parseStringNode(), parseStringNode());
