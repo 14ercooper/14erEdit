@@ -29,18 +29,18 @@ public class SchematicMacro extends Macro {
 	boolean setAir = false;
 	
 	// Create a new macro
-	public static SchematicMacro createMacro (String[] args, Location loc) {
-		SchematicMacro macro = new SchematicMacro();
+	public SchematicMacro(String[] args, Location loc) {
+		super(args, loc);
 		// First parse the offset
-		macro.xOff = Integer.parseInt(args[1]) * -1;
-		macro.yOff = Integer.parseInt(args[2]) * -1;
-		macro.zOff = Integer.parseInt(args[3]) * -1;
+		xOff = Integer.parseInt(args[1]) * -1;
+		yOff = Integer.parseInt(args[2]) * -1;
+		zOff = Integer.parseInt(args[3]) * -1;
 		// And the center of the paste
-		macro.x = loc.getBlockX();
-		macro.y = loc.getBlockY();
-		macro.z = loc.getBlockZ();
+		x = loc.getBlockX();
+		y = loc.getBlockY();
+		z = loc.getBlockZ();
 		// Get if air should be set
-		macro.setAir = Boolean.parseBoolean(args[4]);
+		setAir = Boolean.parseBoolean(args[4]);
 		// And finally parse the block data
 		// This code, violating DRY, is also in the clipboard
 		String path = args[0];
@@ -52,22 +52,19 @@ public class SchematicMacro extends Macro {
 		if (path.contains(".matschem")) {
 			path.replace(".matschem", "");
 			Schematic schem = Schematic.loadSchematic(path);
-			macro.blockData = schem.getBlocks();
-			macro.width = schem.getDimensions()[0];
-			macro.height = schem.getDimensions()[1];
-			macro.length = schem.getDimensions()[2];
+			blockData = schem.getBlocks();
+			width = schem.getDimensions()[0];
+			height = schem.getDimensions()[1];
+			length = schem.getDimensions()[2];
 		}
 		// Using MCEdit format
 		else if (path.contains(".schematic")) {
 			Operator.currentPlayer.sendMessage("§dMCEdit format schematics are not supported at this time.");
-			return new SchematicMacro();
 		}
 		// Using Sponge format
 		else if (path.contains(".schem")) {
 			Operator.currentPlayer.sendMessage("§dSponge format schematics are not supported at this time.");
-			return new SchematicMacro();
 		}
-		return macro;
 	}
 	
 	// Run this macro

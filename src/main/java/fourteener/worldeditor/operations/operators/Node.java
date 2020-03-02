@@ -1,9 +1,9 @@
 package fourteener.worldeditor.operations.operators;
 
-public class Node {
+public abstract class Node {
 	
-	public static Node newNode () {
-		return new Node();
+	public Node() {
+		
 	}
 	
 	public boolean performNode () {

@@ -23,52 +23,50 @@ public class BasicTreeMacro extends Macro {
 	public Location plantOn;
 	
 	// Type, leaves, trunk, size, variance
-	public static BasicTreeMacro createMacro (String[] args, Location loc) {
-		BasicTreeMacro macro = new BasicTreeMacro();
-		macro.plantOn = loc;
-		macro.size = Integer.parseInt(args[3]);
-		macro.variance = (int) Math.ceil(Double.parseDouble(args[4]));
-		macro.leaves = Material.matchMaterial(args[1]);
-		macro.trunk = Material.matchMaterial(args[2]);
+	public BasicTreeMacro(String[] args, Location loc) {
+		super(args, loc);
+		plantOn = loc;
+		size = Integer.parseInt(args[3]);
+		variance = (int) Math.ceil(Double.parseDouble(args[4]));
+		leaves = Material.matchMaterial(args[1]);
+		trunk = Material.matchMaterial(args[2]);
 		
 		// Type 1 - Trunk with sphere of leaves (oak)
 		if (args[0].equalsIgnoreCase("oak")) {
-			macro.type = 1;
+			type = 1;
 		}
 		// Type 2 - Trunk with branches (branch)
 		if (args[0].equalsIgnoreCase("branch")) {
-			macro.type = 2;
+			type = 2;
 		}
 		// Type 3 - Large trunk with splits and leaves (big)
 		if (args[0].equalsIgnoreCase("big")) {
-			macro.type = 3;
+			type = 3;
 		}
 		// Type 4 - Ground layer bush (bush)
 		if (args[0].equalsIgnoreCase("bush")) {
-			macro.type = 4;
+			type = 4;
 		}
 		// Type 5 - Vanilla style oak/birch (birch)
 		if (args[0].equalsIgnoreCase("birch")) {
-			macro.type = 5;
+			type = 5;
 		}
 		// Type 6 - Vanilla style dark oak (darkoak)
 		if (args[0].equalsIgnoreCase("darkoak")) {
-			macro.type = 6;
+			type = 6;
 		}
 		// Type 7 - Vanilla red mushroom style (redmushroom)
 		if (args[0].equalsIgnoreCase("redmushroom")) {
-			macro.type = 7;
+			type = 7;
 		}
 		// Type 8 - Vanilla brown mushroom style (brownmushroom)
 		if (args[0].equalsIgnoreCase("brownmushroom")) {
-			macro.type = 8;
+			type = 8;
 		}
 		// Type 9 - Tall central trunk with short branches and platforms (jungle)
 		if (args[0].equalsIgnoreCase("jungle")) {
-			macro.type = 9;
+			type = 9;
 		}
-		
-		return macro;
 	}
 	
 	public boolean performMacro () {

@@ -24,14 +24,13 @@ public class VinesMacro extends Macro {
 	Location pos;
 	
 	// Create a new macro
-	public static VinesMacro createMacro (String[] args, Location loc) {
-		VinesMacro vm = new VinesMacro();
-		vm.radius = Double.parseDouble(args[0]);
-		vm.length = Double.parseDouble(args[1]);
-		vm.variance = Double.parseDouble(args[2]);
-		vm.density = Double.parseDouble(args[3]);
-		vm.pos = loc;
-		return vm;
+	public VinesMacro(String[] args, Location loc) {
+		super(args, loc);
+		radius = Double.parseDouble(args[0]);
+		length = Double.parseDouble(args[1]);
+		variance = Double.parseDouble(args[2]);
+		density = Double.parseDouble(args[3]);
+		pos = loc;
 	}
 	
 	// Run this macro

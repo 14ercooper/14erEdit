@@ -27,14 +27,13 @@ public class GrassMacro extends Macro {
 	Location pos;
 	
 	// Create a new macro
-	public static GrassMacro createMacro (String[] args, Location loc) {
-		GrassMacro gm = new GrassMacro();
-		gm.radius = Double.parseDouble(args[0]);
-		gm.blockMix = args[1];
-		gm.airSpaces = Double.parseDouble(args[2]);
-		gm.density = Double.parseDouble(args[3]);
-		gm.pos = loc;
-		return gm;
+	public GrassMacro(String[] args, Location loc) {
+		super(args, loc);
+		radius = Double.parseDouble(args[0]);
+		blockMix = args[1];
+		airSpaces = Double.parseDouble(args[2]);
+		density = Double.parseDouble(args[3]);
+		pos = loc;
 	}
 	
 	// Run this macro

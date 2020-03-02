@@ -22,12 +22,11 @@ public class BiomeMacro extends Macro {
 	Location pos;
 	
 	// Create a new macro
-	public static BiomeMacro createMacro (String[] args, Location loc) {
-		BiomeMacro bm = new BiomeMacro();
-		bm.radius = Double.parseDouble(args[0]);
-		bm.biome = Biome.valueOf(args[1].toUpperCase(Locale.ROOT));
-		bm.pos = loc;
-		return bm;
+	public BiomeMacro(String[] args, Location loc) {
+		super(args, loc);
+		radius = Double.parseDouble(args[0]);
+		biome = Biome.valueOf(args[1].toUpperCase(Locale.ROOT));
+		pos = loc;
 	}
 	
 	// Run this macro

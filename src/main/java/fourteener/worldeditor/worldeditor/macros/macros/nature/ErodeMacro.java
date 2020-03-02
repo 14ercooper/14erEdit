@@ -23,42 +23,40 @@ public class ErodeMacro extends Macro {
 	public int erodeSubtype = -1; // -1 if no subtype, 0 for more subtractive, 1 for more additive, 2 for neutral
 	public Location erodeCenter;
 	
-	public static ErodeMacro createMacro (String[] args, Location loc) {
-		ErodeMacro macro = new ErodeMacro();
-		macro.erodeRadius = Integer.parseInt(args[0]);
-		macro.erodeCenter = loc;
+	public ErodeMacro(String[] args, Location loc) {
+		super(args, loc);
+		erodeRadius = Integer.parseInt(args[0]);
+		erodeCenter = loc;
 		
 		// Determine the type of the erode brush
 		if (args[1].equalsIgnoreCase("melt")) {
 			Main.logDebug("Erode type: melt"); // ----
-			macro.erodeType = 0;
+			erodeType = 0;
 		}
 		else if (args[1].equalsIgnoreCase("blend")) {
 			Main.logDebug("Erode type: blend"); // ----
-			macro.erodeType = 1;
+			erodeType = 1;
 		}
 		else if (args[1].equalsIgnoreCase("mix")) {
 			Main.logDebug("Erode type: mix"); // ----
-			macro.erodeType = 2;
+			erodeType = 2;
 		}
 		
 		// Cut or raise melt?
-		if (macro.erodeType == 0) {
+		if (erodeType == 0) {
 			if (args[2].equalsIgnoreCase("cut")) {
 				Main.logDebug("Melt type: cut"); // ----
-				macro.erodeSubtype = 0;
+				erodeSubtype = 0;
 			}
 			else if (args[2].equalsIgnoreCase("raise")) {
 				Main.logDebug("Melt type: raise"); // ----
-				macro.erodeSubtype = 1;
+				erodeSubtype = 1;
 			}
 			else if (args[2].equalsIgnoreCase("smooth")) {
 				Main.logDebug("Melt type: smooth"); // ----
-				macro.erodeSubtype = 2;
+				erodeSubtype = 2;
 			}
 		}
-		
-		return macro;
 	}
 	
 	public boolean performMacro () {

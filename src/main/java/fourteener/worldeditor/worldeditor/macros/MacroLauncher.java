@@ -24,31 +24,31 @@ public class MacroLauncher {
 		// Determine which macro to run
 		if (macroName.equalsIgnoreCase("erode")) {
 			Main.logDebug("Running erode macro"); // ----
-			return ErodeMacro.createMacro(macroArgs, location).performMacro();
+			return new ErodeMacro(macroArgs, location).performMacro();
 		}
 		else if (macroName.equalsIgnoreCase("tree")) {
 			Main.logDebug("Running tree macro"); // ----
-			return BasicTreeMacro.createMacro(macroArgs, location).performMacro();
+			return new BasicTreeMacro(macroArgs, location).performMacro();
 		}
 		else if (macroName.equalsIgnoreCase("schem")) {
 			Main.logDebug("Running schematic macro"); // ----
-			return SchematicMacro.createMacro(macroArgs, location).performMacro();
+			return new SchematicMacro(macroArgs, location).performMacro();
 		}
 		else if (macroName.equalsIgnoreCase("grass")) {
 			Main.logDebug("Running grass macro"); // ----
-			return GrassMacro.createMacro(macroArgs, location).performMacro();
+			return new GrassMacro(macroArgs, location).performMacro();
 		}
 		else if (macroName.equalsIgnoreCase("vines")) {
 			Main.logDebug("Running vines macro"); // ----
-			return VinesMacro.createMacro(macroArgs, location).performMacro();
+			return new VinesMacro(macroArgs, location).performMacro();
 		}
 		else if (macroName.equalsIgnoreCase("biome")) {
 			Main.logDebug("Running biome macro"); // ----
-			return BiomeMacro.createMacro(macroArgs, location).performMacro();
+			return new BiomeMacro(macroArgs, location).performMacro();
 		}
 		else if (macroName.equalsIgnoreCase("flatten")) {
 			Main.logDebug("Running flatten macro"); // ----
-			return FlattenMacro.createMacro(macroArgs, location).performMacro();
+			return new FlattenMacro(macroArgs, location).performMacro();
 		}
 		else {
 			return false;

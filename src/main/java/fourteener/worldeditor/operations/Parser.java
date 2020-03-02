@@ -31,7 +31,8 @@ public class Parser {
 		Node rootNode = parsePart();
 		
 		// This is an error if this is true
-		if (rootNode.equals(new Node()))
+		// Probably user error with an invalid operation
+		if (rootNode == null)
 			return null;
 		
 		// Generate the entry node of the operation
@@ -235,8 +236,8 @@ public class Parser {
 			return BlockNode.newNode(mat, bd);
 		}
 		else {
-			Main.logDebug("New node created"); // -----
-			return new Node();
+			Main.logDebug("Null node created"); // -----
+			return null;
 		}
 	}
 	

@@ -24,14 +24,13 @@ public class FlattenMacro extends Macro {
 	Location pos;
 	
 	// Create a new macro
-	public static FlattenMacro createMacro (String[] args, Location loc) {
-		FlattenMacro fm = new FlattenMacro ();
-		fm.radius = Double.parseDouble(args[0]);
-		fm.isAbsolute = Boolean.parseBoolean(args[1]);
-		fm.height = Double.parseDouble(args[2]);
-		fm.block = Material.matchMaterial(args[3]);
-		fm.pos = loc;
-		return fm;
+	public FlattenMacro (String[] args, Location loc) {
+		super(args, loc);
+		radius = Double.parseDouble(args[0]);
+		isAbsolute = Boolean.parseBoolean(args[1]);
+		height = Double.parseDouble(args[2]);
+		block = Material.matchMaterial(args[3]);
+		pos = loc;
 	}
 	
 	// Run this macro
