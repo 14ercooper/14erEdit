@@ -1,13 +1,11 @@
 # Contributing
 
-The plugin is currently not accepting additions beyond the following three cases:
-1. A feature from the documentation that is not yet implemented
-2. A bugfix from a known issue or implementation of an enhancement requested for an existing feature
-3. An optimization of existing code
+The plugin is currently not accepting additions beyond the following cases (due to an impending backend overhaul):
+1. A bugfix from a known issue or implementation of an enhancement requested for an existing feature
+2. An optimization of existing code
 
 If you would like to contribute code to the plugin, do not push directly to the master branch.
-Instead, create a now fork and a pull request. Once the functionality of your contribution is verified and conformity to styling and constraints are verified, it will be merged to master. This merge may only be completed by 14er.
-Commiting to or merging to master may be grounds for removal from the project.
+Instead, create a new fork and a pull request. Once the functionality of your contribution is verified and conformity to styling and constraints are verified, it will be merged to master. This merge may only be completed by 14er.
 
 Please maintain the same styling as is already present in the code. This includes things like
 - 4-space tabs in class files

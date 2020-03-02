@@ -24,8 +24,6 @@ public class Parser {
 	
 	public static EntryNode parseOperation (String op) {
 		
-		// =[ ]{1,}(1)\new \(\)
-		
 		// Here there be parsing magic
 		// A massive recursive nightmare
 		index = -1;
