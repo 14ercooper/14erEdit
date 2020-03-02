@@ -9,10 +9,8 @@ public class OddsNode extends Node {
 	
 	public NumberNode arg;
 	
-	public static OddsNode newNode (NumberNode odds) {
-		OddsNode oddsNode = new OddsNode();
-		oddsNode.arg = odds;
-		return oddsNode;
+	public OddsNode(NumberNode odds) {
+		arg = odds;
 	}
 	
 	public boolean performNode () {

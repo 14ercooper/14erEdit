@@ -12,11 +12,9 @@ public class SetPlusNode extends Node {
 	public Material arg1;
 	public BlockData arg2;
 	
-	public static SetPlusNode newNode (String matData) {
-		SetPlusNode setNode = new SetPlusNode();
-		setNode.arg1 = Material.matchMaterial(matData.split("\\[")[0]);
-		setNode.arg2 = Bukkit.getServer().createBlockData(matData);
-		return setNode;
+	public SetPlusNode(String matData) {
+		arg1 = Material.matchMaterial(matData.split("\\[")[0]);
+		arg2 = Bukkit.getServer().createBlockData(matData);
 	}
 	
 	public boolean performNode () {

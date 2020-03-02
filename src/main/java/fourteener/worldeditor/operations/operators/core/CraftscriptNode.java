@@ -11,10 +11,8 @@ public class CraftscriptNode extends Node {
 	
 	public String arg;
 	
-	public static CraftscriptNode newNode (String script) {
-		CraftscriptNode csNode = new CraftscriptNode();
-		csNode.arg = script;
-		return csNode;
+	public CraftscriptNode(String script) {
+		arg = script;
 	}
 	
 	public boolean performNode () {

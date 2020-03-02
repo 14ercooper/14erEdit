@@ -6,8 +6,8 @@ import fourteener.worldeditor.operations.Operator;
 
 public class SameNode extends BlockNode {
 	
-	public static SameNode newNode () {
-		return new SameNode();
+	public SameNode() {
+		return;
 	}
 	
 	public boolean performNode () {

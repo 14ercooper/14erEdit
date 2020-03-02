@@ -9,10 +9,8 @@ public class MacroNode extends Node {
 	
 	String arg;
 	
-	public static MacroNode newNode (String macro) {
-		MacroNode macroNode = new MacroNode();
-		macroNode.arg = macro;
-		return macroNode;
+	public MacroNode(String macro) {
+		arg = macro;
 	}
 	
 	public boolean performNode () {

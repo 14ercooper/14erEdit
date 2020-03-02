@@ -15,10 +15,8 @@ public class LoadFromFileNode extends Node {
 	
 	String path;
 	
-	public static LoadFromFileNode newNode (String filename) {
-		LoadFromFileNode node = new LoadFromFileNode();
-		node.path = filename;
-		return node;
+	public LoadFromFileNode(String filename) {
+		path = filename;
 	}
 	
 	public boolean performNode () {

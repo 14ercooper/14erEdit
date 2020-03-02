@@ -9,11 +9,9 @@ public class NumericGreaterEqualNode extends Node {
 	public String name;
 	public NumberNode val;
 	
-	public static NumericGreaterEqualNode newNode (String first, NumberNode second) {
-		NumericGreaterEqualNode node = new NumericGreaterEqualNode();
-		node.name = first;
-		node.val = second;
-		return node;
+	public NumericGreaterEqualNode(String first, NumberNode second) {
+		name = first;
+		val = second;
 	}
 	
 	public boolean performNode () {

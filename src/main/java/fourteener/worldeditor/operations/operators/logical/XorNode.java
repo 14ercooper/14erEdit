@@ -6,11 +6,9 @@ public class XorNode extends Node {
 	
 	public Node arg1, arg2;
 	
-	public static XorNode newNode (Node first, Node second) {
-		XorNode xorNode = new XorNode();
-		xorNode.arg1 = first;
-		xorNode.arg2 = second;
-		return xorNode;
+	public XorNode(Node first, Node second) {
+		arg1 = first;
+		arg2 = second;
 	}
 	
 	public boolean performNode () {

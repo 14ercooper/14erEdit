@@ -5,8 +5,8 @@ import fourteener.worldeditor.operations.operators.Node;
 
 public class GetBlockDataNode extends Node {
 	
-	public static GetBlockDataNode newNode () {
-		return new GetBlockDataNode();
+	public GetBlockDataNode() {
+		return;
 	}
 	
 	public boolean performNode () {

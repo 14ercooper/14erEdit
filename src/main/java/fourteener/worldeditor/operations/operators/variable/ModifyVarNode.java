@@ -18,12 +18,10 @@ public class ModifyVarNode extends Node {
 	String type, name;
 	List<String> mod;
 	
-	public static ModifyVarNode newNode (String arg1, String arg2, String arg3) {
-		ModifyVarNode node = new ModifyVarNode();
-		node.type = arg1;
-		node.name = arg2;
-		node.mod = Arrays.asList(arg3.split(","));
-		return node;
+	public ModifyVarNode(String arg1, String arg2, String arg3) {
+		type = arg1;
+		name = arg2;
+		mod = Arrays.asList(arg3.split(","));
 	}
 	
 	public boolean performNode () {

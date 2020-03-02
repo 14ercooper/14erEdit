@@ -12,11 +12,9 @@ public class BlocksBelowNode extends Node {
 	RangeNode arg1;
 	Node arg2;
 	
-	public static BlocksBelowNode newNode (RangeNode range, Node block) {
-		BlocksBelowNode bbNode = new BlocksBelowNode();
-		bbNode.arg1 = range;
-		bbNode.arg2 = block;
-		return bbNode;
+	public BlocksBelowNode(RangeNode range, Node block) {
+		arg1 = range;
+		arg2 = block;
 	}
 	
 	public boolean performNode () {

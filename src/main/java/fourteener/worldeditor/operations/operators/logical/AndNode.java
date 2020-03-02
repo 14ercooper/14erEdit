@@ -6,11 +6,9 @@ public class AndNode extends Node {
 	
 	public Node arg1, arg2;
 	
-	public static AndNode newNode (Node first, Node second) {
-		AndNode andNode = new AndNode();
-		andNode.arg1 = first;
-		andNode.arg2 = second;
-		return andNode;
+	public AndNode(Node first, Node second) {
+		arg1 = first;
+		arg2 = second;
 	}
 	
 	public boolean performNode () {

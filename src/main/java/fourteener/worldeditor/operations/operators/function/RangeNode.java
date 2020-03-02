@@ -7,11 +7,9 @@ public class RangeNode extends Node {
 	
 	public NumberNode arg1, arg2;
 	
-	public static RangeNode newNode (NumberNode min, NumberNode max) {
-		RangeNode rangeNode = new RangeNode();
-		rangeNode.arg1 = min;
-		rangeNode.arg2 = max;
-		return rangeNode;
+	public RangeNode(NumberNode min, NumberNode max) {
+		arg1 = min;
+		arg2 = max;
 	}
 	
 	public boolean performNode () {

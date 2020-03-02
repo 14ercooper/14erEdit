@@ -9,11 +9,9 @@ public class NumericGreaterNode extends Node {
 	public String name;
 	public NumberNode val;
 	
-	public static NumericGreaterNode newNode (String first, NumberNode second) {
-		NumericGreaterNode node = new NumericGreaterNode();
-		node.name = first;
-		node.val = second;
-		return node;
+	public NumericGreaterNode(String first, NumberNode second) {
+		name = first;
+		val = second;
 	}
 	
 	public boolean performNode () {

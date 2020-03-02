@@ -9,19 +9,17 @@ public class RemainderNode extends Node {
 	public int arg1;
 	public NumberNode arg2;
 	
-	public static RemainderNode newNode (String dim, NumberNode base) {
-		RemainderNode rmNode = new RemainderNode();
+	public RemainderNode(String dim, NumberNode base) {
 		if (dim.equalsIgnoreCase("x")) {
-			rmNode.arg1 = 0;
+			arg1 = 0;
 		}
 		else if (dim.equalsIgnoreCase("y")) {
-			rmNode.arg1 = 1;
+			arg1 = 1;
 		}
 		else if (dim.equalsIgnoreCase("z")) {
-			rmNode.arg1 = 2;
+			arg1 = 2;
 		}
-		rmNode.arg2 = base;
-		return rmNode;
+		arg2 = base;
 	}
 	
 	public boolean performNode () {

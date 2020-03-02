@@ -6,11 +6,9 @@ public class LinkerNode extends Node {
 	
 	public Node arg1, arg2;
 	
-	public static LinkerNode newNode (Node first, Node second) {
-		LinkerNode linkerNode = new LinkerNode();
-		linkerNode.arg1 = first;
-		linkerNode.arg2 = second;
-		return linkerNode;
+	public LinkerNode(Node first, Node second) {
+		arg1 = first;
+		arg2 = second;
 	}
 	
 	public boolean performNode () {

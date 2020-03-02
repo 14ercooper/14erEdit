@@ -8,10 +8,8 @@ public class NumericVarNode extends Node{
 	
 	String name;
 	
-	public static NumericVarNode newNode (String varName) {
-		NumericVarNode node = new NumericVarNode();
-		node.name = varName;
-		return node;
+	public NumericVarNode(String varName) {
+		name = varName;
 	}
 	
 	public boolean performNode () {

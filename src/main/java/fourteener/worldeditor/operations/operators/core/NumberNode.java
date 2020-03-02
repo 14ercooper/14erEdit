@@ -8,10 +8,8 @@ public class NumberNode extends Node {
 	public double arg;
 	
 	// Create a new number node
-	public static NumberNode newNode (String value) {
-		NumberNode numberNode = new NumberNode();
-		numberNode.arg = Double.parseDouble(value);
-		return numberNode;
+	public NumberNode(String value) {
+		arg = Double.parseDouble(value);
 	}
 	
 	// Return the number

@@ -5,10 +5,8 @@ import fourteener.worldeditor.operations.operators.Node;
 public class EntryNode {
 	public Node node = null;
 	
-	public static EntryNode createEntryNode (Node newNode) {
-		EntryNode entryNode = new EntryNode();
-		entryNode.node = newNode;
-		return entryNode;
+	public EntryNode (Node newNode) {
+		node = newNode;
 	}
 	
 	public boolean performNode () {

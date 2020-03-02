@@ -15,11 +15,9 @@ public class GetMonsterCommandNode extends Node {
 	String name;
 	String path;
 	
-	public static GetMonsterCommandNode newNode (String varName, String pth) {
-		GetMonsterCommandNode node = new GetMonsterCommandNode();
-		node.name = varName;
-		node.path = "plugins/14erEdit/Commands/" + pth;
-		return node;
+	public GetMonsterCommandNode(String varName, String pth) {
+		name = varName;
+		path = "plugins/14erEdit/Commands/" + pth;
 	}
 	
 	public boolean performNode () {

@@ -7,11 +7,9 @@ public class DeallocNode extends Node {
 	
 	String type, name;
 	
-	public static DeallocNode newNode (String varType, String varName) {
-		DeallocNode node = new DeallocNode();
-		node.type = varType;
-		node.name = varName;
-		return node;
+	public DeallocNode(String varType, String varName) {
+		type = varType;
+		name = varName;
 	}
 	
 	public boolean performNode () {

@@ -15,11 +15,9 @@ public class GetSpawnerCommandNode extends Node {
 	String name;
 	String path;
 	
-	public static GetSpawnerCommandNode newNode (String varName, String pth) {
-		GetSpawnerCommandNode node = new GetSpawnerCommandNode();
-		node.name = varName;
-		node.path = "plugins/14erEdit/Commands/" + pth;
-		return node;
+	public GetSpawnerCommandNode(String varName, String pth) {
+		name = varName;
+		path = "plugins/14erEdit/Commands/" + pth;
 	}
 	
 	public boolean performNode () {

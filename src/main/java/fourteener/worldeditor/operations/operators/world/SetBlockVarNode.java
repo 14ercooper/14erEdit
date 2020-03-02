@@ -11,10 +11,8 @@ public class SetBlockVarNode extends Node {
 
 	public String name;
 	
-	public static SetBlockVarNode newNode (String val) {
-		SetBlockVarNode node = new SetBlockVarNode();
-		node.name = val;
-		return node;
+	public SetBlockVarNode(String val) {
+		name = val;
 	}
 	
 	public boolean performNode () {

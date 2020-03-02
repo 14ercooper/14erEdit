@@ -4,8 +4,8 @@ import fourteener.worldeditor.operations.operators.Node;
 
 public class TrueNode extends Node{
 	
-	public static TrueNode newNode () {
-		return new TrueNode();
+	public TrueNode() {
+		return;
 	}
 	
 	public boolean performNode () {

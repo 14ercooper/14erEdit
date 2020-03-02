@@ -15,11 +15,9 @@ public class GetItemCommandNode extends Node {
 	String name;
 	String path;
 	
-	public static GetItemCommandNode newNode (String val1, String val2) {
-		GetItemCommandNode node =  new GetItemCommandNode();
-		node.name = val1;
-		node.path = "plugins/14erEdit/Commands/" + val2;
-		return node;
+	public GetItemCommandNode(String val1, String val2) {
+		name = val1;
+		path = "plugins/14erEdit/Commands/" + val2;
 	}
 	
 	public boolean performNode () {

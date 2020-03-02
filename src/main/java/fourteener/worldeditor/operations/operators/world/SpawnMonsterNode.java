@@ -9,10 +9,8 @@ public class SpawnMonsterNode extends Node {
 	
 	String name;
 	
-	public static SpawnMonsterNode newNode (String varName) {
-		SpawnMonsterNode node = new SpawnMonsterNode();
-		node.name = varName;
-		return node;
+	public SpawnMonsterNode(String varName) {
+		name = varName;
 	}
 	
 	public boolean performNode () {

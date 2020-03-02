@@ -24,6 +24,8 @@ public class Parser {
 	
 	public static EntryNode parseOperation (String op) {
 		
+		// =[ ]{1,}(1)\new \(\)
+		
 		// Here there be parsing magic
 		// A massive recursive nightmare
 		index = -1;
@@ -37,7 +39,7 @@ public class Parser {
 		
 		// Generate the entry node of the operation
 		Main.logDebug("Building entry node from root node"); // -----
-		EntryNode entryNode = EntryNode.createEntryNode(rootNode);
+		EntryNode entryNode = new EntryNode(rootNode);
 		return entryNode;
 	}
 	
@@ -47,193 +49,193 @@ public class Parser {
 		
 		if (parts.get(index).equals("~")) {
 			Main.logDebug("Not node created"); // -----
-			return NotNode.newNode(parsePart());
+			return new NotNode(parsePart());
 		}
 		else if (parts.get(index).equals("%")) {
 			Main.logDebug("Odds node created"); // -----
-			return OddsNode.newNode(parseNumberNode());
+			return new OddsNode(parseNumberNode());
 		}
 		else if (parts.get(index).equals("&")) {
 			Main.logDebug("And node created"); // -----
-			return AndNode.newNode(parsePart(), parsePart());
+			return new AndNode(parsePart(), parsePart());
 		}
 		else if (parts.get(index).equals("|")) {
 			Main.logDebug("Or node created"); // -----
-			return OrNode.newNode(parsePart(), parsePart());
+			return new OrNode(parsePart(), parsePart());
 		}
 		else if (parts.get(index).equals("?")) {
 			Main.logDebug("If node created"); // -----
-			return IfNode.newNode(parsePart(), parsePart(), parsePart());
+			return new IfNode(parsePart(), parsePart(), parsePart());
 		}
 		else if (parts.get(index).equals(">")) {
 			Main.logDebug("Set node created"); // -----
-			return SetNode.newNode(parsePart());
+			return new SetNode(parsePart());
 		}
 		else if (parts.get(index).equals(">>")) {
 			Main.logDebug("Set plus node created"); // -----
-			return SetPlusNode.newNode(parseStringNode());
+			return new SetPlusNode(parseStringNode());
 		}
 		else if (parts.get(index).equals("<<")) {
 			Main.logDebug("Get block data node created"); // -----
-			return GetBlockDataNode.newNode();
+			return new GetBlockDataNode();
 		}
 		else if (parts.get(index).equals("false")) {
 			Main.logDebug("False node created"); // -----
-			return FalseNode.newNode();
+			return new FalseNode();
 		}
 		else if (parts.get(index).equals("true")) {
 			Main.logDebug("True node created"); // -----
-			return TrueNode.newNode();
+			return new TrueNode();
 		}
 		else if (parts.get(index).equals("*")) {
 			Main.logDebug("Faces exposed node created"); // -----
-			return FacesExposedNode.newNode(parseNumberNode());
+			return new FacesExposedNode(parseNumberNode());
 		}
 		else if (parts.get(index).equals("@")) {
 			Main.logDebug("Block adjacent node created"); // -----
-			return BlockAdjacentNode.newNode(parsePart(), parseNumberNode());
+			return new BlockAdjacentNode(parsePart(), parseNumberNode());
 		}
 		else if (parts.get(index).equals("<")) {
 			Main.logDebug("XOR node created"); // -----
-			return XorNode.newNode(parsePart(), parsePart());
+			return new XorNode(parsePart(), parsePart());
 		}
 		else if (parts.get(index).equals("-")) {
 			Main.logDebug("Range node created"); // -----
-			return RangeNode.newNode(parseNumberNode(), parseNumberNode());
+			return new RangeNode(parseNumberNode(), parseNumberNode());
 		}
 		else if (parts.get(index).equals("$")) {
 			Main.logDebug("Macro node created"); // -----
-			return MacroNode.newNode(parseStringNode());
+			return new MacroNode(parseStringNode());
 		}
 		else if (parts.get(index).equals("$$")) {
 			Main.logDebug("Craftscript node created"); // -----
-			return CraftscriptNode.newNode(parseStringNode());
+			return new CraftscriptNode(parseStringNode());
 		}
 		else if (parts.get(index).equals("^")) {
 			Main.logDebug("Blocks above node created"); // -----
-			return BlocksAboveNode.newNode(parseRangeNode(), parsePart());
+			return new BlocksAboveNode(parseRangeNode(), parsePart());
 		}
 		else if (parts.get(index).equals("_")) {
 			Main.logDebug("Blocks below node created"); // -----
-			return BlocksBelowNode.newNode(parseRangeNode(), parsePart());
+			return new BlocksBelowNode(parseRangeNode(), parsePart());
 		}
 		else if (parts.get(index).equals("!")) {
 			Main.logDebug("Ignore physics node created"); // -----
-			return IgnorePhysicsNode.newNode(parsePart());
+			return new IgnorePhysicsNode(parsePart());
 		}
 		else if (parts.get(index).equals("#")) {
 			Main.logDebug("Simplex noise node created"); // -----
-			return SimplexNode.newNode(parseNumberNode(), parseNumberNode());
+			return new SimplexNode(parseNumberNode(), parseNumberNode());
 		}
 		else if (parts.get(index).equals(";")) {
 			Main.logDebug("Remainder node created"); // -----
-			return RemainderNode.newNode(parseStringNode(), parseNumberNode());
+			return new RemainderNode(parseStringNode(), parseNumberNode());
 		}
 		else if (parts.get(index).equals("same")) {
 			Main.logDebug("Same node created"); // -----
-			return SameNode.newNode();
+			return new SameNode();
 		}
 		else if (parts.get(index).equals("num")) {
 			Main.logDebug("Numeric var node created"); // -----
-			return NumericVarNode.newNode(parseStringNode());
+			return new NumericVarNode(parseStringNode());
 		}
 		else if (parts.get(index).equals("blk")) {
 			Main.logDebug("Block var node created"); // -----
-			return BlockVarNode.newNode(parseStringNode());
+			return new BlockVarNode(parseStringNode());
 		}
 		else if (parts.get(index).equals("itm")) {
 			Main.logDebug("Item var node created"); // -----
-			return ItemVarNode.newNode(parseStringNode());
+			return new ItemVarNode(parseStringNode());
 		}
 		else if (parts.get(index).equals("mob")) {
 			Main.logDebug("Monster var node created"); // -----
-			return MobVarNode.newNode(parseStringNode());
+			return new MobVarNode(parseStringNode());
 		}
 		else if (parts.get(index).equals(">m")) {
 			Main.logDebug("Monster spawn from var node created"); // -----
-			return SpawnMonsterNode.newNode(parseStringNode());
+			return new SpawnMonsterNode(parseStringNode());
 		}
 		else if (parts.get(index).equals("spwn")) {
 			Main.logDebug("Spawner var node created"); // -----
-			return SpawnerVarNode.newNode(parseStringNode());
+			return new SpawnerVarNode(parseStringNode());
 		}
 		else if (parts.get(index).equals(">s")) {
 			Main.logDebug("Set spawner node created"); // -----
-			return SetSpawnerNode.newNode(parseStringNode());
+			return new SetSpawnerNode(parseStringNode());
 		}
 		else if (parts.get(index).equals(">>i")) {
 			Main.logDebug("Get item command node created"); // -----
-			return GetItemCommandNode.newNode(parseStringNode(), parseStringNode());
+			return new GetItemCommandNode(parseStringNode(), parseStringNode());
 		}
 		else if (parts.get(index).equals(">>m")) {
 			Main.logDebug("Get monster command node created"); // -----
-			return GetMonsterCommandNode.newNode(parseStringNode(), parseStringNode());
+			return new GetMonsterCommandNode(parseStringNode(), parseStringNode());
 		}
 		else if (parts.get(index).equals(">>s")) {
 			Main.logDebug("Get spawner command node created"); // -----
-			return GetSpawnerCommandNode.newNode(parseStringNode(), parseStringNode());
+			return new GetSpawnerCommandNode(parseStringNode(), parseStringNode());
 		}
 		else if (parts.get(index).equals("dealloc")) {
 			Main.logDebug("Deallocate variable node created"); // -----
-			return DeallocNode.newNode(parseStringNode(), parseStringNode());
+			return new DeallocNode(parseStringNode(), parseStringNode());
 		}
 		else if (parts.get(index).equals("/")) {
 			Main.logDebug("Linker node created"); // -----
-			return LinkerNode.newNode(parsePart(), parsePart());
+			return new LinkerNode(parsePart(), parsePart());
 		}
 		else if (parts.get(index).equals(">>n")) {
 			Main.logDebug("Set NBT node created"); // -----
-			return SetNBTNode.newNode(parseStringNode());
+			return new SetNBTNode(parseStringNode());
 		}
 		else if (parts.get(index).equals("loop")) {
 			Main.logDebug("While loop node created"); // -----
-			return WhileNode.newNode(parsePart(), parsePart());
+			return new WhileNode(parsePart(), parsePart());
 		}
 		else if (parts.get(index).equals("-eq")) {
 			Main.logDebug("Numeric equality node created"); // -----
-			return NumericEqualityNode.newNode(parseStringNode(), parseNumberNode());
+			return new NumericEqualityNode(parseStringNode(), parseNumberNode());
 		}
 		else if (parts.get(index).equals("-lt")) {
 			Main.logDebug("Numeric less than node created"); // -----
-			return NumericLessNode.newNode(parseStringNode(), parseNumberNode());
+			return new NumericLessNode(parseStringNode(), parseNumberNode());
 		}
 		else if (parts.get(index).equals("-gt")) {
 			Main.logDebug("Numeric greater than node created"); // -----
-			return NumericGreaterNode.newNode(parseStringNode(), parseNumberNode());
+			return new NumericGreaterNode(parseStringNode(), parseNumberNode());
 		}
 		else if (parts.get(index).equals("-lte")) {
 			Main.logDebug("Numeric less than or equal node created"); // -----
-			return NumericLessEqualNode.newNode(parseStringNode(), parseNumberNode());
+			return new NumericLessEqualNode(parseStringNode(), parseNumberNode());
 		}
 		else if (parts.get(index).equals("-gte")) {
 			Main.logDebug("Numeric greater than or equal node created"); // -----
-			return NumericGreaterEqualNode.newNode(parseStringNode(), parseNumberNode());
+			return new NumericGreaterEqualNode(parseStringNode(), parseNumberNode());
 		}
 		else if (parts.get(index).equals(">b")) {
 			Main.logDebug("Set block from variable node created"); // -----
-			return SetBlockVarNode.newNode(parseStringNode());
+			return new SetBlockVarNode(parseStringNode());
 		}
 		else if (parts.get(index).equals(">i")) {
 			Main.logDebug("Get item from variable node created"); // -----
-			return GetItemVarNode.newNode(parseStringNode());
+			return new GetItemVarNode(parseStringNode());
 		}
 		else if (parts.get(index).equals(">f")) {
 			Main.logDebug("Load op from file node created"); // -----
-			return LoadFromFileNode.newNode(parseStringNode());
+			return new LoadFromFileNode(parseStringNode());
 		}
 		else if (parts.get(index).equals("var")) {
 			Main.logDebug("Modify variable node created"); // -----
-			return ModifyVarNode.newNode(parseStringNode(), parseStringNode(), parseStringNode());
+			return new ModifyVarNode(parseStringNode(), parseStringNode(), parseStringNode());
 		}
 		else if (Material.matchMaterial(parts.get(index)) != null) {
 			Main.logDebug("Block node created, type " + Material.matchMaterial(parts.get(index)).name()); // -----
-			return BlockNode.newNode(Material.matchMaterial(parts.get(index)));
+			return new BlockNode(Material.matchMaterial(parts.get(index)));
 		}
 		else if (Material.matchMaterial(parts.get(index).split("\\[")[0]) != null && parts.get(index).split("\\[").length > 1) {
 			Main.logDebug("Block node created, type " + Material.matchMaterial(parts.get(index).split("\\[")[0]).name()); // -----
 			BlockData bd = Bukkit.getServer().createBlockData(parts.get(index));
 			Material mat = Material.matchMaterial(parts.get(index).split("\\[")[0]);
-			return BlockNode.newNode(mat, bd);
+			return new BlockNode(mat, bd);
 		}
 		else {
 			Main.logDebug("Null node created"); // -----
@@ -244,13 +246,13 @@ public class Parser {
 	private static NumberNode parseNumberNode () {
 		index ++;
 		Main.logDebug("Number node created"); // -----
-		return NumberNode.newNode(parts.get(index));
+		return new NumberNode(parts.get(index));
 	}
 	
 	private static RangeNode parseRangeNode () {
 		index ++;
 		Main.logDebug("Range node created"); // -----
-		return RangeNode.newNode(parseNumberNode(), parseNumberNode());
+		return new RangeNode(parseNumberNode(), parseNumberNode());
 	}
 	
 	private static String parseStringNode () {

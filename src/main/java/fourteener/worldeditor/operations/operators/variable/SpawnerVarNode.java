@@ -8,10 +8,8 @@ public class SpawnerVarNode extends Node{
 	
 	String name;
 	
-	public static SpawnerVarNode newNode (String varName) {
-		SpawnerVarNode node = new SpawnerVarNode();
-		node.name = varName;
-		return node;
+	public SpawnerVarNode(String varName) {
+		name = varName;
 	}
 	
 	public boolean performNode () {

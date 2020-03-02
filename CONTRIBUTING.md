@@ -14,7 +14,6 @@ Please maintain the same styling as is already present in the code. This include
 - Spaces between the name and parameter in function definitions
 - No space when calling a function in code before paranthesis
 - Opening braces on the same line
-- Static constructor functions rather than constructors
 
 Other things to note:
 - Do not include any external frameworks (exception Spigot API)

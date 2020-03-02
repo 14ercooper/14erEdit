@@ -9,10 +9,8 @@ public class GetItemVarNode extends Node {
 	
 	String name;
 	
-	public static GetItemVarNode newNode (String val) {
-		GetItemVarNode node =  new GetItemVarNode();
-		node.name = val;
-		return node;
+	public GetItemVarNode(String val) {
+		name = val;
 	}
 	
 	public boolean performNode () {

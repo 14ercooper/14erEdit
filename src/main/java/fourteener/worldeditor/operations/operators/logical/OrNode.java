@@ -6,11 +6,9 @@ public class OrNode extends Node {
 
 	public Node arg1, arg2;
 	
-	public static OrNode newNode (Node first, Node second) {
-		OrNode orNode = new OrNode();
-		orNode.arg1 = first;
-		orNode.arg2 = second;
-		return orNode;
+	public OrNode(Node first, Node second) {
+		arg1 = first;
+		arg2 = second;
 	}
 	
 	public boolean performNode () {

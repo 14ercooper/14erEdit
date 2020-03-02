@@ -8,10 +8,8 @@ public class MobVarNode extends Node{
 	
 	String name;
 	
-	public static MobVarNode newNode (String varName) {
-		MobVarNode node = new MobVarNode();
-		node.name = varName;
-		return node;
+	public MobVarNode(String varName) {
+		name = varName;
 	}
 	
 	public boolean performNode () {

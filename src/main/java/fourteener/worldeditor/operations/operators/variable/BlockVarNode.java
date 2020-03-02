@@ -8,10 +8,8 @@ public class BlockVarNode extends Node{
 	
 	String name;
 	
-	public static BlockVarNode newNode (String varName) {
-		BlockVarNode node = new BlockVarNode();
-		node.name = varName;
-		return node;
+	public BlockVarNode(String varName) {
+		name = varName;
 	}
 	
 	public boolean performNode () {

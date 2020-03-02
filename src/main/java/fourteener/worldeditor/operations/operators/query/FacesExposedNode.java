@@ -13,10 +13,8 @@ public class FacesExposedNode extends Node {
 	
 	public NumberNode arg;
 	
-	public static FacesExposedNode newNode (NumberNode count) {
-		FacesExposedNode facesNode = new FacesExposedNode();
-		facesNode.arg = count;
-		return facesNode;
+	public FacesExposedNode(NumberNode count) {
+		arg = count;
 	}
 	
 	public boolean performNode () {

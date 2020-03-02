@@ -13,11 +13,9 @@ public class SimplexNode extends Node {
 	
 	public NumberNode arg1, arg2;
 	
-	public static SimplexNode newNode (NumberNode dimensions, NumberNode cutoff) {
-		SimplexNode simplexNode = new SimplexNode();
-		simplexNode.arg1 = dimensions;
-		simplexNode.arg2 = cutoff;
-		return simplexNode;
+	public SimplexNode (NumberNode dimensions, NumberNode cutoff) {
+		arg1 = dimensions;
+		arg2 = cutoff;
 	}
 	
 	public boolean performNode () {

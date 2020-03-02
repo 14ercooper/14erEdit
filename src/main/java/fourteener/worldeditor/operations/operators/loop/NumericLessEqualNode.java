@@ -9,11 +9,9 @@ public class NumericLessEqualNode extends Node {
 	public String name;
 	public NumberNode val;
 	
-	public static NumericLessEqualNode newNode (String first, NumberNode second) {
-		NumericLessEqualNode node = new NumericLessEqualNode();
-		node.name = first;
-		node.val = second;
-		return node;
+	public NumericLessEqualNode(String first, NumberNode second) {
+		name = first;
+		val = second;
 	}
 	
 	public boolean performNode () {

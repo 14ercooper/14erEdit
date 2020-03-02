@@ -7,10 +7,8 @@ public class IgnorePhysicsNode extends Node {
 	
 	public Node arg;
 	
-	public static IgnorePhysicsNode newNode (Node effect) {
-		IgnorePhysicsNode ipNode = new IgnorePhysicsNode ();
-		ipNode.arg = effect;
-		return ipNode;
+	public IgnorePhysicsNode(Node effect) {
+		arg = effect;
 	}
 	
 	public boolean performNode () {

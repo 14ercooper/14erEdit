@@ -9,11 +9,9 @@ public class NumericLessNode extends Node {
 	public String name;
 	public NumberNode val;
 	
-	public static NumericLessNode newNode (String first, NumberNode second) {
-		NumericLessNode node = new NumericLessNode();
-		node.name = first;
-		node.val = second;
-		return node;
+	public NumericLessNode(String first, NumberNode second) {
+		name = first;
+		val = second;
 	}
 	
 	public boolean performNode () {

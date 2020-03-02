@@ -8,10 +8,8 @@ public class ItemVarNode extends Node{
 	
 	String name;
 	
-	public static ItemVarNode newNode (String varName) {
-		ItemVarNode node = new ItemVarNode();
-		node.name = varName;
-		return node;
+	public ItemVarNode(String varName) {
+		name = varName;
 	}
 	
 	public boolean performNode () {

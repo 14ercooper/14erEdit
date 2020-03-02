@@ -9,11 +9,9 @@ public class NumericEqualityNode extends Node {
 	public String name;
 	public NumberNode val;
 	
-	public static NumericEqualityNode newNode (String first, NumberNode second) {
-		NumericEqualityNode node = new NumericEqualityNode();
-		node.name = first;
-		node.val = second;
-		return node;
+	public NumericEqualityNode(String first, NumberNode second) {
+		name = first;
+		val = second;
 	}
 	
 	public boolean performNode () {

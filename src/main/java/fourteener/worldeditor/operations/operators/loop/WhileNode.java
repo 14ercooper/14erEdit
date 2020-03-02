@@ -6,11 +6,9 @@ public class WhileNode extends Node {
 	
 	Node cond, op;
 	
-	public static WhileNode newNode (Node arg1, Node arg2) {
-		WhileNode node = new WhileNode();
-		node.cond = arg1;
-		node.cond = arg2;
-		return node;
+	public WhileNode(Node arg1, Node arg2) {
+		cond = arg1;
+		op = arg2;
 	}
 	
 	public boolean performNode () {

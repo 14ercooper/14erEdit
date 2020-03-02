@@ -9,10 +9,8 @@ public class SetNBTNode extends Node {
 	
 	String nbt;
 	
-	public static SetNBTNode newNode (String val) {
-		SetNBTNode node = new SetNBTNode();
-		node.nbt = val;
-		return node;
+	public SetNBTNode(String val) {
+		nbt = val;
 	}
 	
 	public boolean performNode () {

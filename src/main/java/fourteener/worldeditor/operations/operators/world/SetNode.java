@@ -7,10 +7,8 @@ public class SetNode extends Node {
 
 	public BlockNode arg;
 	
-	public static SetNode newNode (Node blockNode) {
-		SetNode setNode = new SetNode();
-		setNode.arg = (BlockNode) blockNode;
-		return setNode;
+	public SetNode(Node blockNode) {
+		arg = (BlockNode) blockNode;
 	}
 	
 	public boolean performNode () {

@@ -9,10 +9,8 @@ public class SetSpawnerNode extends Node {
 	
 	String name;
 	
-	public static SetSpawnerNode newNode (String varName) {
-		SetSpawnerNode node = new SetSpawnerNode();
-		node.name = varName;
-		return node;
+	public SetSpawnerNode(String varName) {
+		name = varName;
 	}
 	
 	public boolean performNode () {

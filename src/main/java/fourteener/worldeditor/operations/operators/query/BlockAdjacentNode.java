@@ -13,11 +13,9 @@ public class BlockAdjacentNode extends Node {
 	public Node arg1;
 	public NumberNode arg2;
 	
-	public static BlockAdjacentNode newNode (Node block, NumberNode count) {
-		BlockAdjacentNode baNode = new BlockAdjacentNode();
-		baNode.arg1 = block;
-		baNode.arg2 = count;
-		return baNode;
+	public BlockAdjacentNode(Node block, NumberNode count) {
+		arg1 = block;
+		arg2 = count;
 	}
 	
 	public boolean performNode () {

@@ -13,18 +13,18 @@ public class BlockNode extends Node {
 	public BlockData arg2 = null;
 	
 	// Creates a new node
-	public static BlockNode newNode (Material material) {
-		BlockNode blockNode = new BlockNode();
-		blockNode.arg1 = material;
-		return blockNode;
+	public BlockNode(Material material) {
+		arg1 = material;
+	}
+	
+	public BlockNode() {
+		return;
 	}
 	
 	// Creates a new node
-	public static BlockNode newNode (Material material, BlockData blockData) {
-		BlockNode blockNode = new BlockNode();
-		blockNode.arg1 = material;
-		blockNode.arg2 = blockData;
-		return blockNode;
+	public BlockNode(Material material, BlockData blockData) {
+		arg1 = material;
+		arg2 = blockData;
 	}
 	
 	// Return the material this node references

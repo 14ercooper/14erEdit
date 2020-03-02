@@ -6,12 +6,10 @@ public class IfNode extends Node {
 	
 	public Node arg1, arg2, arg3;
 	
-	public static IfNode newNode (Node mask, Node ifTrue, Node ifFalse) {
-		IfNode ifNode = new IfNode();
-		ifNode.arg1 = mask;
-		ifNode.arg2 = ifTrue;
-		ifNode.arg3 = ifFalse;
-		return ifNode;
+	public IfNode(Node mask, Node ifTrue, Node ifFalse) {
+		arg1 = mask;
+		arg2 = ifTrue;
+		arg3 = ifFalse;
 	}
 	
 	public boolean performNode () {
