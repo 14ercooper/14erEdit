@@ -1,0 +1,23 @@
+package fourteener.worldeditor.operations.operators.logical;
+
+import fourteener.worldeditor.operations.operators.Node;
+
+public class OrNode extends Node {
+
+	public Node arg1, arg2;
+	
+	public static OrNode newNode (Node first, Node second) {
+		OrNode orNode = new OrNode();
+		orNode.arg1 = first;
+		orNode.arg2 = second;
+		return orNode;
+	}
+	
+	public boolean performNode () {
+		return ((arg1.performNode()) || (arg2.performNode()));
+	}
+	
+	public static int getArgCount () {
+		return 2;
+	}
+}

@@ -7,12 +7,8 @@ import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 
 import fourteener.worldeditor.main.Main;
-import fourteener.worldeditor.operations.operators.EntryNode;
-import fourteener.worldeditor.operations.type.BlockVar;
-import fourteener.worldeditor.operations.type.ItemVar;
-import fourteener.worldeditor.operations.type.MonsterVar;
-import fourteener.worldeditor.operations.type.NumericVar;
-import fourteener.worldeditor.operations.type.SpawnerVar;
+import fourteener.worldeditor.operations.operators.core.EntryNode;
+import fourteener.worldeditor.operations.type.*;
 
 public class Operator {
 	public static Operator currentOperator;

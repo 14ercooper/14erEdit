@@ -8,7 +8,14 @@ import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
 
 import fourteener.worldeditor.main.Main;
-import fourteener.worldeditor.operations.operators.*;
+import fourteener.worldeditor.operations.operators.Node;
+import fourteener.worldeditor.operations.operators.core.*;
+import fourteener.worldeditor.operations.operators.function.*;
+import fourteener.worldeditor.operations.operators.logical.*;
+import fourteener.worldeditor.operations.operators.loop.*;
+import fourteener.worldeditor.operations.operators.query.*;
+import fourteener.worldeditor.operations.operators.variable.*;
+import fourteener.worldeditor.operations.operators.world.*;
 
 public class Parser {
 	// This starts as -1 since the first thing the parser does is increment it
