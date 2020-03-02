@@ -1,4 +1,4 @@
-package fourteener.worldeditor.worldeditor.macros.macros;
+package fourteener.worldeditor.worldeditor.macros.macros.technical;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -11,6 +11,7 @@ import org.bukkit.block.BlockState;
 
 import fourteener.worldeditor.main.Main;
 import fourteener.worldeditor.operations.Operator;
+import fourteener.worldeditor.worldeditor.macros.macros.Macro;
 import fourteener.worldeditor.worldeditor.undo.UndoElement;
 import fourteener.worldeditor.worldeditor.undo.UndoManager;
 

@@ -3,7 +3,8 @@ package fourteener.worldeditor.worldeditor.macros;
 import org.bukkit.Location;
 
 import fourteener.worldeditor.main.Main;
-import fourteener.worldeditor.worldeditor.macros.macros.*;
+import fourteener.worldeditor.worldeditor.macros.macros.nature.*;
+import fourteener.worldeditor.worldeditor.macros.macros.technical.*;
 
 public class MacroLauncher {
 	

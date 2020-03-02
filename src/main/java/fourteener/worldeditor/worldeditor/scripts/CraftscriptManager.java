@@ -18,8 +18,8 @@ public class CraftscriptManager {
 	Map<String,Craftscript> registeredScripts = new HashMap<String,Craftscript>();
 	
 	// Create a new manager
-	public static CraftscriptManager newManager () {
-		return new CraftscriptManager();
+	public CraftscriptManager () {
+		// This has no function right now
 	}
 	
 	// Register a new Craftscript, called by label label and handled by handler

@@ -1,4 +1,4 @@
-package fourteener.worldeditor.worldeditor.scripts.bundled;
+package fourteener.worldeditor.worldeditor.scripts.bundled.selection;
 
 import fourteener.worldeditor.worldeditor.scripts.Craftscript;
 import org.bukkit.block.BlockState;

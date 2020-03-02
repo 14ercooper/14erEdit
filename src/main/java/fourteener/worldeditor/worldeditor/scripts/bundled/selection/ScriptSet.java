@@ -1,4 +1,4 @@
-package fourteener.worldeditor.worldeditor.scripts.bundled;
+package fourteener.worldeditor.worldeditor.scripts.bundled.selection;
 
 import java.util.ArrayList;
 import java.util.LinkedList;

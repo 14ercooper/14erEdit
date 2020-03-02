@@ -10,7 +10,9 @@ import fourteener.worldeditor.commands.CommandScript;
 import fourteener.worldeditor.commands.CommandUndo;
 import fourteener.worldeditor.worldeditor.brush.BrushListener;
 import fourteener.worldeditor.worldeditor.scripts.CraftscriptManager;
-import fourteener.worldeditor.worldeditor.scripts.bundled.*;
+import fourteener.worldeditor.worldeditor.scripts.bundled.easyedit.*;
+import fourteener.worldeditor.worldeditor.scripts.bundled.quickbrush.*;
+import fourteener.worldeditor.worldeditor.scripts.bundled.selection.*;
 import fourteener.worldeditor.worldeditor.selection.SelectionWandListener;
 
 public class Main extends JavaPlugin {
@@ -24,7 +26,7 @@ public class Main extends JavaPlugin {
 	
 	@Override
 	public void onEnable () {
-		// Register commands
+		// Register commands with the server
 		this.getCommand("fx").setExecutor(new CommandFx());
 		CommandUndo undoCmd = new CommandUndo();
 		this.getCommand("un").setExecutor(undoCmd);
@@ -32,7 +34,7 @@ public class Main extends JavaPlugin {
 		this.getCommand("script").setExecutor(new CommandScript());
 		this.getCommand("run").setExecutor(new CommandRun());
 		
-		// Register listeners
+		// Register listeners for brushes and wands
 		getServer().getPluginManager().registerEvents(new SelectionWandListener(), this);
 		getServer().getPluginManager().registerEvents(new BrushListener(), this);
 		
@@ -41,11 +43,39 @@ public class Main extends JavaPlugin {
 		simplexNoise = new SimplexNoise (world.getSeed()); // Seeded using the world seed for variance between worlds but consistency in the same world
 		
 		// Load the craftscripts manager
-		scriptManager = CraftscriptManager.newManager ();
+		scriptManager = new CraftscriptManager();
 		
 		// Register the prepackaged craftscripts
-		// Set script bundle
+		quickbrush();
+		selection();
+		easyedit();
+	}
+
+	private void easyedit() {
+		// Easyedit script bundle
+		scriptManager.registerCraftscript("erode", new ScriptErode());
+		scriptManager.registerCraftscript("tree", new ScriptTree());
+		scriptManager.registerCraftscript("grassbrush", new ScriptGrassBrush());
+		scriptManager.registerCraftscript("vines", new ScriptVines());
+		scriptManager.registerCraftscript("biome", new ScriptBiome());
+		ScriptFlatten scriptFlatten = new ScriptFlatten();
+		scriptManager.registerCraftscript("flatten", scriptFlatten);
+		scriptManager.registerCraftscript("absflatten", scriptFlatten);
+		ScriptOverlay scriptOverlay = new ScriptOverlay();
+		scriptManager.registerCraftscript("overlay", scriptOverlay);
+		ScriptLine scriptLine = new ScriptLine();
+		scriptManager.registerCraftscript("line", scriptLine);
+	}
+
+	private void selection() {
+		// Selection script bundle
 		scriptManager.registerCraftscript("set", new ScriptSet());
+		scriptManager.registerCraftscript("replace", new ScriptReplace());
+		scriptManager.registerCraftscript("grass", new ScriptGrass());
+	}
+
+	private void quickbrush() {
+		// Quick brush script bundle
 		ScriptBallBrushSet bbset = new ScriptBallBrushSet();
 		scriptManager.registerCraftscript("ballset", bbset);
 		scriptManager.registerCraftscript("bset", bbset);
@@ -61,9 +91,6 @@ public class Main extends JavaPlugin {
 		ScriptEllipseBrushSet beset = new ScriptEllipseBrushSet();
 		scriptManager.registerCraftscript("ellipseset", beset);
 		scriptManager.registerCraftscript("eset", beset);
-		
-		// Replace script bundle
-		scriptManager.registerCraftscript("replace", new ScriptReplace());
 		ScriptBallBrushReplace bbrep = new ScriptBallBrushReplace();
 		scriptManager.registerCraftscript("ballreplace", bbrep);
 		scriptManager.registerCraftscript("brep", bbrep);
@@ -79,22 +106,6 @@ public class Main extends JavaPlugin {
 		ScriptEllipseBrushReplace berep = new ScriptEllipseBrushReplace();
 		scriptManager.registerCraftscript("ellipsereplace", berep);
 		scriptManager.registerCraftscript("erep", berep);
-		
-		// Other craftscripts
-		scriptManager.registerCraftscript("erode", new ScriptErode());
-		scriptManager.registerCraftscript("tree", new ScriptTree());
-		scriptManager.registerCraftscript("grass", new ScriptGrass());
-		scriptManager.registerCraftscript("grassbrush", new ScriptGrassBrush());
-		scriptManager.registerCraftscript("vines", new ScriptVines());
-		scriptManager.registerCraftscript("bridge", new ScriptBridge());
-		scriptManager.registerCraftscript("biome", new ScriptBiome());
-		ScriptFlatten scriptFlatten = new ScriptFlatten();
-		scriptManager.registerCraftscript("flatten", scriptFlatten);
-		scriptManager.registerCraftscript("absflatten", scriptFlatten);
-		ScriptOverlay scriptOverlay = new ScriptOverlay();
-		scriptManager.registerCraftscript("overlay", scriptOverlay);
-		ScriptLine scriptLine = new ScriptLine();
-		scriptManager.registerCraftscript("line", scriptLine);
 	}
 	
 	@Override

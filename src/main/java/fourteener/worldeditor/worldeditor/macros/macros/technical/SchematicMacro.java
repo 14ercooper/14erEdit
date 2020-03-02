@@ -1,4 +1,4 @@
-package fourteener.worldeditor.worldeditor.macros.macros;
+package fourteener.worldeditor.worldeditor.macros.macros.technical;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -16,6 +16,7 @@ import com.fourteener.schematics.Schematic;
 
 import fourteener.worldeditor.main.Main;
 import fourteener.worldeditor.operations.Operator;
+import fourteener.worldeditor.worldeditor.macros.macros.Macro;
 import fourteener.worldeditor.worldeditor.undo.UndoElement;
 import fourteener.worldeditor.worldeditor.undo.UndoManager;
 

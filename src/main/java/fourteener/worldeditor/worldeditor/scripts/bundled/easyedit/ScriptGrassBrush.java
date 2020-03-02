@@ -1,4 +1,4 @@
-package fourteener.worldeditor.worldeditor.scripts.bundled;
+package fourteener.worldeditor.worldeditor.scripts.bundled.easyedit;
 
 import java.util.LinkedList;
 import java.util.List;
