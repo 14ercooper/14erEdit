@@ -3,6 +3,7 @@ package fourteener.worldeditor.worldeditor.scripts.bundled.quickbrush;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
@@ -12,7 +13,7 @@ import fourteener.worldeditor.worldeditor.scripts.Craftscript;
 public class ScriptDiamondBrushReplace extends Craftscript{
 
 	@Override
-	public List<BlockState> perform(LinkedList<String> args, Player player, String label) {
+	public Set<BlockState> perform(LinkedList<String> args, Player player, String label) {
 		String brushRadius = args.get(0);
 		String blocksToReplace = args.get(1);
 		String[] replaceIndividual = blocksToReplace.split(",");

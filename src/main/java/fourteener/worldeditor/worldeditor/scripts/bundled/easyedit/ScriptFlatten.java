@@ -1,8 +1,10 @@
 package fourteener.worldeditor.worldeditor.scripts.bundled.easyedit;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -16,7 +18,7 @@ import fourteener.worldeditor.worldeditor.selection.SelectionManager;
 public class ScriptFlatten extends Craftscript {
 
 	@Override
-	public List<BlockState> perform(LinkedList<String> args, Player player, String label) {
+	public Set<BlockState> perform(LinkedList<String> args, Player player, String label) {
 		boolean useSelection = true;
 		double height = Double.parseDouble(args.get(0));
 		Material block = Material.matchMaterial(args.get(1));
@@ -42,10 +44,10 @@ public class ScriptFlatten extends Craftscript {
 		return null;
 	}
 
-	private List<BlockState> selectionFlatten(Player player, double height, Material block) {
+	private Set<BlockState> selectionFlatten(Player player, double height, Material block) {
 		SelectionManager sm = SelectionManager.getSelectionManager(player);
 		LinkedList<BlockState> operatedBlocks = null;
-		List<BlockState> snapshotArray = new ArrayList<BlockState>();
+		Set<BlockState> snapshotArray = new HashSet<BlockState>();
 		if (sm != null) {
 			double[] negCorner = sm.getMostNegativeCorner();
 			double[] posCorner = sm.getMostPositiveCorner();
@@ -97,10 +99,10 @@ public class ScriptFlatten extends Craftscript {
 		return snapshotArray;
 	}
 
-	private List<BlockState> absoluteSelectionFlatten(Player player, double height, Material block) {
+	private Set<BlockState> absoluteSelectionFlatten(Player player, double height, Material block) {
 		SelectionManager sm = SelectionManager.getSelectionManager(player);
 		LinkedList<BlockState> operatedBlocks = null;
-		List<BlockState> snapshotArray = new ArrayList<BlockState>();
+		Set<BlockState> snapshotArray = new HashSet<BlockState>();
 		if (sm != null) {
 			double[] negCorner = sm.getMostNegativeCorner();
 			double[] posCorner = sm.getMostPositiveCorner();

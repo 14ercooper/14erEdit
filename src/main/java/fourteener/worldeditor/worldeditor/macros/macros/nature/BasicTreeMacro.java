@@ -1,8 +1,10 @@
 package fourteener.worldeditor.worldeditor.macros.macros.nature;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -130,7 +132,7 @@ public class BasicTreeMacro extends Macro {
 
 	private void jungleTreeGenerator() {
 		// Start tracking BlockStates for an undo
-		List<BlockState> undoList = new ArrayList<BlockState>();
+		Set<BlockState> undoList = new HashSet<BlockState>();
 		
 		// Calculate the size of the tree
 		Random rand = new Random();
@@ -275,12 +277,12 @@ public class BasicTreeMacro extends Macro {
 		}
 		
 		// Actually register the undo
-		UndoManager.getUndo(Operator.currentPlayer).storeUndo(UndoElement.newUndoElementFromStates(undoList));
+		UndoManager.getUndo(Operator.currentPlayer).storeUndo(new UndoElement(undoList));
 	}
 
 	private void brownMushroomTreeGenerator() {
 		// Start tracking BlockStates for an undo
-		List<BlockState> undoList = new ArrayList<BlockState>();
+		Set<BlockState> undoList = new HashSet<BlockState>();
 		
 		// Determine the size of the mushroom
 		Random rand = new Random();
@@ -443,12 +445,12 @@ public class BasicTreeMacro extends Macro {
 		}
 		
 		// Actually register the undo
-		UndoManager.getUndo(Operator.currentPlayer).storeUndo(UndoElement.newUndoElementFromStates(undoList));
+		UndoManager.getUndo(Operator.currentPlayer).storeUndo(new UndoElement(undoList));
 	}
 
 	private void redMushroomTreeGenerator() {
 		// Start tracking BlockStates for an undo
-		List<BlockState> undoList = new ArrayList<BlockState>();
+		Set<BlockState> undoList = new HashSet<BlockState>();
 		
 		// Create the stem (with a slight curve)
 		Random rand = new Random ();
@@ -539,12 +541,12 @@ public class BasicTreeMacro extends Macro {
 		}
 		
 		// Actually register the undo
-		UndoManager.getUndo(Operator.currentPlayer).storeUndo(UndoElement.newUndoElementFromStates(undoList));
+		UndoManager.getUndo(Operator.currentPlayer).storeUndo(new UndoElement(undoList));
 	}
 
 	private void darkOakTreeGenerator() {
 		// Start tracking BlockStates for an undo
-		List<BlockState> undoList = new ArrayList<BlockState>();
+		Set<BlockState> undoList = new HashSet<BlockState>();
 		
 		// Generate the trunk of the tree (build up, with a 2-3 curves to the side; placing a shaft with blocks also the the N/E/NE)
 		// Make the trunk 3-wide for particularly large trees, with 6-7 curves to the side
@@ -660,12 +662,12 @@ public class BasicTreeMacro extends Macro {
 		// Generator logic & code here
 		
 		// Actually register the undo
-		UndoManager.getUndo(Operator.currentPlayer).storeUndo(UndoElement.newUndoElementFromStates(undoList));
+		UndoManager.getUndo(Operator.currentPlayer).storeUndo(new UndoElement(undoList));
 	}
 
 	private void birchTreeGenerator() {
 		// Start tracking BlockStates for an undo
-		List<BlockState> undoList = new ArrayList<BlockState>();
+		Set<BlockState> undoList = new HashSet<BlockState>();
 		
 		// Create the vertical log
 		Random rand = new Random();
@@ -776,12 +778,12 @@ public class BasicTreeMacro extends Macro {
 		}
 		
 		// Actually register the undo
-		UndoManager.getUndo(Operator.currentPlayer).storeUndo(UndoElement.newUndoElementFromStates(undoList));
+		UndoManager.getUndo(Operator.currentPlayer).storeUndo(new UndoElement(undoList));
 	}
 
 	private void bushTreeGenerator() {
 		// Start tracking BlockStates for an undo
-		List<BlockState> undoList = new ArrayList<BlockState>();
+		Set<BlockState> undoList = new HashSet<BlockState>();
 		
 		// Place the log block
 		Block baseBlock = Main.world.getBlockAt(plantOn).getRelative(BlockFace.UP);
@@ -818,12 +820,12 @@ public class BasicTreeMacro extends Macro {
 		}
 		
 		// Actually register the undo
-		UndoManager.getUndo(Operator.currentPlayer).storeUndo(UndoElement.newUndoElementFromStates(undoList));
+		UndoManager.getUndo(Operator.currentPlayer).storeUndo(new UndoElement(undoList));
 	}
 
 	private void bigTreeGenerator() {
 		// Start tracking BlockStates for an undo
-		List<BlockState> undoList = new ArrayList<BlockState>();
+		Set<BlockState> undoList = new HashSet<BlockState>();
 		
 		// Calculate the dimensions of the tree, other needed variables
 		Random rand = new Random();
@@ -1691,12 +1693,12 @@ public class BasicTreeMacro extends Macro {
 		}
 		
 		// Actually register the undo
-		UndoManager.getUndo(Operator.currentPlayer).storeUndo(UndoElement.newUndoElementFromStates(undoList));
+		UndoManager.getUndo(Operator.currentPlayer).storeUndo(new UndoElement(undoList));
 	}
 
 	private void branchTreeGenerator() {
 		// Start tracking BlockStates for an undo
-		List<BlockState> undoList = new ArrayList<BlockState>();
+		Set<BlockState> undoList = new HashSet<BlockState>();
 		
 		// Figure out the size of the tree (use 3 levels of branches)
 		Random rand = new Random();
@@ -1919,12 +1921,12 @@ public class BasicTreeMacro extends Macro {
 		}
 		
 		// Actually register the undo
-		UndoManager.getUndo(Operator.currentPlayer).storeUndo(UndoElement.newUndoElementFromStates(undoList));
+		UndoManager.getUndo(Operator.currentPlayer).storeUndo(new UndoElement(undoList));
 	}
 
 	private void oakTreeGenerator() {
 		// Start tracking blockstates for an undo
-		List<BlockState> undoList = new ArrayList<BlockState>();
+		Set<BlockState> undoList = new HashSet<BlockState>();
 		// UndoManager.getUndo(Operator.currentPlayer).storeUndo(UndoElement.newUndoElement(undoList));
 		
 		// Figure out the size of the tree
@@ -1974,6 +1976,6 @@ public class BasicTreeMacro extends Macro {
 		}
 		
 		// Actually register the undo
-		UndoManager.getUndo(Operator.currentPlayer).storeUndo(UndoElement.newUndoElementFromStates(undoList));
+		UndoManager.getUndo(Operator.currentPlayer).storeUndo(new UndoElement(undoList));
 	}
 }

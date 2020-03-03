@@ -59,7 +59,7 @@ public class GrassMacro extends Macro {
 		Main.logDebug("Block array size: " + Integer.toString(blockArray.size())); // ----
 		
 		// Register an undo
-		UndoManager.getUndo(Operator.currentPlayer).storeUndo(UndoElement.newUndoElement(blockArray));
+		UndoManager.getUndo(Operator.currentPlayer).storeUndo(new UndoElement(blockArray));
 		
 		// Create a snapshot array
 		List<BlockState> snapshotArray = new ArrayList<BlockState>();

@@ -1,10 +1,9 @@
 package fourteener.worldeditor.worldeditor.undo;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.ArrayDeque;
+import java.util.HashSet;
+import java.util.Set;
 
-import org.bukkit.Location;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 
@@ -18,21 +17,19 @@ public class Undo {
 	public static int undoSize = 25;
 	
 	// Stores undo and redo elements
-	private LinkedList<UndoElement> undoElements = new LinkedList<UndoElement>();
-	private LinkedList<UndoElement> redoElements = new LinkedList<UndoElement>();
+	private ArrayDeque<UndoElement> undoElements = new ArrayDeque<UndoElement>();
+	private ArrayDeque<UndoElement> redoElements = new ArrayDeque<UndoElement>();
 	
 	// For consolidating undos
 	private int isConsolidating = 0;
 	private int numToConsolidate = 0;
-	private List<BlockState> consolidatedUndoStorage = new ArrayList<BlockState>();
-	private List<Location> storedLocations = new ArrayList<Location>();
+	private Set<BlockState> consolidatedUndoStorage = new HashSet<BlockState>();
+	//private List<Location> storedLocations = new ArrayList<Location>();
 	
 	
 	// Create a new undo tracker for a player
-	public static Undo newUndo (Player player) {
-		Undo u = new Undo();
-		u.owner = player;
-		return u;
+	public Undo(Player player) {
+		owner = player;
 	}
 	
 	// Store a world change into the tracker
@@ -47,7 +44,7 @@ public class Undo {
 		}
 		// We are consolidating an undo, so add the element to the queue
 		else {
-			List<BlockState> states = e.getBlocks();
+			Set<BlockState> states = e.getBlocks();
 
 			try {
 				if (states == null) {
@@ -56,29 +53,16 @@ public class Undo {
 				else if (states.isEmpty()) {
 					return true;
 				}
-				else if (states == (new ArrayList<BlockState>())) {
-					return true;
-				}
 			}
 			catch (NullPointerException error) {
 				Main.logDebug("Nullptr in Undo::storeUndo"); // -----
 				return true;
 			}
-			Main.logDebug("Number of locations stored: " + Integer.toString(storedLocations.size())); // -----
+			Main.logDebug("Number of blocks registered: " + Integer.toString(consolidatedUndoStorage.size())); // -----
 			Main.logDebug("Storing " + Integer.toString(states.size()) + " blocks to the consolidated undo queue"); // -----
-			int c = 0;
 			for (BlockState bs : states) {
-				if (storedLocations.contains(bs.getLocation())) {
-					continue;
-				}
-				else {
-					storedLocations.add(bs.getLocation());
-					consolidatedUndoStorage.add(bs);
-					numToConsolidate++;
-					c++;
-				}
+				consolidatedUndoStorage.add(bs);
 			}
-			Main.logDebug("Added " + Integer.toString(c) + " new blocks to the consolidated undo queue"); // -----
 			return true;
 		}
 	}
@@ -110,8 +94,7 @@ public class Undo {
 			Main.logDebug("Full cancel"); // -----
 			isConsolidating = 0;
 			numToConsolidate = 0;
-			consolidatedUndoStorage = new ArrayList<BlockState>();
-			storedLocations = new ArrayList<Location>();
+			consolidatedUndoStorage = new HashSet<BlockState>();
 		}
 		return true;
 	}
@@ -126,10 +109,9 @@ public class Undo {
 		if (isConsolidating <= 0) {
 			Main.logDebug("Writing to regular undo"); // -----
 			isConsolidating = 0;
-			this.storeUndo (UndoElement.newUndoElementFromStates(consolidatedUndoStorage));
+			this.storeUndo (new UndoElement(consolidatedUndoStorage));
 			numToConsolidate = 0;
-			consolidatedUndoStorage = new ArrayList<BlockState>();
-			storedLocations = new ArrayList<Location>();
+			consolidatedUndoStorage = new HashSet<BlockState>();
 		}
 		return true;
 	}

@@ -13,7 +13,7 @@ public class UndoManager {
 			if (u.owner.equals(owner))
 				return u;
 		}
-		Undo u = Undo.newUndo(owner);
+		Undo u = new Undo(owner);
 		undoList.add(u);
 		return u;
 	}

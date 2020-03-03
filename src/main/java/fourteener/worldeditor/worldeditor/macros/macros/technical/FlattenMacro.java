@@ -57,7 +57,7 @@ public class FlattenMacro extends Macro {
 		for (BlockState bs : operatedBlocks) {
 			blocksToUndo.add(Main.world.getBlockAt(bs.getLocation()));
 		}
-		UndoManager.getUndo(Operator.currentPlayer).storeUndo(UndoElement.newUndoElement(blocksToUndo));
+		UndoManager.getUndo(Operator.currentPlayer).storeUndo(new UndoElement(blocksToUndo));
 		
 		
 		Main.logDebug("Operated on and now placing " + Integer.toString(operatedBlocks.size()) + " blocks");

@@ -2,8 +2,8 @@ package fourteener.worldeditor.worldeditor.scripts;
 
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
@@ -37,12 +37,12 @@ public class CraftscriptManager {
 		catch (Exception e) {}
 		UndoManager.getUndo(player).startTrackingConsolidatedUndo();
 		try {
-			List<BlockState> toStoreInUndo = registeredScripts.get(label).perform(args, player, label);
+			Set<BlockState> toStoreInUndo = registeredScripts.get(label).perform(args, player, label);
 			if (toStoreInUndo == null && UndoManager.getUndo(player).getNumToConsolidate() == 0) {
 				return UndoManager.getUndo(player).cancelConsolidatedUndo();
 			}
 			else {
-				UndoManager.getUndo(player).storeUndo(UndoElement.newUndoElementFromStates(toStoreInUndo));
+				UndoManager.getUndo(player).storeUndo(new UndoElement(toStoreInUndo));
 				return UndoManager.getUndo(player).storeConsolidatedUndo();
 			}
 		}

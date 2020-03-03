@@ -1,7 +1,7 @@
 package fourteener.worldeditor.worldeditor.scripts.bundled.easyedit;
 
 import java.util.LinkedList;
-import java.util.List;
+import java.util.Set;
 
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
@@ -11,7 +11,7 @@ import fourteener.worldeditor.worldeditor.scripts.Craftscript;
 public class ScriptTree extends Craftscript{
 
 	@Override
-	public List<BlockState> perform(LinkedList<String> args, Player player, String label) {
+	public Set<BlockState> perform(LinkedList<String> args, Player player, String label) {
 		String treeType = args.get(0);
 		String treeSize = args.get(1);
 		String treeLeaves;

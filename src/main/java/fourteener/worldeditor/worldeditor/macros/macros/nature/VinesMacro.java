@@ -56,7 +56,7 @@ public class VinesMacro extends Macro {
 		Main.logDebug("Block array size: " + Integer.toString(blockArray.size())); // ----
 		
 		// Register an undo
-		UndoManager.getUndo(Operator.currentPlayer).storeUndo(UndoElement.newUndoElement(blockArray));
+		UndoManager.getUndo(Operator.currentPlayer).storeUndo(new UndoElement(blockArray));
 		
 		// Create a snapshot array
 		List<BlockState> snapshotArray = new ArrayList<BlockState>();
@@ -181,7 +181,7 @@ public class VinesMacro extends Macro {
 		for (BlockState bs : operatedBlocks) {
 			blocksToUndo.add(Main.world.getBlockAt(bs.getLocation()));
 		}
-		UndoManager.getUndo(Operator.currentPlayer).storeUndo(UndoElement.newUndoElement(blocksToUndo));
+		UndoManager.getUndo(Operator.currentPlayer).storeUndo(new UndoElement(blocksToUndo));
 		
 		
 		Main.logDebug("Operated on and now placing " + Integer.toString(operatedBlocks.size()) + " blocks");

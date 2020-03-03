@@ -6,13 +6,14 @@ import org.bukkit.entity.Player;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.ArrayList;
 import java.lang.Math;
 import java.lang.Double;
 
 public class ScriptGrass extends Craftscript {
     @Override
-    public List<BlockState> perform(LinkedList<String> args, Player player, String label) {
+    public Set<BlockState> perform(LinkedList<String> args, Player player, String label) {
         String opToRun = "";
         // Check for missing args to fill in with "default" brush
         // Example brush:   /fx sel op ? air ? _ - 1 1 ~ air ? ^ - 1 5 air ? % 50 ? % 80 > grass ? % 50 > tall_grass ? % 50 > poppy > dandelion false false false false

@@ -20,7 +20,7 @@ public class ClipboardManager {
 		
 		// Otherwise create a new clipboard
 		if (clipboard == null) {
-			clipboard = Clipboard.newClipboard(owner);
+			clipboard = new Clipboard(owner);
 			clipboards.add(clipboard);
 		}
 		

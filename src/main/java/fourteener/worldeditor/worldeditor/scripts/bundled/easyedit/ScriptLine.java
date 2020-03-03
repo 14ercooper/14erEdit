@@ -1,8 +1,8 @@
 package fourteener.worldeditor.worldeditor.scripts.bundled.easyedit;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.List;
+import java.util.Set;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -17,7 +17,7 @@ public class ScriptLine extends Craftscript {
 
 	// Args block depth air
 	@Override
-	public List<BlockState> perform(LinkedList<String> args, Player player, String label) {
+	public Set<BlockState> perform(LinkedList<String> args, Player player, String label) {
 		String block = args.get(0);
 		int length;
 		if (args.size() > 1) {
@@ -28,7 +28,7 @@ public class ScriptLine extends Craftscript {
 		}
 		Material mat = Material.matchMaterial(block);
 		
-		List<BlockState> undoList = new ArrayList<BlockState>();
+		Set<BlockState> undoList = new HashSet<BlockState>();
 		for (int i = 1; i < length; i++) {
 			Vector blockPos = player.getLocation().getDirection();
 			Vector playerPos = player.getLocation().toVector();

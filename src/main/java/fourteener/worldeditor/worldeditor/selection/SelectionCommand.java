@@ -166,7 +166,7 @@ public class SelectionCommand {
 		}
 		catch (Exception e) {}
 		UndoManager.getUndo(wand.owner).startTrackingConsolidatedUndo();
-		UndoManager.getUndo(wand.owner).storeUndo(UndoElement.newUndoElement(blockArray)); //-----------
+		UndoManager.getUndo(wand.owner).storeUndo(new UndoElement(blockArray)); //-----------
 		
 		// Construct the operation
 		int brushOpOffset = 2;

@@ -113,7 +113,7 @@ public class ErodeMacro extends Macro {
 		}
 		
 		// Generate and store an undo
-		UndoManager.getUndo(Operator.currentPlayer).storeUndo(UndoElement.newUndoElement(erosionArray));
+		UndoManager.getUndo(Operator.currentPlayer).storeUndo(new UndoElement(erosionArray));
 		erosionArray = null; // This is no longer needed, so clean it up
 		return snapshotArray;
 	}

@@ -243,7 +243,7 @@ public class Brush {
 		}
 		
 		// Store an undo
-		UndoManager.getUndo(owner).storeUndo(UndoElement.newUndoElement(blockArray));
+		UndoManager.getUndo(owner).storeUndo(new UndoElement(blockArray));
 		
 		// Operate on the blocks
 		List<BlockState> operatedArray = new ArrayList<BlockState>();

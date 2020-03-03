@@ -1,9 +1,9 @@
 package fourteener.worldeditor.worldeditor.macros.macros.technical;
 
 import java.io.File;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.List;
+import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -70,7 +70,7 @@ public class SchematicMacro extends Macro {
 	public boolean performMacro (String[] args, Location loc) {
 		SetupMacro(args, loc);
 		// Start tracking an undo
-		List<BlockState> undoList = new ArrayList<BlockState>();
+		Set<BlockState> undoList = new HashSet<BlockState>();
 		
 		// Parse the list into the world
 		int rx = 0, ry = 0, rz = 0;
@@ -105,7 +105,7 @@ public class SchematicMacro extends Macro {
 		}
 		
 		// Store the undo
-		UndoManager.getUndo(Operator.currentPlayer).storeUndo(UndoElement.newUndoElementFromStates(undoList));
+		UndoManager.getUndo(Operator.currentPlayer).storeUndo(new UndoElement(undoList));
 		return true;
 	}
 }
