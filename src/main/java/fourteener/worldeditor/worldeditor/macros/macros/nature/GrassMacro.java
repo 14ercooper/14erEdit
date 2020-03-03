@@ -27,8 +27,7 @@ public class GrassMacro extends Macro {
 	Location pos;
 	
 	// Create a new macro
-	public GrassMacro(String[] args, Location loc) {
-		super(args, loc);
+	private void SetupMacro(String[] args, Location loc) {
 		radius = Double.parseDouble(args[0]);
 		blockMix = args[1];
 		airSpaces = Double.parseDouble(args[2]);
@@ -37,7 +36,9 @@ public class GrassMacro extends Macro {
 	}
 	
 	// Run this macro
-	public boolean performMacro () {
+	public boolean performMacro (String[] args, Location loc) {
+		SetupMacro(args, loc);
+		
 		// Location of the brush
 		double x = pos.getX();
 		double y = pos.getY();

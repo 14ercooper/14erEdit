@@ -29,8 +29,7 @@ public class SchematicMacro extends Macro {
 	boolean setAir = false;
 	
 	// Create a new macro
-	public SchematicMacro(String[] args, Location loc) {
-		super(args, loc);
+	private void SetupMacro(String[] args, Location loc) {
 		// First parse the offset
 		xOff = Integer.parseInt(args[1]) * -1;
 		yOff = Integer.parseInt(args[2]) * -1;
@@ -68,7 +67,8 @@ public class SchematicMacro extends Macro {
 	}
 	
 	// Run this macro
-	public boolean performMacro () {
+	public boolean performMacro (String[] args, Location loc) {
+		SetupMacro(args, loc);
 		// Start tracking an undo
 		List<BlockState> undoList = new ArrayList<BlockState>();
 		

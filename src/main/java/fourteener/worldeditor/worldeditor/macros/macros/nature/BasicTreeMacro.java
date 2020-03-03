@@ -23,8 +23,7 @@ public class BasicTreeMacro extends Macro {
 	public Location plantOn;
 	
 	// Type, leaves, trunk, size, variance
-	public BasicTreeMacro(String[] args, Location loc) {
-		super(args, loc);
+	private void SetupMacro(String[] args, Location loc) {
 		plantOn = loc;
 		size = Integer.parseInt(args[3]);
 		variance = (int) Math.ceil(Double.parseDouble(args[4]));
@@ -69,7 +68,9 @@ public class BasicTreeMacro extends Macro {
 		}
 	}
 	
-	public boolean performMacro () {
+	public boolean performMacro (String[] args, Location loc) {
+		SetupMacro(args, loc);
+		
 		// Generator for oak tree
 		if (type == 1) {
 			oakTreeGenerator();

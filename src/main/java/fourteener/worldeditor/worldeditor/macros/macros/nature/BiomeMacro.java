@@ -22,15 +22,16 @@ public class BiomeMacro extends Macro {
 	Location pos;
 	
 	// Create a new macro
-	public BiomeMacro(String[] args, Location loc) {
-		super(args, loc);
+	private void SetupMacro(String[] args, Location loc) {
 		radius = Double.parseDouble(args[0]);
 		biome = Biome.valueOf(args[1].toUpperCase(Locale.ROOT));
 		pos = loc;
 	}
 	
 	// Run this macro
-	public boolean performMacro () {
+	public boolean performMacro (String[] args, Location loc) {
+		SetupMacro(args, loc);
+		
 		// Location of the brush
 		double x = pos.getX();
 		double z = pos.getZ();

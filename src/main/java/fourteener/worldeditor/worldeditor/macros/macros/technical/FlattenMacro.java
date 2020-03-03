@@ -24,8 +24,7 @@ public class FlattenMacro extends Macro {
 	Location pos;
 	
 	// Create a new macro
-	public FlattenMacro (String[] args, Location loc) {
-		super(args, loc);
+	private void SetupMacro (String[] args, Location loc) {
 		radius = Double.parseDouble(args[0]);
 		isAbsolute = Boolean.parseBoolean(args[1]);
 		height = Double.parseDouble(args[2]);
@@ -34,7 +33,9 @@ public class FlattenMacro extends Macro {
 	}
 	
 	// Run this macro
-	public boolean performMacro () {
+	public boolean performMacro (String[] args, Location loc) {
+		SetupMacro(args, loc);
+		
 		// Location of the brush
 		double x = pos.getX();
 		double y = pos.getY();

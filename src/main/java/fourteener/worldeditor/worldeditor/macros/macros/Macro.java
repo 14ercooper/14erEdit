@@ -6,12 +6,12 @@ import org.bukkit.Location;
 public abstract class Macro {
 	
 	// Create a new macro
-	public Macro (String[] args, Location loc) {
+	public Macro () {
 		return;
 	}
 	
 	// Run this macro
-	public boolean performMacro () {
+	public boolean performMacro (String[] args, Location loc) {
 		return false;
 	}
 }

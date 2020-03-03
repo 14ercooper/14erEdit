@@ -23,43 +23,38 @@ public class ErodeMacro extends Macro {
 	public int erodeSubtype = -1; // -1 if no subtype, 0 for more subtractive, 1 for more additive, 2 for neutral
 	public Location erodeCenter;
 	
-	public ErodeMacro(String[] args, Location loc) {
-		super(args, loc);
+	private void SetupMacro(String[] args, Location loc) {
 		erodeRadius = Integer.parseInt(args[0]);
 		erodeCenter = loc;
 		
 		// Determine the type of the erode brush
 		if (args[1].equalsIgnoreCase("melt")) {
-			Main.logDebug("Erode type: melt"); // ----
 			erodeType = 0;
 		}
 		else if (args[1].equalsIgnoreCase("blend")) {
-			Main.logDebug("Erode type: blend"); // ----
 			erodeType = 1;
 		}
 		else if (args[1].equalsIgnoreCase("mix")) {
-			Main.logDebug("Erode type: mix"); // ----
 			erodeType = 2;
 		}
 		
 		// Cut or raise melt?
 		if (erodeType == 0) {
 			if (args[2].equalsIgnoreCase("cut")) {
-				Main.logDebug("Melt type: cut"); // ----
 				erodeSubtype = 0;
 			}
 			else if (args[2].equalsIgnoreCase("raise")) {
-				Main.logDebug("Melt type: raise"); // ----
 				erodeSubtype = 1;
 			}
 			else if (args[2].equalsIgnoreCase("smooth")) {
-				Main.logDebug("Melt type: smooth"); // ----
 				erodeSubtype = 2;
 			}
 		}
 	}
 	
-	public boolean performMacro () {
+	public boolean performMacro (String[] args, Location loc) {
+		SetupMacro(args, loc);
+		
 		// Location of the brush
 		double x = erodeCenter.getX();
 		double y = erodeCenter.getY();

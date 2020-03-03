@@ -9,6 +9,7 @@ import fourteener.worldeditor.commands.CommandRun;
 import fourteener.worldeditor.commands.CommandScript;
 import fourteener.worldeditor.commands.CommandUndo;
 import fourteener.worldeditor.worldeditor.brush.BrushListener;
+import fourteener.worldeditor.worldeditor.macros.MacroLauncher;
 import fourteener.worldeditor.worldeditor.scripts.CraftscriptManager;
 import fourteener.worldeditor.worldeditor.selection.SelectionWandListener;
 
@@ -17,6 +18,7 @@ public class Main extends JavaPlugin {
 	public static World world;
 	public static SimplexNoise simplexNoise;
 	public static CraftscriptManager scriptManager;
+	public static MacroLauncher macroLauncher;
 	
 	// For debugging
 	public static boolean isDebug = true;
@@ -39,11 +41,13 @@ public class Main extends JavaPlugin {
 		world = Bukkit.getWorlds().get(0);
 		simplexNoise = new SimplexNoise (world.getSeed()); // Seeded using the world seed for variance between worlds but consistency in the same world
 		
-		// Load the craftscripts manager
+		// Load the craftscript & macro managers
 		scriptManager = new CraftscriptManager();
+		macroLauncher = new MacroLauncher();
 		
 		// Register the prepackaged craftscripts
 		CraftscriptLoader.LoadBundledCraftscripts();
+		MacroLoader.LoadMacros();
 	}
 	
 	@Override
