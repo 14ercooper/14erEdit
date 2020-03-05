@@ -15,7 +15,7 @@ import org.bukkit.entity.Player;
 
 import com.fourteener.schematics.Schematic;
 
-import fourteener.worldeditor.main.Main;
+import fourteener.worldeditor.main.*;
 import fourteener.worldeditor.worldeditor.undo.UndoElement;
 import fourteener.worldeditor.worldeditor.undo.UndoManager;
 
@@ -216,7 +216,7 @@ public class Clipboard {
 			Material blockMat = Material.matchMaterial(blockData.get(i).split("\\[")[0]);
 			BlockData blockDat = Bukkit.getServer().createBlockData(blockData.get(i));
 			
-			Block b = Main.world.getBlockAt(xPos + rx - x - 1, yPos + ry - y, zPos + rz - z);
+			Block b = GlobalVars.world.getBlockAt(xPos + rx - x - 1, yPos + ry - y, zPos + rz - z);
 			// Set the block
 			if (blockMat == Material.AIR) {
 				if (setAir) {

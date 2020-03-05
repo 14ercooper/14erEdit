@@ -14,58 +14,58 @@ public class CraftscriptLoader {
 
 	private static void EasyEdit() {
 		// Easyedit script bundle
-		Main.scriptManager.registerCraftscript("erode", new ScriptErode());
-		Main.scriptManager.registerCraftscript("tree", new ScriptTree());
-		Main.scriptManager.registerCraftscript("grassbrush", new ScriptGrassBrush());
-		Main.scriptManager.registerCraftscript("vines", new ScriptVines());
-		Main.scriptManager.registerCraftscript("biome", new ScriptBiome());
+		GlobalVars.scriptManager.registerCraftscript("erode", new ScriptErode());
+		GlobalVars.scriptManager.registerCraftscript("tree", new ScriptTree());
+		GlobalVars.scriptManager.registerCraftscript("grassbrush", new ScriptGrassBrush());
+		GlobalVars.scriptManager.registerCraftscript("vines", new ScriptVines());
+		GlobalVars.scriptManager.registerCraftscript("biome", new ScriptBiome());
 		ScriptFlatten scriptFlatten = new ScriptFlatten();
-		Main.scriptManager.registerCraftscript("flatten", scriptFlatten);
-		Main.scriptManager.registerCraftscript("absflatten", scriptFlatten);
+		GlobalVars.scriptManager.registerCraftscript("flatten", scriptFlatten);
+		GlobalVars.scriptManager.registerCraftscript("absflatten", scriptFlatten);
 		ScriptOverlay scriptOverlay = new ScriptOverlay();
-		Main.scriptManager.registerCraftscript("overlay", scriptOverlay);
+		GlobalVars.scriptManager.registerCraftscript("overlay", scriptOverlay);
 		ScriptLine scriptLine = new ScriptLine();
-		Main.scriptManager.registerCraftscript("line", scriptLine);
+		GlobalVars.scriptManager.registerCraftscript("line", scriptLine);
 	}
 
 	private static void Selection() {
 		// Selection script bundle
-		Main.scriptManager.registerCraftscript("set", new ScriptSet());
-		Main.scriptManager.registerCraftscript("replace", new ScriptReplace());
-		Main.scriptManager.registerCraftscript("grass", new ScriptGrass());
+		GlobalVars.scriptManager.registerCraftscript("set", new ScriptSet());
+		GlobalVars.scriptManager.registerCraftscript("replace", new ScriptReplace());
+		GlobalVars.scriptManager.registerCraftscript("grass", new ScriptGrass());
 	}
 
 	private static void QuickBrush() {
 		// Quick brush script bundle
 		ScriptBallBrushSet bbset = new ScriptBallBrushSet();
-		Main.scriptManager.registerCraftscript("ballset", bbset);
-		Main.scriptManager.registerCraftscript("bset", bbset);
+		GlobalVars.scriptManager.registerCraftscript("ballset", bbset);
+		GlobalVars.scriptManager.registerCraftscript("bset", bbset);
 		ScriptSquareBrushSet bsset = new ScriptSquareBrushSet();
-		Main.scriptManager.registerCraftscript("squareset", bsset);
-		Main.scriptManager.registerCraftscript("sset", bsset);
+		GlobalVars.scriptManager.registerCraftscript("squareset", bsset);
+		GlobalVars.scriptManager.registerCraftscript("sset", bsset);
 		ScriptDiamondBrushSet bdset = new ScriptDiamondBrushSet();
-		Main.scriptManager.registerCraftscript("diamondset", bdset);
-		Main.scriptManager.registerCraftscript("dset", bdset);
+		GlobalVars.scriptManager.registerCraftscript("diamondset", bdset);
+		GlobalVars.scriptManager.registerCraftscript("dset", bdset);
 		ScriptHollowBrushSet bhset = new ScriptHollowBrushSet();
-		Main.scriptManager.registerCraftscript("hollowset", bhset);
-		Main.scriptManager.registerCraftscript("hset", bhset);
+		GlobalVars.scriptManager.registerCraftscript("hollowset", bhset);
+		GlobalVars.scriptManager.registerCraftscript("hset", bhset);
 		ScriptEllipseBrushSet beset = new ScriptEllipseBrushSet();
-		Main.scriptManager.registerCraftscript("ellipseset", beset);
-		Main.scriptManager.registerCraftscript("eset", beset);
+		GlobalVars.scriptManager.registerCraftscript("ellipseset", beset);
+		GlobalVars.scriptManager.registerCraftscript("eset", beset);
 		ScriptBallBrushReplace bbrep = new ScriptBallBrushReplace();
-		Main.scriptManager.registerCraftscript("ballreplace", bbrep);
-		Main.scriptManager.registerCraftscript("brep", bbrep);
+		GlobalVars.scriptManager.registerCraftscript("ballreplace", bbrep);
+		GlobalVars.scriptManager.registerCraftscript("brep", bbrep);
 		ScriptSquareBrushReplace bsrep = new ScriptSquareBrushReplace();
-		Main.scriptManager.registerCraftscript("squarereplace", bsrep);
-		Main.scriptManager.registerCraftscript("srep", bsrep);
+		GlobalVars.scriptManager.registerCraftscript("squarereplace", bsrep);
+		GlobalVars.scriptManager.registerCraftscript("srep", bsrep);
 		ScriptDiamondBrushReplace bdrep = new ScriptDiamondBrushReplace();
-		Main.scriptManager.registerCraftscript("diamondreplace", bdrep);
-		Main.scriptManager.registerCraftscript("drep", bdrep);
+		GlobalVars.scriptManager.registerCraftscript("diamondreplace", bdrep);
+		GlobalVars.scriptManager.registerCraftscript("drep", bdrep);
 		ScriptHollowBrushReplace bhrep = new ScriptHollowBrushReplace();
-		Main.scriptManager.registerCraftscript("hollowreplace", bhrep);
-		Main.scriptManager.registerCraftscript("hrep", bhrep);
+		GlobalVars.scriptManager.registerCraftscript("hollowreplace", bhrep);
+		GlobalVars.scriptManager.registerCraftscript("hrep", bhrep);
 		ScriptEllipseBrushReplace berep = new ScriptEllipseBrushReplace();
-		Main.scriptManager.registerCraftscript("ellipsereplace", berep);
-		Main.scriptManager.registerCraftscript("erep", berep);
+		GlobalVars.scriptManager.registerCraftscript("ellipsereplace", berep);
+		GlobalVars.scriptManager.registerCraftscript("erep", berep);
 	}
 }

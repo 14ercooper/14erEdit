@@ -12,7 +12,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 
-import fourteener.worldeditor.main.Main;
+import fourteener.worldeditor.main.*;
 import fourteener.worldeditor.operations.Operator;
 import fourteener.worldeditor.worldeditor.macros.macros.Macro;
 import fourteener.worldeditor.worldeditor.undo.UndoElement;
@@ -51,7 +51,7 @@ public class GrassMacro extends Macro {
 			for (int rz = -radiusInt; rz <= radiusInt; rz++) {
 				for (int ry = -radiusInt; ry <= radiusInt; ry++) {
 					if (rx*rx + ry*ry + rz*rz <= (radius + 0.5)*(radius + 0.5)) {
-						blockArray.add(Main.world.getBlockAt((int) x + rx, (int) y + ry, (int) z + rz));
+						blockArray.add(GlobalVars.world.getBlockAt((int) x + rx, (int) y + ry, (int) z + rz));
 					}
 				}
 			}
@@ -88,7 +88,7 @@ public class GrassMacro extends Macro {
 				continue;
 			}
 			
-			Block b = Main.world.getBlockAt(bs.getLocation());
+			Block b = GlobalVars.world.getBlockAt(bs.getLocation());
 			// Check if it's on a solid block
 			if (b.getRelative(BlockFace.DOWN).getType() == Material.AIR) {
 				Main.logDebug("Skip block, is floating");
@@ -140,7 +140,7 @@ public class GrassMacro extends Macro {
 		Main.logDebug("Operated on and now placing " + Integer.toString(operatedBlocks.size()) + " blocks");
 		// Apply the changes to the world
 		for (BlockState bs : operatedBlocks) {
-			Block b = Main.world.getBlockAt(bs.getLocation());
+			Block b = GlobalVars.world.getBlockAt(bs.getLocation());
 			b.setType(bs.getType());
 			b.setBlockData(bs.getBlockData());
 		}

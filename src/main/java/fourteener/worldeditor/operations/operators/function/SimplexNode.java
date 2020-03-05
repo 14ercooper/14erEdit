@@ -2,7 +2,7 @@ package fourteener.worldeditor.operations.operators.function;
 
 import org.bukkit.Location;
 
-import fourteener.worldeditor.main.Main;
+import fourteener.worldeditor.main.*;
 import fourteener.worldeditor.operations.Operator;
 import fourteener.worldeditor.operations.operators.Node;
 import fourteener.worldeditor.operations.operators.core.NumberNode;
@@ -15,8 +15,8 @@ public class SimplexNode extends Node {
 	
 	public SimplexNode newNode() {
 		SimplexNode node = new SimplexNode();
-		node.arg1 = Main.operationParser.parseNumberNode();
-		node.arg2 = Main.operationParser.parseNumberNode();
+		node.arg1 = GlobalVars.operationParser.parseNumberNode();
+		node.arg2 = GlobalVars.operationParser.parseNumberNode();
 		return node;
 	}
 	
@@ -25,15 +25,15 @@ public class SimplexNode extends Node {
 		double scale = 4;
 		if (arg1.getValue() <= 2.1 && arg1.getValue() >= 1.9) {
 			Location loc = Operator.currentBlock.getLocation();
-			return Main.simplexNoise.noise(loc.getX() / scale, loc.getZ() / scale) <= arg2.getValue();
+			return GlobalVars.simplexNoise.noise(loc.getX() / scale, loc.getZ() / scale) <= arg2.getValue();
 		}
 		if (arg1.getValue() <= 3.1 && arg1.getValue() >= 2.9) {
 			Location loc = Operator.currentBlock.getLocation();
-			return Main.simplexNoise.noise(loc.getX() / scale, loc.getY() / scale, loc.getZ() / scale) <= arg2.getValue();
+			return GlobalVars.simplexNoise.noise(loc.getX() / scale, loc.getY() / scale, loc.getZ() / scale) <= arg2.getValue();
 		}
 		if (arg1.getValue() <= 4.1 && arg1.getValue() >= 3.9) {
 			Location loc = Operator.currentBlock.getLocation();
-			return Main.simplexNoise.noise(loc.getX() / scale, loc.getY() / scale, loc.getZ() / scale, (loc.getX() + loc.getY() + loc.getZ()) * 0.33333333 / scale) <= arg2.getValue();
+			return GlobalVars.simplexNoise.noise(loc.getX() / scale, loc.getY() / scale, loc.getZ() / scale, (loc.getX() + loc.getY() + loc.getZ()) * 0.33333333 / scale) <= arg2.getValue();
 		}
 		return false;
 	}

@@ -6,7 +6,7 @@ import java.util.Set;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 
-import fourteener.worldeditor.main.Main;
+import fourteener.worldeditor.main.*;
 import fourteener.worldeditor.worldeditor.scripts.Craftscript;
 
 public class ScriptOverlay extends Craftscript {

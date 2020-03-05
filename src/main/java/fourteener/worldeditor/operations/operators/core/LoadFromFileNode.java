@@ -7,7 +7,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-import fourteener.worldeditor.main.Main;
+import fourteener.worldeditor.main.*;
 import fourteener.worldeditor.operations.Operator;
 import fourteener.worldeditor.operations.operators.Node;
 
@@ -17,7 +17,7 @@ public class LoadFromFileNode extends Node {
 	
 	public LoadFromFileNode newNode() {
 		LoadFromFileNode node = new LoadFromFileNode();
-		node.path = Main.operationParser.parseStringNode();
+		node.path = GlobalVars.operationParser.parseStringNode();
 		return node;
 	}
 	

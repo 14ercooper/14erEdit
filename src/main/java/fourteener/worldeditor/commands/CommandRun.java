@@ -6,7 +6,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import fourteener.worldeditor.main.Main;
+import fourteener.worldeditor.main.GlobalVars;
 import fourteener.worldeditor.operations.Operator;
 
 // These are dedicated versions of the undo and redo commands
@@ -19,7 +19,7 @@ public class CommandRun implements CommandExecutor {
 				opStr = opStr.concat(s).concat(" ");
 			}
 			Operator op = Operator.newOperator(opStr);
-			BlockState bs = Main.world.getBlockAt(((Player) sender).getLocation()).getState();
+			BlockState bs = GlobalVars.world.getBlockAt(((Player) sender).getLocation()).getState();
 			op.operateOnBlock(bs, (Player) sender);
 			return true;
 		}

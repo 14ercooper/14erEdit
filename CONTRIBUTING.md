@@ -15,7 +15,7 @@ Please maintain the same styling as is already present in the code. This include
 
 Other things to note:
 - Do not include any external frameworks (exception Spigot API)
-- If a variable is slow to instantate (e.g. World); declare it in Main
+- If a variable is slow to instantate (e.g. World); declare it in GlobalVars and instantiate in Main
 - If a variable is declared in a higher context than your function, use it instead
 - Make as few calls to the Spigot API as possible (this helps with cross-version porting and updating)
 - Never use a depreciated method

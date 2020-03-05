@@ -1,6 +1,6 @@
 package fourteener.worldeditor.operations.operators.function;
 
-import fourteener.worldeditor.main.Main;
+import fourteener.worldeditor.main.*;
 import fourteener.worldeditor.operations.Operator;
 import fourteener.worldeditor.operations.operators.Node;
 import fourteener.worldeditor.operations.operators.core.NumberNode;
@@ -12,7 +12,7 @@ public class RemainderNode extends Node {
 	
 	public RemainderNode newNode() {
 		RemainderNode node = new RemainderNode();
-		String dim = Main.operationParser.parseStringNode();
+		String dim = GlobalVars.operationParser.parseStringNode();
 		if (dim.equalsIgnoreCase("x")) {
 			node.arg1 = 0;
 		}
@@ -22,7 +22,7 @@ public class RemainderNode extends Node {
 		else if (dim.equalsIgnoreCase("z")) {
 			node.arg1 = 2;
 		}
-		arg2 = Main.operationParser.parseNumberNode();
+		arg2 = GlobalVars.operationParser.parseNumberNode();
 		return node;
 	}
 	

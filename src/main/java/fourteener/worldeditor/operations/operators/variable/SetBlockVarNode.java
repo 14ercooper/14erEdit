@@ -3,7 +3,7 @@ package fourteener.worldeditor.operations.operators.variable;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 
-import fourteener.worldeditor.main.Main;
+import fourteener.worldeditor.main.*;
 import fourteener.worldeditor.operations.Operator;
 import fourteener.worldeditor.operations.operators.Node;
 import fourteener.worldeditor.operations.type.BlockVar;
@@ -14,7 +14,7 @@ public class SetBlockVarNode extends Node {
 	
 	public SetBlockVarNode newNode() {
 		SetBlockVarNode node = new SetBlockVarNode();
-		node.name = Main.operationParser.parseStringNode();
+		node.name = GlobalVars.operationParser.parseStringNode();
 		return node;
 	}
 	

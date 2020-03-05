@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import fourteener.worldeditor.main.Main;
+import fourteener.worldeditor.main.*;
 import fourteener.worldeditor.operations.Operator;
 import fourteener.worldeditor.operations.operators.Node;
 import fourteener.worldeditor.operations.type.MonsterVar;
@@ -17,8 +17,8 @@ public class GetMonsterCommandNode extends Node {
 	
 	public GetMonsterCommandNode newNode() {
 		GetMonsterCommandNode node = new GetMonsterCommandNode();
-		node.name = Main.operationParser.parseStringNode();
-		node.path = "plugins/14erEdit/Commands/" + Main.operationParser.parseStringNode();
+		node.name = GlobalVars.operationParser.parseStringNode();
+		node.path = "plugins/14erEdit/Commands/" + GlobalVars.operationParser.parseStringNode();
 		return node;
 	}
 	

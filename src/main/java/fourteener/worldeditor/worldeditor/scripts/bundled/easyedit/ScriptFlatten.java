@@ -11,7 +11,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 
-import fourteener.worldeditor.main.Main;
+import fourteener.worldeditor.main.*;
 import fourteener.worldeditor.worldeditor.scripts.Craftscript;
 import fourteener.worldeditor.worldeditor.selection.SelectionManager;
 
@@ -58,7 +58,7 @@ public class ScriptFlatten extends Craftscript {
 			for (int rx = (int) negCorner[0]; rx <= posCorner[0]; rx++) {
 				for (int rz = (int) negCorner[2]; rz <= posCorner[2]; rz++) {
 					for (int ry = (int) negCorner[1]; ry <= posCorner[1]; ry++) {
-						blockArray.add(Main.world.getBlockAt(rx, ry, rz));
+						blockArray.add(GlobalVars.world.getBlockAt(rx, ry, rz));
 					}
 				}
 			}
@@ -72,7 +72,7 @@ public class ScriptFlatten extends Craftscript {
 			Main.logDebug(Integer.toString(snapshotArray.size()) + " blocks in snapshot array");
 			
 			for (BlockState bs : snapshotArray) {
-				Block b = Main.world.getBlockAt(bs.getLocation());
+				Block b = GlobalVars.world.getBlockAt(bs.getLocation());
 				int yB = bs.getY();
 				
 				if (yB <= Math.round(height)) {
@@ -91,7 +91,7 @@ public class ScriptFlatten extends Craftscript {
 		Main.logDebug("Operated on and now placing " + Integer.toString(operatedBlocks.size()) + " blocks");
 		// Apply the changes to the world
 		for (BlockState bs : operatedBlocks) {
-			Block b = Main.world.getBlockAt(bs.getLocation());
+			Block b = GlobalVars.world.getBlockAt(bs.getLocation());
 			b.setType(bs.getType());
 			b.setBlockData(bs.getBlockData());
 		}
@@ -113,7 +113,7 @@ public class ScriptFlatten extends Craftscript {
 			for (int rx = (int) negCorner[0]; rx <= posCorner[0]; rx++) {
 				for (int rz = (int) negCorner[2]; rz <= posCorner[2]; rz++) {
 					for (int ry = 0; ry <= 255; ry++) {
-						blockArray.add(Main.world.getBlockAt(rx, ry, rz));
+						blockArray.add(GlobalVars.world.getBlockAt(rx, ry, rz));
 					}
 				}
 			}
@@ -127,7 +127,7 @@ public class ScriptFlatten extends Craftscript {
 			Main.logDebug(Integer.toString(snapshotArray.size()) + " blocks in snapshot array");
 			
 			for (BlockState bs : snapshotArray) {
-				Block b = Main.world.getBlockAt(bs.getLocation());
+				Block b = GlobalVars.world.getBlockAt(bs.getLocation());
 				int yB = bs.getY();
 				
 				if (yB <= Math.round(height)) {
@@ -146,7 +146,7 @@ public class ScriptFlatten extends Craftscript {
 		Main.logDebug("Operated on and now placing " + Integer.toString(operatedBlocks.size()) + " blocks");
 		// Apply the changes to the world
 		for (BlockState bs : operatedBlocks) {
-			Block b = Main.world.getBlockAt(bs.getLocation());
+			Block b = GlobalVars.world.getBlockAt(bs.getLocation());
 			b.setType(bs.getType());
 			b.setBlockData(bs.getBlockData());
 		}

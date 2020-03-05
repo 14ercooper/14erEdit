@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.bukkit.block.Block;
 
-import fourteener.worldeditor.main.Main;
+import fourteener.worldeditor.main.*;
 import fourteener.worldeditor.worldeditor.brush.BrushShape;
 
 public class Ellipse extends BrushShape {
@@ -18,7 +18,7 @@ public class Ellipse extends BrushShape {
 			for (double ry = -args.get(1); ry <= args.get(1); ry++) {
 				for (double rz = -args.get(2); rz <= args.get(2); rz++) {
 					if ((((rx * rx) / (args.get(0) * args.get(0))) + ((ry * ry) / (args.get(1) * args.get(1))) + ((rz * rz) / (args.get(2) * args.get(2)))) <= (1 + args.get(3))) {
-						blockArray.add(Main.world.getBlockAt((int) (x + rx), (int) (y + ry), (int) (z + rz)));
+						blockArray.add(GlobalVars.world.getBlockAt((int) (x + rx), (int) (y + ry), (int) (z + rz)));
 					}
 				}
 			}

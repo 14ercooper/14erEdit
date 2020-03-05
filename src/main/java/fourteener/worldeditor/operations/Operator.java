@@ -6,7 +6,8 @@ import java.util.Map;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 
-import fourteener.worldeditor.main.Main;
+import fourteener.worldeditor.main.GlobalVars;
+import fourteener.worldeditor.main.*;
 import fourteener.worldeditor.operations.operators.core.EntryNode;
 import fourteener.worldeditor.operations.type.*;
 
@@ -40,7 +41,7 @@ public class Operator {
 	
 	public static Operator newOperator (String op) {
 		Operator operator = new Operator();
-		operator.entryNode = Main.operationParser.parseOperation(op);
+		operator.entryNode = GlobalVars.operationParser.parseOperation(op);
 		if (operator.entryNode == null) {
 			return null;
 		}

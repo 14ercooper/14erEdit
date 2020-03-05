@@ -1,6 +1,6 @@
 package fourteener.worldeditor.operations.operators.loop;
 
-import fourteener.worldeditor.main.Main;
+import fourteener.worldeditor.main.*;
 import fourteener.worldeditor.operations.Operator;
 import fourteener.worldeditor.operations.operators.Node;
 import fourteener.worldeditor.operations.operators.core.NumberNode;
@@ -12,8 +12,8 @@ public class NumericEqualityNode extends Node {
 	
 	public NumericEqualityNode newNode() {
 		NumericEqualityNode node = new NumericEqualityNode();
-		node.name = Main.operationParser.parseStringNode();
-		node.val = Main.operationParser.parseNumberNode();
+		node.name = GlobalVars.operationParser.parseStringNode();
+		node.val = GlobalVars.operationParser.parseNumberNode();
 		return node;
 	}
 	

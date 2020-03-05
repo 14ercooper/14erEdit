@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.bukkit.block.Block;
 
-import fourteener.worldeditor.main.Main;
+import fourteener.worldeditor.main.*;
 import fourteener.worldeditor.worldeditor.brush.BrushShape;
 
 public class HollowSphere extends BrushShape {
@@ -21,7 +21,7 @@ public class HollowSphere extends BrushShape {
 				for (int ry = -radius; ry <= radius; ry++) {
 					if ((rx*rx + ry*ry + rz*rz <= (radius + radiusCorrection)*(radius + radiusCorrection)) &&
 							(rx*rx + ry*ry + rz*rz >= (radius - thickness - radiusCorrection)*(radius - thickness - radiusCorrection))) {
-						blockArray.add(Main.world.getBlockAt((int) x + rx, (int) y + ry, (int) z + rz));
+						blockArray.add(GlobalVars.world.getBlockAt((int) x + rx, (int) y + ry, (int) z + rz));
 					}
 				}
 			}

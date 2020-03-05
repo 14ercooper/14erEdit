@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.bukkit.block.Block;
 
-import fourteener.worldeditor.main.Main;
+import fourteener.worldeditor.main.*;
 import fourteener.worldeditor.worldeditor.brush.BrushShape;
 
 public class Diamond extends BrushShape {
@@ -19,7 +19,7 @@ public class Diamond extends BrushShape {
 			for (int rz = -radius; rz <= radius; rz++) {
 				for (int ry = -radius; ry <= radius; ry++) {
 					if (Math.abs(rx) + Math.abs(ry) + Math.abs(rz) <= radius) {
-						blockArray.add(Main.world.getBlockAt((int) x + rx, (int) y + ry, (int) z + rz));
+						blockArray.add(GlobalVars.world.getBlockAt((int) x + rx, (int) y + ry, (int) z + rz));
 					}
 				}
 			}

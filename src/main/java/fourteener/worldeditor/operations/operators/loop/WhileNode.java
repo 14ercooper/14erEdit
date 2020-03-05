@@ -1,6 +1,6 @@
 package fourteener.worldeditor.operations.operators.loop;
 
-import fourteener.worldeditor.main.Main;
+import fourteener.worldeditor.main.*;
 import fourteener.worldeditor.operations.operators.Node;
 
 public class WhileNode extends Node {
@@ -9,8 +9,8 @@ public class WhileNode extends Node {
 	
 	public WhileNode newNode() {
 		WhileNode node = new WhileNode();
-		node.cond = Main.operationParser.parsePart();
-		node.op = Main.operationParser.parsePart();
+		node.cond = GlobalVars.operationParser.parsePart();
+		node.op = GlobalVars.operationParser.parsePart();
 		return node;
 	}
 	

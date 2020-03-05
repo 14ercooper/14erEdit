@@ -8,7 +8,7 @@ import java.util.Set;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 
-import fourteener.worldeditor.main.Main;
+import fourteener.worldeditor.main.*;
 
 public class UndoElement {
 	private Set<BlockState> blocks = new HashSet<BlockState>();
@@ -28,7 +28,7 @@ public class UndoElement {
 	// Revert the slice of the world where this undo element is from back to how it was when this element was registered
 	public boolean applyElement () {
 		for (BlockState b : blocks) {
-			Block block = Main.world.getBlockAt(b.getLocation());
+			Block block = GlobalVars.world.getBlockAt(b.getLocation());
 			block.setType(b.getType());
 			block.setBlockData(b.getBlockData());
 		}
@@ -39,7 +39,7 @@ public class UndoElement {
 	public UndoElement getInverseElement () {
 		List<Block> blockList = new ArrayList<Block>();
 		for (BlockState b : blocks) {
-			blockList.add(Main.world.getBlockAt(b.getLocation()));
+			blockList.add(GlobalVars.world.getBlockAt(b.getLocation()));
 		}
 		return new UndoElement(blockList);
 	}

@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.bukkit.block.Block;
 
-import fourteener.worldeditor.main.Main;
+import fourteener.worldeditor.main.*;
 import fourteener.worldeditor.worldeditor.brush.BrushShape;
 
 public class Cube extends BrushShape {
@@ -17,7 +17,7 @@ public class Cube extends BrushShape {
 		for (int rx = -cubeRad; rx <= cubeRad; rx++) {
 			for (int rz = -cubeRad; rz <= cubeRad; rz++) {
 				for (int ry = -cubeRad; ry <= cubeRad; ry++) {
-					blockArray.add(Main.world.getBlockAt((int) x + rx, (int) y + ry, (int) z + rz));
+					blockArray.add(GlobalVars.world.getBlockAt((int) x + rx, (int) y + ry, (int) z + rz));
 				}
 			}
 		}

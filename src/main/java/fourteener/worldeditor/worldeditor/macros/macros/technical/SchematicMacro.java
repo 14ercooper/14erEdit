@@ -14,7 +14,7 @@ import org.bukkit.block.data.BlockData;
 
 import com.fourteener.schematics.Schematic;
 
-import fourteener.worldeditor.main.Main;
+import fourteener.worldeditor.main.*;
 import fourteener.worldeditor.operations.Operator;
 import fourteener.worldeditor.worldeditor.macros.macros.Macro;
 import fourteener.worldeditor.worldeditor.undo.UndoElement;
@@ -88,7 +88,7 @@ public class SchematicMacro extends Macro {
 			Material blockMat = Material.matchMaterial(blockData.get(i).split("\\[")[0]);
 			BlockData blockDat = Bukkit.getServer().createBlockData(blockData.get(i));
 			
-			Block b = Main.world.getBlockAt(x + rx - xOff - 1, y + ry - yOff, z + rz - zOff);
+			Block b = GlobalVars.world.getBlockAt(x + rx - xOff - 1, y + ry - yOff, z + rz - zOff);
 			// Set the block
 			if (blockMat == Material.AIR) {
 				if (setAir) {

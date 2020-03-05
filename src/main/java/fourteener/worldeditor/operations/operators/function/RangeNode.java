@@ -1,6 +1,6 @@
 package fourteener.worldeditor.operations.operators.function;
 
-import fourteener.worldeditor.main.Main;
+import fourteener.worldeditor.main.*;
 import fourteener.worldeditor.operations.operators.Node;
 import fourteener.worldeditor.operations.operators.core.NumberNode;
 
@@ -10,8 +10,8 @@ public class RangeNode extends Node {
 	
 	public RangeNode newNode() {
 		RangeNode node = new RangeNode();
-		node.arg1 = Main.operationParser.parseNumberNode();
-		node.arg2 = Main.operationParser.parseNumberNode();
+		node.arg1 = GlobalVars.operationParser.parseNumberNode();
+		node.arg2 = GlobalVars.operationParser.parseNumberNode();
 		return node;
 	}
 	

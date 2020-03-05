@@ -2,7 +2,7 @@ package fourteener.worldeditor.operations.operators.world;
 
 import org.bukkit.Bukkit;
 
-import fourteener.worldeditor.main.Main;
+import fourteener.worldeditor.main.*;
 import fourteener.worldeditor.operations.Operator;
 import fourteener.worldeditor.operations.operators.Node;
 
@@ -12,7 +12,7 @@ public class SetNBTNode extends Node {
 	
 	public SetNBTNode newNode() {
 		SetNBTNode node = new SetNBTNode();
-		node.nbt = Main.operationParser.parseStringNode();
+		node.nbt = GlobalVars.operationParser.parseStringNode();
 		return node;
 	}
 	

@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import fourteener.worldeditor.main.Main;
+import fourteener.worldeditor.main.*;
 import fourteener.worldeditor.operations.Operator;
 import fourteener.worldeditor.operations.operators.Node;
 import fourteener.worldeditor.operations.type.SpawnerVar;
@@ -17,8 +17,8 @@ public class GetSpawnerCommandNode extends Node {
 	
 	public GetSpawnerCommandNode newNode() {
 		GetSpawnerCommandNode node = new GetSpawnerCommandNode();
-		node.name = Main.operationParser.parseStringNode();
-		node.path = "plugins/14erEdit/Commands/" + Main.operationParser.parseStringNode();
+		node.name = GlobalVars.operationParser.parseStringNode();
+		node.path = "plugins/14erEdit/Commands/" + GlobalVars.operationParser.parseStringNode();
 		return node;
 	}
 	

@@ -1,6 +1,6 @@
 package fourteener.worldeditor.operations.operators.logical;
 
-import fourteener.worldeditor.main.Main;
+import fourteener.worldeditor.main.*;
 import fourteener.worldeditor.operations.operators.Node;
 
 public class NotNode extends Node {
@@ -8,7 +8,7 @@ public class NotNode extends Node {
 	
 	public NotNode newNode() {
 		NotNode node = new NotNode();
-		node.arg = Main.operationParser.parsePart();
+		node.arg = GlobalVars.operationParser.parsePart();
 		return node;
 	}
 	

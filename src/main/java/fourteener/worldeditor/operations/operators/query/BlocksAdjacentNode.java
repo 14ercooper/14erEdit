@@ -3,7 +3,7 @@ package fourteener.worldeditor.operations.operators.query;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 
-import fourteener.worldeditor.main.Main;
+import fourteener.worldeditor.main.*;
 import fourteener.worldeditor.operations.Operator;
 import fourteener.worldeditor.operations.operators.Node;
 import fourteener.worldeditor.operations.operators.core.NumberNode;
@@ -15,8 +15,8 @@ public class BlocksAdjacentNode extends Node {
 	
 	public BlocksAdjacentNode newNode() {
 		BlocksAdjacentNode node = new BlocksAdjacentNode();
-		node.arg1 = Main.operationParser.parsePart();
-		node.arg2 = Main.operationParser.parseNumberNode();
+		node.arg1 = GlobalVars.operationParser.parsePart();
+		node.arg2 = GlobalVars.operationParser.parseNumberNode();
 		return node;
 	}
 	
@@ -26,7 +26,7 @@ public class BlocksAdjacentNode extends Node {
 		// Check if any adjacent blocks match arg1
 		// Set up some variables
 		int numAdjacentBlocks = 0;
-		Block curBlock = Main.world.getBlockAt(Operator.currentBlock.getLocation());
+		Block curBlock = GlobalVars.world.getBlockAt(Operator.currentBlock.getLocation());
 		
 		// Check each direction
 		Block blockAdj = curBlock.getRelative(BlockFace.NORTH);

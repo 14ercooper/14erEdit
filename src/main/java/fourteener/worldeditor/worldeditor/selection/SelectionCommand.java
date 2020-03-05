@@ -10,7 +10,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 
-import fourteener.worldeditor.main.Main;
+import fourteener.worldeditor.main.*;
 import fourteener.worldeditor.operations.Operator;
 import fourteener.worldeditor.worldeditor.undo.UndoElement;
 import fourteener.worldeditor.worldeditor.undo.UndoManager;
@@ -55,7 +55,7 @@ public class SelectionCommand {
 			for (int x = (int) pos1[0]; x <= pos2[0]; x++) {
 				for (int y = (int) pos1[1]; y <= pos2[1]; y++) {
 					for (int z = (int) pos1[2]; z <= pos2[2]; z++) {
-						blockArray.add(Main.world.getBlockAt(x, y, z));
+						blockArray.add(GlobalVars.world.getBlockAt(x, y, z));
 					}
 				}
 			}
@@ -202,7 +202,7 @@ public class SelectionCommand {
 		// Apply the changes to the world
 		for (BlockState bs : operatedList) {
 			Location l = bs.getLocation();
-			Block b = Main.world.getBlockAt(l);
+			Block b = GlobalVars.world.getBlockAt(l);
 			b.setType(bs.getType(), Operator.ignoringPhysics);
 			b.setBlockData(bs.getBlockData(), Operator.ignoringPhysics);
 		}

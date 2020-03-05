@@ -10,7 +10,7 @@ import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
-import fourteener.worldeditor.main.Main;
+import fourteener.worldeditor.main.*;
 import fourteener.worldeditor.worldeditor.scripts.Craftscript;
 
 public class ScriptLine extends Craftscript {
@@ -36,7 +36,7 @@ public class ScriptLine extends Craftscript {
 			blockPos.setY(blockPos.getY() * i + playerPos.getY() + 1);
 			blockPos.setZ(blockPos.getZ() * i + playerPos.getZ());
 			
-			Block b = Main.world.getBlockAt(blockPos.getBlockX(), blockPos.getBlockY(), blockPos.getBlockZ());
+			Block b = GlobalVars.world.getBlockAt(blockPos.getBlockX(), blockPos.getBlockY(), blockPos.getBlockZ());
 			BlockState bs = b.getState();
 			undoList.add(bs);
 			

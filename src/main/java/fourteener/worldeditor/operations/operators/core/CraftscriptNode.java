@@ -3,7 +3,7 @@ package fourteener.worldeditor.operations.operators.core;
 import java.util.Arrays;
 import java.util.LinkedList;
 
-import fourteener.worldeditor.main.Main;
+import fourteener.worldeditor.main.*;
 import fourteener.worldeditor.operations.Operator;
 import fourteener.worldeditor.operations.operators.Node;
 
@@ -13,14 +13,14 @@ public class CraftscriptNode extends Node {
 	
 	public CraftscriptNode newNode() {
 		CraftscriptNode node = new CraftscriptNode();
-		node.arg = Main.operationParser.parseStringNode();
+		node.arg = GlobalVars.operationParser.parseStringNode();
 		return node;
 	}
 	
 	public boolean performNode () {
 		String label = arg.split("{")[0];
 		LinkedList<String> args = new LinkedList<String>(Arrays.asList(arg.split("{")[1].replace("}", "").split(",")));
-		return Main.scriptManager.runCraftscript(label, args, Operator.currentPlayer);
+		return GlobalVars.scriptManager.runCraftscript(label, args, Operator.currentPlayer);
 	}
 	
 	public int getArgCount () {

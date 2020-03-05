@@ -13,7 +13,7 @@ import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import fourteener.worldeditor.main.Main;
+import fourteener.worldeditor.main.*;
 import fourteener.worldeditor.operations.Operator;
 import fourteener.worldeditor.worldeditor.undo.UndoElement;
 import fourteener.worldeditor.worldeditor.undo.UndoManager;
@@ -132,7 +132,7 @@ public class Brush {
 		// Apply the blocks to the world
 		for (BlockState bs : operatedArray) {
 			Location l = bs.getLocation();
-			Block b = Main.world.getBlockAt(l);
+			Block b = GlobalVars.world.getBlockAt(l);
 			b.setType(bs.getType(), Operator.ignoringPhysics);
 			b.setBlockData(bs.getBlockData(), Operator.ignoringPhysics);
 		}

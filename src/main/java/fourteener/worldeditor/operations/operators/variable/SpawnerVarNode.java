@@ -1,6 +1,6 @@
 package fourteener.worldeditor.operations.operators.variable;
 
-import fourteener.worldeditor.main.Main;
+import fourteener.worldeditor.main.*;
 import fourteener.worldeditor.operations.Operator;
 import fourteener.worldeditor.operations.operators.Node;
 import fourteener.worldeditor.operations.type.SpawnerVar;
@@ -11,7 +11,7 @@ public class SpawnerVarNode extends Node{
 	
 	public SpawnerVarNode newNode() {
 		SpawnerVarNode node = new SpawnerVarNode();
-		node.name = Main.operationParser.parseStringNode();
+		node.name = GlobalVars.operationParser.parseStringNode();
 		return node;
 	}
 	

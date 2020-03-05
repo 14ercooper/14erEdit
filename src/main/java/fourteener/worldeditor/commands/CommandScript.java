@@ -8,7 +8,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import fourteener.worldeditor.main.Main;
+import fourteener.worldeditor.main.GlobalVars;
 
 public class CommandScript implements CommandExecutor {
 
@@ -16,7 +16,7 @@ public class CommandScript implements CommandExecutor {
 		if (sender instanceof Player) {
 			LinkedList<String> argsToPass = new LinkedList<String>(Arrays.asList(args));
 			argsToPass.removeFirst();
-			return Main.scriptManager.runCraftscript(args[0], argsToPass, (Player) sender);
+			return GlobalVars.scriptManager.runCraftscript(args[0], argsToPass, (Player) sender);
 		}
 		return false;
 	}

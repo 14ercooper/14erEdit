@@ -2,7 +2,7 @@ package fourteener.worldeditor.operations.operators.query;
 
 import org.bukkit.block.Block;
 
-import fourteener.worldeditor.main.Main;
+import fourteener.worldeditor.main.*;
 import fourteener.worldeditor.operations.Operator;
 import fourteener.worldeditor.operations.operators.Node;
 import fourteener.worldeditor.operations.operators.function.RangeNode;
@@ -14,13 +14,13 @@ public class BlocksBelowNode extends Node {
 	
 	public BlocksBelowNode newNode() {
 		BlocksBelowNode node = new BlocksBelowNode();
-		node.arg1 = Main.operationParser.parseRangeNode();
-		node.arg2 = Main.operationParser.parsePart();
+		node.arg1 = GlobalVars.operationParser.parseRangeNode();
+		node.arg2 = GlobalVars.operationParser.parsePart();
 		return node;
 	}
 	
 	public boolean performNode () {
-		Block currBlock = Main.world.getBlockAt(Operator.currentBlock.getLocation());
+		Block currBlock = GlobalVars.world.getBlockAt(Operator.currentBlock.getLocation());
 		int x = currBlock.getX();
 		int y = currBlock.getY();
 		int z = currBlock.getZ();
@@ -29,7 +29,7 @@ public class BlocksBelowNode extends Node {
 		boolean blockRangeMet = true;
 		
 		for (int dy = y - min; dy >= y - max; dy--) {
-			Operator.currentBlock = Main.world.getBlockAt(x, dy, z).getState();
+			Operator.currentBlock = GlobalVars.world.getBlockAt(x, dy, z).getState();
 			if (!(arg2.performNode()))
 				blockRangeMet = false;
 		}

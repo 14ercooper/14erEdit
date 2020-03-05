@@ -9,7 +9,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 
-import fourteener.worldeditor.main.Main;
+import fourteener.worldeditor.main.*;
 import fourteener.worldeditor.operations.Operator;
 import fourteener.worldeditor.worldeditor.macros.macros.Macro;
 import fourteener.worldeditor.worldeditor.undo.UndoElement;
@@ -55,7 +55,7 @@ public class FlattenMacro extends Macro {
 		// Process edited blocks and register the undo
 		List<Block> blocksToUndo = new ArrayList<Block>();
 		for (BlockState bs : operatedBlocks) {
-			blocksToUndo.add(Main.world.getBlockAt(bs.getLocation()));
+			blocksToUndo.add(GlobalVars.world.getBlockAt(bs.getLocation()));
 		}
 		UndoManager.getUndo(Operator.currentPlayer).storeUndo(new UndoElement(blocksToUndo));
 		
@@ -63,7 +63,7 @@ public class FlattenMacro extends Macro {
 		Main.logDebug("Operated on and now placing " + Integer.toString(operatedBlocks.size()) + " blocks");
 		// Apply the changes to the world
 		for (BlockState bs : operatedBlocks) {
-			Block b = Main.world.getBlockAt(bs.getLocation());
+			Block b = GlobalVars.world.getBlockAt(bs.getLocation());
 			b.setType(bs.getType());
 			b.setBlockData(bs.getBlockData());
 		}
@@ -79,7 +79,7 @@ public class FlattenMacro extends Macro {
 			for (int rz = -radiusInt; rz <= radiusInt; rz++) {
 				for (int ry = 0; ry <= 255; ry++) {
 					if (rx*rx + rz*rz <= (radius + 0.5)*(radius + 0.5)) {
-						blockArray.add(Main.world.getBlockAt((int) x + rx, ry, (int) z + rz));
+						blockArray.add(GlobalVars.world.getBlockAt((int) x + rx, ry, (int) z + rz));
 					}
 				}
 			}
@@ -95,7 +95,7 @@ public class FlattenMacro extends Macro {
 		Main.logDebug(Integer.toString(snapshotArray.size()) + " blocks in snapshot array");
 		
 		for (BlockState bs : snapshotArray) {
-			Block b = Main.world.getBlockAt(bs.getLocation());
+			Block b = GlobalVars.world.getBlockAt(bs.getLocation());
 			int yB = bs.getY();
 			
 			if (yB <= Math.round(height)) {
@@ -119,12 +119,12 @@ public class FlattenMacro extends Macro {
 			for (int rz = -radiusInt; rz <= radiusInt; rz++) {
 				for (int ry = -radiusInt; ry <= radiusInt; ry++) {
 					if (rx*rx + ry*ry + rz*rz <= (radius + 0.5)*(radius + 0.5)) {
-						blockArray.add(Main.world.getBlockAt((int) x + rx, (int) y + ry, (int) z + rz));
+						blockArray.add(GlobalVars.world.getBlockAt((int) x + rx, (int) y + ry, (int) z + rz));
 					}
 				}
 			}
 		}
-		blockArray.add(Main.world.getBlockAt((int)x,(int)y,(int)z));
+		blockArray.add(GlobalVars.world.getBlockAt((int)x,(int)y,(int)z));
 		Main.logDebug("Block array size: " + Integer.toString(blockArray.size())); // ----
 		
 		// Create a snapshot array
@@ -136,7 +136,7 @@ public class FlattenMacro extends Macro {
 		Main.logDebug(Integer.toString(snapshotArray.size()) + " blocks in snapshot array");
 		
 		for (BlockState bs : snapshotArray) {
-			Block b = Main.world.getBlockAt(bs.getLocation());
+			Block b = GlobalVars.world.getBlockAt(bs.getLocation());
 			int yB = bs.getY();
 			
 			if (yB <= Math.round(height)) {

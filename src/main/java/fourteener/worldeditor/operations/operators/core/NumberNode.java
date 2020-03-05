@@ -1,6 +1,6 @@
 package fourteener.worldeditor.operations.operators.core;
 
-import fourteener.worldeditor.main.Main;
+import fourteener.worldeditor.main.*;
 import fourteener.worldeditor.operations.operators.Node;
 
 public class NumberNode extends Node {
@@ -11,7 +11,7 @@ public class NumberNode extends Node {
 	// Create a new number node
 	public NumberNode newNode() {
 		NumberNode node = new NumberNode();
-		node.arg = Double.parseDouble(Main.operationParser.parseStringNode());
+		node.arg = Double.parseDouble(GlobalVars.operationParser.parseStringNode());
 		return node;
 	}
 

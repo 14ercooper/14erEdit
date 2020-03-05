@@ -4,7 +4,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 
-import fourteener.worldeditor.main.Main;
+import fourteener.worldeditor.main.*;
 import fourteener.worldeditor.operations.Operator;
 import fourteener.worldeditor.operations.operators.Node;
 import fourteener.worldeditor.operations.operators.core.NumberNode;
@@ -15,7 +15,7 @@ public class FacesExposedNode extends Node {
 	
 	public FacesExposedNode newNode() {
 		FacesExposedNode node = new FacesExposedNode();
-		node.arg = Main.operationParser.parseNumberNode();
+		node.arg = GlobalVars.operationParser.parseNumberNode();
 		return node;
 	}
 	
@@ -24,7 +24,7 @@ public class FacesExposedNode extends Node {
 		// Count the number of faces
 		// Basically check for air in each of the four directions
 		int faceCount = 0;
-		Block b = Main.world.getBlockAt(Operator.currentBlock.getLocation());
+		Block b = GlobalVars.world.getBlockAt(Operator.currentBlock.getLocation());
 		if (b.getRelative(BlockFace.NORTH).getType() == Material.AIR) {
 			faceCount++;
 		}

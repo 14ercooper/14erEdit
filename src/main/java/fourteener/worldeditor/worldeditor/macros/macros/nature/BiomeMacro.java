@@ -9,7 +9,7 @@ import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 
-import fourteener.worldeditor.main.Main;
+import fourteener.worldeditor.main.*;
 import fourteener.worldeditor.operations.Operator;
 import fourteener.worldeditor.worldeditor.macros.macros.Macro;
 import fourteener.worldeditor.worldeditor.undo.UndoElement;
@@ -42,7 +42,7 @@ public class BiomeMacro extends Macro {
 		for (int rx = -radiusInt; rx <= radiusInt; rx++) {
 			for (int rz = -radiusInt; rz <= radiusInt; rz++) {
 				if (rx*rx + rz*rz <= (radius + 0.5)*(radius + 0.5)) {
-					blockArray.add(Main.world.getBlockAt((int) x + rx, 1, (int) z + rz));
+					blockArray.add(GlobalVars.world.getBlockAt((int) x + rx, 1, (int) z + rz));
 				}
 			}
 		}
@@ -61,7 +61,7 @@ public class BiomeMacro extends Macro {
 		
 		// OPERATE
 		for (BlockState bs : snapshotArray) {
-			Block b = Main.world.getBlockAt(bs.getLocation());
+			Block b = GlobalVars.world.getBlockAt(bs.getLocation());
 			b.setBiome(biome);
 		}
 		

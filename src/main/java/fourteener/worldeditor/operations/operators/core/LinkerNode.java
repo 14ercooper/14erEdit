@@ -1,6 +1,6 @@
 package fourteener.worldeditor.operations.operators.core;
 
-import fourteener.worldeditor.main.Main;
+import fourteener.worldeditor.main.*;
 import fourteener.worldeditor.operations.operators.Node;
 
 public class LinkerNode extends Node {
@@ -9,8 +9,8 @@ public class LinkerNode extends Node {
 	
 	public LinkerNode newNode() {
 		LinkerNode node = new LinkerNode();
-		node.arg1 = Main.operationParser.parsePart();
-		node.arg2 = Main.operationParser.parsePart();
+		node.arg1 = GlobalVars.operationParser.parsePart();
+		node.arg2 = GlobalVars.operationParser.parsePart();
 		return node;
 	}
 	

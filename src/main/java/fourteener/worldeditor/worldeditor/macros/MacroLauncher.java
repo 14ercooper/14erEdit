@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.bukkit.Location;
 
-import fourteener.worldeditor.main.Main;
+import fourteener.worldeditor.main.*;
 import fourteener.worldeditor.worldeditor.macros.macros.Macro;
 
 public class MacroLauncher {

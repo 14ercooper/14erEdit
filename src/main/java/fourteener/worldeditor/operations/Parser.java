@@ -7,7 +7,7 @@ import java.util.Map;
 
 import org.bukkit.Material;
 
-import fourteener.worldeditor.main.Main;
+import fourteener.worldeditor.main.*;
 import fourteener.worldeditor.operations.operators.Node;
 import fourteener.worldeditor.operations.operators.core.*;
 import fourteener.worldeditor.operations.operators.function.*;

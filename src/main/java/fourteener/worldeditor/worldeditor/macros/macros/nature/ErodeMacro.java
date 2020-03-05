@@ -10,7 +10,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 
-import fourteener.worldeditor.main.Main;
+import fourteener.worldeditor.main.*;
 import fourteener.worldeditor.operations.Operator;
 import fourteener.worldeditor.worldeditor.macros.macros.Macro;
 import fourteener.worldeditor.worldeditor.undo.UndoElement;
@@ -99,7 +99,7 @@ public class ErodeMacro extends Macro {
 			for (int rz = -erodeRadius; rz <= erodeRadius; rz++) {
 				for (int ry = -erodeRadius; ry <= erodeRadius; ry++) {
 					if (rx*rx + ry*ry + rz*rz <= (erodeRadius + 0.5)*(erodeRadius + 0.5)) {
-						erosionArray.add(Main.world.getBlockAt((int) x + rx, (int) y + ry, (int) z + rz));
+						erosionArray.add(GlobalVars.world.getBlockAt((int) x + rx, (int) y + ry, (int) z + rz));
 					}
 				}
 			}
@@ -138,7 +138,7 @@ public class ErodeMacro extends Macro {
 	private void applyToWorld(List<BlockState> snapshotArray) {
 		for (BlockState b : snapshotArray) {
 			Location l = b.getLocation();
-			Block block = Main.world.getBlockAt(l);
+			Block block = GlobalVars.world.getBlockAt(l);
 			block.setType(b.getType());
 			block.setBlockData(b.getBlockData());
 		}
@@ -152,7 +152,7 @@ public class ErodeMacro extends Macro {
 		List<BlockState> snapshotCopy = new ArrayList<BlockState>();
 		for (BlockState b : snapshotArray) {
 			// First get the adjacent blocks
-			Block current = Main.world.getBlockAt(b.getLocation());
+			Block current = GlobalVars.world.getBlockAt(b.getLocation());
 			BlockState currentState = b;
 			List<Block> adjBlocks = new ArrayList<Block>();
 			adjBlocks.add(current.getRelative(BlockFace.UP));
@@ -220,7 +220,7 @@ public class ErodeMacro extends Macro {
 		List<BlockState> snapshotCopy = new ArrayList<BlockState>();
 		for (BlockState b : snapshotArray) {
 			// First get the adjacent blocks
-			Block current = Main.world.getBlockAt(b.getLocation());
+			Block current = GlobalVars.world.getBlockAt(b.getLocation());
 			BlockState currentState = b;
 			List<Block> adjBlocks = new ArrayList<Block>();
 			adjBlocks.add(current.getRelative(BlockFace.UP));
@@ -288,7 +288,7 @@ public class ErodeMacro extends Macro {
 		List<BlockState> snapshotCopy = new ArrayList<BlockState>();
 		for (BlockState b : snapshotArray) {
 			// First get the adjacent blocks
-			Block current = Main.world.getBlockAt(b.getLocation());
+			Block current = GlobalVars.world.getBlockAt(b.getLocation());
 			BlockState currentState = b;
 			List<Block> adjBlocks = new ArrayList<Block>();
 			adjBlocks.add(current.getRelative(BlockFace.UP));

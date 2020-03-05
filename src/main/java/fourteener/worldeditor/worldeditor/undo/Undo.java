@@ -7,7 +7,7 @@ import java.util.Set;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 
-import fourteener.worldeditor.main.Main;
+import fourteener.worldeditor.main.*;
 
 public class Undo {
 	// Whose undo is this?

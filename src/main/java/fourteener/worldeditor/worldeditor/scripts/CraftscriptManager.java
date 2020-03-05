@@ -8,7 +8,7 @@ import java.util.Set;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 
-import fourteener.worldeditor.main.Main;
+import fourteener.worldeditor.main.*;
 import fourteener.worldeditor.worldeditor.undo.UndoElement;
 import fourteener.worldeditor.worldeditor.undo.UndoManager;
 
