@@ -2,6 +2,7 @@ package fourteener.worldeditor.operations.operators.function;
 
 import java.util.Random;
 
+import fourteener.worldeditor.main.Main;
 import fourteener.worldeditor.operations.operators.Node;
 import fourteener.worldeditor.operations.operators.core.NumberNode;
 
@@ -9,8 +10,10 @@ public class OddsNode extends Node {
 	
 	public NumberNode arg;
 	
-	public OddsNode(NumberNode odds) {
-		arg = odds;
+	public OddsNode newNode() {
+		OddsNode node = new OddsNode();
+		node.arg = Main.operationParser.parseNumberNode();
+		return node;
 	}
 	
 	public boolean performNode () {
@@ -19,7 +22,7 @@ public class OddsNode extends Node {
 		return (chance < arg.getValue());
 	}
 	
-	public static int getArgCount () {
+	public int getArgCount () {
 		return 1;
 	}
 }

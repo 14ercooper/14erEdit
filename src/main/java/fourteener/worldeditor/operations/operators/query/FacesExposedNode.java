@@ -13,8 +13,10 @@ public class FacesExposedNode extends Node {
 	
 	public NumberNode arg;
 	
-	public FacesExposedNode(NumberNode count) {
-		arg = count;
+	public FacesExposedNode newNode() {
+		FacesExposedNode node = new FacesExposedNode();
+		node.arg = Main.operationParser.parseNumberNode();
+		return node;
 	}
 	
 	public boolean performNode () {
@@ -46,7 +48,7 @@ public class FacesExposedNode extends Node {
 		return (faceCount >= arg.getValue() - 0.1);
 	}
 	
-	public static int getArgCount () {
+	public int getArgCount () {
 		return 1;
 	}
 }

@@ -1,15 +1,18 @@
 package fourteener.worldeditor.operations.operators.logical;
 
+import fourteener.worldeditor.main.Main;
 import fourteener.worldeditor.operations.operators.Node;
 
 public class IfNode extends Node {
 	
 	public Node arg1, arg2, arg3;
 	
-	public IfNode(Node mask, Node ifTrue, Node ifFalse) {
-		arg1 = mask;
-		arg2 = ifTrue;
-		arg3 = ifFalse;
+	public IfNode newNode() {
+		IfNode node = new IfNode();
+		node.arg1 = Main.operationParser.parsePart();
+		node.arg2 = Main.operationParser.parsePart();
+		node.arg3 = Main.operationParser.parsePart();
+		return node;
 	}
 	
 	public boolean performNode () {
@@ -21,7 +24,7 @@ public class IfNode extends Node {
 		}
 	}
 	
-	public static int getArgCount () {
+	public int getArgCount () {
 		return 3;
 	}
 }

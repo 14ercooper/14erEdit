@@ -40,7 +40,7 @@ public class Operator {
 	
 	public static Operator newOperator (String op) {
 		Operator operator = new Operator();
-		operator.entryNode = Parser.parseOperation(op);
+		operator.entryNode = Main.operationParser.parseOperation(op);
 		if (operator.entryNode == null) {
 			return null;
 		}

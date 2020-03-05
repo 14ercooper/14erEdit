@@ -8,8 +8,10 @@ public class MacroNode extends Node {
 	
 	String arg;
 	
-	public MacroNode(String macro) {
-		arg = macro;
+	public MacroNode newNode() {
+		MacroNode node = new MacroNode();
+		node.arg = Main.operationParser.parseStringNode();
+		return node;
 	}
 	
 	public boolean performNode () {
@@ -17,7 +19,7 @@ public class MacroNode extends Node {
 		return Main.macroLauncher.launchMacro(arg, Operator.currentBlock.getLocation());
 	}
 	
-	public static int getArgCount () {
+	public int getArgCount () {
 		return 1;
 	}
 }

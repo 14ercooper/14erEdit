@@ -15,8 +15,10 @@ public class LoadFromFileNode extends Node {
 	
 	String path;
 	
-	public LoadFromFileNode(String filename) {
-		path = filename;
+	public LoadFromFileNode newNode() {
+		LoadFromFileNode node = new LoadFromFileNode();
+		node.path = Main.operationParser.parseStringNode();
+		return node;
 	}
 	
 	public boolean performNode () {
@@ -46,7 +48,7 @@ public class LoadFromFileNode extends Node {
 		return o.messyOperate();
 	}
 	
-	public static int getArgCount () {
+	public int getArgCount () {
 		return 1;
 	}
 }

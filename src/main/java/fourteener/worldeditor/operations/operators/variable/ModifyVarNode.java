@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import fourteener.worldeditor.main.Main;
 import fourteener.worldeditor.operations.Operator;
 import fourteener.worldeditor.operations.operators.Node;
 import fourteener.worldeditor.operations.type.BlockVar;
@@ -18,10 +19,12 @@ public class ModifyVarNode extends Node {
 	String type, name;
 	List<String> mod;
 	
-	public ModifyVarNode(String arg1, String arg2, String arg3) {
-		type = arg1;
-		name = arg2;
-		mod = Arrays.asList(arg3.split(","));
+	public ModifyVarNode newNode() {
+		ModifyVarNode node = new ModifyVarNode();
+		node.type = Main.operationParser.parseStringNode();
+		node.name = Main.operationParser.parseStringNode();
+		node.mod = Arrays.asList(Main.operationParser.parseStringNode().split(","));
+		return node;
 	}
 	
 	public boolean performNode () {
@@ -382,7 +385,7 @@ public class ModifyVarNode extends Node {
 		return false;
 	}
 	
-	public static int getArgCount () {
+	public int getArgCount () {
 		return 3;
 	}
 }

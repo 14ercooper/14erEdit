@@ -15,9 +15,11 @@ public class GetSpawnerCommandNode extends Node {
 	String name;
 	String path;
 	
-	public GetSpawnerCommandNode(String varName, String pth) {
-		name = varName;
-		path = "plugins/14erEdit/Commands/" + pth;
+	public GetSpawnerCommandNode newNode() {
+		GetSpawnerCommandNode node = new GetSpawnerCommandNode();
+		node.name = Main.operationParser.parseStringNode();
+		node.path = "plugins/14erEdit/Commands/" + Main.operationParser.parseStringNode();
+		return node;
 	}
 	
 	public boolean performNode () {
@@ -49,7 +51,7 @@ public class GetSpawnerCommandNode extends Node {
 		return true;
 	}
 	
-	public static int getArgCount () {
+	public int getArgCount () {
 		return 2;
 	}
 }

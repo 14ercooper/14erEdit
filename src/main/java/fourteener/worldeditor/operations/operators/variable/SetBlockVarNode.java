@@ -1,8 +1,9 @@
-package fourteener.worldeditor.operations.operators.world;
+package fourteener.worldeditor.operations.operators.variable;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 
+import fourteener.worldeditor.main.Main;
 import fourteener.worldeditor.operations.Operator;
 import fourteener.worldeditor.operations.operators.Node;
 import fourteener.worldeditor.operations.type.BlockVar;
@@ -11,8 +12,10 @@ public class SetBlockVarNode extends Node {
 
 	public String name;
 	
-	public SetBlockVarNode(String val) {
-		name = val;
+	public SetBlockVarNode newNode() {
+		SetBlockVarNode node = new SetBlockVarNode();
+		node.name = Main.operationParser.parseStringNode();
+		return node;
 	}
 	
 	public boolean performNode () {
@@ -32,7 +35,7 @@ public class SetBlockVarNode extends Node {
 		return true;
 	}
 	
-	public static int getArgCount () {
+	public int getArgCount () {
 		return 1;
 	}
 }

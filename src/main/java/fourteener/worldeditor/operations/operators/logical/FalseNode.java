@@ -4,15 +4,15 @@ import fourteener.worldeditor.operations.operators.Node;
 
 public class FalseNode extends Node {
 	
-	public FalseNode() {
-		return;
+	public FalseNode newNode() {
+		return new FalseNode();
 	}
 	
 	public boolean performNode () {
 		return false;
 	}
 	
-	public static int getArgCount () {
+	public int getArgCount () {
 		return 0;
 	}
 }

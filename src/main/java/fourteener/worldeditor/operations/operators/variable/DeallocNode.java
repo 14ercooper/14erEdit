@@ -1,5 +1,6 @@
 package fourteener.worldeditor.operations.operators.variable;
 
+import fourteener.worldeditor.main.Main;
 import fourteener.worldeditor.operations.Operator;
 import fourteener.worldeditor.operations.operators.Node;
 
@@ -7,9 +8,11 @@ public class DeallocNode extends Node {
 	
 	String type, name;
 	
-	public DeallocNode(String varType, String varName) {
-		type = varType;
-		name = varName;
+	public DeallocNode newNode() {
+		DeallocNode node = new DeallocNode();
+		node.type = Main.operationParser.parseStringNode();
+		node.name = Main.operationParser.parseStringNode();
+		return node;
 	}
 	
 	public boolean performNode () {
@@ -40,7 +43,7 @@ public class DeallocNode extends Node {
 		return false;
 	}
 	
-	public static int getArgCount () {
+	public int getArgCount () {
 		return 2;
 	}
 }

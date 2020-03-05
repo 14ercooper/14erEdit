@@ -15,9 +15,11 @@ public class GetItemCommandNode extends Node {
 	String name;
 	String path;
 	
-	public GetItemCommandNode(String val1, String val2) {
-		name = val1;
-		path = "plugins/14erEdit/Commands/" + val2;
+	public GetItemCommandNode newNode() {
+		GetItemCommandNode node = new GetItemCommandNode();
+		node.name = Main.operationParser.parseStringNode();
+		node.path = "plugins/14erEdit/Commands/" + Main.operationParser.parseStringNode();
+		return node;
 	}
 	
 	public boolean performNode () {
@@ -47,7 +49,7 @@ public class GetItemCommandNode extends Node {
 		return true;
 	}
 	
-	public static int getArgCount () {
+	public int getArgCount () {
 		return 2;
 	}
 }

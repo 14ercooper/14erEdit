@@ -6,8 +6,8 @@ import fourteener.worldeditor.operations.Operator;
 
 public class SameNode extends BlockNode {
 	
-	public SameNode() {
-		return;
+	public SameNode newNode() {
+		return new SameNode();
 	}
 	
 	public boolean performNode () {
@@ -18,8 +18,7 @@ public class SameNode extends BlockNode {
 		return Operator.currentBlock.getType();
 	}
 	
-	public static int getArgCount () {
+	public int getArgCount () {
 		return 0;
 	}
-
 }

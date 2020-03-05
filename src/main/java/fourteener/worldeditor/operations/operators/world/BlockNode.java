@@ -1,8 +1,10 @@
 package fourteener.worldeditor.operations.operators.world;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
 
+import fourteener.worldeditor.main.Main;
 import fourteener.worldeditor.operations.Operator;
 import fourteener.worldeditor.operations.operators.Node;
 
@@ -13,18 +15,19 @@ public class BlockNode extends Node {
 	public BlockData arg2 = null;
 	
 	// Creates a new node
-	public BlockNode(Material material) {
-		arg1 = material;
-	}
-	
-	public BlockNode() {
-		return;
+	public BlockNode newNode() {
+		BlockNode node = new BlockNode();
+		node.arg1 = Material.matchMaterial(Main.operationParser.parseStringNode());
+		return node;
 	}
 	
 	// Creates a new node
-	public BlockNode(Material material, BlockData blockData) {
-		arg1 = material;
-		arg2 = blockData;
+	public BlockNode newNode(boolean overload) {
+		BlockNode node = new BlockNode();
+		String data = Main.operationParser.parseStringNode();
+		node.arg1 = Material.matchMaterial(data.split("\\[")[0]);
+		node.arg2 = Bukkit.getServer().createBlockData(data);
+		return node;
 	}
 	
 	// Return the material this node references
@@ -43,7 +46,7 @@ public class BlockNode extends Node {
 	}
 	
 	// Returns how many arguments this node takes
-	public static int getArgCount () {
+	public int getArgCount () {
 		return 1;
 	}
 }

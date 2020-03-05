@@ -11,8 +11,10 @@ public class CraftscriptNode extends Node {
 	
 	public String arg;
 	
-	public CraftscriptNode(String script) {
-		arg = script;
+	public CraftscriptNode newNode() {
+		CraftscriptNode node = new CraftscriptNode();
+		node.arg = Main.operationParser.parseStringNode();
+		return node;
 	}
 	
 	public boolean performNode () {
@@ -21,7 +23,7 @@ public class CraftscriptNode extends Node {
 		return Main.scriptManager.runCraftscript(label, args, Operator.currentPlayer);
 	}
 	
-	public static int getArgCount () {
+	public int getArgCount () {
 		return 1;
 	}
 }

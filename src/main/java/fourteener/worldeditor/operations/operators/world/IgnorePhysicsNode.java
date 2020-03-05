@@ -1,5 +1,6 @@
 package fourteener.worldeditor.operations.operators.world;
 
+import fourteener.worldeditor.main.Main;
 import fourteener.worldeditor.operations.Operator;
 import fourteener.worldeditor.operations.operators.Node;
 
@@ -7,8 +8,10 @@ public class IgnorePhysicsNode extends Node {
 	
 	public Node arg;
 	
-	public IgnorePhysicsNode(Node effect) {
-		arg = effect;
+	public IgnorePhysicsNode newNode() {
+		IgnorePhysicsNode node = new IgnorePhysicsNode();
+		node.arg = Main.operationParser.parsePart();
+		return node;
 	}
 	
 	public boolean performNode () {
@@ -18,7 +21,7 @@ public class IgnorePhysicsNode extends Node {
 		return output;
 	}
 	
-	public static int getArgCount () {
+	public int getArgCount () {
 		return 1;
 	}
 

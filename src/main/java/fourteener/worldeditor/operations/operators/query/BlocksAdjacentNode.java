@@ -8,14 +8,16 @@ import fourteener.worldeditor.operations.Operator;
 import fourteener.worldeditor.operations.operators.Node;
 import fourteener.worldeditor.operations.operators.core.NumberNode;
 
-public class BlockAdjacentNode extends Node {
+public class BlocksAdjacentNode extends Node {
 	
 	public Node arg1;
 	public NumberNode arg2;
 	
-	public BlockAdjacentNode(Node block, NumberNode count) {
-		arg1 = block;
-		arg2 = count;
+	public BlocksAdjacentNode newNode() {
+		BlocksAdjacentNode node = new BlocksAdjacentNode();
+		node.arg1 = Main.operationParser.parsePart();
+		node.arg2 = Main.operationParser.parseNumberNode();
+		return node;
 	}
 	
 	public boolean performNode () {
@@ -58,7 +60,7 @@ public class BlockAdjacentNode extends Node {
 		return (numAdjacentBlocks >= arg2.getValue() - 0.1);
 	}
 	
-	public static int getArgCount () {
+	public int getArgCount () {
 		return 2;
 	}
 }

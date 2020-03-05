@@ -9,8 +9,10 @@ public class GetItemVarNode extends Node {
 	
 	String name;
 	
-	public GetItemVarNode(String val) {
-		name = val;
+	public GetItemVarNode newNode() {
+		GetItemVarNode node = new GetItemVarNode();
+		node.name = Main.operationParser.parseStringNode();
+		return node;
 	}
 	
 	public boolean performNode () {
@@ -24,7 +26,7 @@ public class GetItemVarNode extends Node {
 		return true;
 	}
 	
-	public static int getArgCount () {
+	public int getArgCount () {
 		return 1;
 	}
 }

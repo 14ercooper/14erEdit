@@ -1,4 +1,4 @@
-package fourteener.worldeditor.operations.operators.world;
+package fourteener.worldeditor.operations.operators.variable;
 
 import fourteener.worldeditor.main.Main;
 import fourteener.worldeditor.operations.Operator;
@@ -9,8 +9,10 @@ public class SetSpawnerNode extends Node {
 	
 	String name;
 	
-	public SetSpawnerNode(String varName) {
-		name = varName;
+	public SetSpawnerNode newNode() {
+		SetSpawnerNode node = new SetSpawnerNode();
+		node.name = Main.operationParser.parseStringNode();
+		return node;
 	}
 	
 	public boolean performNode () {
@@ -26,7 +28,7 @@ public class SetSpawnerNode extends Node {
 		return true;
 	}
 	
-	public static int getArgCount () {
+	public int getArgCount () {
 		return 1;
 	}
 }

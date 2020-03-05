@@ -8,6 +8,7 @@ import fourteener.worldeditor.commands.CommandFx;
 import fourteener.worldeditor.commands.CommandRun;
 import fourteener.worldeditor.commands.CommandScript;
 import fourteener.worldeditor.commands.CommandUndo;
+import fourteener.worldeditor.operations.Parser;
 import fourteener.worldeditor.worldeditor.brush.BrushListener;
 import fourteener.worldeditor.worldeditor.macros.MacroLauncher;
 import fourteener.worldeditor.worldeditor.scripts.CraftscriptManager;
@@ -17,8 +18,11 @@ public class Main extends JavaPlugin {
 	// Global variables
 	public static World world;
 	public static SimplexNoise simplexNoise;
+	
+	// Managers
 	public static CraftscriptManager scriptManager;
 	public static MacroLauncher macroLauncher;
+	public static Parser operationParser;
 	
 	// For debugging
 	public static boolean isDebug = true;
@@ -41,14 +45,16 @@ public class Main extends JavaPlugin {
 		world = Bukkit.getWorlds().get(0);
 		simplexNoise = new SimplexNoise (world.getSeed()); // Seeded using the world seed for variance between worlds but consistency in the same world
 		
-		// Load the craftscript & macro managers
+		// Load managers
 		scriptManager = new CraftscriptManager();
 		macroLauncher = new MacroLauncher();
+		operationParser = new Parser();
 		
-		// Register the prepackaged craftscripts
+		// Register the prepackaged things to managers
 		CraftscriptLoader.LoadBundledCraftscripts();
 		MacroLoader.LoadMacros();
 		BrushLoader.LoadBrushes();
+		OperatorLoader.LoadOperators();
 	}
 	
 	@Override

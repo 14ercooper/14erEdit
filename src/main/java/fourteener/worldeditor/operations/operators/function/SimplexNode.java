@@ -13,9 +13,11 @@ public class SimplexNode extends Node {
 	
 	public NumberNode arg1, arg2;
 	
-	public SimplexNode (NumberNode dimensions, NumberNode cutoff) {
-		arg1 = dimensions;
-		arg2 = cutoff;
+	public SimplexNode newNode() {
+		SimplexNode node = new SimplexNode();
+		node.arg1 = Main.operationParser.parseNumberNode();
+		node.arg2 = Main.operationParser.parseNumberNode();
+		return node;
 	}
 	
 	public boolean performNode () {
@@ -36,7 +38,7 @@ public class SimplexNode extends Node {
 		return false;
 	}
 	
-	public static int getArgCount () {
+	public int getArgCount () {
 		return 2;
 	}
 }

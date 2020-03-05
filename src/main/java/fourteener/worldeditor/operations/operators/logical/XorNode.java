@@ -1,14 +1,17 @@
 package fourteener.worldeditor.operations.operators.logical;
 
+import fourteener.worldeditor.main.Main;
 import fourteener.worldeditor.operations.operators.Node;
 
 public class XorNode extends Node {
 	
 	public Node arg1, arg2;
 	
-	public XorNode(Node first, Node second) {
-		arg1 = first;
-		arg2 = second;
+	public XorNode newNode() {
+		XorNode node = new XorNode();
+		node.arg1 = Main.operationParser.parsePart();
+		node.arg2 = Main.operationParser.parsePart();
+		return node;
 	}
 	
 	public boolean performNode () {
@@ -17,7 +20,7 @@ public class XorNode extends Node {
 		return ((x || y) && !(x && y));
 	}
 	
-	public static int getArgCount () {
+	public int getArgCount () {
 		return 2;
 	}
 }

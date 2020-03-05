@@ -1,14 +1,17 @@
 package fourteener.worldeditor.operations.operators.core;
 
+import fourteener.worldeditor.main.Main;
 import fourteener.worldeditor.operations.operators.Node;
 
 public class LinkerNode extends Node {
 	
 	public Node arg1, arg2;
 	
-	public LinkerNode(Node first, Node second) {
-		arg1 = first;
-		arg2 = second;
+	public LinkerNode newNode() {
+		LinkerNode node = new LinkerNode();
+		node.arg1 = Main.operationParser.parsePart();
+		node.arg2 = Main.operationParser.parsePart();
+		return node;
 	}
 	
 	public boolean performNode () {
@@ -17,7 +20,7 @@ public class LinkerNode extends Node {
 		return (a1 && a2);
 	}
 	
-	public static int getArgCount () {
+	public int getArgCount () {
 		return 2;
 	}
 }

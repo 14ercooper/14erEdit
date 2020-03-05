@@ -1,5 +1,6 @@
 package fourteener.worldeditor.operations.operators.loop;
 
+import fourteener.worldeditor.main.Main;
 import fourteener.worldeditor.operations.Operator;
 import fourteener.worldeditor.operations.operators.Node;
 import fourteener.worldeditor.operations.operators.core.NumberNode;
@@ -9,16 +10,18 @@ public class NumericLessNode extends Node {
 	public String name;
 	public NumberNode val;
 	
-	public NumericLessNode(String first, NumberNode second) {
-		name = first;
-		val = second;
+	public NumericLessNode newNode() {
+		NumericLessNode node = new NumericLessNode();
+		node.name = Main.operationParser.parseStringNode();
+		node.val = Main.operationParser.parseNumberNode();
+		return node;
 	}
 	
 	public boolean performNode () {
 		return (Operator.numericVars.get(name).getValue() < val.getValue());
 	}
 	
-	public static int getArgCount () {
+	public int getArgCount () {
 		return 2;
 	}
 }

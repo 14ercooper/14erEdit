@@ -15,9 +15,11 @@ public class GetMonsterCommandNode extends Node {
 	String name;
 	String path;
 	
-	public GetMonsterCommandNode(String varName, String pth) {
-		name = varName;
-		path = "plugins/14erEdit/Commands/" + pth;
+	public GetMonsterCommandNode newNode() {
+		GetMonsterCommandNode node = new GetMonsterCommandNode();
+		node.name = Main.operationParser.parseStringNode();
+		node.path = "plugins/14erEdit/Commands/" + Main.operationParser.parseStringNode();
+		return node;
 	}
 	
 	public boolean performNode () {
@@ -46,7 +48,7 @@ public class GetMonsterCommandNode extends Node {
 		return true;
 	}
 	
-	public static int getArgCount () {
+	public int getArgCount () {
 		return 2;
 	}
 }

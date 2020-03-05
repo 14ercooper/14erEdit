@@ -1,5 +1,6 @@
 package fourteener.worldeditor.operations.operators.variable;
 
+import fourteener.worldeditor.main.Main;
 import fourteener.worldeditor.operations.Operator;
 import fourteener.worldeditor.operations.operators.Node;
 import fourteener.worldeditor.operations.type.BlockVar;
@@ -8,8 +9,10 @@ public class BlockVarNode extends Node{
 	
 	String name;
 	
-	public BlockVarNode(String varName) {
-		name = varName;
+	public BlockVarNode newNode() {
+		BlockVarNode node = new BlockVarNode();
+		node.name = Main.operationParser.parseStringNode();
+		return node;
 	}
 	
 	public boolean performNode () {
@@ -20,7 +23,7 @@ public class BlockVarNode extends Node{
 		return true;
 	}
 	
-	public static int getArgCount () {
+	public int getArgCount () {
 		return 1;
 	}
 }

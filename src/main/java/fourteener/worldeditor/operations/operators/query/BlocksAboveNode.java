@@ -12,9 +12,11 @@ public class BlocksAboveNode extends Node {
 	RangeNode arg1;
 	Node arg2;
 	
-	public BlocksAboveNode(RangeNode range, Node block) {
-		arg1 = range;
-		arg2 = block;
+	public BlocksAboveNode newNode() {
+		BlocksAboveNode node = new BlocksAboveNode();
+		node.arg1 = Main.operationParser.parseRangeNode();
+		node.arg2 = Main.operationParser.parsePart();
+		return node;
 	}
 	
 	public boolean performNode () {
@@ -36,7 +38,7 @@ public class BlocksAboveNode extends Node {
 		return blockRangeMet;
 	}
 	
-	public static int getArgCount () {
+	public int getArgCount () {
 		return 2;
 	}
 }

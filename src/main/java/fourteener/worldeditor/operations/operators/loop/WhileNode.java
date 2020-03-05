@@ -1,14 +1,17 @@
 package fourteener.worldeditor.operations.operators.loop;
 
+import fourteener.worldeditor.main.Main;
 import fourteener.worldeditor.operations.operators.Node;
 
 public class WhileNode extends Node {
 	
 	Node cond, op;
 	
-	public WhileNode(Node arg1, Node arg2) {
-		cond = arg1;
-		op = arg2;
+	public WhileNode newNode() {
+		WhileNode node = new WhileNode();
+		node.cond = Main.operationParser.parsePart();
+		node.op = Main.operationParser.parsePart();
+		return node;
 	}
 	
 	public boolean performNode () {
@@ -20,7 +23,7 @@ public class WhileNode extends Node {
 		return result;
 	}
 	
-	public static int getArgCount () {
+	public int getArgCount () {
 		return 2;
 	}
 }

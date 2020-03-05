@@ -1,19 +1,22 @@
 package fourteener.worldeditor.operations.operators.logical;
 
+import fourteener.worldeditor.main.Main;
 import fourteener.worldeditor.operations.operators.Node;
 
 public class NotNode extends Node {
 	public Node arg;
 	
-	public NotNode(Node node) {
-		arg = node;
+	public NotNode newNode() {
+		NotNode node = new NotNode();
+		node.arg = Main.operationParser.parsePart();
+		return node;
 	}
 	
 	public boolean performNode () {
 		return !(arg.performNode());
 	}
 	
-	public static int getArgCount () {
+	public int getArgCount () {
 		return 1;
 	}
 }

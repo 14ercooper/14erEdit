@@ -1,21 +1,24 @@
 package fourteener.worldeditor.operations.operators.logical;
 
+import fourteener.worldeditor.main.Main;
 import fourteener.worldeditor.operations.operators.Node;
 
 public class AndNode extends Node {
 	
 	public Node arg1, arg2;
 	
-	public AndNode(Node first, Node second) {
-		arg1 = first;
-		arg2 = second;
+	public AndNode newNode() {
+		AndNode node = new AndNode();
+		node.arg1 = Main.operationParser.parsePart();
+		node.arg2 = Main.operationParser.parsePart();
+		return node;
 	}
 	
 	public boolean performNode () {
 		return ((arg1.performNode()) && (arg2.performNode()));
 	}
 	
-	public static int getArgCount () {
+	public int getArgCount () {
 		return 2;
 	}
 }

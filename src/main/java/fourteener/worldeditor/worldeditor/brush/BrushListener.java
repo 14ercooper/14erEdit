@@ -13,8 +13,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.BlockIterator;
 
-import fourteener.worldeditor.main.Main;
-
 public class BrushListener implements Listener {
 	
 	// Store all active brushes
