@@ -48,6 +48,7 @@ public class Main extends JavaPlugin {
 		// Register the prepackaged craftscripts
 		CraftscriptLoader.LoadBundledCraftscripts();
 		MacroLoader.LoadMacros();
+		BrushLoader.LoadBrushes();
 	}
 	
 	@Override
