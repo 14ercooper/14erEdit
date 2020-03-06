@@ -25,7 +25,12 @@ public class SelectionCommand {
 				break;
 			}
 		}
-		if (wand == null && args[2].equalsIgnoreCase("load") && (args[1].equalsIgnoreCase("schematic") || args[1].equalsIgnoreCase("schem"))) {
+		if (wand == null && (args[1].equalsIgnoreCase("pos1") || args[1].equalsIgnoreCase("pos2"))) {
+			SelectionWand newWand = (SelectionWand.giveNewWand((player).getPlayer()));
+			SelectionWandListener.wands.add(newWand);
+			wand = newWand;
+		}
+		else if (wand == null && args[2].equalsIgnoreCase("load") && (args[1].equalsIgnoreCase("schematic") || args[1].equalsIgnoreCase("schem"))) {
 			SelectionWand newWand = (SelectionWand.giveNewWand((player).getPlayer()));
 			SelectionWandListener.wands.add(newWand);
 			wand = newWand;
@@ -127,12 +132,18 @@ public class SelectionCommand {
 		
 		// Update pos1
 		else if (args[1].equalsIgnoreCase("pos1")) {
+			if (args.length > 4) {
+				return manager.updatePositionOne(Integer.parseInt(args[2]), Integer.parseInt(args[3]), Integer.parseInt(args[4]), wand.owner);
+			}
 			return manager.updatePositionOne(player.getLocation().getBlockX(), player.getLocation().getBlockY(), player.getLocation().getBlockZ(), wand.owner);
 		}
 		
 		// Update pos2
 		else if (args[1].equalsIgnoreCase("pos2")) {
-			return manager.updatePositionOne(player.getLocation().getBlockX(), player.getLocation().getBlockY(), player.getLocation().getBlockZ(), wand.owner);
+			if (args.length > 4) {
+				return manager.updatePositionTwo(Integer.parseInt(args[2]), Integer.parseInt(args[3]), Integer.parseInt(args[4]), wand.owner);
+			}
+			return manager.updatePositionTwo(player.getLocation().getBlockX(), player.getLocation().getBlockY(), player.getLocation().getBlockZ(), wand.owner);
 		}
 		
 		// Handles schematics
