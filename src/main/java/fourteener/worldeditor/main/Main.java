@@ -3,10 +3,7 @@ package fourteener.worldeditor.main;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import fourteener.worldeditor.commands.CommandFx;
-import fourteener.worldeditor.commands.CommandRun;
-import fourteener.worldeditor.commands.CommandScript;
-import fourteener.worldeditor.commands.CommandUndo;
+import fourteener.worldeditor.commands.*;
 import fourteener.worldeditor.operations.Parser;
 import fourteener.worldeditor.worldeditor.brush.BrushListener;
 import fourteener.worldeditor.worldeditor.macros.MacroLauncher;
@@ -24,6 +21,7 @@ public class Main extends JavaPlugin {
 		this.getCommand("re").setExecutor(undoCmd);
 		this.getCommand("script").setExecutor(new CommandScript());
 		this.getCommand("run").setExecutor(new CommandRun());
+		this.getCommand("runat").setExecutor(new CommandRunat());
 		
 		// Register listeners for brushes and wands
 		getServer().getPluginManager().registerEvents(new SelectionWandListener(), this);

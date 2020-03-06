@@ -24,3 +24,6 @@ commands:
     run:
         description: Run an operation without a defined world position
         usage: "Usage: /run <operation>"
+    runat:
+        description: Run a brush at a position
+        usage: "Usage: /runat <x> <y> <z> <brush> <operation>"

@@ -29,7 +29,6 @@ public class Diamond extends BrushShape {
 
 	@Override
 	public double GetArgCount() {
-		// TODO Auto-generated method stub
 		return 1;
 	}
 

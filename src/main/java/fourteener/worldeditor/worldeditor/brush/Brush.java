@@ -55,6 +55,13 @@ public class Brush {
 		return true;
 	}
 	
+	public static BrushShape GetBrushShape(String name) {
+		if (brushShapes.containsKey(name)) {
+			return brushShapes.get(name);
+		}
+		return null;
+	}
+	
 	public Brush(String brushShape, String brushRadius, String[] brushOperation, int brushOpOffset, Player player) {
 		
 		ItemStack brushItem = player.getInventory().getItemInMainHand();
