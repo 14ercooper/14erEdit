@@ -20,6 +20,9 @@ public class CommandRunat implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		// Parse brushshape
 		BrushShape brSh = Brush.GetBrushShape(args[3]);
+		if (brSh == null) {
+			return false;
+		}
 		int numArgs = (int) brSh.GetArgCount();
 		List<Double> argList = new LinkedList<Double>();
 		for (int i = 4; i <= numArgs + 3; i++) {
