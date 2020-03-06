@@ -28,17 +28,15 @@ public class SpawnerVar {
 		s += ",RequiredPlayerRange:" + requiredRange;
 		// First mob to spawn
 		s += ",SpawnData:" + Operator.monsterVars.get(firstName).asNBT();
-		// Spawn potentials if needed
-		if (mobs.size() > 1) {
-			s += ",SpawnPotentials:[";
-			for (Map.Entry<String, String> entry : mobs.entrySet()) {
-				s += "{Weight:" + entry.getValue();
-				s += ",Entity:" + Operator.monsterVars.get(entry.getKey()).asNBT();
-				s += "},";
-			}
-			s = s.substring(0, s.length() - 1);
-			s += "]";
+		// Spawn potentials
+		s += ",SpawnPotentials:[";
+		for (Map.Entry<String, String> entry : mobs.entrySet()) {
+			s += "{Weight:" + entry.getValue();
+			s += ",Entity:" + Operator.monsterVars.get(entry.getKey()).asNBT();
+			s += "},";
 		}
+		s = s.substring(0, s.length() - 1);
+		s += "]";
 		s += "}";
 		return s;
 	}
