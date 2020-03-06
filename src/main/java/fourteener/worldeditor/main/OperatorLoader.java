@@ -74,6 +74,8 @@ public class OperatorLoader {
 		GlobalVars.operationParser.AddOperator(">s", new SetSpawnerNode());
 		GlobalVars.operationParser.AddOperator(">m", new SpawnMonsterNode());
 		GlobalVars.operationParser.AddOperator(">b", new SetBlockVarNode());
+		GlobalVars.operationParser.AddOperator(">im", new GetMonsterItemNode());
+		GlobalVars.operationParser.AddOperator(">is", new GetSpawnerItemNode());
 	}
 	
 	private static void LoadWorld() {
