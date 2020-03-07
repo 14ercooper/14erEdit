@@ -1,6 +1,10 @@
 package fourteener.worldeditor.operations.type;
 
-public class ColorText {
+import java.io.Serializable;
+
+public class ColorText implements Serializable {
+	private static final long serialVersionUID = 1L;
+	
 	String text;
 	String color;
 	String bold = "false";

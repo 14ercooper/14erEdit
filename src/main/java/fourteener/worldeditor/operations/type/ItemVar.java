@@ -1,12 +1,15 @@
 package fourteener.worldeditor.operations.type;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-public class ItemVar {
+public class ItemVar implements Serializable{
+	private static final long serialVersionUID = 1L;
+	
 	String type = "";
 	ColorText name = new ColorText();
 	List<ColorText> lore = new ArrayList<ColorText>();

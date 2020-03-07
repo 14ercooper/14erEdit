@@ -1,11 +1,14 @@
 package fourteener.worldeditor.operations.type;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
 import fourteener.worldeditor.operations.Operator;
 
-public class SpawnerVar {
+public class SpawnerVar implements Serializable {
+	private static final long serialVersionUID = 1L;
+	
 	String spawnCount = "2";
 	String spawnRange = "6";
 	String delay = "0";

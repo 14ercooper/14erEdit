@@ -1,5 +1,6 @@
 package fourteener.worldeditor.operations.type;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -7,7 +8,9 @@ import java.util.Map;
 
 import fourteener.worldeditor.operations.Operator;
 
-public class MonsterVar {
+public class MonsterVar implements Serializable {
+	private static final long serialVersionUID = 1L;
+	
 	String type = "";
 	ColorText name = new ColorText();
 	Map<String, String> base = new HashMap<String, String>();
