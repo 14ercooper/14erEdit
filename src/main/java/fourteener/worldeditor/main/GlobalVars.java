@@ -18,5 +18,5 @@ public class GlobalVars {
 	public static Parser operationParser;
 	
 	// For debugging
-	public static boolean isDebug = true;
+	public static boolean isDebug = false;
 }
