@@ -1,5 +1,6 @@
 package fourteener.worldeditor.commands;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -11,6 +12,7 @@ public class CommandDebug implements CommandExecutor {
 
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		GlobalVars.isDebug = !GlobalVars.isDebug;
+		Bukkit.broadcastMessage("§dDebug toggled to " + GlobalVars.isDebug);
 		return true;
 	}
 }

@@ -85,5 +85,6 @@ public class OperatorLoader {
 		GlobalVars.operationParser.AddOperator(">>n", new SetNBTNode());
 		GlobalVars.operationParser.AddOperator(">", new SetNode());
 		GlobalVars.operationParser.AddOperator(">>", new SetPlusNode());
+		GlobalVars.operationParser.AddOperator("grav", new GravityNode());
 	}
 }
