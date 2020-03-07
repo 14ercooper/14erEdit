@@ -6,7 +6,7 @@ import java.util.List;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
-import fourteener.worldeditor.main.Main;
+import fourteener.worldeditor.main.*;
 
 public class SelectionManager {
 	private double positionOne[] = {-1.0, -1.0, -1.0};
@@ -165,7 +165,7 @@ public class SelectionManager {
 		for (int x = (int) pos1[0]; x <= pos2[0]; x++) {
 			for (int y = (int) pos1[1]; y <= pos2[1]; y++) {
 				for (int z = (int) pos1[2]; z <= pos2[2]; z++) {
-					blockArray.add(Main.world.getBlockAt(x, y, z));
+					blockArray.add(GlobalVars.world.getBlockAt(x, y, z));
 				}
 			}
 		}

@@ -10,7 +10,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 
-import fourteener.worldeditor.main.Main;
+import fourteener.worldeditor.main.*;
 import fourteener.worldeditor.operations.Operator;
 import fourteener.worldeditor.worldeditor.undo.UndoElement;
 import fourteener.worldeditor.worldeditor.undo.UndoManager;
@@ -25,7 +25,12 @@ public class SelectionCommand {
 				break;
 			}
 		}
-		if (wand == null && args[2].equalsIgnoreCase("load") && (args[1].equalsIgnoreCase("schematic") || args[1].equalsIgnoreCase("schem"))) {
+		if (wand == null && (args[1].equalsIgnoreCase("pos1") || args[1].equalsIgnoreCase("pos2"))) {
+			SelectionWand newWand = (SelectionWand.giveNewWand((player).getPlayer()));
+			SelectionWandListener.wands.add(newWand);
+			wand = newWand;
+		}
+		else if (wand == null && args[2].equalsIgnoreCase("load") && (args[1].equalsIgnoreCase("schematic") || args[1].equalsIgnoreCase("schem"))) {
 			SelectionWand newWand = (SelectionWand.giveNewWand((player).getPlayer()));
 			SelectionWandListener.wands.add(newWand);
 			wand = newWand;
@@ -55,7 +60,7 @@ public class SelectionCommand {
 			for (int x = (int) pos1[0]; x <= pos2[0]; x++) {
 				for (int y = (int) pos1[1]; y <= pos2[1]; y++) {
 					for (int z = (int) pos1[2]; z <= pos2[2]; z++) {
-						blockArray.add(Main.world.getBlockAt(x, y, z));
+						blockArray.add(GlobalVars.world.getBlockAt(x, y, z));
 					}
 				}
 			}
@@ -127,12 +132,18 @@ public class SelectionCommand {
 		
 		// Update pos1
 		else if (args[1].equalsIgnoreCase("pos1")) {
+			if (args.length > 4) {
+				return manager.updatePositionOne(Integer.parseInt(args[2]), Integer.parseInt(args[3]), Integer.parseInt(args[4]), wand.owner);
+			}
 			return manager.updatePositionOne(player.getLocation().getBlockX(), player.getLocation().getBlockY(), player.getLocation().getBlockZ(), wand.owner);
 		}
 		
 		// Update pos2
 		else if (args[1].equalsIgnoreCase("pos2")) {
-			return manager.updatePositionOne(player.getLocation().getBlockX(), player.getLocation().getBlockY(), player.getLocation().getBlockZ(), wand.owner);
+			if (args.length > 4) {
+				return manager.updatePositionTwo(Integer.parseInt(args[2]), Integer.parseInt(args[3]), Integer.parseInt(args[4]), wand.owner);
+			}
+			return manager.updatePositionTwo(player.getLocation().getBlockX(), player.getLocation().getBlockY(), player.getLocation().getBlockZ(), wand.owner);
 		}
 		
 		// Handles schematics
@@ -166,7 +177,7 @@ public class SelectionCommand {
 		}
 		catch (Exception e) {}
 		UndoManager.getUndo(wand.owner).startTrackingConsolidatedUndo();
-		UndoManager.getUndo(wand.owner).storeUndo(UndoElement.newUndoElement(blockArray)); //-----------
+		UndoManager.getUndo(wand.owner).storeUndo(new UndoElement(blockArray)); //-----------
 		
 		// Construct the operation
 		int brushOpOffset = 2;
@@ -202,7 +213,7 @@ public class SelectionCommand {
 		// Apply the changes to the world
 		for (BlockState bs : operatedList) {
 			Location l = bs.getLocation();
-			Block b = Main.world.getBlockAt(l);
+			Block b = GlobalVars.world.getBlockAt(l);
 			b.setType(bs.getType(), Operator.ignoringPhysics);
 			b.setBlockData(bs.getBlockData(), Operator.ignoringPhysics);
 		}

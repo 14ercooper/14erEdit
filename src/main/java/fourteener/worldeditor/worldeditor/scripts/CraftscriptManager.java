@@ -2,13 +2,13 @@ package fourteener.worldeditor.worldeditor.scripts;
 
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 
-import fourteener.worldeditor.main.Main;
+import fourteener.worldeditor.main.*;
 import fourteener.worldeditor.worldeditor.undo.UndoElement;
 import fourteener.worldeditor.worldeditor.undo.UndoManager;
 
@@ -18,8 +18,8 @@ public class CraftscriptManager {
 	Map<String,Craftscript> registeredScripts = new HashMap<String,Craftscript>();
 	
 	// Create a new manager
-	public static CraftscriptManager newManager () {
-		return new CraftscriptManager();
+	public CraftscriptManager () {
+		// This has no function right now
 	}
 	
 	// Register a new Craftscript, called by label label and handled by handler
@@ -37,12 +37,12 @@ public class CraftscriptManager {
 		catch (Exception e) {}
 		UndoManager.getUndo(player).startTrackingConsolidatedUndo();
 		try {
-			List<BlockState> toStoreInUndo = registeredScripts.get(label).perform(args, player, label);
+			Set<BlockState> toStoreInUndo = registeredScripts.get(label).perform(args, player, label);
 			if (toStoreInUndo == null && UndoManager.getUndo(player).getNumToConsolidate() == 0) {
 				return UndoManager.getUndo(player).cancelConsolidatedUndo();
 			}
 			else {
-				UndoManager.getUndo(player).storeUndo(UndoElement.newUndoElementFromStates(toStoreInUndo));
+				UndoManager.getUndo(player).storeUndo(new UndoElement(toStoreInUndo));
 				return UndoManager.getUndo(player).storeConsolidatedUndo();
 			}
 		}

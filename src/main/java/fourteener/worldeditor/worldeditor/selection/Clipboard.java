@@ -1,9 +1,10 @@
 package fourteener.worldeditor.worldeditor.selection;
 
 import java.io.File;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -14,7 +15,7 @@ import org.bukkit.entity.Player;
 
 import com.fourteener.schematics.Schematic;
 
-import fourteener.worldeditor.main.Main;
+import fourteener.worldeditor.main.*;
 import fourteener.worldeditor.worldeditor.undo.UndoElement;
 import fourteener.worldeditor.worldeditor.undo.UndoManager;
 
@@ -25,10 +26,8 @@ public class Clipboard {
 	public int length = -1, width = -1, height = -1; // Height is Y, Width is X, Length is Z
 	public LinkedList<String> blockData = new LinkedList<String>();
 	
-	public static Clipboard newClipboard (Player player) {
-		Clipboard c = new Clipboard();
-		c.owner = player;
-		return c;
+	public Clipboard(Player player) {
+		owner = player;
 	}
 	
 	public boolean mirrorClipboard (String direction) {
@@ -195,7 +194,7 @@ public class Clipboard {
 	// Paste this clipboard with the origin at x,y,z
 	public boolean pasteClipboard (int xPos, int yPos, int zPos, boolean setAir) {
 		// Start tracking for an undo
-		List<BlockState> undoList = new ArrayList<BlockState>();
+		Set<BlockState> undoList = new HashSet<BlockState>();
 		
 		// Loop through the blocks, along X from negative to positive, Z negative to positive, Y negative to positive
 		int rx = 0, ry = 0, rz = 0;
@@ -217,7 +216,7 @@ public class Clipboard {
 			Material blockMat = Material.matchMaterial(blockData.get(i).split("\\[")[0]);
 			BlockData blockDat = Bukkit.getServer().createBlockData(blockData.get(i));
 			
-			Block b = Main.world.getBlockAt(xPos + rx - x - 1, yPos + ry - y, zPos + rz - z);
+			Block b = GlobalVars.world.getBlockAt(xPos + rx - x - 1, yPos + ry - y, zPos + rz - z);
 			// Set the block
 			if (blockMat == Material.AIR) {
 				if (setAir) {
@@ -236,7 +235,7 @@ public class Clipboard {
 		// Store an undo
 
 		Main.logDebug("Blocks pasted: " + undoList.size()); // ----
-		UndoManager.getUndo(owner).storeUndo(UndoElement.newUndoElementFromStates(undoList));
+		UndoManager.getUndo(owner).storeUndo(new UndoElement(undoList));
 		
 		owner.sendMessage("§dSelection pasted");
 		return true;

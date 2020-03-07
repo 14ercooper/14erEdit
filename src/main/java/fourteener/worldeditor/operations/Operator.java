@@ -6,13 +6,10 @@ import java.util.Map;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 
-import fourteener.worldeditor.main.Main;
-import fourteener.worldeditor.operations.operators.EntryNode;
-import fourteener.worldeditor.operations.type.BlockVar;
-import fourteener.worldeditor.operations.type.ItemVar;
-import fourteener.worldeditor.operations.type.MonsterVar;
-import fourteener.worldeditor.operations.type.NumericVar;
-import fourteener.worldeditor.operations.type.SpawnerVar;
+import fourteener.worldeditor.main.GlobalVars;
+import fourteener.worldeditor.main.*;
+import fourteener.worldeditor.operations.operators.core.EntryNode;
+import fourteener.worldeditor.operations.type.*;
 
 public class Operator {
 	public static Operator currentOperator;
@@ -44,7 +41,7 @@ public class Operator {
 	
 	public static Operator newOperator (String op) {
 		Operator operator = new Operator();
-		operator.entryNode = Parser.parseOperation(op);
+		operator.entryNode = GlobalVars.operationParser.parseOperation(op);
 		if (operator.entryNode == null) {
 			return null;
 		}

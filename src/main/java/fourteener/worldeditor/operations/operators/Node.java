@@ -1,16 +1,10 @@
 package fourteener.worldeditor.operations.operators;
 
-public class Node {
+public abstract class Node {
 	
-	public static Node newNode () {
-		return new Node();
-	}
+	public abstract Node newNode();
 	
-	public boolean performNode () {
-		return false;
-	}
+	public abstract boolean performNode ();
 	
-	public static int getArgCount () {
-		return -1;
-	}
+	public abstract int getArgCount ();
 }

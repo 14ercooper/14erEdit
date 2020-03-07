@@ -18,6 +18,8 @@ public class BrushListener implements Listener {
 	// Store all active brushes
 	public static List<Brush> brushes = new ArrayList<Brush>();
 	
+	boolean dedupe = false;
+	
 	@EventHandler
 	public void onPlayerInteract (PlayerInteractEvent event) {
 		
@@ -40,6 +42,20 @@ public class BrushListener implements Listener {
 		
 		// The event has been verified, take control of it
 		event.setCancelled(true);
+		
+		// Close to block deduplication
+		if (event.getAction() == Action.LEFT_CLICK_AIR) {
+			return;
+		}
+		if (event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock() != null) {
+			if (!dedupe) {
+				dedupe = true;
+				return;
+			}
+			if (dedupe) {
+				dedupe = false;
+			}
+		}
 		
 		// Then get the location where the brush should operate
 		// This is a block where the player is looking, at a range no more than 256 blocks away

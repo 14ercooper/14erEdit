@@ -1,6 +1,6 @@
 # 14erEdit
 
-## Current version: 1.1.2
+## Current version: 1.2.0
 
 #### A Minecraft world-editing plugin featuring native 1.13 through 1.15.2 support and lots of power to the user.
 
@@ -45,5 +45,5 @@ The POSTFIX takes one of two values, or is omitted.
  - SNAPSHOT Means a version where some of the features are not yet implemented
  - UNSTABLE Means a version that has not yet been tested for stability
  - Omitted Means a standard version release
- 
+
  POSTFIX-ed version numbers may have more features than the non-postfixed version of the same number, but will always have at least the same features and bugfixes.

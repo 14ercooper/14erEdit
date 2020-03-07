@@ -41,7 +41,7 @@ public class CommandFx implements CommandExecutor {
 				}
 				// Create a new brush as requested
 				else {
-					return Brush.createBrush(args[argOffset + 1], args[argOffset + 2], args, argOffset, (Player) sender);
+					return !(new Brush(args[argOffset + 1], args[argOffset + 2], args, argOffset, (Player) sender) == null);
 				}
 			}
 			

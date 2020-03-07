@@ -2,8 +2,10 @@ package fourteener.worldeditor.worldeditor.brush;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -11,7 +13,7 @@ import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import fourteener.worldeditor.main.Main;
+import fourteener.worldeditor.main.*;
 import fourteener.worldeditor.operations.Operator;
 import fourteener.worldeditor.worldeditor.undo.UndoElement;
 import fourteener.worldeditor.worldeditor.undo.UndoManager;
@@ -21,18 +23,13 @@ public class Brush {
 	public Player owner; // Different people can have different brushes
 	public ItemStack item; // Each person can have a different brush for different items
 	
-	// These are the brush parameters
-	public int radius = -1;
-	public double radiusCorrection = 0; // Used for sphere
-	public int shape = -1; // 0 is radius sphere, 1 is sphere, 2 is square, 3 is diamond
-	public String op = "";
-	public Operator operator = null;
+	// Variables the brush needs
+	BrushShape shapeGenerator;
+	List<Double> shapeArgs = new LinkedList<Double>();
+	Operator operation;
 	
-	// For the ellipse brush only
-	public double eX, eY, eZ;
-	
-	// For hollow shapes
-	public double thickness;
+	// Store brushes
+	static Map<String,BrushShape> brushShapes = new HashMap<String,BrushShape>();
 	
 	public static boolean removeBrush (Player player) {
 		ItemStack item = player.getInventory().getItemInMainHand();
@@ -50,7 +47,22 @@ public class Brush {
 		return true;
 	}
 	
-	public static boolean createBrush (String brushShape, String brushRadius, String[] brushOperation, int brushOpOffset, Player player) {
+	public static boolean AddBrushShape(String name, BrushShape shape) {
+		if (brushShapes.containsKey(name)) {
+			return false;
+		}
+		brushShapes.put(name, shape);
+		return true;
+	}
+	
+	public static BrushShape GetBrushShape(String name) {
+		if (brushShapes.containsKey(name)) {
+			return brushShapes.get(name);
+		}
+		return null;
+	}
+	
+	public Brush(String brushShape, String brushRadius, String[] brushOperation, int brushOpOffset, Player player) {
 		
 		ItemStack brushItem = player.getInventory().getItemInMainHand();
 		
@@ -58,58 +70,16 @@ public class Brush {
 		removeBrush(player);
 		
 		// Create a brush, and assign the easy variables to it
-		Brush brush = new Brush();
-		brush.owner = player;
-		brush.item = brushItem;
+		owner = player;
+		item = brushItem;
 		
-		brushOpOffset += 3; // Used to remove brush parameters from the operation
+		brushOpOffset += 2; // Used to remove brush parameters from the operation
 		
-		// Parse the brush radius and store it
-		try {
-			brush.radius = Integer.parseInt(brushRadius);
-		} catch (Exception e) {
-			return false;
-		}
-		
-		// Parse the brush shape and store it
-		if (brushShape.equalsIgnoreCase("radiussphere")
-				|| brushShape.equalsIgnoreCase("rs")) {
-			brush.shape = 0;
-		}
-		else if (brushShape.equalsIgnoreCase("sphere")
-				|| brushShape.equalsIgnoreCase("s")) {
-			brush.shape = 1;
+		// Get the shape generator, and store the args
+		shapeGenerator = brushShapes.get(brushOperation[1]);
+		for (int i = 0; i < shapeGenerator.GetArgCount(); i++) {
+			shapeArgs.add(Double.parseDouble(brushOperation[2+i]));
 			brushOpOffset++;
-			brush.radiusCorrection = Double.parseDouble(brushOperation[3]);
-		}
-		else if (brushShape.equalsIgnoreCase("cube")
-				|| brushShape.equalsIgnoreCase("square")) {
-			brush.shape = 2;
-			brush.radiusCorrection = 0;
-		}
-		else if (brushShape.equalsIgnoreCase("diamond")
-				|| brushShape.equalsIgnoreCase("d")) {
-			brush.shape = 3;
-			brush.radiusCorrection = 0;
-		}
-		else if (brushShape.equalsIgnoreCase("hsphere")
-				|| brushShape.equalsIgnoreCase("hs")) {
-			brush.shape = 4;
-			brushOpOffset += 2;
-			brush.thickness = Double.parseDouble(brushOperation[3]);
-			brush.radiusCorrection = Double.parseDouble(brushOperation[4]);
-		}
-		else if (brushShape.equalsIgnoreCase("ellipse")
-				|| brushShape.equalsIgnoreCase("e")) {
-			brush.shape = 5;
-			brushOpOffset += 3;
-			brush.eX = Double.parseDouble(brushOperation[2]);
-			brush.eY = Double.parseDouble(brushOperation[3]);
-			brush.eZ = Double.parseDouble(brushOperation[4]);
-			brush.radiusCorrection = Double.parseDouble(brushOperation[5]);
-		}
-		else {
-			return false;
 		}
 		
 		// Construct the operator
@@ -124,18 +94,16 @@ public class Brush {
 		for (String s : opArray) {
 			opStr = opStr.concat(s).concat(" ");
 		}
-		brush.op = opStr;
 		// And then construct the operator
-		brush.operator = Operator.newOperator(brush.op);
+		operation = Operator.newOperator(opStr);
 		
 		// Invalid operator?
-		if (brush.operator == null)
-			return false;
+		if (operation == null)
+			return;
 		
 		// Store the brush and return success
-		BrushListener.brushes.add(brush);
+		BrushListener.brushes.add(this);
 		player.sendMessage("§dBrush created successfully!");
-		return true;
 	}
 	
 	@SuppressWarnings("static-access")
@@ -146,91 +114,7 @@ public class Brush {
 		catch (Exception e) {}
 		UndoManager.getUndo(owner).startTrackingConsolidatedUndo();
 		// Build an array of all blocks to operate on
-		List<Block> blockArray = new ArrayList<Block>();
-		
-		// Generate the appropriate block list
-		// We're working with a radius sphere
-		if (shape == 0) {
-			// This generates a list of all possible block positions, then filters them using the square of the distance to the center
-			// It then looks up the block at the location if needed, and stores it in the array
-			for (int rx = -radius; rx <= radius; rx++) {
-				for (int rz = -radius; rz <= radius; rz++) {
-					for (int ry = -radius; ry <= radius; ry++) {
-						if (rx*rx + ry*ry + rz*rz <= radius*radius) {
-							blockArray.add(Main.world.getBlockAt((int) x + rx, (int) y + ry, (int) z + rz));
-						}
-					}
-				}
-			}
-		}
-		// We're working with a sphere
-		if (shape == 1) {
-			// Generate a better sphere
-			// This generates a list of all possible block positions, then filters them using the square of the distance to the center
-			// It then looks up the block at the location if needed, and stores it in the array
-			for (int rx = -radius; rx <= radius; rx++) {
-				for (int rz = -radius; rz <= radius; rz++) {
-					for (int ry = -radius; ry <= radius; ry++) {
-						if (rx*rx + ry*ry + rz*rz <= (radius + radiusCorrection)*(radius + radiusCorrection)) {
-							blockArray.add(Main.world.getBlockAt((int) x + rx, (int) y + ry, (int) z + rz));
-						}
-					}
-				}
-			}
-		}
-		// We're working with a cube
-		if (shape == 2) {
-			// Generate the cube
-			int cubeRad = radius / 2;
-			for (int rx = -cubeRad; rx <= cubeRad; rx++) {
-				for (int rz = -cubeRad; rz <= cubeRad; rz++) {
-					for (int ry = -cubeRad; ry <= cubeRad; ry++) {
-						blockArray.add(Main.world.getBlockAt((int) x + rx, (int) y + ry, (int) z + rz));
-					}
-				}
-			}
-		}
-		// We're working with a diamond
-		if (shape == 3) {
-			// Generate the diamond
-			// This uses the Manhattan distance
-			for (int rx = -radius; rx <= radius; rx++) {
-				for (int rz = -radius; rz <= radius; rz++) {
-					for (int ry = -radius; ry <= radius; ry++) {
-						if (Math.abs(rx) + Math.abs(ry) + Math.abs(rz) <= radius) {
-							blockArray.add(Main.world.getBlockAt((int) x + rx, (int) y + ry, (int) z + rz));
-						}
-					}
-				}
-			}
-		}
-		// We're working with a hollow sphere
-		if (shape == 4) {
-			// Generate the hollow sphere
-			for (int rx = -radius; rx <= radius; rx++) {
-				for (int rz = -radius; rz <= radius; rz++) {
-					for (int ry = -radius; ry <= radius; ry++) {
-						if ((rx*rx + ry*ry + rz*rz <= (radius + radiusCorrection)*(radius + radiusCorrection)) &&
-								(rx*rx + ry*ry + rz*rz >= (radius - thickness - radiusCorrection)*(radius - thickness - radiusCorrection))) {
-							blockArray.add(Main.world.getBlockAt((int) x + rx, (int) y + ry, (int) z + rz));
-						}
-					}
-				}
-			}
-		}
-		// We're working with an ellipse
-		if (shape == 5) {
-			// Generate the ellipse
-			for (double rx = -eX; rx <= eX; rx++) {
-				for (double ry = -eY; ry <= eY; ry++) {
-					for (double rz = -eZ; rz <= eZ; rz++) {
-						if ((((rx * rx) / (eX * eX)) + ((ry * ry) / (eY * eY)) + ((rz * rz) / (eZ * eZ))) <= (1 + radiusCorrection)) {
-							blockArray.add(Main.world.getBlockAt((int) (x + rx), (int) (y + ry), (int) (z + rz)));
-						}
-					}
-				}
-			}
-		}
+		List<Block> blockArray = shapeGenerator.GetBlocks(shapeArgs, x, y, z);
 		
 		if (blockArray.isEmpty()) {
 			return false;
@@ -243,19 +127,19 @@ public class Brush {
 		}
 		
 		// Store an undo
-		UndoManager.getUndo(owner).storeUndo(UndoElement.newUndoElement(blockArray));
+		UndoManager.getUndo(owner).storeUndo(new UndoElement(blockArray));
 		
-		// Operate on the blocks
+		// Operate on the blocks and apply them to the world
 		List<BlockState> operatedArray = new ArrayList<BlockState>();
 		for (BlockState bs : snapshotArray) {
-			operator.operateOnBlock(bs, owner);
-			operatedArray.add(operator.currentBlock);
+			operation.operateOnBlock(bs, owner);
+			operatedArray.add(operation.currentBlock);
 		}
 		
 		// Apply the blocks to the world
 		for (BlockState bs : operatedArray) {
 			Location l = bs.getLocation();
-			Block b = Main.world.getBlockAt(l);
+			Block b = GlobalVars.world.getBlockAt(l);
 			b.setType(bs.getType(), Operator.ignoringPhysics);
 			b.setBlockData(bs.getBlockData(), Operator.ignoringPhysics);
 		}
