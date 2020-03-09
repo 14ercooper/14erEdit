@@ -11,18 +11,19 @@ import fourteener.worldeditor.operations.operators.core.NumberNode;
 // 4 dimensions uses worldspace plus average of the three other dimensions, creating good looking results
 public class SimplexNode extends Node {
 	
-	public NumberNode arg1, arg2;
+	public NumberNode arg1, arg2, scaleFactor;
 	
 	public SimplexNode newNode() {
 		SimplexNode node = new SimplexNode();
 		node.arg1 = GlobalVars.operationParser.parseNumberNode();
 		node.arg2 = GlobalVars.operationParser.parseNumberNode();
+		node.scaleFactor = GlobalVars.operationParser.parseNumberNode();
 		return node;
 	}
 	
 	public boolean performNode () {
 		// The range on all of these are useful for double inaccuracy
-		double scale = 4;
+		double scale = 4 * scaleFactor.getValue();
 		if (arg1.getValue() <= 2.1 && arg1.getValue() >= 1.9) {
 			Location loc = Operator.currentBlock.getLocation();
 			return GlobalVars.simplexNoise.noise(loc.getX() / scale, loc.getZ() / scale) <= arg2.getValue();
