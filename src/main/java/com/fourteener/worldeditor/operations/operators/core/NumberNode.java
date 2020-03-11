@@ -11,6 +11,7 @@ public class NumberNode extends Node {
 	// Create a new number node
 	public NumberNode newNode() {
 		NumberNode node = new NumberNode();
+		GlobalVars.operationParser.index--;
 		node.arg = Double.parseDouble(GlobalVars.operationParser.parseStringNode());
 		return node;
 	}

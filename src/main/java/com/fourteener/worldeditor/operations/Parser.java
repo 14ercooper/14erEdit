@@ -15,7 +15,7 @@ import com.fourteener.worldeditor.operations.operators.world.*;
 
 public class Parser {
 	// This starts as -1 since the first thing the parser does is increment it
-	int index = -1;
+	public int index = -1;
 	List<String> parts;
 	
 	// Store operators
