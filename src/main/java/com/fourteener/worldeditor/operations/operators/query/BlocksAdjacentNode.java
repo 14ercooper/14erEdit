@@ -6,17 +6,17 @@ import org.bukkit.block.BlockFace;
 import com.fourteener.worldeditor.main.*;
 import com.fourteener.worldeditor.operations.Operator;
 import com.fourteener.worldeditor.operations.operators.Node;
-import com.fourteener.worldeditor.operations.operators.core.NumberNode;
+import com.fourteener.worldeditor.operations.operators.function.RangeNode;
 
 public class BlocksAdjacentNode extends Node {
 	
 	public Node arg1;
-	public NumberNode arg2;
+	public RangeNode arg2;
 	
 	public BlocksAdjacentNode newNode() {
 		BlocksAdjacentNode node = new BlocksAdjacentNode();
 		node.arg1 = GlobalVars.operationParser.parsePart();
-		node.arg2 = GlobalVars.operationParser.parseNumberNode();
+		node.arg2 = GlobalVars.operationParser.parseRangeNode();
 		return node;
 	}
 	
@@ -57,7 +57,7 @@ public class BlocksAdjacentNode extends Node {
 		// Reset the current block
 		Operator.currentBlock = curBlock.getState();
 		
-		return (numAdjacentBlocks >= arg2.getValue() - 0.1);
+		return (numAdjacentBlocks >= arg2.getMin() - 0.1 && numAdjacentBlocks <= arg2.getMax() + 0.1);
 	}
 	
 	public int getArgCount () {
