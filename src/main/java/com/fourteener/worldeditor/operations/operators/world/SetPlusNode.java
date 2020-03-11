@@ -1,29 +1,22 @@
 package com.fourteener.worldeditor.operations.operators.world;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.block.data.BlockData;
-
 import com.fourteener.worldeditor.main.*;
 import com.fourteener.worldeditor.operations.Operator;
 import com.fourteener.worldeditor.operations.operators.Node;
 
 public class SetPlusNode extends Node {
 
-	public Material arg1;
-	public BlockData arg2;
+	public BlockNode arg;
 	
 	public SetPlusNode newNode() {
 		SetPlusNode node = new SetPlusNode();
-		String data = GlobalVars.operationParser.parseStringNode();
-		node.arg1 = Material.matchMaterial(data.split("\\[")[0]);
-		node.arg2 = Bukkit.getServer().createBlockData(data);
+		node.arg = (BlockNode) GlobalVars.operationParser.parsePart();
 		return node;
 	}
 	
 	public boolean performNode () {
-		Operator.currentBlock.setType(arg1);
-		Operator.currentBlock.setBlockData(arg2);
+		Operator.currentBlock.setType(arg.getBlock());
+		Operator.currentBlock.setBlockData(arg.getData());
 		return true;
 	}
 	

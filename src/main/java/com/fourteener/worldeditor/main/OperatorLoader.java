@@ -84,6 +84,7 @@ public class OperatorLoader {
 		GlobalVars.operationParser.AddOperator("<<", new GetBlockDataNode());
 		GlobalVars.operationParser.AddOperator("!", new IgnorePhysicsNode());
 		GlobalVars.operationParser.AddOperator("same", new SameNode());
+		GlobalVars.operationParser.AddOperator("facing", new FacingNode());
 		GlobalVars.operationParser.AddOperator(">>n", new SetNBTNode());
 		GlobalVars.operationParser.AddOperator(">", new SetNode());
 		GlobalVars.operationParser.AddOperator(">>", new SetPlusNode());

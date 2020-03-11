@@ -35,6 +35,11 @@ public class BlockNode extends Node {
 		return arg1;
 	}
 	
+	// Get the data of this block
+	public BlockData getData () {
+		return arg2;
+	}
+	
 	// Check if it's the correct block
 	public boolean performNode () {
 		if (arg2 == null) {
