@@ -8,7 +8,6 @@ import org.bukkit.block.BlockState;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 import com.fourteener.worldeditor.operations.Operator;
 import com.fourteener.worldeditor.worldeditor.brush.Brush;
@@ -41,7 +40,7 @@ public class CommandRunat implements CommandExecutor {
 		// Operate on the brush selection
 		for (Block b : blocks) {
 			BlockState bs = b.getState();
-			op.operateOnBlock(bs, (Player) sender);
+			op.operateOnBlock(bs);
 			b.setType(op.currentBlock.getType());
 			b.setBlockData(op.currentBlock.getBlockData());
 		}

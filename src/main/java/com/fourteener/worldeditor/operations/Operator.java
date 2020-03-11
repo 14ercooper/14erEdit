@@ -34,6 +34,15 @@ public class Operator {
 		return entryNode.performNode();
 	}
 	
+	public boolean operateOnBlock (BlockState block) {
+		// Set global operator variables
+		currentOperator = this;
+		currentBlock = block;
+		
+		// Perform the operation
+		return entryNode.performNode();
+	}
+	
 	public boolean messyOperate () {
 		return entryNode.performNode();
 	}
