@@ -15,8 +15,8 @@ public class BlocksAdjacentNode extends Node {
 	
 	public BlocksAdjacentNode newNode() {
 		BlocksAdjacentNode node = new BlocksAdjacentNode();
-		node.arg1 = GlobalVars.operationParser.parsePart();
 		node.arg2 = GlobalVars.operationParser.parseRangeNode();
+		node.arg1 = GlobalVars.operationParser.parsePart();
 		return node;
 	}
 	
