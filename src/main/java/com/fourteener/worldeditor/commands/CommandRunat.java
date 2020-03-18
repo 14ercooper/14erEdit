@@ -1,14 +1,17 @@
 package com.fourteener.worldeditor.commands;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
+import com.fourteener.worldeditor.main.GlobalVars;
 import com.fourteener.worldeditor.operations.Operator;
 import com.fourteener.worldeditor.worldeditor.brush.Brush;
 import com.fourteener.worldeditor.worldeditor.brush.BrushShape;
@@ -38,12 +41,22 @@ public class CommandRunat implements CommandExecutor {
 		Operator op = Operator.newOperator(opStr);
 
 		// Operate on the brush selection
+		List<BlockState> toOperate = new ArrayList<BlockState>();
 		for (Block b : blocks) {
-			BlockState bs = b.getState();
-			op.operateOnBlock(bs);
-			b.setType(op.currentBlock.getType());
-			b.setBlockData(op.currentBlock.getBlockData());
+			toOperate.add(b.getState());
 		}
+		List<BlockState> operatedArray = new ArrayList<BlockState>();
+		for (BlockState bs : toOperate) {
+			op.operateOnBlock(bs);
+			operatedArray.add(op.currentBlock);
+		}
+		for (BlockState bs : operatedArray) {
+			Location l = bs.getLocation();
+			Block b = GlobalVars.world.getBlockAt(l);
+			b.setType(bs.getType(), Operator.ignoringPhysics);
+			b.setBlockData(bs.getBlockData(), Operator.ignoringPhysics);
+		}
+		
 		return true;
 	}
 }
