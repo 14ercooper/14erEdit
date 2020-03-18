@@ -5,11 +5,11 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.fourteener.worldeditor.worldeditor.brush.Brush;
-import com.fourteener.worldeditor.worldeditor.selection.SelectionCommand;
-import com.fourteener.worldeditor.worldeditor.selection.SelectionWand;
-import com.fourteener.worldeditor.worldeditor.selection.SelectionWandListener;
-import com.fourteener.worldeditor.worldeditor.undo.UndoManager;
+import com.fourteener.worldeditor.brush.Brush;
+import com.fourteener.worldeditor.selection.SelectionCommand;
+import com.fourteener.worldeditor.selection.SelectionWand;
+import com.fourteener.worldeditor.selection.SelectionWandListener;
+import com.fourteener.worldeditor.undo.UndoManager;
 
 // For the fx command
 public class CommandFx implements CommandExecutor {

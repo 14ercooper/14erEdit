@@ -3,12 +3,12 @@ package com.fourteener.worldeditor.main;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.fourteener.worldeditor.brush.BrushListener;
 import com.fourteener.worldeditor.commands.*;
+import com.fourteener.worldeditor.macros.MacroLauncher;
 import com.fourteener.worldeditor.operations.Parser;
-import com.fourteener.worldeditor.worldeditor.brush.BrushListener;
-import com.fourteener.worldeditor.worldeditor.macros.MacroLauncher;
-import com.fourteener.worldeditor.worldeditor.scripts.CraftscriptManager;
-import com.fourteener.worldeditor.worldeditor.selection.SelectionWandListener;
+import com.fourteener.worldeditor.scripts.CraftscriptManager;
+import com.fourteener.worldeditor.selection.SelectionWandListener;
 
 public class Main extends JavaPlugin {
 	

@@ -11,10 +11,10 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
+import com.fourteener.worldeditor.brush.Brush;
+import com.fourteener.worldeditor.brush.BrushShape;
 import com.fourteener.worldeditor.main.GlobalVars;
 import com.fourteener.worldeditor.operations.Operator;
-import com.fourteener.worldeditor.worldeditor.brush.Brush;
-import com.fourteener.worldeditor.worldeditor.brush.BrushShape;
 
 public class CommandRunat implements CommandExecutor {
 

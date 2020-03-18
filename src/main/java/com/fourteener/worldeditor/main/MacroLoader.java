@@ -1,7 +1,7 @@
 package com.fourteener.worldeditor.main;
 
-import com.fourteener.worldeditor.worldeditor.macros.macros.nature.*;
-import com.fourteener.worldeditor.worldeditor.macros.macros.technical.*;
+import com.fourteener.worldeditor.macros.macros.nature.*;
+import com.fourteener.worldeditor.macros.macros.technical.*;
 
 public class MacroLoader {
 

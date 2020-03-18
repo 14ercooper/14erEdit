@@ -1,8 +1,8 @@
 package com.fourteener.worldeditor.main;
 
-import com.fourteener.worldeditor.worldeditor.scripts.bundled.easyedit.*;
-import com.fourteener.worldeditor.worldeditor.scripts.bundled.quickbrush.*;
-import com.fourteener.worldeditor.worldeditor.scripts.bundled.selection.*;
+import com.fourteener.worldeditor.scripts.bundled.easyedit.*;
+import com.fourteener.worldeditor.scripts.bundled.quickbrush.*;
+import com.fourteener.worldeditor.scripts.bundled.selection.*;
 
 public class CraftscriptLoader {
 	

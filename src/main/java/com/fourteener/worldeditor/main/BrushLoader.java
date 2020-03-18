@@ -1,7 +1,7 @@
 package com.fourteener.worldeditor.main;
 
-import com.fourteener.worldeditor.worldeditor.brush.Brush;
-import com.fourteener.worldeditor.worldeditor.brush.shapes.*;
+import com.fourteener.worldeditor.brush.Brush;
+import com.fourteener.worldeditor.brush.shapes.*;
 
 public class BrushLoader {
 	public static void LoadBrushes() {

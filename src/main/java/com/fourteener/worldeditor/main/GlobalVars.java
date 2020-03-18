@@ -2,9 +2,9 @@ package com.fourteener.worldeditor.main;
 
 import org.bukkit.World;
 
+import com.fourteener.worldeditor.macros.MacroLauncher;
 import com.fourteener.worldeditor.operations.Parser;
-import com.fourteener.worldeditor.worldeditor.macros.MacroLauncher;
-import com.fourteener.worldeditor.worldeditor.scripts.CraftscriptManager;
+import com.fourteener.worldeditor.scripts.CraftscriptManager;
 
 public class GlobalVars {
 
