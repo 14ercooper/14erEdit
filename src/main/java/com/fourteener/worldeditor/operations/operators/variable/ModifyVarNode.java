@@ -288,6 +288,13 @@ public class ModifyVarNode extends Node {
 				Operator.monsterVars.put(name, var);
 				return true;
 			}
+			// Effect mod
+			if (mod.get(0).equalsIgnoreCase("eff")) {
+				MonsterVar var = Operator.monsterVars.get(name);
+				var.setEffect(mod.get(1), mod.get(2), mod.get(3));
+				Operator.monsterVars.put(name, var);
+				return true;
+			}
 			// Gear mod
 			if (mod.get(0).equalsIgnoreCase("gear")) {
 				MonsterVar var = Operator.monsterVars.get(name);

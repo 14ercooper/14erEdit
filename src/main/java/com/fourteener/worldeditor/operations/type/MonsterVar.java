@@ -15,6 +15,7 @@ public class MonsterVar implements Serializable {
 	ColorText name = new ColorText();
 	Map<String, String> base = new HashMap<String, String>();
 	Map<String, String> attributes = new HashMap<String,String>();
+	Map<String, String> effects = new HashMap<String,String>();
 	List<String> passengers = new ArrayList<String>();
 	List<String> tags = new ArrayList<String>();
 	String hand = "";
@@ -56,6 +57,17 @@ public class MonsterVar implements Serializable {
 			for (Map.Entry<String, String> entry : attributes.entrySet()) {
 				s += "{Name:generic." + entry.getKey();
 				s += ",Base:" + entry.getValue();
+				s += "},";
+			}
+			s = s.substring(0, s.length() - 1);
+			s += "]";
+		}
+		// Effects
+		if (effects.size() > 0) {
+			s += ",ActiveEffects:[";
+			for (Map.Entry<String, String> entry : effects.entrySet()) {
+				s += "{Id:" + entry.getKey();
+				s += "b,:" + entry.getValue();
 				s += "},";
 			}
 			s = s.substring(0, s.length() - 1);
@@ -132,6 +144,10 @@ public class MonsterVar implements Serializable {
 	}
 	public void setAttribute(String name, String value) {
 		attributes.put(name, value);
+	}
+	public void setEffect(String id, String level, String duration) {
+		String value = "Amplifier:" + level + "b,Duration:" + duration;
+		attributes.put(id, value);
 	}
 	public void setGear(String slot, String name) {
 		if (slot.equalsIgnoreCase("hand")) {
