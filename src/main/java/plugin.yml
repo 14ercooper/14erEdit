@@ -28,5 +28,8 @@ commands:
         description: Run a brush at a position
         usage: "Usage: /runat <x> <y> <z> <brush> <operation>"
     debug:
-        description: Toggle debug messages
+        description: Toggle debug messages globally
         usage: "Usage: /debug"
+    info:
+        description: Display plugin information
+        usage: "Usage: /info"

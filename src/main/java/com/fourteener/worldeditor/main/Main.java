@@ -23,6 +23,7 @@ public class Main extends JavaPlugin {
 		this.getCommand("run").setExecutor(new CommandRun());
 		this.getCommand("runat").setExecutor(new CommandRunat());
 		this.getCommand("debug").setExecutor(new CommandDebug());
+		this.getCommand("info").setExecutor(new CommandInfo());
 		
 		// Register listeners for brushes and wands
 		getServer().getPluginManager().registerEvents(new SelectionWandListener(), this);
