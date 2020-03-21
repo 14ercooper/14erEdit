@@ -133,7 +133,29 @@ public class SelectionCommand {
 		// Update pos1
 		else if (args[1].equalsIgnoreCase("pos1")) {
 			if (args.length > 4) {
-				return manager.updatePositionOne(Integer.parseInt(args[2]), Integer.parseInt(args[3]), Integer.parseInt(args[4]), wand.owner);
+				int x = 0, y = 0, z = 0;
+				// X with relative
+				if (args[2].contains("~")) {
+					x = Integer.parseInt(args[2].replaceAll("~", "")) + player.getLocation().getBlockX();
+				}
+				else {
+					x = Integer.parseInt(args[2]);
+				}
+				// Y with relative
+				if (args[3].contains("~")) {
+					y = Integer.parseInt(args[3].replaceAll("~", "")) + player.getLocation().getBlockY();
+				}
+				else {
+					y = Integer.parseInt(args[3]);
+				}
+				// Z with relative
+				if (args[4].contains("~")) {
+					z = Integer.parseInt(args[4].replaceAll("~", "")) + player.getLocation().getBlockZ();
+				}
+				else {
+					z = Integer.parseInt(args[4]);
+				}
+				return manager.updatePositionOne(x, y, z, wand.owner);
 			}
 			return manager.updatePositionOne(player.getLocation().getBlockX(), player.getLocation().getBlockY(), player.getLocation().getBlockZ(), wand.owner);
 		}
@@ -141,7 +163,29 @@ public class SelectionCommand {
 		// Update pos2
 		else if (args[1].equalsIgnoreCase("pos2")) {
 			if (args.length > 4) {
-				return manager.updatePositionTwo(Integer.parseInt(args[2]), Integer.parseInt(args[3]), Integer.parseInt(args[4]), wand.owner);
+				int x = 0, y = 0, z = 0;
+				// X with relative
+				if (args[2].contains("~")) {
+					x = Integer.parseInt(args[2].replaceAll("~", "")) + player.getLocation().getBlockX();
+				}
+				else {
+					x = Integer.parseInt(args[2]);
+				}
+				// Y with relative
+				if (args[3].contains("~")) {
+					y = Integer.parseInt(args[3].replaceAll("~", "")) + player.getLocation().getBlockY();
+				}
+				else {
+					y = Integer.parseInt(args[3]);
+				}
+				// Z with relative
+				if (args[4].contains("~")) {
+					z = Integer.parseInt(args[4].replaceAll("~", "")) + player.getLocation().getBlockZ();
+				}
+				else {
+					z = Integer.parseInt(args[4]);
+				}
+				return manager.updatePositionTwo(x, y, z, wand.owner);
 			}
 			return manager.updatePositionTwo(player.getLocation().getBlockX(), player.getLocation().getBlockY(), player.getLocation().getBlockZ(), wand.owner);
 		}

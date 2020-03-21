@@ -19,17 +19,17 @@ import java.util.LinkedList;
 // A material-based schematic system for Minecraft
 @SuppressWarnings("serial")
 public class Schematic implements Serializable {
-	private static int formatVersion = 2;				// Stores the format of this schematic
+	private static int formatVersion = 3;				// Stores the format of this schematic
 	private int[] origin = {0, 0, 0};					// Stores the origin/offset of this schematic
 	private int[] dimensions = {0, 0, 0};				// Stores the dimensions of this schematic
 	String author = "Unset", name = "Unset";			// Stores the author and name of this schematic
 	private LinkedList<String> blockData;				// This is where the block data of the schematic gets stored
 	@SuppressWarnings("unused")
-	private LinkedList<TileEntityData> tileEntityData;	// Not yet implemented
+	private LinkedList<String> tileEntityData;			// Not yet implemented
 	@SuppressWarnings("unused")
-	private LinkedList<EntityData> entityData;			// Not yet implemented
+	private LinkedList<String> entityData;				// Not yet implemented
 	@SuppressWarnings("unused")
-	private LinkedList<BiomeData> biomeData;			// Not yet implemented
+	private LinkedList<String> biomeData;				// Not yet implemented
 	
 	/* On the storage of block data using this format
 	 * The blocks should be stored in a LinkedList<String>
