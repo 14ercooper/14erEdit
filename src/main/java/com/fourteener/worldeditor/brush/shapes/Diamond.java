@@ -1,6 +1,6 @@
 package com.fourteener.worldeditor.brush.shapes;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.bukkit.block.Block;
@@ -13,7 +13,7 @@ public class Diamond extends BrushShape {
 	@Override
 	public List<Block> GetBlocks(List<Double> args, double x, double y, double z) {
 		// This uses the Manhattan distance
-		List<Block> blockArray = new ArrayList<Block>();
+		List<Block> blockArray = new LinkedList<Block>();
 		int radius = (int) (double) args.get(0);
 		for (int rx = -radius; rx <= radius; rx++) {
 			for (int rz = -radius; rz <= radius; rz++) {

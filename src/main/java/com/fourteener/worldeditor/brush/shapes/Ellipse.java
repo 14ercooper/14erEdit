@@ -1,6 +1,6 @@
 package com.fourteener.worldeditor.brush.shapes;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.bukkit.block.Block;
@@ -13,7 +13,7 @@ public class Ellipse extends BrushShape {
 	@Override
 	public List<Block> GetBlocks(List<Double> args, double x, double y, double z) {
 		// Generate the ellipse
-		List<Block> blockArray = new ArrayList<Block>();
+		List<Block> blockArray = new LinkedList<Block>();
 		for (double rx = -args.get(0); rx <= args.get(0); rx++) {
 			for (double ry = -args.get(1); ry <= args.get(1); ry++) {
 				for (double rz = -args.get(2); rz <= args.get(2); rz++) {

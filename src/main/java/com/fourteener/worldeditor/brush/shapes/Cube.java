@@ -1,6 +1,6 @@
 package com.fourteener.worldeditor.brush.shapes;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.bukkit.block.Block;
@@ -12,7 +12,7 @@ public class Cube extends BrushShape {
 
 	@Override
 	public List<Block> GetBlocks(List<Double> args, double x, double y, double z) {
-		List<Block> blockArray = new ArrayList<Block>();
+		List<Block> blockArray = new LinkedList<Block>();
 		int cubeRad = (int) (args.get(0) / 2);
 		for (int rx = -cubeRad; rx <= cubeRad; rx++) {
 			for (int rz = -cubeRad; rz <= cubeRad; rz++) {

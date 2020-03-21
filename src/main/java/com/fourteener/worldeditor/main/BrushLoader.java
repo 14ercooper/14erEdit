@@ -11,6 +11,7 @@ public class BrushLoader {
 		HollowSphere hollowSphere = new HollowSphere();
 		RadiusSphere radiusSphere = new RadiusSphere();
 		Sphere sphere = new Sphere();
+		Voxel voxel = new Voxel();
 		Brush.AddBrushShape("cube", cube);
 		Brush.AddBrushShape("square", cube);
 		Brush.AddBrushShape("diamond", diamond);
@@ -23,5 +24,7 @@ public class BrushLoader {
 		Brush.AddBrushShape("rs", radiusSphere);
 		Brush.AddBrushShape("sphere", sphere);
 		Brush.AddBrushShape("s", sphere);
+		Brush.AddBrushShape("voxel", voxel);
+		Brush.AddBrushShape("v", voxel);
 	}
 }
