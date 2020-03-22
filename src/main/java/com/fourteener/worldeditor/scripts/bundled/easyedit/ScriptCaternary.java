@@ -45,7 +45,6 @@ public class ScriptCaternary extends Craftscript {
 			int x = (int) (x0 + (t * dx));
 			int y = (int) (y0 + (t * dy) + (t * t * dy2));
 			int z = (int) (z0 + (t * dz));
-			Main.logDebug("Pos: " + x + " " + y + " " + z);
 			Block b = GlobalVars.world.getBlockAt(x, y, z);
 			snapshotArray.add(b.getState());
 			b.setType(Material.matchMaterial(block));
