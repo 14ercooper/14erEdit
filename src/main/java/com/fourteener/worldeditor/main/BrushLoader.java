@@ -10,8 +10,10 @@ public class BrushLoader {
 		Ellipse ellipse = new Ellipse();
 		HollowSphere hollowSphere = new HollowSphere();
 		RadiusSphere radiusSphere = new RadiusSphere();
+		RandomSphere randomSphere = new RandomSphere();
 		Sphere sphere = new Sphere();
 		Voxel voxel = new Voxel();
+		Dome dome = new Dome();
 		Brush.AddBrushShape("cube", cube);
 		Brush.AddBrushShape("square", cube);
 		Brush.AddBrushShape("diamond", diamond);
@@ -21,10 +23,12 @@ public class BrushLoader {
 		Brush.AddBrushShape("hsphere", hollowSphere);
 		Brush.AddBrushShape("hs", hollowSphere);
 		Brush.AddBrushShape("radiussphere", radiusSphere);
-		Brush.AddBrushShape("rs", radiusSphere);
+		Brush.AddBrushShape("randomsphere", randomSphere);
+		Brush.AddBrushShape("rs", randomSphere);
 		Brush.AddBrushShape("sphere", sphere);
 		Brush.AddBrushShape("s", sphere);
 		Brush.AddBrushShape("voxel", voxel);
 		Brush.AddBrushShape("v", voxel);
+		Brush.AddBrushShape("dome", dome);
 	}
 }
