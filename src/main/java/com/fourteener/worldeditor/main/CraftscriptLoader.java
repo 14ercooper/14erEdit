@@ -22,10 +22,11 @@ public class CraftscriptLoader {
 		ScriptFlatten scriptFlatten = new ScriptFlatten();
 		GlobalVars.scriptManager.registerCraftscript("flatten", scriptFlatten);
 		GlobalVars.scriptManager.registerCraftscript("absflatten", scriptFlatten);
-		ScriptOverlay scriptOverlay = new ScriptOverlay();
-		GlobalVars.scriptManager.registerCraftscript("overlay", scriptOverlay);
-		ScriptLine scriptLine = new ScriptLine();
-		GlobalVars.scriptManager.registerCraftscript("line", scriptLine);
+		GlobalVars.scriptManager.registerCraftscript("overlay", new ScriptOverlay());
+		GlobalVars.scriptManager.registerCraftscript("line", new ScriptLine());
+		ScriptCaternary scriptCaternary = new ScriptCaternary();
+		GlobalVars.scriptManager.registerCraftscript("caternary", scriptCaternary);
+		GlobalVars.scriptManager.registerCraftscript("cat", scriptCaternary);
 	}
 
 	private static void Selection() {

@@ -107,6 +107,16 @@ public class SelectionManager {
 		return mostPositiveCorner;
 	}
 	
+	// Getter for the position
+	public double[] getPositionOne () {
+		return positionOne;
+	}
+	
+	// Getter for the position
+	public double[] getPositionTwo () {
+		return positionTwo;
+	}
+	
 	// Expands the selection in direction by amt
 	public boolean expandSelection (double amt, String direction, Player player) {
 		if (direction.equalsIgnoreCase("north")) { // -z
