@@ -24,6 +24,7 @@ public class Clipboard {
 	public int x = -1, y = -1, z = -1; // Stores the origin of this clipboard
 	public int length = -1, width = -1, height = -1; // Height is Y, Width is X, Length is Z
 	public LinkedList<String> blockData = new LinkedList<String>();
+	public LinkedList<String> nbtData = new LinkedList<String>();
 	
 	public Clipboard(Player player) {
 		owner = player;
@@ -59,19 +60,24 @@ public class Clipboard {
 			for (int i = 0; i < size; i++) {
 				blockList.add("");
 			}
+			LinkedList<String> nbtList = new LinkedList<String>();
+			for (int i = 0; i < size; i++) {
+				nbtList.add("");
+			}
 			
 			// Mirror into the new array
 			for (int xN = 0; xN < width; xN++) {
 				for (int yN = 0; yN < height; yN++) {
 					for (int zN = 0; zN < length; zN++) {
-						// Index out of bounds on all of these (XYZ)
 						blockList.set((width - 1 - xN) + (zN * width) + (yN * width * length), blockData.get(xN + (zN * width) + (yN * width * length)));
+						nbtList.set((width - 1 - xN) + (zN * width) + (yN * width * length), nbtData.get(xN + (zN * width) + (yN * width * length)));
 					}
 				}
 			}
 			
 			// Replace the old array with the new array
 			blockData = blockList;
+			nbtData = nbtList;
 		}
 		
 		// Mirror over Y
@@ -82,18 +88,24 @@ public class Clipboard {
 			for (int i = 0; i < size; i++) {
 				blockList.add("");
 			}
+			LinkedList<String> nbtList = new LinkedList<String>();
+			for (int i = 0; i < size; i++) {
+				nbtList.add("");
+			}
 			
 			// Mirror into the new array
 			for (int xN = 0; xN < width; xN++) {
 				for (int yN = 0; yN < height; yN++) {
 					for (int zN = 0; zN < length; zN++) {
 						blockList.set(xN + (zN * width) + ((height - 1 - yN) * width * length), blockData.get(xN + (zN * width) + (yN * width * length)));
+						nbtList.set((width - 1 - xN) + (zN * width) + (yN * width * length), nbtData.get(xN + (zN * width) + (yN * width * length)));
 					}
 				}
 			}
 			
 			// Replace the old array with the new array
 			blockData = blockList;
+			nbtData = nbtList;
 		}
 		
 		// Mirror over Z
@@ -104,18 +116,24 @@ public class Clipboard {
 			for (int i = 0; i < size; i++) {
 				blockList.add("");
 			}
+			LinkedList<String> nbtList = new LinkedList<String>();
+			for (int i = 0; i < size; i++) {
+				nbtList.add("");
+			}
 			
 			// Mirror into the new array
 			for (int xN = 0; xN < width; xN++) {
 				for (int yN = 0; yN < height; yN++) {
 					for (int zN = 0; zN < length; zN++) {
 						blockList.set(xN + ((length - 1 - zN) * width) + (yN * width * length), blockData.get(xN + (zN * width) + (yN * width * length)));
+						nbtList.set((width - 1 - xN) + (zN * width) + (yN * width * length), nbtData.get(xN + (zN * width) + (yN * width * length)));
 					}
 				}
 			}
 			
 			// Replace the old array with the new array
 			blockData = blockList;
+			nbtData = nbtList;
 		}
 		
 		return true;
@@ -172,18 +190,25 @@ public class Clipboard {
 		for (int i = 0; i < size; i++) {
 			blockList.add("");
 		}
+		LinkedList<String> nbtList = new LinkedList<String>();
+		for (int i = 0; i < size; i++) {
+			nbtList.add("");
+		}
 		Main.logDebug("Block list of size " + Integer.toString(blockList.size())); // ----
 		
 		// Then store the blocks (as data) into the array
+		NBTExtractor nbtExtractor = new NBTExtractor();
 		for (Block b : blocks) {
 			int xB = Math.abs(b.getX() - xNeg);
 			int yB = Math.abs(b.getY() - yNeg);
 			int zB = Math.abs(b.getZ() - zNeg);
 			blockList.set(xB + (zB * width) + (yB * length * width), b.getBlockData().getAsString());
+			nbtList.set(xB + (zB * width) + (yB * length * width), nbtExtractor.getNBT(b.getState()));
 		}
 		
 		// And finally save that array to the clipboard
 		blockData = blockList;
+		nbtData = nbtList;
 
 		Main.logDebug("" + Integer.toString(blockData.size()) + " blocks of data stored"); // ----
 		owner.sendMessage("§dSelection copied");
@@ -214,6 +239,7 @@ public class Clipboard {
 			
 			Material blockMat = Material.matchMaterial(blockData.get(i).split("\\[")[0]);
 			BlockData blockDat = Bukkit.getServer().createBlockData(blockData.get(i));
+			String nbt = nbtData.get(i);
 			
 			Block b = GlobalVars.world.getBlockAt(xPos + rx - x - 1, yPos + ry - y, zPos + rz - z);
 			// Set the block
@@ -222,12 +248,20 @@ public class Clipboard {
 					undoList.add(b.getState());
 					b.setType(blockMat);
 					b.setBlockData(blockDat);
+					if (!nbt.equalsIgnoreCase("")) {
+						String command = "data merge block " + b.getX() + " " + b.getY() + " " + b.getZ() + " " + nbt;
+						Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), command);
+					}
 				}
 			}
 			else {
 				undoList.add(b.getState());
 				b.setType(blockMat);
 				b.setBlockData(blockDat);
+				if (!nbt.equalsIgnoreCase("")) {
+					String command = "data merge block " + b.getX() + " " + b.getY() + " " + b.getZ() + " " + nbt;
+					Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), command);
+				}
 			}
 		}
 		
@@ -245,7 +279,7 @@ public class Clipboard {
 		path = ("plugins/14erEdit/schematics/" + path).replace("/", File.separator);
 		int[] origin = {x,y,z};
 		int[] dimensions = {width,height,length};
-		Schematic schem = new Schematic(origin, dimensions, blockData);
+		Schematic schem = new Schematic(origin, dimensions, blockData, nbtData);
 		return schem.saveSchematic(path);
 	}
 	
@@ -263,6 +297,7 @@ public class Clipboard {
 			height = schem.getDimensions()[1];
 			length = schem.getDimensions()[2];
 			blockData = schem.getBlocks();
+			nbtData = schem.getBlockNbt();
 		}
 		// Using MCEdit format
 		else if (splitPath[splitPath.length - 1].equals("schematic")) {
@@ -293,6 +328,7 @@ public class Clipboard {
 			height = schem.getDimensions()[1];
 			length = schem.getDimensions()[2];
 			blockData = schem.getBlocks();
+			nbtData = schem.getBlockNbt();
 			return true;
 		}
 		// Using MCEdit format

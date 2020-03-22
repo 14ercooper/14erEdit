@@ -25,6 +25,7 @@ public class SchematicMacro extends Macro {
 	int x = 0, y = 0, z = 0;
 	int length = 0, width = 0, height = 0;
 	LinkedList<String> blockData = new LinkedList<String>();
+	LinkedList<String> blockNbt = new LinkedList<String>();
 	boolean setAir = false;
 	
 	// Create a new macro
@@ -54,6 +55,7 @@ public class SchematicMacro extends Macro {
 			width = schem.getDimensions()[0];
 			height = schem.getDimensions()[1];
 			length = schem.getDimensions()[2];
+			blockNbt = schem.getBlockNbt();
 		}
 		// Using MCEdit format
 		else if (path.contains(".schematic")) {
@@ -86,6 +88,7 @@ public class SchematicMacro extends Macro {
 			
 			Material blockMat = Material.matchMaterial(blockData.get(i).split("\\[")[0]);
 			BlockData blockDat = Bukkit.getServer().createBlockData(blockData.get(i));
+			String nbt = blockNbt.get(i);
 			
 			Block b = GlobalVars.world.getBlockAt(x + rx - xOff - 1, y + ry - yOff, z + rz - zOff);
 			// Set the block
@@ -94,12 +97,20 @@ public class SchematicMacro extends Macro {
 					undoList.add(b.getState());
 					b.setType(blockMat);
 					b.setBlockData(blockDat);
+					if (!nbt.equalsIgnoreCase("")) {
+						String command = "data merge block " + b.getX() + " " + b.getY() + " " + b.getZ() + " " + nbt;
+						Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), command);
+					}
 				}
 			}
 			else {
 				undoList.add(b.getState());
 				b.setType(blockMat);
 				b.setBlockData(blockDat);
+				if (!nbt.equalsIgnoreCase("")) {
+					String command = "data merge block " + b.getX() + " " + b.getY() + " " + b.getZ() + " " + nbt;
+					Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), command);
+				}
 			}
 		}
 		
