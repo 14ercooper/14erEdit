@@ -7,7 +7,7 @@ import com.fourteener.worldeditor.operations.Parser;
 import com.fourteener.worldeditor.scripts.CraftscriptManager;
 
 public class GlobalVars {
-
+	
 	// Global variables
 	public static World world;
 	public static SimplexNoise simplexNoise;

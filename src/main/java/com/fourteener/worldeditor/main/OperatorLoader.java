@@ -57,6 +57,7 @@ public class OperatorLoader {
 		GlobalVars.operationParser.AddOperator("^", new BlocksAboveNode());
 		GlobalVars.operationParser.AddOperator("_", new BlocksBelowNode());
 		GlobalVars.operationParser.AddOperator("*", new FacesExposedNode());
+		GlobalVars.operationParser.AddOperator("<<n", new GetNBTNode());
 	}
 	
 	private static void LoadVariable() {
