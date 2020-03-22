@@ -275,6 +275,7 @@ public class Clipboard {
 	}
 	
 	// Save a schematic to a file
+	// This code, violating DRY, is also in the macro and below
 	public boolean saveToFile (String path) {
 		path = ("plugins/14erEdit/schematics/" + path).replace("/", File.separator);
 		int[] origin = {x,y,z};
@@ -311,7 +312,7 @@ public class Clipboard {
 	}
 	
 	// Load a schematic from a file, without setting an offset
-	// This code, violating DRY, is also in the macro
+	// This code, violating DRY, is also in the macro and above
 	public boolean loadFromFile (String path) {
 		path = ("plugins/14erEdit/schematics/" + path).replace("/", File.separator);
 		if (!(path.contains(".matschem") || path.contains(".schematic") || path.contains(".schem"))) {
