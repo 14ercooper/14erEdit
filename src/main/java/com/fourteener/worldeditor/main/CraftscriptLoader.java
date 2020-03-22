@@ -25,7 +25,7 @@ public class CraftscriptLoader {
 		GlobalVars.scriptManager.registerCraftscript("overlay", new ScriptOverlay());
 		GlobalVars.scriptManager.registerCraftscript("line", new ScriptLine());
 		ScriptCaternary scriptCaternary = new ScriptCaternary();
-		GlobalVars.scriptManager.registerCraftscript("caternary", scriptCaternary);
+		GlobalVars.scriptManager.registerCraftscript("catenary", scriptCaternary);
 		GlobalVars.scriptManager.registerCraftscript("cat", scriptCaternary);
 	}
 
