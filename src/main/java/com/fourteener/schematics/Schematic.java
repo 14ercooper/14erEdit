@@ -19,17 +19,16 @@ import java.util.LinkedList;
 // A material-based schematic system for Minecraft
 @SuppressWarnings("serial")
 public class Schematic implements Serializable {
-	private static int formatVersion = 2;				// Stores the format of this schematic
+	private static int formatVersion = 3;				// Stores the format of this schematic
 	private int[] origin = {0, 0, 0};					// Stores the origin/offset of this schematic
 	private int[] dimensions = {0, 0, 0};				// Stores the dimensions of this schematic
 	String author = "Unset", name = "Unset";			// Stores the author and name of this schematic
 	private LinkedList<String> blockData;				// This is where the block data of the schematic gets stored
+	private LinkedList<String> blockEntityData;			// NBT storage for block entities
 	@SuppressWarnings("unused")
-	private LinkedList<TileEntityData> tileEntityData;	// Not yet implemented
+	private LinkedList<String> entityData;				// Not yet implemented
 	@SuppressWarnings("unused")
-	private LinkedList<EntityData> entityData;			// Not yet implemented
-	@SuppressWarnings("unused")
-	private LinkedList<BiomeData> biomeData;			// Not yet implemented
+	private LinkedList<String> biomeData;				// Not yet implemented
 	
 	/* On the storage of block data using this format
 	 * The blocks should be stored in a LinkedList<String>
@@ -42,20 +41,22 @@ public class Schematic implements Serializable {
 	
 	// A constructor for a schematic
 	// The arrays should be arranged as {x,y,z} and only have 3 elements
-	public Schematic (int[] schematicOrigin, int[] schematicDimensions, LinkedList<String> blocks) {
+	public Schematic (int[] schematicOrigin, int[] schematicDimensions, LinkedList<String> blocks, LinkedList<String> blockNbt) {
 		origin = schematicOrigin;
 		dimensions = schematicDimensions;
 		blockData = blocks;
+		blockEntityData = blockNbt;
 	}
 
 	// A constructor for a schematic
 	// The arrays should be arranged as {x,y,z} and only have 3 elements
-	public Schematic (String schematicName, String schematicAuthor, int[] schematicOrigin, int[] schematicDimensions, LinkedList<String> blocks) {
+	public Schematic (String schematicName, String schematicAuthor, int[] schematicOrigin, int[] schematicDimensions, LinkedList<String> blocks, LinkedList<String> blockNbt) {
 		origin = schematicOrigin;
 		dimensions = schematicDimensions;
 		name = schematicName;
 		author = schematicAuthor;
 		blockData = blocks;
+		blockEntityData = blockNbt;
 	}
 	
 	// Returns the format version of this schematic
@@ -77,6 +78,11 @@ public class Schematic implements Serializable {
 	// Returns the block data of this schematic
 	public LinkedList<String> getBlocks () {
 		return blockData;
+	}
+	
+	// Returns the block entity data of this schematic
+	public LinkedList<String> getBlockNbt () {
+		return blockEntityData;
 	}
 	
 	// Returns the name of this schematic, or "Unset" if not set
@@ -115,7 +121,7 @@ public class Schematic implements Serializable {
 	// Get the version compatibility of the schematic loader
 	// If the schematic loaded has a version not in this list, it should not be used and instead loaded with a compatible loader
 	public static int[] getLoaderVersion () {
-		int[] fV = {2};
+		int[] fV = {3};
 		return fV;
 	}
 	

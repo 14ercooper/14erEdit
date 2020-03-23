@@ -1,6 +1,6 @@
-main: fourteener.worldeditor.main.Main
+main: com.fourteener.worldeditor.main.Main
 name: 14erEdit
-version: 1.2.0
+version: 1.3.0
 api-version: 1.14
 description: A world editor created by 14er for use by the Minecraft mapmaking community, including the CTMC.
 load: POSTWORLD
@@ -28,5 +28,8 @@ commands:
         description: Run a brush at a position
         usage: "Usage: /runat <x> <y> <z> <brush> <operation>"
     debug:
-        description: Toggle debug messages
+        description: Toggle debug messages globally
         usage: "Usage: /debug"
+    info:
+        description: Display plugin information
+        usage: "Usage: /info"
