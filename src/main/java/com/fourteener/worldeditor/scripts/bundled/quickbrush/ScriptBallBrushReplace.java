@@ -8,6 +8,7 @@ import java.util.Set;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 
+import com.fourteener.worldeditor.main.Main;
 import com.fourteener.worldeditor.scripts.Craftscript;
 
 public class ScriptBallBrushReplace extends Craftscript {
@@ -17,7 +18,7 @@ public class ScriptBallBrushReplace extends Craftscript {
 		String brushRadius = args.get(0);
 		String blocksToReplace = args.get(1);
 		String[] replaceIndividual = blocksToReplace.split(",");
-		String blocksToSet = args.get(1);
+		String blocksToSet = args.get(2);
 		String[] individualBlocks = blocksToSet.split(",");
 		String opToRun = "";
 		
@@ -88,6 +89,7 @@ public class ScriptBallBrushReplace extends Craftscript {
 			opToRun = opToRun.concat("false");
 		}
 		opToRun = opToRun.concat(" false");
+		Main.logDebug(opToRun);
 		
 		// Perform the replace command
 		player.performCommand("fx br s " + brushRadius + " 0.5 " + opToRun);

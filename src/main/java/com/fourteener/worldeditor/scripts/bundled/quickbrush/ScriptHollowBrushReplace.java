@@ -18,7 +18,7 @@ public class ScriptHollowBrushReplace extends Craftscript {
 		String thickness = args.get(1);
 		String blocksToReplace = args.get(2);
 		String[] replaceIndividual = blocksToReplace.split(",");
-		String blocksToSet = args.get(1);
+		String blocksToSet = args.get(3);
 		String[] individualBlocks = blocksToSet.split(",");
 		String opToRun = "";
 		

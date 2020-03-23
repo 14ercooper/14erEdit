@@ -19,7 +19,7 @@ public class ScriptEllipseBrushReplace extends Craftscript {
 		String rz = args.get(2);
 		String blocksToReplace = args.get(3);
 		String[] replaceIndividual = blocksToReplace.split(",");
-		String blocksToSet = args.get(1);
+		String blocksToSet = args.get(4);
 		String[] individualBlocks = blocksToSet.split(",");
 		String opToRun = "";
 		

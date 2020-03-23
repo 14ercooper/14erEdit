@@ -17,7 +17,7 @@ public class ScriptSquareBrushReplace extends Craftscript {
 		String brushRadius = args.get(0);
 		String blocksToReplace = args.get(1);
 		String[] replaceIndividual = blocksToReplace.split(",");
-		String blocksToSet = args.get(1);
+		String blocksToSet = args.get(2);
 		String[] individualBlocks = blocksToSet.split(",");
 		String opToRun = "";
 		

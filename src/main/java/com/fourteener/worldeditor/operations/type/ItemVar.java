@@ -76,7 +76,7 @@ public class ItemVar implements Serializable{
 		// Attributes
 		if (attributes.size() > 0) {
 			Random rand = new Random();
-			s += "AttributeModifiers:[";
+			s += ",AttributeModifiers:[";
 			for (Map.Entry<String, String> entry : attributes.entrySet()) {
 				String[] mods = entry.getValue().split(",");
 				s += "{AttributeName:\"" + entry.getKey() + "\",";

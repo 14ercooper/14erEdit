@@ -1,8 +1,8 @@
 # 14erEdit
 
-## Current version: 1.3.0-SNAPSHOT
+## Current version: 1.3.0
 
-#### A Minecraft world-editing plugin featuring native 1.13 through 1.15.2 support and lots of power to the user.
+#### A Minecraft world-editing plugin featuring native 1.12, 1.14, and 1.15 support and lots of power to the user.
 
 Manipulate the Minecraft world like never before! Use both brushes and selections to bend the world to your will. Manipulate items and fully customize blocks to fit your needs. The possibilities are endless! Underpinned by the extremely powerful and versatile operations system, the full power of the plugin sits in the hands of the user with the only restrictions being what you can dream up.
 
@@ -20,6 +20,8 @@ Directly access the operations system for maximum power and customizability, or 
 
 - 14er
 - NotQuiteAmish
+
+To use the megaserver, please see [Megaserver.md](Megaserver.md).
 
 To compile the plugin, please read [COMPILING.md](COMPILING.md).
 
