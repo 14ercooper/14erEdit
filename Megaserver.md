@@ -8,7 +8,7 @@
 
 3. Place the jar file into it's own folder (it will generate several files in it's directory when run)
 
-4. Run the jar file from the command line using java: "java -jar <jar name> [arguments]". Replace the jar name and arguments as needed.
+4. Run the jar file from the command line using java: "java -jar \<jar name\> [arguments]". Replace the jar name and arguments as needed.
 
 #### Arguments
 
