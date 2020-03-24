@@ -13,3 +13,5 @@
 #### Arguments
 
 --force-offline - Force the server to use offline mode
+
+--update - Force an update for all artifacts

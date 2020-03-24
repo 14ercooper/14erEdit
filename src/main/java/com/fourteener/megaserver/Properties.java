@@ -244,7 +244,7 @@ public static String paper = "# This is the main configuration file for Paper.\n
 		"world-settings:\n" + 
 		"  default:\n" + 
 		"    fixed-chunk-inhabited-time: -1\n" + 
-		"    optimize-explosions: false\n" + 
+		"    optimize-explosions: true\n" + 
 		"    use-vanilla-world-scoreboard-name-coloring: false\n" + 
 		"    enable-treasure-maps: true\n" + 
 		"    treasure-maps-return-already-discovered: false\n" + 
@@ -255,7 +255,7 @@ public static String paper = "# This is the main configuration file for Paper.\n
 		"    per-player-mob-spawns: false\n" + 
 		"    remove-corrupt-tile-entities: false\n" + 
 		"    filter-nbt-data-from-spawn-eggs-and-related: true\n" + 
-		"    max-entity-collisions: 8\n" + 
+		"    max-entity-collisions: 4\n" + 
 		"    disable-creeper-lingering-effect: false\n" + 
 		"    duplicate-uuid-resolver: saferegen\n" + 
 		"    duplicate-uuid-saferegen-delete-range: 32\n" + 

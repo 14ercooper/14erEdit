@@ -13,12 +13,18 @@ import java.util.Set;
 public class Main {
 
 	public static void main(String[] args) {
+		
+		boolean updateArtifacts = false;
+		
 		while (true) {
 			try {
 				// Parse arguments
 				for (String s : args) {
 					if (s.equalsIgnoreCase("--force-offline")) {
 						Artifacts.forceOffline = true;
+					}
+					if (s.equalsIgnoreCase("--update")) {
+						updateArtifacts = true;
 					}
 				}
 				
@@ -37,6 +43,10 @@ public class Main {
 					setup();
 				}
 				if (Artifacts.internetConnected()) {
+					if (updateArtifacts) {
+						FileIO.deleteFile("artifacts", true);
+						FileIO.makePath("artifacts");
+						System.out.println("Redownloading all artifacts (this could take a LONG time)...");}
 					Artifacts.updateArtifacts();
 					System.out.println("Updated all artifacts");
 				}
@@ -158,7 +168,7 @@ public class Main {
 			}
 			// Change RAM
 			if (input == 4) {
-				System.out.println("How much RAM should the server use?");
+				System.out.println("How much RAM should the server use (MB)?");
 				@SuppressWarnings("restriction")
 				long memorySize = ((com.sun.management.OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean()).getTotalPhysicalMemorySize();
 				int max = (int) (memorySize / 1048576);
