@@ -34,6 +34,7 @@ public class CraftscriptLoader {
 		GlobalVars.scriptManager.registerCraftscript("set", new ScriptSet());
 		GlobalVars.scriptManager.registerCraftscript("replace", new ScriptReplace());
 		GlobalVars.scriptManager.registerCraftscript("grass", new ScriptGrass());
+		GlobalVars.scriptManager.registerCraftscript("clone", new ScriptClone());
 	}
 
 	private static void QuickBrush() {

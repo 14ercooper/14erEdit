@@ -23,7 +23,7 @@ public class Artifacts {
 	public static boolean forceOffline = false;
 	
 	// Root of artifacts
-	private static String artifactsBase = "https://files.14erc.com/edit/mms/";
+	public static final String artifactsBase = "https://files.14erc.com/edit/mms/";
 	// Map of artifacts by type
 	private static List<String> buildTools = new ArrayList<String>();
 	private static List<List<String>> servers = new ArrayList<List<String>>();
@@ -214,7 +214,7 @@ public class Artifacts {
     }
 	
 	// Downloads the file at the URL to the target
-	private static void downloadFromURL (String sourceURL, String target) throws IOException {
+	public static void downloadFromURL (String sourceURL, String target) throws IOException {
 		URL website = new URL(sourceURL);
 		ReadableByteChannel rbc = Channels.newChannel(website.openStream());
 		FileOutputStream fos = new FileOutputStream(target);
