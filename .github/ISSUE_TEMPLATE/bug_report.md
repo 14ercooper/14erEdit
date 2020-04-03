@@ -29,7 +29,7 @@ If applicable, add screenshots to help explain your problem.
 **System (please complete the following information):**
  - Spigot Version: [e.g. 1.14.2]
  - Java Version: [e.g. 10]
- - Version: [e.g. v1.0.3]
+ - Using Megaserver or Release Version: [e.g. Megaserver OR 1.3.0]
 
 **Additional context**
 Add any other context about the problem here.
