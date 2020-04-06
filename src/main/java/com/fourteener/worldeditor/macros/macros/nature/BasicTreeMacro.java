@@ -264,7 +264,7 @@ public class BasicTreeMacro extends Macro {
 		for (Block b : trunkBlocks) {
 			if (b.getType() == Material.AIR) {
 				undoList.add(b.getState());
-				b.setType(trunk);
+				SetBlock.setMaterial(b, trunk);
 			}
 		}
 		
@@ -272,7 +272,7 @@ public class BasicTreeMacro extends Macro {
 		for (Block b : leafBlocks) {
 			if (b.getType() == Material.AIR) {
 				undoList.add(b.getState());
-				b.setType(leaves);
+				SetBlock.setMaterial(b, leaves);
 			}
 		}
 		
@@ -366,7 +366,7 @@ public class BasicTreeMacro extends Macro {
 			// Place the current block
 			if (currentBlock.getType() == Material.AIR) {
 				undoList.add(currentBlock.getState());
-				currentBlock.setType(trunk);
+				SetBlock.setMaterial(currentBlock, trunk);
 			}
 		}
 		currentBlock = currentBlock.getRelative(BlockFace.UP);
@@ -440,7 +440,7 @@ public class BasicTreeMacro extends Macro {
 		for (Block bl : capBlocks) {
 			if (bl.getType() == Material.AIR) {
 				undoList.add(bl.getState());
-				bl.setType(leaves);
+				SetBlock.setMaterial(bl, leaves);
 			}
 		}
 		
@@ -490,7 +490,7 @@ public class BasicTreeMacro extends Macro {
 			// Place the current block
 			if (currentBlock.getType() == Material.AIR) {
 				undoList.add(currentBlock.getState());
-				currentBlock.setType(trunk);
+				SetBlock.setMaterial(currentBlock, trunk);
 			}
 		}
 		
@@ -537,7 +537,7 @@ public class BasicTreeMacro extends Macro {
 		for (Block b : leafList) {
 			if (b.getType() == Material.AIR) {
 				undoList.add(b.getState());
-				b.setType(leaves);}
+				SetBlock.setMaterial(b, leaves);}
 		}
 		
 		// Actually register the undo
@@ -619,7 +619,7 @@ public class BasicTreeMacro extends Macro {
 				blockList.add(currentBlock.getRelative(BlockFace.NORTH_EAST));
 				for (Block b : blockList) {
 					undoList.add(b.getState());
-					b.setType(trunk);
+					SetBlock.setMaterial(b, trunk);
 				}
 			}
 			if (trunkSize == 3) {
@@ -634,7 +634,7 @@ public class BasicTreeMacro extends Macro {
 				blockList.add(currentBlock.getRelative(BlockFace.NORTH_EAST).getRelative(BlockFace.EAST));
 				for (Block b : blockList) {
 					undoList.add(b.getState());
-					b.setType(trunk);
+					SetBlock.setMaterial(b, trunk);
 				}
 			}
 		}
@@ -652,7 +652,7 @@ public class BasicTreeMacro extends Macro {
 						Block toPlace = GlobalVars.world.getBlockAt((int) (x + rx), (int) (y + ry), (int) (z + rz));
 						if (toPlace.getType() == Material.AIR) {
 							undoList.add(toPlace.getState());
-							toPlace.setType(leaves);
+							SetBlock.setMaterial(toPlace, leaves);
 						}
 					}
 				}
@@ -678,7 +678,7 @@ public class BasicTreeMacro extends Macro {
 			currentBlock = currentBlock.getRelative(BlockFace.UP);
 			if (currentBlock.getType() == Material.AIR) {
 				undoList.add(currentBlock.getState());
-				currentBlock.setType(trunk);
+				SetBlock.setMaterial(currentBlock, trunk);
 			}
 		}
 		
@@ -773,7 +773,7 @@ public class BasicTreeMacro extends Macro {
 		for (Block b : leafList) {
 			if (b.getType() == Material.AIR) {
 				undoList.add(b.getState());
-				b.setType(leaves);
+				SetBlock.setMaterial(b, leaves);
 			}
 		}
 		
@@ -789,7 +789,7 @@ public class BasicTreeMacro extends Macro {
 		Block baseBlock = GlobalVars.world.getBlockAt(plantOn).getRelative(BlockFace.UP);
 		if (baseBlock.getType() == Material.AIR) {
 			undoList.add(baseBlock.getState());
-			baseBlock.setType(trunk);
+			SetBlock.setMaterial(baseBlock, trunk);
 		}
 		
 		// Generate the ellipsoid of leaves
@@ -812,7 +812,7 @@ public class BasicTreeMacro extends Macro {
 						}
 						if (toPlace.getType() == Material.AIR) {
 							undoList.add(toPlace.getState());
-							toPlace.setType(leaves);
+							SetBlock.setMaterial(toPlace, leaves);
 						}
 					}
 				}
@@ -898,7 +898,7 @@ public class BasicTreeMacro extends Macro {
 						// Place the central block
 						if (currentBlock.getType() == Material.AIR) {
 							undoList.add(currentBlock.getState());
-							currentBlock.setType(trunk);
+							SetBlock.setMaterial(currentBlock, trunk);
 						}
 						
 						// Build the disk
@@ -910,7 +910,7 @@ public class BasicTreeMacro extends Macro {
 									Block b = GlobalVars.world.getBlockAt(x + rx, y, z + rz);	
 									if (b.getType() == Material.AIR) {
 										undoList.add(b.getState());
-										b.setType(trunk);
+										SetBlock.setMaterial(b, trunk);
 									}
 								}
 							}
@@ -968,7 +968,7 @@ public class BasicTreeMacro extends Macro {
 							// Place the central block
 							if (currentBlock.getType() == Material.AIR) {
 								undoList.add(currentBlock.getState());
-								currentBlock.setType(trunk);
+								SetBlock.setMaterial(currentBlock, trunk);
 							}
 							
 							// Build the disk
@@ -980,7 +980,7 @@ public class BasicTreeMacro extends Macro {
 										Block b = GlobalVars.world.getBlockAt(x + rx, y, z + rz);	
 										if (b.getType() == Material.AIR) {
 											undoList.add(b.getState());
-											b.setType(trunk);
+											SetBlock.setMaterial(b, trunk);
 										}
 									}
 								}
@@ -1010,7 +1010,7 @@ public class BasicTreeMacro extends Macro {
 							// Place the central block
 							if (currentBlock.getType() == Material.AIR) {
 								undoList.add(currentBlock.getState());
-								currentBlock.setType(trunk);
+								SetBlock.setMaterial(currentBlock, trunk);
 							}
 							
 							// Build the disk
@@ -1022,7 +1022,7 @@ public class BasicTreeMacro extends Macro {
 										Block b = GlobalVars.world.getBlockAt(x + rx, y, z + rz);	
 										if (b.getType() == Material.AIR) {
 											undoList.add(b.getState());
-											b.setType(trunk);
+											SetBlock.setMaterial(b, trunk);
 										}
 									}
 								}
@@ -1054,7 +1054,7 @@ public class BasicTreeMacro extends Macro {
 							// Place the central block
 							if (currentBlock.getType() == Material.AIR) {
 								undoList.add(currentBlock.getState());
-								currentBlock.setType(trunk);
+								SetBlock.setMaterial(currentBlock, trunk);
 							}
 							
 							// Build the disk
@@ -1066,7 +1066,7 @@ public class BasicTreeMacro extends Macro {
 										Block b = GlobalVars.world.getBlockAt(x + rx, y, z + rz);	
 										if (b.getType() == Material.AIR) {
 											undoList.add(b.getState());
-											b.setType(trunk);
+											SetBlock.setMaterial(b, trunk);
 										}
 									}
 								}
@@ -1096,7 +1096,7 @@ public class BasicTreeMacro extends Macro {
 							// Place the central block
 							if (currentBlock.getType() == Material.AIR) {
 								undoList.add(currentBlock.getState());
-								currentBlock.setType(trunk);
+								SetBlock.setMaterial(currentBlock, trunk);
 							}
 							
 							// Build the disk
@@ -1108,7 +1108,7 @@ public class BasicTreeMacro extends Macro {
 										Block b = GlobalVars.world.getBlockAt(x + rx, y, z + rz);	
 										if (b.getType() == Material.AIR) {
 											undoList.add(b.getState());
-											b.setType(trunk);
+											SetBlock.setMaterial(b, trunk);
 										}
 									}
 								}
@@ -1147,7 +1147,7 @@ public class BasicTreeMacro extends Macro {
 								// Place the central block
 								if (currentBlock.getType() == Material.AIR) {
 									undoList.add(currentBlock.getState());
-									currentBlock.setType(trunk);
+									SetBlock.setMaterial(currentBlock, trunk);
 								}
 								
 								// Build the disk
@@ -1159,7 +1159,7 @@ public class BasicTreeMacro extends Macro {
 											Block b = GlobalVars.world.getBlockAt(x + rx, y, z + rz);	
 											if (b.getType() == Material.AIR) {
 												undoList.add(b.getState());
-												b.setType(trunk);
+												SetBlock.setMaterial(b, trunk);
 											}
 										}
 									}
@@ -1189,7 +1189,7 @@ public class BasicTreeMacro extends Macro {
 								// Place the central block
 								if (currentBlock.getType() == Material.AIR) {
 									undoList.add(currentBlock.getState());
-									currentBlock.setType(trunk);
+									SetBlock.setMaterial(currentBlock, trunk);
 								}
 								
 								// Build the disk
@@ -1201,7 +1201,7 @@ public class BasicTreeMacro extends Macro {
 											Block b = GlobalVars.world.getBlockAt(x + rx, y, z + rz);	
 											if (b.getType() == Material.AIR) {
 												undoList.add(b.getState());
-												b.setType(trunk);
+												SetBlock.setMaterial(b, trunk);
 											}
 										}
 									}
@@ -1231,7 +1231,7 @@ public class BasicTreeMacro extends Macro {
 								// Place the central block
 								if (currentBlock.getType() == Material.AIR) {
 									undoList.add(currentBlock.getState());
-									currentBlock.setType(trunk);
+									SetBlock.setMaterial(currentBlock, trunk);
 								}
 								
 								// Build the disk
@@ -1243,7 +1243,7 @@ public class BasicTreeMacro extends Macro {
 											Block b = GlobalVars.world.getBlockAt(x + rx, y, z + rz);	
 											if (b.getType() == Material.AIR) {
 												undoList.add(b.getState());
-												b.setType(trunk);
+												SetBlock.setMaterial(b, trunk);
 											}
 										}
 									}
@@ -1275,7 +1275,7 @@ public class BasicTreeMacro extends Macro {
 								// Place the central block
 								if (currentBlock.getType() == Material.AIR) {
 									undoList.add(currentBlock.getState());
-									currentBlock.setType(trunk);
+									SetBlock.setMaterial(currentBlock, trunk);
 								}
 								
 								// Build the disk
@@ -1287,7 +1287,7 @@ public class BasicTreeMacro extends Macro {
 											Block b = GlobalVars.world.getBlockAt(x + rx, y, z + rz);	
 											if (b.getType() == Material.AIR) {
 												undoList.add(b.getState());
-												b.setType(trunk);
+												SetBlock.setMaterial(b, trunk);
 											}
 										}
 									}
@@ -1317,7 +1317,7 @@ public class BasicTreeMacro extends Macro {
 								// Place the central block
 								if (currentBlock.getType() == Material.AIR) {
 									undoList.add(currentBlock.getState());
-									currentBlock.setType(trunk);
+									SetBlock.setMaterial(currentBlock, trunk);
 								}
 								
 								// Build the disk
@@ -1329,7 +1329,7 @@ public class BasicTreeMacro extends Macro {
 											Block b = GlobalVars.world.getBlockAt(x + rx, y, z + rz);	
 											if (b.getType() == Material.AIR) {
 												undoList.add(b.getState());
-												b.setType(trunk);
+												SetBlock.setMaterial(b, trunk);
 											}
 										}
 									}
@@ -1359,7 +1359,7 @@ public class BasicTreeMacro extends Macro {
 								// Place the central block
 								if (currentBlock.getType() == Material.AIR) {
 									undoList.add(currentBlock.getState());
-									currentBlock.setType(trunk);
+									SetBlock.setMaterial(currentBlock, trunk);
 								}
 								
 								// Build the disk
@@ -1371,7 +1371,7 @@ public class BasicTreeMacro extends Macro {
 											Block b = GlobalVars.world.getBlockAt(x + rx, y, z + rz);	
 											if (b.getType() == Material.AIR) {
 												undoList.add(b.getState());
-												b.setType(trunk);
+												SetBlock.setMaterial(b, trunk);
 											}
 										}
 									}
@@ -1404,7 +1404,7 @@ public class BasicTreeMacro extends Macro {
 								// Place the central block
 								if (currentBlock.getType() == Material.AIR) {
 									undoList.add(currentBlock.getState());
-									currentBlock.setType(trunk);
+									SetBlock.setMaterial(currentBlock, trunk);
 								}
 								
 								// Build the disk
@@ -1416,7 +1416,7 @@ public class BasicTreeMacro extends Macro {
 											Block b = GlobalVars.world.getBlockAt(x + rx, y, z + rz);	
 											if (b.getType() == Material.AIR) {
 												undoList.add(b.getState());
-												b.setType(trunk);
+												SetBlock.setMaterial(b, trunk);
 											}
 										}
 									}
@@ -1446,7 +1446,7 @@ public class BasicTreeMacro extends Macro {
 								// Place the central block
 								if (currentBlock.getType() == Material.AIR) {
 									undoList.add(currentBlock.getState());
-									currentBlock.setType(trunk);
+									SetBlock.setMaterial(currentBlock, trunk);
 								}
 								
 								// Build the disk
@@ -1458,7 +1458,7 @@ public class BasicTreeMacro extends Macro {
 											Block b = GlobalVars.world.getBlockAt(x + rx, y, z + rz);	
 											if (b.getType() == Material.AIR) {
 												undoList.add(b.getState());
-												b.setType(trunk);
+												SetBlock.setMaterial(b, trunk);
 											}
 										}
 									}
@@ -1488,7 +1488,7 @@ public class BasicTreeMacro extends Macro {
 								// Place the central block
 								if (currentBlock.getType() == Material.AIR) {
 									undoList.add(currentBlock.getState());
-									currentBlock.setType(trunk);
+									SetBlock.setMaterial(currentBlock, trunk);
 								}
 								
 								// Build the disk
@@ -1500,7 +1500,7 @@ public class BasicTreeMacro extends Macro {
 											Block b = GlobalVars.world.getBlockAt(x + rx, y, z + rz);	
 											if (b.getType() == Material.AIR) {
 												undoList.add(b.getState());
-												b.setType(trunk);
+												SetBlock.setMaterial(b, trunk);
 											}
 										}
 									}
@@ -1532,7 +1532,7 @@ public class BasicTreeMacro extends Macro {
 								// Place the central block
 								if (currentBlock.getType() == Material.AIR) {
 									undoList.add(currentBlock.getState());
-									currentBlock.setType(trunk);
+									SetBlock.setMaterial(currentBlock, trunk);
 								}
 								
 								// Build the disk
@@ -1544,7 +1544,7 @@ public class BasicTreeMacro extends Macro {
 											Block b = GlobalVars.world.getBlockAt(x + rx, y, z + rz);	
 											if (b.getType() == Material.AIR) {
 												undoList.add(b.getState());
-												b.setType(trunk);
+												SetBlock.setMaterial(b, trunk);
 											}
 										}
 									}
@@ -1574,7 +1574,7 @@ public class BasicTreeMacro extends Macro {
 								// Place the central block
 								if (currentBlock.getType() == Material.AIR) {
 									undoList.add(currentBlock.getState());
-									currentBlock.setType(trunk);
+									SetBlock.setMaterial(currentBlock, trunk);
 								}
 								
 								// Build the disk
@@ -1586,7 +1586,7 @@ public class BasicTreeMacro extends Macro {
 											Block b = GlobalVars.world.getBlockAt(x + rx, y, z + rz);	
 											if (b.getType() == Material.AIR) {
 												undoList.add(b.getState());
-												b.setType(trunk);
+												SetBlock.setMaterial(b, trunk);
 											}
 										}
 									}
@@ -1616,7 +1616,7 @@ public class BasicTreeMacro extends Macro {
 								// Place the central block
 								if (currentBlock.getType() == Material.AIR) {
 									undoList.add(currentBlock.getState());
-									currentBlock.setType(trunk);
+									SetBlock.setMaterial(currentBlock, trunk);
 								}
 								
 								// Build the disk
@@ -1628,7 +1628,7 @@ public class BasicTreeMacro extends Macro {
 											Block b = GlobalVars.world.getBlockAt(x + rx, y, z + rz);	
 											if (b.getType() == Material.AIR) {
 												undoList.add(b.getState());
-												b.setType(trunk);
+												SetBlock.setMaterial(b, trunk);
 											}
 										}
 									}
@@ -1684,7 +1684,7 @@ public class BasicTreeMacro extends Macro {
 							Block toSet = GlobalVars.world.getBlockAt(x + rx, y + ry, z + rz);
 							if (toSet.getType() == Material.AIR) {
 								undoList.add(toSet.getState());
-								toSet.setType(leaves);
+								SetBlock.setMaterial(toSet, leaves);
 							}
 						}
 					}
@@ -1734,7 +1734,7 @@ public class BasicTreeMacro extends Macro {
 			}
 			if (currentBlock.getType() == Material.AIR) {
 				undoList.add(currentBlock.getState());
-				currentBlock.setType(trunk);
+				SetBlock.setMaterial(currentBlock, trunk);
 			}
 		}
 		branch1Ends.add(currentBlock.getLocation());
@@ -1780,7 +1780,7 @@ public class BasicTreeMacro extends Macro {
 				}
 				if (currentBlock.getType() == Material.AIR) {
 					undoList.add(currentBlock.getState());
-					currentBlock.setType(trunk);
+					SetBlock.setMaterial(currentBlock, trunk);
 				}
 			}
 			branch2Ends.add(currentBlock.getLocation());
@@ -1824,7 +1824,7 @@ public class BasicTreeMacro extends Macro {
 				currentBlock = currentBlock.getRelative(dir);
 				if (currentBlock.getType() == Material.AIR) {
 					undoList.add(currentBlock.getState());
-					currentBlock.setType(trunk);
+					SetBlock.setMaterial(currentBlock, trunk);
 				}
 			}
 			branch3Ends.add(currentBlock.getLocation());
@@ -1852,7 +1852,7 @@ public class BasicTreeMacro extends Macro {
 							Block toSet = GlobalVars.world.getBlockAt(x + rx, y + ry, z + rz);
 							if (toSet.getType() == Material.AIR) {
 								undoList.add(toSet.getState());
-								toSet.setType(leaves);
+								SetBlock.setMaterial(toSet, leaves);
 							}
 						}
 					}
@@ -1882,7 +1882,7 @@ public class BasicTreeMacro extends Macro {
 							Block toSet = GlobalVars.world.getBlockAt(x + rx, y + ry, z + rz);
 							if (toSet.getType() == Material.AIR) {
 								undoList.add(toSet.getState());
-								toSet.setType(leaves);
+								SetBlock.setMaterial(toSet, leaves);
 							}
 						}
 					}
@@ -1912,7 +1912,7 @@ public class BasicTreeMacro extends Macro {
 							Block toSet = GlobalVars.world.getBlockAt(x + rx, y + ry, z + rz);
 							if (toSet.getType() == Material.AIR) {
 								undoList.add(toSet.getState());
-								toSet.setType(leaves);
+								SetBlock.setMaterial(toSet, leaves);
 							}
 						}
 					}
@@ -1943,7 +1943,7 @@ public class BasicTreeMacro extends Macro {
 			currentBlock = currentBlock.getRelative(BlockFace.UP);
 			if (currentBlock.getType() == Material.AIR) {
 				undoList.add(currentBlock.getState());
-				currentBlock.setType(trunk);
+				SetBlock.setMaterial(currentBlock, trunk);
 			}
 		}
 		// Populate the leaf sphere
@@ -1968,7 +1968,7 @@ public class BasicTreeMacro extends Macro {
 						Block toSet = GlobalVars.world.getBlockAt(x + rx, y + ry, z + rz);
 						if (toSet.getType() == Material.AIR) {
 							undoList.add(toSet.getState());
-							toSet.setType(leaves);
+							SetBlock.setMaterial(toSet, leaves);
 						}
 					}
 				}

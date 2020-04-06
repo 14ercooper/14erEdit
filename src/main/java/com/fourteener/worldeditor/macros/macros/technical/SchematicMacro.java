@@ -95,7 +95,7 @@ public class SchematicMacro extends Macro {
 			if (blockMat == Material.AIR) {
 				if (setAir) {
 					undoList.add(b.getState());
-					b.setType(blockMat);
+					SetBlock.setMaterial(b, blockMat);
 					b.setBlockData(blockDat);
 					if (!nbt.equalsIgnoreCase("")) {
 						String command = "data merge block " + b.getX() + " " + b.getY() + " " + b.getZ() + " " + nbt;
@@ -105,7 +105,7 @@ public class SchematicMacro extends Macro {
 			}
 			else {
 				undoList.add(b.getState());
-				b.setType(blockMat);
+				SetBlock.setMaterial(b, blockMat);
 				b.setBlockData(blockDat);
 				if (!nbt.equalsIgnoreCase("")) {
 					String command = "data merge block " + b.getX() + " " + b.getY() + " " + b.getZ() + " " + nbt;

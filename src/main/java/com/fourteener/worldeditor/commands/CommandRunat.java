@@ -16,6 +16,7 @@ import org.bukkit.entity.Entity;
 import com.fourteener.worldeditor.brush.Brush;
 import com.fourteener.worldeditor.brush.BrushShape;
 import com.fourteener.worldeditor.main.GlobalVars;
+import com.fourteener.worldeditor.main.SetBlock;
 import com.fourteener.worldeditor.operations.Operator;
 
 public class CommandRunat implements CommandExecutor {
@@ -92,7 +93,7 @@ public class CommandRunat implements CommandExecutor {
 		for (BlockState bs : operatedArray) {
 			Location l = bs.getLocation();
 			Block b = GlobalVars.world.getBlockAt(l);
-			b.setType(bs.getType(), Operator.ignoringPhysics);
+			SetBlock.setMaterial(b, bs.getType(), Operator.ignoringPhysics);
 			b.setBlockData(bs.getBlockData(), Operator.ignoringPhysics);
 		}
 		

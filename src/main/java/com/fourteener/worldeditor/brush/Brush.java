@@ -140,7 +140,7 @@ public class Brush {
 		for (BlockState bs : operatedArray) {
 			Location l = bs.getLocation();
 			Block b = GlobalVars.world.getBlockAt(l);
-			b.setType(bs.getType(), Operator.ignoringPhysics);
+			SetBlock.setMaterial(b, bs.getType(), Operator.ignoringPhysics);
 			b.setBlockData(bs.getBlockData(), Operator.ignoringPhysics);
 		}
 		
