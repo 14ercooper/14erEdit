@@ -21,6 +21,7 @@ import com.fourteener.worldeditor.undo.UndoManager;
 public class VinesMacro extends Macro {
 	
 	double radius = 0, length = 0, variance = 0, density = 0;
+	String block;
 	Location pos;
 	
 	// Create a new macro
@@ -29,6 +30,12 @@ public class VinesMacro extends Macro {
 		length = Double.parseDouble(args[1]);
 		variance = Double.parseDouble(args[2]);
 		density = Double.parseDouble(args[3]);
+		try {
+			block = args[4];
+		}
+		catch (Exception e) {
+			block = "vine";
+		}
 		pos = loc;
 	}
 	
@@ -83,71 +90,73 @@ public class VinesMacro extends Macro {
 			
 			String blockStateTop = "[";
 			String blockState = "";
-			boolean firstState = true;
-			List<String> dirs = new ArrayList<String>();
-			// And next to a solid block
-			if (b.getRelative(BlockFace.NORTH).getType() != Material.AIR) {
-				if (firstState) {
-					firstState = false;
+			if (block.equalsIgnoreCase("vine")) {
+				boolean firstState = true;
+				List<String> dirs = new ArrayList<String>();
+				// And next to a solid block
+				if (b.getRelative(BlockFace.NORTH).getType() != Material.AIR) {
+					if (firstState) {
+						firstState = false;
+					}
+					else {
+						blockStateTop = blockStateTop.concat(",");
+					}
+					blockStateTop = blockStateTop.concat("north=true");
+					dirs.add("[north=true]");
+				}
+				if (b.getRelative(BlockFace.EAST).getType() != Material.AIR) {
+					if (firstState) {
+						firstState = false;
+					}
+					else {
+						blockStateTop = blockStateTop.concat(",");
+					}
+					blockStateTop = blockStateTop.concat("east=true");
+					dirs.add("[east=true]");
+				}
+				if (b.getRelative(BlockFace.SOUTH).getType() != Material.AIR) {
+					if (firstState) {
+						firstState = false;
+					}
+					else {
+						blockStateTop = blockStateTop.concat(",");
+					}
+					blockStateTop = blockStateTop.concat("south=true");
+					dirs.add("[south=true]");
+				}
+				if (b.getRelative(BlockFace.WEST).getType() != Material.AIR) {
+					if (firstState) {
+						firstState = false;
+					}
+					else {
+						blockStateTop = blockStateTop.concat(",");
+					}
+					blockStateTop = blockStateTop.concat("west=true");
+					dirs.add("[west=true]");
+				}
+				
+				// Is this also a top vine?
+				if (!blockStateTop.equals("[")) {
+					if (b.getRelative(BlockFace.UP).getType() != Material.AIR) {
+						blockStateTop = blockStateTop.concat(",up=true");
+					}
 				}
 				else {
-					blockStateTop = blockStateTop.concat(",");
+					continue;
 				}
-				blockStateTop = blockStateTop.concat("north=true");
-				dirs.add("[north=true]");
-			}
-			if (b.getRelative(BlockFace.EAST).getType() != Material.AIR) {
-				if (firstState) {
-					firstState = false;
+				
+				// Pick the side for the vines that will be below this one
+				if (dirs.size() > 1) {
+					blockState = dirs.get(rand.nextInt(dirs.size() - 1));
 				}
 				else {
-					blockStateTop = blockStateTop.concat(",");
+					blockState = dirs.get(0);
 				}
-				blockStateTop = blockStateTop.concat("east=true");
-				dirs.add("[east=true]");
-			}
-			if (b.getRelative(BlockFace.SOUTH).getType() != Material.AIR) {
-				if (firstState) {
-					firstState = false;
+				
+				// Close off the directional state; and move on if there was no solid block
+				if (!blockStateTop.equals("[")) {
+					blockStateTop = blockStateTop.concat("]");
 				}
-				else {
-					blockStateTop = blockStateTop.concat(",");
-				}
-				blockStateTop = blockStateTop.concat("south=true");
-				dirs.add("[south=true]");
-			}
-			if (b.getRelative(BlockFace.WEST).getType() != Material.AIR) {
-				if (firstState) {
-					firstState = false;
-				}
-				else {
-					blockStateTop = blockStateTop.concat(",");
-				}
-				blockStateTop = blockStateTop.concat("west=true");
-				dirs.add("[west=true]");
-			}
-			
-			// Is this also a top vine?
-			if (!blockStateTop.equals("[")) {
-				if (b.getRelative(BlockFace.UP).getType() != Material.AIR) {
-					blockStateTop = blockStateTop.concat(",up=true");
-				}
-			}
-			else {
-				continue;
-			}
-			
-			// Pick the side for the vines that will be below this one
-			if (dirs.size() > 1) {
-				blockState = dirs.get(rand.nextInt(dirs.size() - 1));
-			}
-			else {
-				blockState = dirs.get(0);
-			}
-			
-			// Close off the directional state; and move on if there was no solid block
-			if (!blockStateTop.equals("[")) {
-				blockStateTop = blockStateTop.concat("]");
 			}
 			
 			// Determine the length of this vine
@@ -165,8 +174,9 @@ public class VinesMacro extends Macro {
 			for (int i = 1; i <= vineLength; i++) {
 				state = b.getRelative(BlockFace.DOWN, i).getState();
 				if (state.getType() == Material.AIR) {
-					state.setType(Material.VINE);
-					state.setBlockData(Bukkit.getServer().createBlockData("minecraft:vine" + blockState));
+					state.setType(Material.matchMaterial(block));
+					if (block.equalsIgnoreCase("vine"))
+						state.setBlockData(Bukkit.getServer().createBlockData("minecraft:vine" + blockState));
 					operatedBlocks.add(state);
 				}
 				else {
