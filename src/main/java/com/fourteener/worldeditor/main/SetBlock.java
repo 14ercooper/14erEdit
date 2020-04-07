@@ -11,7 +11,6 @@ public class SetBlock {
 		if (mat.toString().toLowerCase().contains("leaves")) {
 			Leaves leafData = (Leaves) b.getBlockData();
 			leafData.setPersistent(true);
-			leafData.setDistance(1);
 			b.setBlockData(leafData);
 		}
 	}
@@ -20,7 +19,6 @@ public class SetBlock {
 		if (mat.toString().toLowerCase().contains("leaves")) {
 			Leaves leafData = (Leaves) b.getBlockData();
 			leafData.setPersistent(true);
-			leafData.setDistance(1);
 			b.setBlockData(leafData);
 		}
 	}
@@ -29,7 +27,6 @@ public class SetBlock {
 		if (mat.toString().toLowerCase().contains("leaves")) {
 			Leaves leafData = (Leaves) b.getBlockData();
 			leafData.setPersistent(true);
-			leafData.setDistance(1);
 			b.setBlockData(leafData);
 		}
 	}
