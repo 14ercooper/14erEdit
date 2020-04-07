@@ -165,10 +165,10 @@ public class VinesMacro extends Macro {
 			
 			// Grow the vine (checking to make sure only air gets replaced and registering operated blocks)
 			// Grow the top vine
-			Main.logDebug("Growing a vine of length " + Integer.toString(vineLength));
 			BlockState state = b.getState();
-			state.setType(Material.VINE);
-			state.setBlockData(Bukkit.getServer().createBlockData("minecraft:vine" + blockStateTop));
+			state.setType(Material.matchMaterial(block));
+			if (block.equalsIgnoreCase("vine"))
+				state.setBlockData(Bukkit.getServer().createBlockData("minecraft:vine" + blockState));
 			operatedBlocks.add(state);
 			// Grow all the other vines
 			for (int i = 1; i <= vineLength; i++) {
@@ -180,7 +180,6 @@ public class VinesMacro extends Macro {
 					operatedBlocks.add(state);
 				}
 				else {
-					Main.logDebug("Stopping vine due to solid block");
 					break; // Don't grow through solid blocks
 				}
 			}
