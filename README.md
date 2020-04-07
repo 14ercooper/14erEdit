@@ -34,4 +34,4 @@ You can access a rudamentary documentation [here](https://docs.google.com/docume
 
 14erEdit operates on a rolling release for the world editor through the megaserver. The most recent 14erEdit version will be available for at least the most recent available Minecraft version, with occasional backports.
 
-The megaserver will be updated periodically in the releases tab, including changelogs.
+The megaserver and 14erEdit jar will be updated periodically in the releases tab, including changelogs.

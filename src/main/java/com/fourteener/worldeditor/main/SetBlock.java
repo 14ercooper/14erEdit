@@ -2,7 +2,7 @@ package com.fourteener.worldeditor.main;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.block.data.BlockData;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.data.type.Leaves;
 
 public class SetBlock {
@@ -11,6 +11,7 @@ public class SetBlock {
 		if (mat.toString().toLowerCase().contains("leaves")) {
 			Leaves leafData = (Leaves) b.getBlockData();
 			leafData.setPersistent(true);
+			leafData.setDistance(1);
 			b.setBlockData(leafData);
 		}
 	}
@@ -19,12 +20,17 @@ public class SetBlock {
 		if (mat.toString().toLowerCase().contains("leaves")) {
 			Leaves leafData = (Leaves) b.getBlockData();
 			leafData.setPersistent(true);
+			leafData.setDistance(1);
 			b.setBlockData(leafData);
 		}
 	}
-	
-	public static void setMaterialData(Block b, Material mat, BlockData dat) {
+	public static void setMaterial(BlockState b, Material mat) {
 		b.setType(mat);
-		b.setBlockData(dat);
+		if (mat.toString().toLowerCase().contains("leaves")) {
+			Leaves leafData = (Leaves) b.getBlockData();
+			leafData.setPersistent(true);
+			leafData.setDistance(1);
+			b.setBlockData(leafData);
+		}
 	}
 }

@@ -6,3 +6,4 @@ target/
 *.iml
 bash.exe.stackdump
 MovePlugin.bat
+compile.sh
