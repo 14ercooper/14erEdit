@@ -15,8 +15,12 @@ public class SetNode extends Node {
 	}
 	
 	public boolean performNode () {
+		boolean didSet = true;
+		if (Operator.currentBlock.getType() == arg.getBlock()) {
+			didSet = false;
+		}
 		SetBlock.setMaterial(Operator.currentBlock, arg.getBlock());
-		return true;
+		return didSet;
 	}
 	
 	public int getArgCount () {

@@ -46,7 +46,7 @@ public class BlockNode extends Node {
 			return Operator.currentBlock.getType().equals(arg1);
 		}
 		else {
-			return Operator.currentBlock.getBlockData().matches(arg2);
+			return Operator.currentBlock.getBlockData().matches(arg2) && Operator.currentBlock.getType().equals(arg1);
 		}
 	}
 	

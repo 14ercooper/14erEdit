@@ -17,7 +17,7 @@ public class NumberNode extends Node {
 	}
 
 	public boolean performNode() {
-		return false;
+		return arg < 0.01 ? false : true;
 	}
 	
 	// Return the number
