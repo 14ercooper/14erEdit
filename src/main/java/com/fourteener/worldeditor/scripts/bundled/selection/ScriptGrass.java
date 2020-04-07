@@ -1,20 +1,18 @@
 package com.fourteener.worldeditor.scripts.bundled.selection;
 
-import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 
 import com.fourteener.worldeditor.scripts.Craftscript;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 import java.util.ArrayList;
 import java.lang.Math;
 import java.lang.Double;
 
 public class ScriptGrass extends Craftscript {
     @Override
-    public Set<BlockState> perform(LinkedList<String> args, Player player, String label) {
+    public boolean perform(LinkedList<String> args, Player player, String label) {
         String opToRun = "";
         // Check for missing args to fill in with "default" brush
         // Example brush:   /fx sel op ? air ? _ - 1 1 ~ air ? ^ - 1 5 air ? % 50 ? % 80 > grass ? % 50 > tall_grass ? % 50 > poppy > dandelion false false false false
@@ -33,7 +31,7 @@ public class ScriptGrass extends Craftscript {
             }
             player.performCommand("fx sel op ? air ? _ - 1 1 ~ air ? ^ - 1 "+ blocksAbove +" air ? % "+ (density * 100.0) + " ? % 80 > grass ? % 50 > tall_grass ? % 50 > poppy > dandelion false false false false");
             player.performCommand("fx sel op ? air ? _ - 1 1 minecraft:tall_grass[half=lower] >> minecraft:tall_grass[half=upper] false false");
-            return null;
+            return true;
         }
 
         // [AirSpaces]
@@ -111,6 +109,6 @@ public class ScriptGrass extends Craftscript {
         // Perform the set command
         player.sendRawMessage("fx sel op " + opToRun);
         player.performCommand("fx sel op " + opToRun);
-        return null;
+        return true;
     }
 }

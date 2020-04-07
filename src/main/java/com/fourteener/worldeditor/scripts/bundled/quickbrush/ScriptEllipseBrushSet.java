@@ -3,9 +3,7 @@ package com.fourteener.worldeditor.scripts.bundled.quickbrush;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
-import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 
 import com.fourteener.worldeditor.scripts.Craftscript;
@@ -13,7 +11,7 @@ import com.fourteener.worldeditor.scripts.Craftscript;
 public class ScriptEllipseBrushSet extends Craftscript {
 
 	@Override
-	public Set<BlockState> perform(LinkedList<String> args, Player player, String label) {
+	public boolean perform(LinkedList<String> args, Player player, String label) {
 		String rx = args.get(0);
 		String ry = args.get(1);
 		String rz = args.get(2);
@@ -71,7 +69,6 @@ public class ScriptEllipseBrushSet extends Craftscript {
 			opToRun = opToRun.concat("false");
 		}
 		// Perform the set command
-		player.performCommand("fx br e " + rx + " " + ry + " " + rz + " 0.5 " + opToRun);
-		return null;
+		return player.performCommand("fx br e " + rx + " " + ry + " " + rz + " 0.5 " + opToRun);
 	}
 }

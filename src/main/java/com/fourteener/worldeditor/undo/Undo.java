@@ -2,164 +2,113 @@ package com.fourteener.worldeditor.undo;
 
 import java.util.ArrayDeque;
 import java.util.HashSet;
-import java.util.Set;
 
+import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
-
-import com.fourteener.worldeditor.main.*;
 
 public class Undo {
 	// Whose undo is this?
 	public Player owner;
 	
-	// How many undos and redos should be stored
-	public static int undoSize = 25;
+	// How many blocks should be stored
+	private int maxBlocks = 1000000;
 	
 	// Stores undo and redo elements
-	private ArrayDeque<UndoElement> undoElements = new ArrayDeque<UndoElement>();
-	private ArrayDeque<UndoElement> redoElements = new ArrayDeque<UndoElement>();
+	private ArrayDeque<BlockState> undoList = new ArrayDeque<BlockState>();
+	private ArrayDeque<BlockState> redoList = new ArrayDeque<BlockState>();
+	private ArrayDeque<Integer> undoSizes = new ArrayDeque<Integer>();
+	private ArrayDeque<Integer> redoSizes = new ArrayDeque<Integer>();
 	
 	// For consolidating undos
-	private int isConsolidating = 0;
-	private int numToConsolidate = 0;
-	private Set<BlockState> consolidatedUndoStorage = new HashSet<BlockState>();
-	//private List<Location> storedLocations = new ArrayList<Location>();
+	private HashSet<String> positions = new HashSet<String>();
 	
-	
-	// Create a new undo tracker for a player
-	public Undo(Player player) {
+	Undo(Player player) {
 		owner = player;
 	}
 	
-	// Store a world change into the tracker
-	public boolean storeUndo (UndoElement e) {
-		// Not consolidating an undo
-		if (isConsolidating == 0) {
-			Main.logDebug("Storing a normal undo"); // -----
-			undoElements.add(e);
-			if (undoElements.size() > undoSize)
-				undoElements.removeFirst();
+	// Start an undo
+	public void startUndo () {
+		positions = new HashSet<String>();
+	}
+	
+	// End an undo
+	public int finishUndo () {
+		if (positions.size() <= 0) {
+			return 0;
+		}
+		undoSizes.addFirst(positions.size());
+		return positions.size();
+	}
+	
+	public boolean storeBlock(BlockState bs) {
+		int x = bs.getX();
+		int y = bs.getY();
+		int z = bs.getZ();
+		String posStr = x + ";" + y + ";" + z;
+		if (!positions.contains(posStr)) {
+			positions.add(posStr);
+			undoList.add(bs);
+			if (undoList.size() > maxBlocks) {
+				int numRem = undoSizes.removeLast();
+				while (numRem-- > 0) {
+					undoList.removeLast();
+				}
+			}
 			return true;
 		}
-		// We are consolidating an undo, so add the element to the queue
-		else {
-			Set<BlockState> states = e.getBlocks();
-
-			try {
-				if (states == null) {
-					return true;
-				}
-				else if (states.isEmpty()) {
-					return true;
-				}
-			}
-			catch (NullPointerException error) {
-				Main.logDebug("Nullptr in Undo::storeUndo"); // -----
-				return true;
-			}
-			Main.logDebug("Number of blocks registered: " + Integer.toString(consolidatedUndoStorage.size())); // -----
-			Main.logDebug("Storing " + Integer.toString(states.size()) + " blocks to the consolidated undo queue"); // -----
-			for (BlockState bs : states) {
-				consolidatedUndoStorage.add(bs);
-			}
-			numToConsolidate++;
-			return true;
-		}
-	}
-	// Store a world change into the tracker
-	private boolean storeRedo (UndoElement e) {
-		redoElements.add(e);
-		if (redoElements.size() > undoSize)
-			redoElements.removeFirst();
-		return true;
+		return false;
 	}
 	
-	// Start tracking a consolidated undo
-	public void startTrackingConsolidatedUndo () {
-		Main.logDebug("Now tracking consolidated undo"); // -----
-		isConsolidating++;
-		Main.logDebug("Consolidations nested: " + Integer.toString(isConsolidating)); // -----
-	}
-	
-	// Get the number of undos in the consolidation queue
-	public int getNumToConsolidate () {
-		return numToConsolidate;
-	}
-	
-	// Cancel a consolidated undo
-	public boolean cancelConsolidatedUndo () {
-		Main.logDebug("Cancelling consolidated undo"); // -----
-		isConsolidating--;
-		if (isConsolidating <= 0) {
-			Main.logDebug("Full cancel"); // -----
-			isConsolidating = 0;
-			numToConsolidate = 0;
-			consolidatedUndoStorage = new HashSet<BlockState>();
-		}
-		return true;
-	}
-	
-	// Store a consolidated undo
-	public boolean storeConsolidatedUndo () {
-		Main.logDebug("Storing a consolidated undo"); // -----
-		if (numToConsolidate == 0) {
-			return cancelConsolidatedUndo ();
-		}
-		isConsolidating--;
-		if (isConsolidating <= 0) {
-			Main.logDebug("Writing to regular undo"); // -----
-			isConsolidating = 0;
-			this.storeUndo (new UndoElement(consolidatedUndoStorage));
-			numToConsolidate = 0;
-			consolidatedUndoStorage = new HashSet<BlockState>();
-		}
-		return true;
+	public void storeBlock(Block b) {
+		storeBlock(b.getState());
 	}
 	
 	// Undo a number of changes
-	public boolean undoChanges (int number) {
-		if (number > undoElements.size()) {
-			number = undoElements.size();
-		}
-		if (number < 1) {
-			number = 1;
-		}
-		
-		// Loop through the needed number of undos
+	public int undoChanges (int number) {
+		int numPlaced = 0;
 		while (number-- > 0) {
-			// Grab the UndoElement
-			UndoElement element = undoElements.getLast();
-			Main.logDebug("Undoing " + Integer.toString(element.getBlocks().size()) + " block changes"); // -----
-			
-			// First, register a redo element
-			storeRedo(element.getInverseElement());
-			
-			// Then perform the undo
-			element.applyElement();
-			
-			// And delete the undo element
-			undoElements.removeLast();
+			int numRem = undoSizes.removeFirst();
+			redoSizes.addFirst(numRem);
+			numPlaced += numRem;
+			while (numRem-- > 0) {
+				BlockState bs = undoList.removeFirst();
+				redoList.addFirst(bs);
+				Block b = bs.getBlock();
+				b.setType(bs.getType(), true);
+				b.setBlockData(bs.getBlockData(), true);
+			}
+			if (redoList.size() > maxBlocks) {
+				numRem = redoSizes.removeLast();
+				while (numRem-- > 0) {
+					redoList.removeLast();
+				}
+			}
 		}
-		return true;
+		return numPlaced;
 	}
 	
 	// Redo a number of changes
-	public boolean redoChanges (int number) {
-		if (number > redoElements.size())
-			number = redoElements.size();
-		if (number < 1)
-			number = 1;
-		
-		// Loop through the needed number of redos
+	public int redoChanges (int number) {
+		int numPlaced = 0;
 		while (number-- > 0) {
-			// This follows the same logic as the loop in undo changes
-			UndoElement element = redoElements.getLast();
-			Main.logDebug("Redoing " + Integer.toString(element.getBlocks().size()) + " block changes"); // -----
-			storeUndo(element.getInverseElement());
-			element.applyElement();
-			redoElements.removeLast();
+			int numRem = redoSizes.removeFirst();
+			undoSizes.addFirst(numRem);
+			numPlaced += numRem;
+			while (numRem-- > 0) {
+				BlockState bs = redoList.removeFirst();
+				undoList.addFirst(bs);
+				Block b = bs.getBlock();
+				b.setType(bs.getType(), true);
+				b.setBlockData(bs.getBlockData(), true);
+			}
+			if (undoList.size() > maxBlocks) {
+				numRem = undoSizes.removeLast();
+				while (numRem-- > 0) {
+					undoList.removeLast();
+				}
+			}
 		}
-		return true;
+		return numPlaced;
 	}
 }

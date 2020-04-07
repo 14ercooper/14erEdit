@@ -1,24 +1,18 @@
 package com.fourteener.worldeditor.macros.macros.technical;
 
 import java.io.File;
-import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockState;
 import org.bukkit.block.data.BlockData;
 
 import com.fourteener.schematics.Schematic;
 import com.fourteener.worldeditor.macros.macros.Macro;
 import com.fourteener.worldeditor.main.*;
 import com.fourteener.worldeditor.operations.Operator;
-import com.fourteener.worldeditor.undo.UndoElement;
-import com.fourteener.worldeditor.undo.UndoManager;
-
 public class SchematicMacro extends Macro {
 	
 	int xOff = 0, yOff = 0, zOff = 0;
@@ -70,8 +64,6 @@ public class SchematicMacro extends Macro {
 	// Run this macro
 	public boolean performMacro (String[] args, Location loc) {
 		SetupMacro(args, loc);
-		// Start tracking an undo
-		Set<BlockState> undoList = new HashSet<BlockState>();
 		
 		// Parse the list into the world
 		int rx = 0, ry = 0, rz = 0;
@@ -94,7 +86,6 @@ public class SchematicMacro extends Macro {
 			// Set the block
 			if (blockMat == Material.AIR) {
 				if (setAir) {
-					undoList.add(b.getState());
 					SetBlock.setMaterial(b, blockMat);
 					b.setBlockData(blockDat);
 					if (!nbt.equalsIgnoreCase("")) {
@@ -104,7 +95,6 @@ public class SchematicMacro extends Macro {
 				}
 			}
 			else {
-				undoList.add(b.getState());
 				SetBlock.setMaterial(b, blockMat);
 				b.setBlockData(blockDat);
 				if (!nbt.equalsIgnoreCase("")) {
@@ -114,8 +104,6 @@ public class SchematicMacro extends Macro {
 			}
 		}
 		
-		// Store the undo
-		UndoManager.getUndo(Operator.currentPlayer).storeUndo(new UndoElement(undoList));
 		return true;
 	}
 }

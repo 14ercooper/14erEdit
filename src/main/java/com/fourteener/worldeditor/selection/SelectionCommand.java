@@ -5,14 +5,11 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.bukkit.Location;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 
 import com.fourteener.worldeditor.main.*;
 import com.fourteener.worldeditor.operations.Operator;
-import com.fourteener.worldeditor.undo.UndoElement;
 import com.fourteener.worldeditor.undo.UndoManager;
 
 public class SelectionCommand {
@@ -216,12 +213,8 @@ public class SelectionCommand {
 		Main.logDebug("Block array size is " + Integer.toString(blockArray.size())); // -----
 		
 		// Store an undo
-		try {
-			UndoManager.getUndo(wand.owner).cancelConsolidatedUndo();
-		}
-		catch (Exception e) {}
-		UndoManager.getUndo(wand.owner).startTrackingConsolidatedUndo();
-		UndoManager.getUndo(wand.owner).storeUndo(new UndoElement(blockArray)); //-----------
+		GlobalVars.currentUndo = UndoManager.getUndo(wand.owner);
+		GlobalVars.currentUndo.startUndo();
 		
 		// Construct the operation
 		int brushOpOffset = 2;
@@ -238,31 +231,16 @@ public class SelectionCommand {
 		// And turn the string into an operation
 		Operator operator = Operator.newOperator(opStr);
 		
-		// Transform the block array to a state array
-		List<BlockState> snapshotArray = new ArrayList<BlockState>();
-		for (Block b : blockArray) {
-			snapshotArray.add(b.getState());
-		}
-		
 		// Finally, perform the operation
 		if (operator == null)
 			return false;
-		Main.logDebug("Operating on selection"); // -----
-		List<BlockState> operatedList = new ArrayList<BlockState>();
-		for (BlockState bs : snapshotArray) {
-			operator.operateOnBlock(bs, wand.owner);
-			operatedList.add(operator.currentBlock);
+		for (Block b : blockArray) {
+			operator.operateOnBlock(b, wand.owner);
 		}
 		
-		// Apply the changes to the world
-		for (BlockState bs : operatedList) {
-			Location l = bs.getLocation();
-			Block b = GlobalVars.world.getBlockAt(l);
-			b.setType(bs.getType(), Operator.ignoringPhysics);
-			b.setBlockData(bs.getBlockData(), Operator.ignoringPhysics);
-		}
-		
-		return UndoManager.getUndo(wand.owner).storeConsolidatedUndo();
+		int i = GlobalVars.currentUndo.finishUndo();
+		GlobalVars.currentUndo = null;
+		return i > 0;
 	}
 	
 	// Expand the selection

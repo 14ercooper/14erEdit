@@ -30,32 +30,32 @@ public class BlocksAdjacentNode extends Node {
 		
 		// Check each direction
 		Block blockAdj = curBlock.getRelative(BlockFace.NORTH);
-		Operator.currentBlock = blockAdj.getState();
+		Operator.currentBlock = blockAdj;
 		if (arg1.performNode())
 			numAdjacentBlocks++;
 		blockAdj = curBlock.getRelative(BlockFace.SOUTH);
-		Operator.currentBlock = blockAdj.getState();
+		Operator.currentBlock = blockAdj;
 		if (arg1.performNode())
 			numAdjacentBlocks++;
 		blockAdj = curBlock.getRelative(BlockFace.EAST);
-		Operator.currentBlock = blockAdj.getState();
+		Operator.currentBlock = blockAdj;
 		if (arg1.performNode())
 			numAdjacentBlocks++;
 		blockAdj = curBlock.getRelative(BlockFace.WEST);
-		Operator.currentBlock = blockAdj.getState();
+		Operator.currentBlock = blockAdj;
 		if (arg1.performNode())
 			numAdjacentBlocks++;
 		blockAdj = curBlock.getRelative(BlockFace.UP);
-		Operator.currentBlock = blockAdj.getState();
+		Operator.currentBlock = blockAdj;
 		if (arg1.performNode())
 			numAdjacentBlocks++;
 		blockAdj = curBlock.getRelative(BlockFace.DOWN);
-		Operator.currentBlock = blockAdj.getState();
+		Operator.currentBlock = blockAdj;
 		if (arg1.performNode())
 			numAdjacentBlocks++;
 		
 		// Reset the current block
-		Operator.currentBlock = curBlock.getState();
+		Operator.currentBlock = curBlock;
 		
 		return (numAdjacentBlocks >= arg2.getMin() - 0.1 && numAdjacentBlocks <= arg2.getMax() + 0.1);
 	}

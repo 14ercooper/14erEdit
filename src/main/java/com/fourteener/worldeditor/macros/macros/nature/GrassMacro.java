@@ -14,9 +14,6 @@ import org.bukkit.block.BlockState;
 
 import com.fourteener.worldeditor.macros.macros.Macro;
 import com.fourteener.worldeditor.main.*;
-import com.fourteener.worldeditor.operations.Operator;
-import com.fourteener.worldeditor.undo.UndoElement;
-import com.fourteener.worldeditor.undo.UndoManager;
 
 public class GrassMacro extends Macro {
 	
@@ -57,9 +54,6 @@ public class GrassMacro extends Macro {
 			}
 		}
 		Main.logDebug("Block array size: " + Integer.toString(blockArray.size())); // ----
-		
-		// Register an undo
-		UndoManager.getUndo(Operator.currentPlayer).storeUndo(new UndoElement(blockArray));
 		
 		// Create a snapshot array
 		List<BlockState> snapshotArray = new ArrayList<BlockState>();

@@ -17,6 +17,7 @@ public class SetSpawnerNode extends Node {
 	
 	public boolean performNode () {
 		SpawnerVar var = Operator.spawnerVars.get(name);
+		GlobalVars.currentUndo.storeBlock(Operator.currentBlock);
 		String command = "setblock " + Operator.currentBlock.getX();
 		command += " " + Operator.currentBlock.getY();
 		command += " " + Operator.currentBlock.getZ();

@@ -1,5 +1,6 @@
 package com.fourteener.worldeditor.main;
 
+import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.craftbukkit.v1_15_R1.block.CraftBlockEntityState;
 
@@ -22,5 +23,9 @@ public class NBTExtractor {
 		else {
 			return "";
 		}
+	}
+	
+	public String getNBT(Block b) {
+		return getNBT(b.getState());
 	}
 }

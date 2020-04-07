@@ -1,6 +1,6 @@
 package com.fourteener.worldeditor.commands;
 
-import org.bukkit.block.BlockState;
+import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -19,8 +19,8 @@ public class CommandRun implements CommandExecutor {
 				opStr = opStr.concat(s).concat(" ");
 			}
 			Operator op = Operator.newOperator(opStr);
-			BlockState bs = GlobalVars.world.getBlockAt(((Player) sender).getLocation()).getState();
-			op.operateOnBlock(bs, (Player) sender);
+			Block b = GlobalVars.world.getBlockAt(((Player) sender).getLocation());
+			op.operateOnBlock(b, (Player) sender);
 			return true;
 		}
 		return false;

@@ -12,9 +12,6 @@ import org.bukkit.block.BlockState;
 
 import com.fourteener.worldeditor.macros.macros.Macro;
 import com.fourteener.worldeditor.main.*;
-import com.fourteener.worldeditor.operations.Operator;
-import com.fourteener.worldeditor.undo.UndoElement;
-import com.fourteener.worldeditor.undo.UndoManager;
 
 public class ErodeMacro extends Macro {
 	
@@ -112,8 +109,6 @@ public class ErodeMacro extends Macro {
 			snapshotArray.add(b.getState());
 		}
 		
-		// Generate and store an undo
-		UndoManager.getUndo(Operator.currentPlayer).storeUndo(new UndoElement(erosionArray));
 		erosionArray = null; // This is no longer needed, so clean it up
 		return snapshotArray;
 	}

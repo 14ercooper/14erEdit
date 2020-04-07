@@ -24,10 +24,10 @@ public class BlockAtNode extends Node {
 
 	@Override
 	public boolean performNode() {
-		Block currBlock = GlobalVars.world.getBlockAt(Operator.currentBlock.getLocation());
-		Operator.currentBlock = GlobalVars.world.getBlockAt((int) x.getValue() + currBlock.getX(), (int) y.getValue() + currBlock.getY(), (int) z.getValue() + currBlock.getZ()).getState();
+		Block currBlock = Operator.currentBlock;
+		Operator.currentBlock = GlobalVars.world.getBlockAt((int) x.getValue() + currBlock.getX(), (int) y.getValue() + currBlock.getY(), (int) z.getValue() + currBlock.getZ());
 		boolean matches = node.performNode();
-		Operator.currentBlock = currBlock.getState();
+		Operator.currentBlock = currBlock;
 		return matches;
 	}
 

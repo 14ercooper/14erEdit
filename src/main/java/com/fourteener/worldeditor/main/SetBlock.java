@@ -7,6 +7,8 @@ import org.bukkit.block.data.type.Leaves;
 
 public class SetBlock {
 	public static void setMaterial(Block b, Material mat) {
+		if (GlobalVars.currentUndo != null)
+			GlobalVars.currentUndo.storeBlock(b);
 		b.setType(mat, false);
 		if (mat.toString().toLowerCase().contains("leaves")) {
 			Leaves leafData = (Leaves) b.getBlockData();
@@ -15,6 +17,8 @@ public class SetBlock {
 		}
 	}
 	public static void setMaterial(Block b, Material mat, boolean physics) {
+		if (GlobalVars.currentUndo != null)
+			GlobalVars.currentUndo.storeBlock(b);
 		b.setType(mat, physics);
 		if (mat.toString().toLowerCase().contains("leaves")) {
 			Leaves leafData = (Leaves) b.getBlockData();
@@ -23,6 +27,8 @@ public class SetBlock {
 		}
 	}
 	public static void setMaterial(BlockState b, Material mat) {
+		if (GlobalVars.currentUndo != null)
+			GlobalVars.currentUndo.storeBlock(b.getBlock());
 		b.setType(mat);
 		if (mat.toString().toLowerCase().contains("leaves")) {
 			Leaves leafData = (Leaves) b.getBlockData();

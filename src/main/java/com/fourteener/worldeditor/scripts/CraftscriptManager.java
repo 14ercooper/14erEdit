@@ -3,13 +3,10 @@ package com.fourteener.worldeditor.scripts;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
-import java.util.Set;
 
-import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 
 import com.fourteener.worldeditor.main.*;
-import com.fourteener.worldeditor.undo.UndoElement;
 import com.fourteener.worldeditor.undo.UndoManager;
 
 public class CraftscriptManager {
@@ -31,23 +28,17 @@ public class CraftscriptManager {
 	// Run the Craftscript label, with arguments args, and player player
 	public boolean runCraftscript (String label, LinkedList<String> args, Player player) {
 		Main.logDebug("Calling Craftsript: " + label);
+		
+		GlobalVars.currentUndo = UndoManager.getUndo(player);
+		GlobalVars.currentUndo.startUndo();
+		
 		try {
-			UndoManager.getUndo(player).cancelConsolidatedUndo();
+			registeredScripts.get(label).perform(args, player, label);
 		}
 		catch (Exception e) {}
-		UndoManager.getUndo(player).startTrackingConsolidatedUndo();
-		try {
-			Set<BlockState> toStoreInUndo = registeredScripts.get(label).perform(args, player, label);
-			if (toStoreInUndo == null && UndoManager.getUndo(player).getNumToConsolidate() == 0) {
-				return UndoManager.getUndo(player).cancelConsolidatedUndo();
-			}
-			else {
-				UndoManager.getUndo(player).storeUndo(new UndoElement(toStoreInUndo));
-				return UndoManager.getUndo(player).storeConsolidatedUndo();
-			}
-		}
-		catch (Exception e) {
-			return UndoManager.getUndo(player).cancelConsolidatedUndo();
-		}
+		
+		int i = GlobalVars.currentUndo.finishUndo();
+		GlobalVars.currentUndo = null;
+		return i > 0;
 	}
 }

@@ -11,9 +11,6 @@ import org.bukkit.block.BlockState;
 
 import com.fourteener.worldeditor.macros.macros.Macro;
 import com.fourteener.worldeditor.main.*;
-import com.fourteener.worldeditor.operations.Operator;
-import com.fourteener.worldeditor.undo.UndoElement;
-import com.fourteener.worldeditor.undo.UndoManager;
 
 public class FlattenMacro extends Macro {
 	
@@ -51,14 +48,6 @@ public class FlattenMacro extends Macro {
 			Main.logDebug("Brush flatten");
 			notAbsoluteFlatten(x, y, z, operatedBlocks);
 		}
-		
-		// Process edited blocks and register the undo
-		List<Block> blocksToUndo = new ArrayList<Block>();
-		for (BlockState bs : operatedBlocks) {
-			blocksToUndo.add(GlobalVars.world.getBlockAt(bs.getLocation()));
-		}
-		UndoManager.getUndo(Operator.currentPlayer).storeUndo(new UndoElement(blocksToUndo));
-		
 		
 		Main.logDebug("Operated on and now placing " + Integer.toString(operatedBlocks.size()) + " blocks");
 		// Apply the changes to the world

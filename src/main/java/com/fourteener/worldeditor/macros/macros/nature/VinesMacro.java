@@ -14,9 +14,6 @@ import org.bukkit.block.BlockState;
 
 import com.fourteener.worldeditor.macros.macros.Macro;
 import com.fourteener.worldeditor.main.*;
-import com.fourteener.worldeditor.operations.Operator;
-import com.fourteener.worldeditor.undo.UndoElement;
-import com.fourteener.worldeditor.undo.UndoManager;
 
 public class VinesMacro extends Macro {
 	
@@ -61,9 +58,6 @@ public class VinesMacro extends Macro {
 			}
 		}
 		Main.logDebug("Block array size: " + Integer.toString(blockArray.size())); // ----
-		
-		// Register an undo
-		UndoManager.getUndo(Operator.currentPlayer).storeUndo(new UndoElement(blockArray));
 		
 		// Create a snapshot array
 		List<BlockState> snapshotArray = new ArrayList<BlockState>();
@@ -184,14 +178,6 @@ public class VinesMacro extends Macro {
 				}
 			}
 		}
-		
-		// Process edited blocks and register the undo
-		List<Block> blocksToUndo = new ArrayList<Block>();
-		for (BlockState bs : operatedBlocks) {
-			blocksToUndo.add(GlobalVars.world.getBlockAt(bs.getLocation()));
-		}
-		UndoManager.getUndo(Operator.currentPlayer).storeUndo(new UndoElement(blocksToUndo));
-		
 		
 		Main.logDebug("Operated on and now placing " + Integer.toString(operatedBlocks.size()) + " blocks");
 		// Apply the changes to the world

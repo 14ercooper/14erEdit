@@ -19,7 +19,7 @@ public class CommandUndo implements CommandExecutor {
 				} catch (Exception e) {
 					numToUndo = 1;
 				}
-				return UndoManager.getUndo((Player) sender).undoChanges(numToUndo);
+				return UndoManager.getUndo((Player) sender).undoChanges(numToUndo) > 0;
 			} else if (command.getName().equalsIgnoreCase("re")) {
 				int numToRedo = 1;
 				try {
@@ -27,7 +27,7 @@ public class CommandUndo implements CommandExecutor {
 				} catch (Exception e) {
 					numToRedo = 1;
 				}
-				return UndoManager.getUndo((Player) sender).redoChanges(numToRedo);
+				return UndoManager.getUndo((Player) sender).redoChanges(numToRedo) > 0;
 			}
 			return false;
 		}

@@ -1,21 +1,17 @@
 package com.fourteener.worldeditor.brush;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.bukkit.Location;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.fourteener.worldeditor.main.*;
 import com.fourteener.worldeditor.operations.Operator;
-import com.fourteener.worldeditor.undo.UndoElement;
 import com.fourteener.worldeditor.undo.UndoManager;
 
 public class Brush {
@@ -108,11 +104,10 @@ public class Brush {
 	
 	@SuppressWarnings("static-access")
 	public boolean operate (double x, double y, double z) {
-		try {
-			UndoManager.getUndo(owner).cancelConsolidatedUndo();
-		}
-		catch (Exception e) {}
-		UndoManager.getUndo(owner).startTrackingConsolidatedUndo();
+
+		GlobalVars.currentUndo = UndoManager.getUndo(owner);
+		GlobalVars.currentUndo.startUndo();
+		
 		// Build an array of all blocks to operate on
 		List<Block> blockArray = shapeGenerator.GetBlocks(shapeArgs, x, y, z);
 		
@@ -121,29 +116,12 @@ public class Brush {
 		}
 		Main.logDebug("Block array size is " + Integer.toString(blockArray.size())); // -----
 		
-		List<BlockState> snapshotArray = new ArrayList<BlockState>();
 		for (Block b : blockArray) {
-			snapshotArray.add(b.getState());
+			operation.operateOnBlock(b, owner);
 		}
 		
-		// Store an undo
-		UndoManager.getUndo(owner).storeUndo(new UndoElement(blockArray));
-		
-		// Operate on the blocks and apply them to the world
-		List<BlockState> operatedArray = new ArrayList<BlockState>();
-		for (BlockState bs : snapshotArray) {
-			operation.operateOnBlock(bs, owner);
-			operatedArray.add(operation.currentBlock);
-		}
-		
-		// Apply the blocks to the world
-		for (BlockState bs : operatedArray) {
-			Location l = bs.getLocation();
-			Block b = GlobalVars.world.getBlockAt(l);
-			SetBlock.setMaterial(b, bs.getType(), Operator.ignoringPhysics);
-			b.setBlockData(bs.getBlockData(), Operator.ignoringPhysics);
-		}
-		
-		return UndoManager.getUndo(owner).storeConsolidatedUndo();
+		int i = GlobalVars.currentUndo.finishUndo();
+		GlobalVars.currentUndo = null;
+		return i > 0;
 	}
 }

@@ -29,7 +29,7 @@ public class FacingNode extends BlockNode {
 		Random rand = new Random();
 		
 		List<String> dirs = new ArrayList<String>();
-		Block b = Operator.currentBlock.getBlock();
+		Block b = Operator.currentBlock;
 		// And next to a solid block
 		if (b.getRelative(BlockFace.NORTH).getType() != Material.AIR) {
 			dirs.add("[north=true]");

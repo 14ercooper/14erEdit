@@ -3,7 +3,7 @@ package com.fourteener.worldeditor.operations;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.bukkit.block.BlockState;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
 import com.fourteener.worldeditor.main.*;
@@ -12,7 +12,7 @@ import com.fourteener.worldeditor.operations.type.*;
 
 public class Operator {
 	public static Operator currentOperator;
-	public static BlockState currentBlock;
+	public static Block currentBlock;
 	public static Player currentPlayer;
 	public static boolean ignoringPhysics = false; // False to ignore physics, true to perform physics 'cause Minecraft is screwy
 	public static Map<String, BlockVar> blockVars = new HashMap<String, BlockVar>();
@@ -24,7 +24,7 @@ public class Operator {
 	
 	public EntryNode entryNode;
 	
-	public boolean operateOnBlock (BlockState block, Player p) {
+	public boolean operateOnBlock (Block block, Player p) {
 		// Set global operator variables
 		currentOperator = this;
 		currentBlock = block;
@@ -34,7 +34,7 @@ public class Operator {
 		return entryNode.performNode();
 	}
 	
-	public boolean operateOnBlock (BlockState block) {
+	public boolean operateOnBlock (Block block) {
 		// Set global operator variables
 		currentOperator = this;
 		currentBlock = block;
