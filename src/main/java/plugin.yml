@@ -33,3 +33,9 @@ commands:
     info:
         description: Display plugin information
         usage: "Usage: /info"
+    confirm:
+        description: Confirm large edits
+        usage: "Usage: /confirm [number]"
+    cancel:
+        description: Cancel large edits
+        usage: "Usage: /cancel [number]"
