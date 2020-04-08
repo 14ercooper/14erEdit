@@ -229,11 +229,9 @@ public class SelectionCommand {
 			opStr = opStr.concat(s).concat(" ");
 		}
 		// And turn the string into an operation
-		Operator operator = Operator.newOperator(opStr);
+		Operator operator = new Operator(opStr);
 		
 		// Finally, perform the operation
-		if (operator == null)
-			return false;
 		for (Block b : blockArray) {
 			operator.operateOnBlock(b, wand.owner);
 		}

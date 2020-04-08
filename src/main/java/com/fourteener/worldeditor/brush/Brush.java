@@ -91,7 +91,7 @@ public class Brush {
 			opStr = opStr.concat(s).concat(" ");
 		}
 		// And then construct the operator
-		operation = Operator.newOperator(opStr);
+		operation = new Operator(opStr);
 		
 		// Invalid operator?
 		if (operation == null)

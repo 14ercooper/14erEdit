@@ -73,7 +73,7 @@ public class CommandRunat implements CommandExecutor {
 		for (int i = numArgs + 4; i < args.length; i++) {
 			opStr = opStr.concat(args[i]).concat(" ");
 		}
-		Operator op = Operator.newOperator(opStr);
+		Operator op = new Operator(opStr);
 
 		// Operate on the brush selection
 		for (Block b : blocks) {
