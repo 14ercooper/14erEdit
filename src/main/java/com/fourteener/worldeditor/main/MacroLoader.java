@@ -13,5 +13,7 @@ public class MacroLoader {
 		GlobalVars.macroLauncher.addMacro("vines", new VinesMacro());
 		GlobalVars.macroLauncher.addMacro("flatten", new FlattenMacro());
 		GlobalVars.macroLauncher.addMacro("schem", new SchematicMacro());
+		GlobalVars.macroLauncher.addMacro("line", new LineMacro());
+		GlobalVars.macroLauncher.addMacro("catenary", new CatenaryMacro());
 	}
 }

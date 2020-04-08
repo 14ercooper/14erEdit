@@ -3,6 +3,7 @@ package com.fourteener.worldeditor.main;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.fourteener.worldeditor.async.AsyncManager;
 import com.fourteener.worldeditor.brush.BrushListener;
 import com.fourteener.worldeditor.commands.*;
 import com.fourteener.worldeditor.macros.MacroLauncher;
@@ -19,6 +20,9 @@ public class Main extends JavaPlugin {
 		CommandUndo undoCmd = new CommandUndo();
 		this.getCommand("un").setExecutor(undoCmd);
 		this.getCommand("re").setExecutor(undoCmd);
+		CommandConfirm confirmCmd = new CommandConfirm();
+		this.getCommand("confirm").setExecutor(confirmCmd);
+		this.getCommand("cancel").setExecutor(confirmCmd);
 		this.getCommand("script").setExecutor(new CommandScript());
 		this.getCommand("run").setExecutor(new CommandRun());
 		this.getCommand("runat").setExecutor(new CommandRunat());
@@ -32,11 +36,13 @@ public class Main extends JavaPlugin {
 		// These are needed by the plugin, but should only be loaded once as they are very slow to load
 		GlobalVars.world = Bukkit.getWorlds().get(0);
 		GlobalVars.simplexNoise = new SimplexNoise (GlobalVars.world.getSeed()); // Seeded using the world seed for variance between worlds but consistency in the same world
+		GlobalVars.plugin = this;
 		
 		// Load managers
 		GlobalVars.scriptManager = new CraftscriptManager();
 		GlobalVars.macroLauncher = new MacroLauncher();
 		GlobalVars.operationParser = new Parser();
+		GlobalVars.asyncManager = new AsyncManager();
 		
 		// Register the prepackaged things to managers
 		CraftscriptLoader.LoadBundledCraftscripts();

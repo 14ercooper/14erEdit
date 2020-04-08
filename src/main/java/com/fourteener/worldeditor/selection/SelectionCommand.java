@@ -10,7 +10,6 @@ import org.bukkit.entity.Player;
 
 import com.fourteener.worldeditor.main.*;
 import com.fourteener.worldeditor.operations.Operator;
-import com.fourteener.worldeditor.undo.UndoManager;
 
 public class SelectionCommand {
 	public static boolean performCommand (String[] args, Player player) {
@@ -212,10 +211,6 @@ public class SelectionCommand {
 		List<Block> blockArray = manager.getBlocks();
 		Main.logDebug("Block array size is " + Integer.toString(blockArray.size())); // -----
 		
-		// Store an undo
-		GlobalVars.currentUndo = UndoManager.getUndo(wand.owner);
-		GlobalVars.currentUndo.startUndo();
-		
 		// Construct the operation
 		int brushOpOffset = 2;
 		List<String> opArray = new LinkedList<String>(Arrays.asList(brushOperation));
@@ -229,18 +224,11 @@ public class SelectionCommand {
 			opStr = opStr.concat(s).concat(" ");
 		}
 		// And turn the string into an operation
-		Operator operator = Operator.newOperator(opStr);
+		Operator operator = new Operator(opStr);
 		
-		// Finally, perform the operation
-		if (operator == null)
-			return false;
-		for (Block b : blockArray) {
-			operator.operateOnBlock(b, wand.owner);
-		}
-		
-		int i = GlobalVars.currentUndo.finishUndo();
-		GlobalVars.currentUndo = null;
-		return i > 0;
+		GlobalVars.asyncManager.scheduleEdit(operator, wand.owner, blockArray);
+
+		return true;
 	}
 	
 	// Expand the selection

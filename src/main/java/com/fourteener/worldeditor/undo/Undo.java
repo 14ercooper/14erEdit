@@ -14,7 +14,7 @@ public class Undo {
 	public Player owner;
 	
 	// How many blocks should be stored
-	private int maxBlocks = 250000;
+	public static final int maxBlocks = 250000;
 	
 	// Stores undo and redo elements
 	private ArrayDeque<BlockState> undoList = new ArrayDeque<BlockState>();

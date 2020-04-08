@@ -12,6 +12,7 @@ import org.bukkit.entity.Entity;
 
 import com.fourteener.worldeditor.brush.Brush;
 import com.fourteener.worldeditor.brush.BrushShape;
+import com.fourteener.worldeditor.main.GlobalVars;
 import com.fourteener.worldeditor.operations.Operator;
 
 public class CommandRunat implements CommandExecutor {
@@ -73,12 +74,9 @@ public class CommandRunat implements CommandExecutor {
 		for (int i = numArgs + 4; i < args.length; i++) {
 			opStr = opStr.concat(args[i]).concat(" ");
 		}
-		Operator op = Operator.newOperator(opStr);
-
-		// Operate on the brush selection
-		for (Block b : blocks) {
-			op.operateOnBlock(b);
-		}
+		Operator op = new Operator(opStr);
+		
+		GlobalVars.asyncManager.scheduleEdit(op, null, blocks);
 		
 		return true;
 	}

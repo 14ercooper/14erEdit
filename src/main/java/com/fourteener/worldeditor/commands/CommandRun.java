@@ -18,7 +18,7 @@ public class CommandRun implements CommandExecutor {
 			for (String s : args) {
 				opStr = opStr.concat(s).concat(" ");
 			}
-			Operator op = Operator.newOperator(opStr);
+			Operator op = new Operator(opStr);
 			Block b = GlobalVars.world.getBlockAt(((Player) sender).getLocation());
 			op.operateOnBlock(b, (Player) sender);
 			return true;

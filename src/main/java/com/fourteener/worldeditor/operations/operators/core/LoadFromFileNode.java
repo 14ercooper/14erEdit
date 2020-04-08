@@ -41,7 +41,7 @@ public class LoadFromFileNode extends Node {
 			for (String s : newOperators) {
 				toParse += s + " ";
 			}
-			Operator o = Operator.newOperator(toParse);
+			Operator o = new Operator(toParse);
 			Operator.fileLoads.put(path, o);
 		}
 		Operator o = Operator.fileLoads.get(path);

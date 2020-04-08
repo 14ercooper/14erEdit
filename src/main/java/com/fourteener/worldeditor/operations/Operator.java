@@ -47,13 +47,7 @@ public class Operator {
 		return entryNode.performNode();
 	}
 	
-	public static Operator newOperator (String op) {
-		Operator operator = new Operator();
-		operator.entryNode = GlobalVars.operationParser.parseOperation(op);
-		if (operator.entryNode == null) {
-			return null;
-		}
-		Main.logDebug("Operator being returned");
-		return operator;
+	public Operator (String op) {
+		entryNode = GlobalVars.operationParser.parseOperation(op);
 	}
 }

@@ -1,13 +1,11 @@
 package com.fourteener.worldeditor.selection;
 
 import java.io.File;
+import java.util.ArrayDeque;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Player;
 
 import com.fourteener.schematics.Schematic;
@@ -20,6 +18,10 @@ public class Clipboard {
 	public int length = -1, width = -1, height = -1; // Height is Y, Width is X, Length is Z
 	public LinkedList<String> blockData = new LinkedList<String>();
 	public LinkedList<String> nbtData = new LinkedList<String>();
+	public int xNeg = Integer.MAX_VALUE, yNeg = Integer.MAX_VALUE, zNeg = Integer.MAX_VALUE;
+	public int xPos = Integer.MIN_VALUE, yPos = Integer.MIN_VALUE, zPos = Integer.MIN_VALUE;
+	public int loadPos = 0;
+	public boolean setAir = false;
 	
 	public Clipboard(Player player) {
 		owner = player;
@@ -137,7 +139,6 @@ public class Clipboard {
 	// X,Y,Z stores the origin of the clipboard; blocks is the blocks to save
 	public boolean saveToClipboard (int xOrigin, int yOrigin, int zOrigin, List<Block> blocks) {
 		// First, figure out the most negative corner of the selection
-		int xNeg = Integer.MAX_VALUE, yNeg = Integer.MAX_VALUE, zNeg = Integer.MAX_VALUE;
 		for (Block b : blocks) {
 			if (b.getX() < xNeg)
 				xNeg = b.getX();
@@ -148,7 +149,6 @@ public class Clipboard {
 		}
 		Main.logDebug("Negative corner of (" + Integer.toString(xNeg) + "," + Integer.toString(yNeg) + "," + Integer.toString(zNeg) + ")"); // ----
 		// And the most positive corner
-		int xPos = Integer.MIN_VALUE, yPos = Integer.MIN_VALUE, zPos = Integer.MIN_VALUE;
 		for (Block b : blocks) {
 			if (b.getX() > xPos)
 				xPos = b.getX();
@@ -181,42 +181,30 @@ public class Clipboard {
 		
 		// Generate an array of blocks of the correct size
 		int size = length * width * height;
-		LinkedList<String> blockList = new LinkedList<String>();
+		blockData = new LinkedList<String>();
+		nbtData = new LinkedList<String>();
 		for (int i = 0; i < size; i++) {
-			blockList.add("");
+			blockData.add("");
+			nbtData.add("");
 		}
-		LinkedList<String> nbtList = new LinkedList<String>();
-		for (int i = 0; i < size; i++) {
-			nbtList.add("");
-		}
-		Main.logDebug("Block list of size " + Integer.toString(blockList.size())); // ----
+		Main.logDebug("Block list of size " + Integer.toString(blockData.size())); // ----
 		
-		// Then store the blocks (as data) into the array
-		NBTExtractor nbtExtractor = new NBTExtractor();
-		for (Block b : blocks) {
-			int xB = Math.abs(b.getX() - xNeg);
-			int yB = Math.abs(b.getY() - yNeg);
-			int zB = Math.abs(b.getZ() - zNeg);
-			blockList.set(xB + (zB * width) + (yB * length * width), b.getBlockData().getAsString());
-			nbtList.set(xB + (zB * width) + (yB * length * width), nbtExtractor.getNBT(b.getState()));
-		}
+		GlobalVars.asyncManager.scheduleEdit(this, blocks, true);
 		
-		// And finally save that array to the clipboard
-		blockData = blockList;
-		nbtData = nbtList;
-
-		Main.logDebug("" + Integer.toString(blockData.size()) + " blocks of data stored"); // ----
-		owner.sendMessage("§dSelection copied");
 		return true;
 	}
 	
 	// Paste this clipboard with the origin at x,y,z
-	public boolean pasteClipboard (int xPos, int yPos, int zPos, boolean setAir) {
+	public boolean pasteClipboard (int xPos, int yPos, int zPos, boolean air) {
 		// Loop through the blocks, along X from negative to positive, Z negative to positive, Y negative to positive
 		int rx = 0, ry = 0, rz = 0;
 		Main.logDebug("Pasting blocks into the world"); // ----
 		Main.logDebug("Dimensions of (" + Integer.toString(width) + "," + Integer.toString(height) + "," + Integer.toString(length) + ")"); // ----
 		Main.logDebug("Offset of (" + Integer.toString(x) + "," + Integer.toString(y) + "," + Integer.toString(z) + ")"); // ----
+		
+		loadPos = 0;
+		ArrayDeque<Block> blocks = new ArrayDeque<Block>();
+		setAir = air;
 		
 		for (int i = 0; i < (length * width * height); i++) {
 			if (rx >= width) {
@@ -229,35 +217,11 @@ public class Clipboard {
 			}
 			rx++;
 			
-			Material blockMat = Material.matchMaterial(blockData.get(i).split("\\[")[0]);
-			BlockData blockDat = Bukkit.getServer().createBlockData(blockData.get(i));
-			String nbt = nbtData.get(i);
-			
-			Block b = GlobalVars.world.getBlockAt(xPos + rx - x - 1, yPos + ry - y, zPos + rz - z);
-			// Set the block
-			if (blockMat == Material.AIR) {
-				if (setAir) {
-					SetBlock.setMaterial(b, blockMat);
-					b.setBlockData(blockDat);
-					if (!nbt.equalsIgnoreCase("")) {
-						String command = "data merge block " + b.getX() + " " + b.getY() + " " + b.getZ() + " " + nbt;
-						Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), command);
-					}
-				}
-			}
-			else {
-				SetBlock.setMaterial(b, blockMat);
-				b.setBlockData(blockDat);
-				if (!nbt.equalsIgnoreCase("")) {
-					String command = "data merge block " + b.getX() + " " + b.getY() + " " + b.getZ() + " " + nbt;
-					Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), command);
-				}
-			}
+			blocks.add (GlobalVars.world.getBlockAt(xPos + rx - x - 1, yPos + ry - y, zPos + rz - z));
 		}
 
-		Main.logDebug("Blocks pasted successfully"); // ----
+		GlobalVars.asyncManager.scheduleEdit(this, blocks, false);
 		
-		owner.sendMessage("§dSelection pasted");
 		return true;
 	}
 	
