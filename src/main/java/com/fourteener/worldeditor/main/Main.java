@@ -20,6 +20,9 @@ public class Main extends JavaPlugin {
 		CommandUndo undoCmd = new CommandUndo();
 		this.getCommand("un").setExecutor(undoCmd);
 		this.getCommand("re").setExecutor(undoCmd);
+		CommandConfirm confirmCmd = new CommandConfirm();
+		this.getCommand("confirm").setExecutor(confirmCmd);
+		this.getCommand("cancel").setExecutor(confirmCmd);
 		this.getCommand("script").setExecutor(new CommandScript());
 		this.getCommand("run").setExecutor(new CommandRun());
 		this.getCommand("runat").setExecutor(new CommandRunat());
