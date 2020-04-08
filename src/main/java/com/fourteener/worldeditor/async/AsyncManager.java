@@ -1,6 +1,7 @@
 package com.fourteener.worldeditor.async;
 
 import java.util.ArrayDeque;
+import java.util.List;
 import java.util.Queue;
 
 import org.bukkit.Bukkit;
@@ -39,6 +40,9 @@ public class AsyncManager {
 	
 	// Schedule a new task cleanly
 	public void scheduleEdit (Operator o, Player p, ArrayDeque<Block> b) {
+		if (p == null) {
+			operations.add(new AsyncOperation(o, b));
+		}
 		if (b.size() > Undo.maxBlocks) {
 			largeOps.add(new AsyncOperation(o, p, b));
 			p.sendMessage("§aThis is a large edit that cannot be undone.");
@@ -50,6 +54,12 @@ public class AsyncManager {
 			operations.add(new AsyncOperation(o, p, b));
 			operations.add(new AsyncOperation(false, p));
 		}
+	}
+	
+	public void scheduleEdit(Operator o, Player p, List<Block> b) {
+		ArrayDeque<Block> d = new ArrayDeque<Block>();
+		d.addAll(b);
+		scheduleEdit(o, p, d);
 	}
 	
 	// Confirm large edits
@@ -84,21 +94,39 @@ public class AsyncManager {
 			AsyncOperation op = operations.peek();
 			if (op.key.equalsIgnoreCase("startundo")) {
 				Main.logDebug("Async undo started for player " + op.player.getName());
-				UndoManager.getUndo(op.player).startUndo();
+				GlobalVars.currentUndo = UndoManager.getUndo(op.player);
+				GlobalVars.currentUndo.startUndo();
 				operations.remove();
 				doneOperations += 100;
 			}
 			else if (op.key.equalsIgnoreCase("finishundo")) {
-				UndoManager.getUndo(op.player).finishUndo();
+				GlobalVars.currentUndo.finishUndo();
+				GlobalVars.currentUndo = null;
 				Main.logDebug("Async undo finished for player " + op.player.getName());
 				operations.remove();
 				doneOperations += 100;
+			}
+			else if (op.key.equalsIgnoreCase("messyedit")) {
+				Main.logDebug("Async messy edit started for player " + op.player.getName());
+				operations.remove().operation.messyOperate();
+				doneOperations += 10;
 			}
 			else if (op.key.equalsIgnoreCase("edit")) {
 				Main.logDebug("Started async edit for player " + op.player.getName());
 				while (doneOperations < blockOperations && op.toOperate.size() > 0) {
 					Block b = op.toOperate.removeFirst();
 					op.operation.operateOnBlock(b, op.player);
+					doneOperations++;
+				}
+				if (op.toOperate.size() == 0) {
+					operations.remove();
+				}
+			}
+			else if (op.key.equalsIgnoreCase("rawedit")) {
+				Main.logDebug("Started async raw edit for player " + op.player.getName());
+				while (doneOperations < blockOperations && op.toOperate.size() > 0) {
+					Block b = op.toOperate.removeFirst();
+					op.operation.operateOnBlock(b);
 					doneOperations++;
 				}
 				if (op.toOperate.size() == 0) {

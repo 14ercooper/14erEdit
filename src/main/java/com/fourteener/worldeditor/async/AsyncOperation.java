@@ -30,4 +30,15 @@ public class AsyncOperation {
 		player = p;
 		toOperate = b;
 	}
+	
+	public AsyncOperation (Operator o, ArrayDeque<Block> b) {
+		key = "rawedit";
+		operation = o;
+		toOperate = b;
+	}
+	
+	public AsyncOperation (Operator o) {
+		key = "messyedit";
+		operation = o;
+	}
 }

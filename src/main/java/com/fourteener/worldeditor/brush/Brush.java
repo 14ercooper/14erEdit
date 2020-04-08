@@ -12,7 +12,6 @@ import org.bukkit.inventory.ItemStack;
 
 import com.fourteener.worldeditor.main.*;
 import com.fourteener.worldeditor.operations.Operator;
-import com.fourteener.worldeditor.undo.UndoManager;
 
 public class Brush {
 	// Together, these two parameters serve as the ID for the brush
@@ -104,9 +103,6 @@ public class Brush {
 	
 	@SuppressWarnings("static-access")
 	public boolean operate (double x, double y, double z) {
-
-		GlobalVars.currentUndo = UndoManager.getUndo(owner);
-		GlobalVars.currentUndo.startUndo();
 		
 		// Build an array of all blocks to operate on
 		List<Block> blockArray = shapeGenerator.GetBlocks(shapeArgs, x, y, z);
@@ -116,12 +112,8 @@ public class Brush {
 		}
 		Main.logDebug("Block array size is " + Integer.toString(blockArray.size())); // -----
 		
-		for (Block b : blockArray) {
-			operation.operateOnBlock(b, owner);
-		}
-		
-		int i = GlobalVars.currentUndo.finishUndo();
-		GlobalVars.currentUndo = null;
-		return i > 0;
+		GlobalVars.asyncManager.scheduleEdit(operation, owner, blockArray);
+
+		return true;
 	}
 }
