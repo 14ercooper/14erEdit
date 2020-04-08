@@ -3,9 +3,7 @@ package com.fourteener.worldeditor.scripts.bundled.selection;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
-import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 
 import com.fourteener.worldeditor.scripts.Craftscript;
@@ -13,7 +11,7 @@ import com.fourteener.worldeditor.scripts.Craftscript;
 public class ScriptSet extends Craftscript {
 
 	@Override
-	public Set<BlockState> perform(LinkedList<String> args, Player player, String label) {
+	public boolean perform(LinkedList<String> args, Player player, String label) {
 		String blocksToSet = args.get(0);
 		String[] individualBlocks = blocksToSet.split(",");
 		String opToRun = "";
@@ -68,7 +66,6 @@ public class ScriptSet extends Craftscript {
 			opToRun = opToRun.concat("false");
 		}
 		// Perform the set command
-		player.performCommand("fx sel op " + opToRun);
-		return null;
+		return player.performCommand("fx sel op " + opToRun);
 	}
 }

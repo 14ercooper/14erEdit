@@ -1,9 +1,7 @@
 package com.fourteener.worldeditor.scripts.bundled.easyedit;
 
 import java.util.LinkedList;
-import java.util.Set;
 
-import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 
 import com.fourteener.worldeditor.scripts.Craftscript;
@@ -11,7 +9,7 @@ import com.fourteener.worldeditor.scripts.Craftscript;
 public class ScriptGrassBrush extends Craftscript {
 
 	@Override
-	public Set<BlockState> perform(LinkedList<String> args, Player player, String label) {
+	public boolean perform(LinkedList<String> args, Player player, String label) {
 		String radius = args.get(0);
 		String mixture, airSpaces, density;
 		if (args.size() >= 2) {
@@ -35,7 +33,6 @@ public class ScriptGrassBrush extends Craftscript {
 			density = "0.35";
 		}
 		
-		player.performCommand("fx br s 0 0.5 $ grass{" + radius + ";" + mixture + ";" + airSpaces + ";" + density + "}");
-		return null;
+		return player.performCommand("fx br s 0 0.5 $ grass{" + radius + ";" + mixture + ";" + airSpaces + ";" + density + "}");
 	}
 }

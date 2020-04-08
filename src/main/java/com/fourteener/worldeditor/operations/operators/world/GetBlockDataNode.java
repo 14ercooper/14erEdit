@@ -10,8 +10,9 @@ public class GetBlockDataNode extends Node {
 	}
 	
 	public boolean performNode () {
-		Operator.currentPlayer.sendMessage("§dBlock Data: " + Operator.currentBlock.getBlockData().getAsString(true));
-		return true;
+		String s = Operator.currentBlock.getBlockData().getAsString(true);
+		Operator.currentPlayer.sendMessage("§dBlock Data: " + s);
+		return s.contains("[");
 	}
 	
 	public int getArgCount () {

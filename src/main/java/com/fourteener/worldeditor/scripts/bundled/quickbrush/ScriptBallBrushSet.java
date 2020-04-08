@@ -3,9 +3,7 @@ package com.fourteener.worldeditor.scripts.bundled.quickbrush;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
-import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 
 import com.fourteener.worldeditor.scripts.Craftscript;
@@ -13,7 +11,7 @@ import com.fourteener.worldeditor.scripts.Craftscript;
 public class ScriptBallBrushSet extends Craftscript {
 
 	@Override
-	public Set<BlockState> perform(LinkedList<String> args, Player player, String label) {
+	public boolean perform(LinkedList<String> args, Player player, String label) {
 		String brushRadius = args.get(0);
 		String blocksToSet = args.get(1);
 		String[] individualBlocks = blocksToSet.split(",");
@@ -70,7 +68,6 @@ public class ScriptBallBrushSet extends Craftscript {
 		}
 		// Perform the set command
 		player.sendMessage("BRUSH MADE");
-		player.performCommand("fx br s " + brushRadius + " 0.5 " + opToRun);
-		return null;
+		return player.performCommand("fx br s " + brushRadius + " 0.5 " + opToRun);
 	}
 }

@@ -1,22 +1,16 @@
 package com.fourteener.worldeditor.macros.macros.nature;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
-import java.util.Set;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.block.BlockState;
 
 import com.fourteener.worldeditor.macros.macros.Macro;
 import com.fourteener.worldeditor.main.*;
-import com.fourteener.worldeditor.operations.Operator;
-import com.fourteener.worldeditor.undo.UndoElement;
-import com.fourteener.worldeditor.undo.UndoManager;
 
 public class BasicTreeMacro extends Macro {
 	
@@ -131,9 +125,6 @@ public class BasicTreeMacro extends Macro {
 	}
 
 	private void jungleTreeGenerator() {
-		// Start tracking BlockStates for an undo
-		Set<BlockState> undoList = new HashSet<BlockState>();
-		
 		// Calculate the size of the tree
 		Random rand = new Random();
 		double actVariance = ((rand.nextDouble() * 2.0) - 1.0) * variance;
@@ -263,27 +254,19 @@ public class BasicTreeMacro extends Macro {
 		// Place the trunk blocks
 		for (Block b : trunkBlocks) {
 			if (b.getType() == Material.AIR) {
-				undoList.add(b.getState());
-				b.setType(trunk);
+				SetBlock.setMaterial(b, trunk);
 			}
 		}
 		
 		// Place the leaf blocks
 		for (Block b : leafBlocks) {
 			if (b.getType() == Material.AIR) {
-				undoList.add(b.getState());
-				b.setType(leaves);
+				SetBlock.setMaterial(b, leaves);
 			}
 		}
-		
-		// Actually register the undo
-		UndoManager.getUndo(Operator.currentPlayer).storeUndo(new UndoElement(undoList));
 	}
 
 	private void brownMushroomTreeGenerator() {
-		// Start tracking BlockStates for an undo
-		Set<BlockState> undoList = new HashSet<BlockState>();
-		
 		// Determine the size of the mushroom
 		Random rand = new Random();
 		double actVariance = ((rand.nextDouble() * 2.0) - 1.0) * variance;
@@ -365,8 +348,7 @@ public class BasicTreeMacro extends Macro {
 			
 			// Place the current block
 			if (currentBlock.getType() == Material.AIR) {
-				undoList.add(currentBlock.getState());
-				currentBlock.setType(trunk);
+				SetBlock.setMaterial(currentBlock, trunk);
 			}
 		}
 		currentBlock = currentBlock.getRelative(BlockFace.UP);
@@ -439,19 +421,12 @@ public class BasicTreeMacro extends Macro {
 		Main.logDebug("Placing cap blocks"); // -----
 		for (Block bl : capBlocks) {
 			if (bl.getType() == Material.AIR) {
-				undoList.add(bl.getState());
-				bl.setType(leaves);
+				SetBlock.setMaterial(bl, leaves);
 			}
 		}
-		
-		// Actually register the undo
-		UndoManager.getUndo(Operator.currentPlayer).storeUndo(new UndoElement(undoList));
 	}
 
 	private void redMushroomTreeGenerator() {
-		// Start tracking BlockStates for an undo
-		Set<BlockState> undoList = new HashSet<BlockState>();
-		
 		// Create the stem (with a slight curve)
 		Random rand = new Random ();
 		double actVariance = ((rand.nextDouble() * 2.0) - 1.0) * variance;
@@ -489,8 +464,7 @@ public class BasicTreeMacro extends Macro {
 			
 			// Place the current block
 			if (currentBlock.getType() == Material.AIR) {
-				undoList.add(currentBlock.getState());
-				currentBlock.setType(trunk);
+				SetBlock.setMaterial(currentBlock, trunk);
 			}
 		}
 		
@@ -536,18 +510,11 @@ public class BasicTreeMacro extends Macro {
 		// Place the cap
 		for (Block b : leafList) {
 			if (b.getType() == Material.AIR) {
-				undoList.add(b.getState());
-				b.setType(leaves);}
+				SetBlock.setMaterial(b, leaves);}
 		}
-		
-		// Actually register the undo
-		UndoManager.getUndo(Operator.currentPlayer).storeUndo(new UndoElement(undoList));
 	}
 
 	private void darkOakTreeGenerator() {
-		// Start tracking BlockStates for an undo
-		Set<BlockState> undoList = new HashSet<BlockState>();
-		
 		// Generate the trunk of the tree (build up, with a 2-3 curves to the side; placing a shaft with blocks also the the N/E/NE)
 		// Make the trunk 3-wide for particularly large trees, with 6-7 curves to the side
 		Random rand = new Random();
@@ -618,8 +585,7 @@ public class BasicTreeMacro extends Macro {
 				blockList.add(currentBlock.getRelative(BlockFace.EAST));
 				blockList.add(currentBlock.getRelative(BlockFace.NORTH_EAST));
 				for (Block b : blockList) {
-					undoList.add(b.getState());
-					b.setType(trunk);
+					SetBlock.setMaterial(b, trunk);
 				}
 			}
 			if (trunkSize == 3) {
@@ -633,8 +599,7 @@ public class BasicTreeMacro extends Macro {
 				blockList.add(currentBlock.getRelative(BlockFace.NORTH_EAST).getRelative(BlockFace.NORTH));
 				blockList.add(currentBlock.getRelative(BlockFace.NORTH_EAST).getRelative(BlockFace.EAST));
 				for (Block b : blockList) {
-					undoList.add(b.getState());
-					b.setType(trunk);
+					SetBlock.setMaterial(b, trunk);
 				}
 			}
 		}
@@ -651,24 +616,15 @@ public class BasicTreeMacro extends Macro {
 					if (ellipsoidValue <= (1.15)) {
 						Block toPlace = GlobalVars.world.getBlockAt((int) (x + rx), (int) (y + ry), (int) (z + rz));
 						if (toPlace.getType() == Material.AIR) {
-							undoList.add(toPlace.getState());
-							toPlace.setType(leaves);
+							SetBlock.setMaterial(toPlace, leaves);
 						}
 					}
 				}
 			}
 		}
-		
-		// Generator logic & code here
-		
-		// Actually register the undo
-		UndoManager.getUndo(Operator.currentPlayer).storeUndo(new UndoElement(undoList));
 	}
 
 	private void birchTreeGenerator() {
-		// Start tracking BlockStates for an undo
-		Set<BlockState> undoList = new HashSet<BlockState>();
-		
 		// Create the vertical log
 		Random rand = new Random();
 		double actVariance = ((rand.nextDouble() * 2.0) - 1.0) * variance;
@@ -677,8 +633,7 @@ public class BasicTreeMacro extends Macro {
 		for (int i = 1; i <= treeSize; i++) {
 			currentBlock = currentBlock.getRelative(BlockFace.UP);
 			if (currentBlock.getType() == Material.AIR) {
-				undoList.add(currentBlock.getState());
-				currentBlock.setType(trunk);
+				SetBlock.setMaterial(currentBlock, trunk);
 			}
 		}
 		
@@ -772,24 +727,16 @@ public class BasicTreeMacro extends Macro {
 		// Then place the leaf blocks
 		for (Block b : leafList) {
 			if (b.getType() == Material.AIR) {
-				undoList.add(b.getState());
-				b.setType(leaves);
+				SetBlock.setMaterial(b, leaves);
 			}
 		}
-		
-		// Actually register the undo
-		UndoManager.getUndo(Operator.currentPlayer).storeUndo(new UndoElement(undoList));
 	}
 
 	private void bushTreeGenerator() {
-		// Start tracking BlockStates for an undo
-		Set<BlockState> undoList = new HashSet<BlockState>();
-		
 		// Place the log block
 		Block baseBlock = GlobalVars.world.getBlockAt(plantOn).getRelative(BlockFace.UP);
 		if (baseBlock.getType() == Material.AIR) {
-			undoList.add(baseBlock.getState());
-			baseBlock.setType(trunk);
+			SetBlock.setMaterial(baseBlock, trunk);
 		}
 		
 		// Generate the ellipsoid of leaves
@@ -811,22 +758,15 @@ public class BasicTreeMacro extends Macro {
 							continue;
 						}
 						if (toPlace.getType() == Material.AIR) {
-							undoList.add(toPlace.getState());
-							toPlace.setType(leaves);
+							SetBlock.setMaterial(toPlace, leaves);
 						}
 					}
 				}
 			}
 		}
-		
-		// Actually register the undo
-		UndoManager.getUndo(Operator.currentPlayer).storeUndo(new UndoElement(undoList));
 	}
 
 	private void bigTreeGenerator() {
-		// Start tracking BlockStates for an undo
-		Set<BlockState> undoList = new HashSet<BlockState>();
-		
 		// Calculate the dimensions of the tree, other needed variables
 		Random rand = new Random();
 		double actVariance = ((rand.nextDouble() * 2.0) - 1.0) * variance;
@@ -897,8 +837,7 @@ public class BasicTreeMacro extends Macro {
 						branchThickness -= branchTaper;
 						// Place the central block
 						if (currentBlock.getType() == Material.AIR) {
-							undoList.add(currentBlock.getState());
-							currentBlock.setType(trunk);
+							SetBlock.setMaterial(currentBlock, trunk);
 						}
 						
 						// Build the disk
@@ -909,8 +848,7 @@ public class BasicTreeMacro extends Macro {
 								if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
 									Block b = GlobalVars.world.getBlockAt(x + rx, y, z + rz);	
 									if (b.getType() == Material.AIR) {
-										undoList.add(b.getState());
-										b.setType(trunk);
+										SetBlock.setMaterial(b, trunk);
 									}
 								}
 							}
@@ -967,8 +905,7 @@ public class BasicTreeMacro extends Macro {
 							branchThickness -= branchTaper;
 							// Place the central block
 							if (currentBlock.getType() == Material.AIR) {
-								undoList.add(currentBlock.getState());
-								currentBlock.setType(trunk);
+								SetBlock.setMaterial(currentBlock, trunk);
 							}
 							
 							// Build the disk
@@ -979,8 +916,7 @@ public class BasicTreeMacro extends Macro {
 									if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
 										Block b = GlobalVars.world.getBlockAt(x + rx, y, z + rz);	
 										if (b.getType() == Material.AIR) {
-											undoList.add(b.getState());
-											b.setType(trunk);
+											SetBlock.setMaterial(b, trunk);
 										}
 									}
 								}
@@ -1009,8 +945,7 @@ public class BasicTreeMacro extends Macro {
 							branchThickness -= branchTaper;
 							// Place the central block
 							if (currentBlock.getType() == Material.AIR) {
-								undoList.add(currentBlock.getState());
-								currentBlock.setType(trunk);
+								SetBlock.setMaterial(currentBlock, trunk);
 							}
 							
 							// Build the disk
@@ -1021,8 +956,7 @@ public class BasicTreeMacro extends Macro {
 									if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
 										Block b = GlobalVars.world.getBlockAt(x + rx, y, z + rz);	
 										if (b.getType() == Material.AIR) {
-											undoList.add(b.getState());
-											b.setType(trunk);
+											SetBlock.setMaterial(b, trunk);
 										}
 									}
 								}
@@ -1053,8 +987,7 @@ public class BasicTreeMacro extends Macro {
 							branchThickness -= branchTaper;
 							// Place the central block
 							if (currentBlock.getType() == Material.AIR) {
-								undoList.add(currentBlock.getState());
-								currentBlock.setType(trunk);
+								SetBlock.setMaterial(currentBlock, trunk);
 							}
 							
 							// Build the disk
@@ -1065,8 +998,7 @@ public class BasicTreeMacro extends Macro {
 									if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
 										Block b = GlobalVars.world.getBlockAt(x + rx, y, z + rz);	
 										if (b.getType() == Material.AIR) {
-											undoList.add(b.getState());
-											b.setType(trunk);
+											SetBlock.setMaterial(b, trunk);
 										}
 									}
 								}
@@ -1095,8 +1027,7 @@ public class BasicTreeMacro extends Macro {
 							branchThickness -= branchTaper;
 							// Place the central block
 							if (currentBlock.getType() == Material.AIR) {
-								undoList.add(currentBlock.getState());
-								currentBlock.setType(trunk);
+								SetBlock.setMaterial(currentBlock, trunk);
 							}
 							
 							// Build the disk
@@ -1107,8 +1038,7 @@ public class BasicTreeMacro extends Macro {
 									if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
 										Block b = GlobalVars.world.getBlockAt(x + rx, y, z + rz);	
 										if (b.getType() == Material.AIR) {
-											undoList.add(b.getState());
-											b.setType(trunk);
+											SetBlock.setMaterial(b, trunk);
 										}
 									}
 								}
@@ -1146,8 +1076,7 @@ public class BasicTreeMacro extends Macro {
 								branchThickness -= branchTaper;
 								// Place the central block
 								if (currentBlock.getType() == Material.AIR) {
-									undoList.add(currentBlock.getState());
-									currentBlock.setType(trunk);
+									SetBlock.setMaterial(currentBlock, trunk);
 								}
 								
 								// Build the disk
@@ -1158,8 +1087,7 @@ public class BasicTreeMacro extends Macro {
 										if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
 											Block b = GlobalVars.world.getBlockAt(x + rx, y, z + rz);	
 											if (b.getType() == Material.AIR) {
-												undoList.add(b.getState());
-												b.setType(trunk);
+												SetBlock.setMaterial(b, trunk);
 											}
 										}
 									}
@@ -1188,8 +1116,7 @@ public class BasicTreeMacro extends Macro {
 								branchThickness -= branchTaper;
 								// Place the central block
 								if (currentBlock.getType() == Material.AIR) {
-									undoList.add(currentBlock.getState());
-									currentBlock.setType(trunk);
+									SetBlock.setMaterial(currentBlock, trunk);
 								}
 								
 								// Build the disk
@@ -1200,8 +1127,7 @@ public class BasicTreeMacro extends Macro {
 										if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
 											Block b = GlobalVars.world.getBlockAt(x + rx, y, z + rz);	
 											if (b.getType() == Material.AIR) {
-												undoList.add(b.getState());
-												b.setType(trunk);
+												SetBlock.setMaterial(b, trunk);
 											}
 										}
 									}
@@ -1230,8 +1156,7 @@ public class BasicTreeMacro extends Macro {
 								branchThickness -= branchTaper;
 								// Place the central block
 								if (currentBlock.getType() == Material.AIR) {
-									undoList.add(currentBlock.getState());
-									currentBlock.setType(trunk);
+									SetBlock.setMaterial(currentBlock, trunk);
 								}
 								
 								// Build the disk
@@ -1242,8 +1167,7 @@ public class BasicTreeMacro extends Macro {
 										if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
 											Block b = GlobalVars.world.getBlockAt(x + rx, y, z + rz);	
 											if (b.getType() == Material.AIR) {
-												undoList.add(b.getState());
-												b.setType(trunk);
+												SetBlock.setMaterial(b, trunk);
 											}
 										}
 									}
@@ -1274,8 +1198,7 @@ public class BasicTreeMacro extends Macro {
 								branchThickness -= branchTaper;
 								// Place the central block
 								if (currentBlock.getType() == Material.AIR) {
-									undoList.add(currentBlock.getState());
-									currentBlock.setType(trunk);
+									SetBlock.setMaterial(currentBlock, trunk);
 								}
 								
 								// Build the disk
@@ -1286,8 +1209,7 @@ public class BasicTreeMacro extends Macro {
 										if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
 											Block b = GlobalVars.world.getBlockAt(x + rx, y, z + rz);	
 											if (b.getType() == Material.AIR) {
-												undoList.add(b.getState());
-												b.setType(trunk);
+												SetBlock.setMaterial(b, trunk);
 											}
 										}
 									}
@@ -1316,8 +1238,7 @@ public class BasicTreeMacro extends Macro {
 								branchThickness -= branchTaper;
 								// Place the central block
 								if (currentBlock.getType() == Material.AIR) {
-									undoList.add(currentBlock.getState());
-									currentBlock.setType(trunk);
+									SetBlock.setMaterial(currentBlock, trunk);
 								}
 								
 								// Build the disk
@@ -1328,8 +1249,7 @@ public class BasicTreeMacro extends Macro {
 										if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
 											Block b = GlobalVars.world.getBlockAt(x + rx, y, z + rz);	
 											if (b.getType() == Material.AIR) {
-												undoList.add(b.getState());
-												b.setType(trunk);
+												SetBlock.setMaterial(b, trunk);
 											}
 										}
 									}
@@ -1358,8 +1278,7 @@ public class BasicTreeMacro extends Macro {
 								branchThickness -= branchTaper;
 								// Place the central block
 								if (currentBlock.getType() == Material.AIR) {
-									undoList.add(currentBlock.getState());
-									currentBlock.setType(trunk);
+									SetBlock.setMaterial(currentBlock, trunk);
 								}
 								
 								// Build the disk
@@ -1370,8 +1289,7 @@ public class BasicTreeMacro extends Macro {
 										if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
 											Block b = GlobalVars.world.getBlockAt(x + rx, y, z + rz);	
 											if (b.getType() == Material.AIR) {
-												undoList.add(b.getState());
-												b.setType(trunk);
+												SetBlock.setMaterial(b, trunk);
 											}
 										}
 									}
@@ -1403,8 +1321,7 @@ public class BasicTreeMacro extends Macro {
 								branchThickness -= branchTaper;
 								// Place the central block
 								if (currentBlock.getType() == Material.AIR) {
-									undoList.add(currentBlock.getState());
-									currentBlock.setType(trunk);
+									SetBlock.setMaterial(currentBlock, trunk);
 								}
 								
 								// Build the disk
@@ -1415,8 +1332,7 @@ public class BasicTreeMacro extends Macro {
 										if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
 											Block b = GlobalVars.world.getBlockAt(x + rx, y, z + rz);	
 											if (b.getType() == Material.AIR) {
-												undoList.add(b.getState());
-												b.setType(trunk);
+												SetBlock.setMaterial(b, trunk);
 											}
 										}
 									}
@@ -1445,8 +1361,7 @@ public class BasicTreeMacro extends Macro {
 								branchThickness -= branchTaper;
 								// Place the central block
 								if (currentBlock.getType() == Material.AIR) {
-									undoList.add(currentBlock.getState());
-									currentBlock.setType(trunk);
+									SetBlock.setMaterial(currentBlock, trunk);
 								}
 								
 								// Build the disk
@@ -1457,8 +1372,7 @@ public class BasicTreeMacro extends Macro {
 										if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
 											Block b = GlobalVars.world.getBlockAt(x + rx, y, z + rz);	
 											if (b.getType() == Material.AIR) {
-												undoList.add(b.getState());
-												b.setType(trunk);
+												SetBlock.setMaterial(b, trunk);
 											}
 										}
 									}
@@ -1487,8 +1401,7 @@ public class BasicTreeMacro extends Macro {
 								branchThickness -= branchTaper;
 								// Place the central block
 								if (currentBlock.getType() == Material.AIR) {
-									undoList.add(currentBlock.getState());
-									currentBlock.setType(trunk);
+									SetBlock.setMaterial(currentBlock, trunk);
 								}
 								
 								// Build the disk
@@ -1499,8 +1412,7 @@ public class BasicTreeMacro extends Macro {
 										if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
 											Block b = GlobalVars.world.getBlockAt(x + rx, y, z + rz);	
 											if (b.getType() == Material.AIR) {
-												undoList.add(b.getState());
-												b.setType(trunk);
+												SetBlock.setMaterial(b, trunk);
 											}
 										}
 									}
@@ -1531,8 +1443,7 @@ public class BasicTreeMacro extends Macro {
 								branchThickness -= branchTaper;
 								// Place the central block
 								if (currentBlock.getType() == Material.AIR) {
-									undoList.add(currentBlock.getState());
-									currentBlock.setType(trunk);
+									SetBlock.setMaterial(currentBlock, trunk);
 								}
 								
 								// Build the disk
@@ -1543,8 +1454,7 @@ public class BasicTreeMacro extends Macro {
 										if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
 											Block b = GlobalVars.world.getBlockAt(x + rx, y, z + rz);	
 											if (b.getType() == Material.AIR) {
-												undoList.add(b.getState());
-												b.setType(trunk);
+												SetBlock.setMaterial(b, trunk);
 											}
 										}
 									}
@@ -1573,8 +1483,7 @@ public class BasicTreeMacro extends Macro {
 								branchThickness -= branchTaper;
 								// Place the central block
 								if (currentBlock.getType() == Material.AIR) {
-									undoList.add(currentBlock.getState());
-									currentBlock.setType(trunk);
+									SetBlock.setMaterial(currentBlock, trunk);
 								}
 								
 								// Build the disk
@@ -1585,8 +1494,7 @@ public class BasicTreeMacro extends Macro {
 										if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
 											Block b = GlobalVars.world.getBlockAt(x + rx, y, z + rz);	
 											if (b.getType() == Material.AIR) {
-												undoList.add(b.getState());
-												b.setType(trunk);
+												SetBlock.setMaterial(b, trunk);
 											}
 										}
 									}
@@ -1615,8 +1523,7 @@ public class BasicTreeMacro extends Macro {
 								branchThickness -= branchTaper;
 								// Place the central block
 								if (currentBlock.getType() == Material.AIR) {
-									undoList.add(currentBlock.getState());
-									currentBlock.setType(trunk);
+									SetBlock.setMaterial(currentBlock, trunk);
 								}
 								
 								// Build the disk
@@ -1627,8 +1534,7 @@ public class BasicTreeMacro extends Macro {
 										if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
 											Block b = GlobalVars.world.getBlockAt(x + rx, y, z + rz);	
 											if (b.getType() == Material.AIR) {
-												undoList.add(b.getState());
-												b.setType(trunk);
+												SetBlock.setMaterial(b, trunk);
 											}
 										}
 									}
@@ -1683,23 +1589,16 @@ public class BasicTreeMacro extends Macro {
 							// Set leaves
 							Block toSet = GlobalVars.world.getBlockAt(x + rx, y + ry, z + rz);
 							if (toSet.getType() == Material.AIR) {
-								undoList.add(toSet.getState());
-								toSet.setType(leaves);
+								SetBlock.setMaterial(toSet, leaves);
 							}
 						}
 					}
 				}
 			}
 		}
-		
-		// Actually register the undo
-		UndoManager.getUndo(Operator.currentPlayer).storeUndo(new UndoElement(undoList));
 	}
 
 	private void branchTreeGenerator() {
-		// Start tracking BlockStates for an undo
-		Set<BlockState> undoList = new HashSet<BlockState>();
-		
 		// Figure out the size of the tree (use 3 levels of branches)
 		Random rand = new Random();
 		double actVariance = ((rand.nextDouble() * 2.0) - 1.0) * variance;
@@ -1733,8 +1632,7 @@ public class BasicTreeMacro extends Macro {
 				branch2Starts.add(currentBlock.getLocation());
 			}
 			if (currentBlock.getType() == Material.AIR) {
-				undoList.add(currentBlock.getState());
-				currentBlock.setType(trunk);
+				SetBlock.setMaterial(currentBlock, trunk);
 			}
 		}
 		branch1Ends.add(currentBlock.getLocation());
@@ -1779,8 +1677,7 @@ public class BasicTreeMacro extends Macro {
 					branch3Starts.add(currentBlock.getLocation());
 				}
 				if (currentBlock.getType() == Material.AIR) {
-					undoList.add(currentBlock.getState());
-					currentBlock.setType(trunk);
+					SetBlock.setMaterial(currentBlock, trunk);
 				}
 			}
 			branch2Ends.add(currentBlock.getLocation());
@@ -1823,8 +1720,7 @@ public class BasicTreeMacro extends Macro {
 				// Grow there
 				currentBlock = currentBlock.getRelative(dir);
 				if (currentBlock.getType() == Material.AIR) {
-					undoList.add(currentBlock.getState());
-					currentBlock.setType(trunk);
+					SetBlock.setMaterial(currentBlock, trunk);
 				}
 			}
 			branch3Ends.add(currentBlock.getLocation());
@@ -1851,8 +1747,7 @@ public class BasicTreeMacro extends Macro {
 							// Set leaves
 							Block toSet = GlobalVars.world.getBlockAt(x + rx, y + ry, z + rz);
 							if (toSet.getType() == Material.AIR) {
-								undoList.add(toSet.getState());
-								toSet.setType(leaves);
+								SetBlock.setMaterial(toSet, leaves);
 							}
 						}
 					}
@@ -1881,8 +1776,7 @@ public class BasicTreeMacro extends Macro {
 							// Set leaves
 							Block toSet = GlobalVars.world.getBlockAt(x + rx, y + ry, z + rz);
 							if (toSet.getType() == Material.AIR) {
-								undoList.add(toSet.getState());
-								toSet.setType(leaves);
+								SetBlock.setMaterial(toSet, leaves);
 							}
 						}
 					}
@@ -1911,24 +1805,16 @@ public class BasicTreeMacro extends Macro {
 							// Set leaves
 							Block toSet = GlobalVars.world.getBlockAt(x + rx, y + ry, z + rz);
 							if (toSet.getType() == Material.AIR) {
-								undoList.add(toSet.getState());
-								toSet.setType(leaves);
+								SetBlock.setMaterial(toSet, leaves);
 							}
 						}
 					}
 				}
 			}
 		}
-		
-		// Actually register the undo
-		UndoManager.getUndo(Operator.currentPlayer).storeUndo(new UndoElement(undoList));
 	}
 
 	private void oakTreeGenerator() {
-		// Start tracking blockstates for an undo
-		Set<BlockState> undoList = new HashSet<BlockState>();
-		// UndoManager.getUndo(Operator.currentPlayer).storeUndo(UndoElement.newUndoElement(undoList));
-		
 		// Figure out the size of the tree
 		Random rand = new Random();
 		double actVariance = ((rand.nextDouble() * 2.0) - 1.0) * variance;
@@ -1942,8 +1828,7 @@ public class BasicTreeMacro extends Macro {
 		for (int i = 0; i < treeHeight; i++) {
 			currentBlock = currentBlock.getRelative(BlockFace.UP);
 			if (currentBlock.getType() == Material.AIR) {
-				undoList.add(currentBlock.getState());
-				currentBlock.setType(trunk);
+				SetBlock.setMaterial(currentBlock, trunk);
 			}
 		}
 		// Populate the leaf sphere
@@ -1967,15 +1852,11 @@ public class BasicTreeMacro extends Macro {
 						// Set leaves
 						Block toSet = GlobalVars.world.getBlockAt(x + rx, y + ry, z + rz);
 						if (toSet.getType() == Material.AIR) {
-							undoList.add(toSet.getState());
-							toSet.setType(leaves);
+							SetBlock.setMaterial(toSet, leaves);
 						}
 					}
 				}
 			}
 		}
-		
-		// Actually register the undo
-		UndoManager.getUndo(Operator.currentPlayer).storeUndo(new UndoElement(undoList));
 	}
 }

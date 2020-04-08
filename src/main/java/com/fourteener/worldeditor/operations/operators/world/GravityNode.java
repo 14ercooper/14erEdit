@@ -18,7 +18,7 @@ public class GravityNode extends Node {
 	public boolean performNode() {
 		String mat = Operator.currentBlock.getType().toString().toLowerCase();
 		if (mat.equals("air")) {
-			return true;
+			return false;
 		}
 		Operator.currentBlock.setType(Material.AIR);
 		String command = "summon minecraft:falling_block " + Operator.currentBlock.getX() + " " + Operator.currentBlock.getY() + " " + Operator.currentBlock.getZ();

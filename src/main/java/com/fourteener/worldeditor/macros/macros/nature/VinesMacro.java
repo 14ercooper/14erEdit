@@ -14,13 +14,11 @@ import org.bukkit.block.BlockState;
 
 import com.fourteener.worldeditor.macros.macros.Macro;
 import com.fourteener.worldeditor.main.*;
-import com.fourteener.worldeditor.operations.Operator;
-import com.fourteener.worldeditor.undo.UndoElement;
-import com.fourteener.worldeditor.undo.UndoManager;
 
 public class VinesMacro extends Macro {
 	
 	double radius = 0, length = 0, variance = 0, density = 0;
+	String block;
 	Location pos;
 	
 	// Create a new macro
@@ -29,6 +27,12 @@ public class VinesMacro extends Macro {
 		length = Double.parseDouble(args[1]);
 		variance = Double.parseDouble(args[2]);
 		density = Double.parseDouble(args[3]);
+		try {
+			block = args[4];
+		}
+		catch (Exception e) {
+			block = "vine";
+		}
 		pos = loc;
 	}
 	
@@ -55,9 +59,6 @@ public class VinesMacro extends Macro {
 		}
 		Main.logDebug("Block array size: " + Integer.toString(blockArray.size())); // ----
 		
-		// Register an undo
-		UndoManager.getUndo(Operator.currentPlayer).storeUndo(new UndoElement(blockArray));
-		
 		// Create a snapshot array
 		List<BlockState> snapshotArray = new ArrayList<BlockState>();
 		for (Block b : blockArray) {
@@ -83,71 +84,73 @@ public class VinesMacro extends Macro {
 			
 			String blockStateTop = "[";
 			String blockState = "";
-			boolean firstState = true;
-			List<String> dirs = new ArrayList<String>();
-			// And next to a solid block
-			if (b.getRelative(BlockFace.NORTH).getType() != Material.AIR) {
-				if (firstState) {
-					firstState = false;
+			if (block.equalsIgnoreCase("vine")) {
+				boolean firstState = true;
+				List<String> dirs = new ArrayList<String>();
+				// And next to a solid block
+				if (b.getRelative(BlockFace.NORTH).getType() != Material.AIR) {
+					if (firstState) {
+						firstState = false;
+					}
+					else {
+						blockStateTop = blockStateTop.concat(",");
+					}
+					blockStateTop = blockStateTop.concat("north=true");
+					dirs.add("[north=true]");
+				}
+				if (b.getRelative(BlockFace.EAST).getType() != Material.AIR) {
+					if (firstState) {
+						firstState = false;
+					}
+					else {
+						blockStateTop = blockStateTop.concat(",");
+					}
+					blockStateTop = blockStateTop.concat("east=true");
+					dirs.add("[east=true]");
+				}
+				if (b.getRelative(BlockFace.SOUTH).getType() != Material.AIR) {
+					if (firstState) {
+						firstState = false;
+					}
+					else {
+						blockStateTop = blockStateTop.concat(",");
+					}
+					blockStateTop = blockStateTop.concat("south=true");
+					dirs.add("[south=true]");
+				}
+				if (b.getRelative(BlockFace.WEST).getType() != Material.AIR) {
+					if (firstState) {
+						firstState = false;
+					}
+					else {
+						blockStateTop = blockStateTop.concat(",");
+					}
+					blockStateTop = blockStateTop.concat("west=true");
+					dirs.add("[west=true]");
+				}
+				
+				// Is this also a top vine?
+				if (!blockStateTop.equals("[")) {
+					if (b.getRelative(BlockFace.UP).getType() != Material.AIR) {
+						blockStateTop = blockStateTop.concat(",up=true");
+					}
 				}
 				else {
-					blockStateTop = blockStateTop.concat(",");
+					continue;
 				}
-				blockStateTop = blockStateTop.concat("north=true");
-				dirs.add("[north=true]");
-			}
-			if (b.getRelative(BlockFace.EAST).getType() != Material.AIR) {
-				if (firstState) {
-					firstState = false;
+				
+				// Pick the side for the vines that will be below this one
+				if (dirs.size() > 1) {
+					blockState = dirs.get(rand.nextInt(dirs.size() - 1));
 				}
 				else {
-					blockStateTop = blockStateTop.concat(",");
+					blockState = dirs.get(0);
 				}
-				blockStateTop = blockStateTop.concat("east=true");
-				dirs.add("[east=true]");
-			}
-			if (b.getRelative(BlockFace.SOUTH).getType() != Material.AIR) {
-				if (firstState) {
-					firstState = false;
+				
+				// Close off the directional state; and move on if there was no solid block
+				if (!blockStateTop.equals("[")) {
+					blockStateTop = blockStateTop.concat("]");
 				}
-				else {
-					blockStateTop = blockStateTop.concat(",");
-				}
-				blockStateTop = blockStateTop.concat("south=true");
-				dirs.add("[south=true]");
-			}
-			if (b.getRelative(BlockFace.WEST).getType() != Material.AIR) {
-				if (firstState) {
-					firstState = false;
-				}
-				else {
-					blockStateTop = blockStateTop.concat(",");
-				}
-				blockStateTop = blockStateTop.concat("west=true");
-				dirs.add("[west=true]");
-			}
-			
-			// Is this also a top vine?
-			if (!blockStateTop.equals("[")) {
-				if (b.getRelative(BlockFace.UP).getType() != Material.AIR) {
-					blockStateTop = blockStateTop.concat(",up=true");
-				}
-			}
-			else {
-				continue;
-			}
-			
-			// Pick the side for the vines that will be below this one
-			if (dirs.size() > 1) {
-				blockState = dirs.get(rand.nextInt(dirs.size() - 1));
-			}
-			else {
-				blockState = dirs.get(0);
-			}
-			
-			// Close off the directional state; and move on if there was no solid block
-			if (!blockStateTop.equals("[")) {
-				blockStateTop = blockStateTop.concat("]");
 			}
 			
 			// Determine the length of this vine
@@ -156,39 +159,31 @@ public class VinesMacro extends Macro {
 			
 			// Grow the vine (checking to make sure only air gets replaced and registering operated blocks)
 			// Grow the top vine
-			Main.logDebug("Growing a vine of length " + Integer.toString(vineLength));
 			BlockState state = b.getState();
-			state.setType(Material.VINE);
-			state.setBlockData(Bukkit.getServer().createBlockData("minecraft:vine" + blockStateTop));
+			state.setType(Material.matchMaterial(block));
+			if (block.equalsIgnoreCase("vine"))
+				state.setBlockData(Bukkit.getServer().createBlockData("minecraft:vine" + blockState));
 			operatedBlocks.add(state);
 			// Grow all the other vines
 			for (int i = 1; i <= vineLength; i++) {
 				state = b.getRelative(BlockFace.DOWN, i).getState();
 				if (state.getType() == Material.AIR) {
-					state.setType(Material.VINE);
-					state.setBlockData(Bukkit.getServer().createBlockData("minecraft:vine" + blockState));
+					state.setType(Material.matchMaterial(block));
+					if (block.equalsIgnoreCase("vine"))
+						state.setBlockData(Bukkit.getServer().createBlockData("minecraft:vine" + blockState));
 					operatedBlocks.add(state);
 				}
 				else {
-					Main.logDebug("Stopping vine due to solid block");
 					break; // Don't grow through solid blocks
 				}
 			}
 		}
 		
-		// Process edited blocks and register the undo
-		List<Block> blocksToUndo = new ArrayList<Block>();
-		for (BlockState bs : operatedBlocks) {
-			blocksToUndo.add(GlobalVars.world.getBlockAt(bs.getLocation()));
-		}
-		UndoManager.getUndo(Operator.currentPlayer).storeUndo(new UndoElement(blocksToUndo));
-		
-		
 		Main.logDebug("Operated on and now placing " + Integer.toString(operatedBlocks.size()) + " blocks");
 		// Apply the changes to the world
 		for (BlockState bs : operatedBlocks) {
 			Block b = GlobalVars.world.getBlockAt(bs.getLocation());
-			b.setType(bs.getType());
+			SetBlock.setMaterial(b, bs.getType());
 			b.setBlockData(bs.getBlockData());
 		}
 		

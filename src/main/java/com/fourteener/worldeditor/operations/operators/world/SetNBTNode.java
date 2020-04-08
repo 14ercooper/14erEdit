@@ -21,7 +21,7 @@ public class SetNBTNode extends Node {
 		command += Operator.currentBlock.getLocation().getBlockX() + " ";
 		command += Operator.currentBlock.getLocation().getBlockY() + " ";
 		command += Operator.currentBlock.getLocation().getBlockZ() + " ";
-		command += nbt;
+		command += nbt.replaceAll("_", " ");
 		Bukkit.dispatchCommand(Bukkit.getServer().getConsoleSender(), command);
 		return true;
 	}

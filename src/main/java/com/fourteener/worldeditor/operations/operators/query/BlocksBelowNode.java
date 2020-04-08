@@ -29,12 +29,12 @@ public class BlocksBelowNode extends Node {
 		boolean blockRangeMet = true;
 		
 		for (int dy = y - min; dy >= y - max; dy--) {
-			Operator.currentBlock = GlobalVars.world.getBlockAt(x, dy, z).getState();
+			Operator.currentBlock = GlobalVars.world.getBlockAt(x, dy, z);
 			if (!(arg2.performNode()))
 				blockRangeMet = false;
 		}
 		
-		Operator.currentBlock = currBlock.getState();
+		Operator.currentBlock = currBlock;
 		return blockRangeMet;
 	}
 	

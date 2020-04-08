@@ -1,9 +1,7 @@
 package com.fourteener.worldeditor.scripts.bundled.easyedit;
 
 import java.util.LinkedList;
-import java.util.Set;
 
-import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 
 import com.fourteener.worldeditor.main.*;
@@ -13,7 +11,7 @@ public class ScriptOverlay extends Craftscript {
 
 	// Args block depth air
 	@Override
-	public Set<BlockState> perform(LinkedList<String> args, Player player, String label) {
+	public boolean perform(LinkedList<String> args, Player player, String label) {
 		String radius = args.get(0);
 		String block = args.get(1);
 		int depth = Integer.parseInt(args.get(2));
@@ -32,7 +30,6 @@ public class ScriptOverlay extends Craftscript {
 		command += "false false";
 		Main.logDebug("Overlay command: " + command);
 		
-		player.performCommand(command);
-		return null;
+		return player.performCommand(command);
 	}
 }

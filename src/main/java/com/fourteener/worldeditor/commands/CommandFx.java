@@ -52,9 +52,9 @@ public class CommandFx implements CommandExecutor {
 			
 			// Undo and redo commands
 			else if (args[argOffset].equalsIgnoreCase("undo")) {
-				return UndoManager.getUndo((Player) sender).undoChanges(Integer.parseInt(args[argOffset + 1]));
+				return UndoManager.getUndo((Player) sender).undoChanges(Integer.parseInt(args[argOffset + 1])) > 0;
 			} else if (args[argOffset].equalsIgnoreCase("redo")) {
-				return UndoManager.getUndo((Player) sender).redoChanges(Integer.parseInt(args[argOffset + 1]));
+				return UndoManager.getUndo((Player) sender).redoChanges(Integer.parseInt(args[argOffset + 1])) > 0;
 			}
 			return false;
 		}

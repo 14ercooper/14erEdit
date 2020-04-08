@@ -1,22 +1,17 @@
 package com.fourteener.worldeditor.selection;
 
 import java.io.File;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockState;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Player;
 
 import com.fourteener.schematics.Schematic;
 import com.fourteener.worldeditor.main.*;
-import com.fourteener.worldeditor.undo.UndoElement;
-import com.fourteener.worldeditor.undo.UndoManager;
 
 public class Clipboard {
 	
@@ -217,9 +212,6 @@ public class Clipboard {
 	
 	// Paste this clipboard with the origin at x,y,z
 	public boolean pasteClipboard (int xPos, int yPos, int zPos, boolean setAir) {
-		// Start tracking for an undo
-		Set<BlockState> undoList = new HashSet<BlockState>();
-		
 		// Loop through the blocks, along X from negative to positive, Z negative to positive, Y negative to positive
 		int rx = 0, ry = 0, rz = 0;
 		Main.logDebug("Pasting blocks into the world"); // ----
@@ -245,8 +237,7 @@ public class Clipboard {
 			// Set the block
 			if (blockMat == Material.AIR) {
 				if (setAir) {
-					undoList.add(b.getState());
-					b.setType(blockMat);
+					SetBlock.setMaterial(b, blockMat);
 					b.setBlockData(blockDat);
 					if (!nbt.equalsIgnoreCase("")) {
 						String command = "data merge block " + b.getX() + " " + b.getY() + " " + b.getZ() + " " + nbt;
@@ -255,8 +246,7 @@ public class Clipboard {
 				}
 			}
 			else {
-				undoList.add(b.getState());
-				b.setType(blockMat);
+				SetBlock.setMaterial(b, blockMat);
 				b.setBlockData(blockDat);
 				if (!nbt.equalsIgnoreCase("")) {
 					String command = "data merge block " + b.getX() + " " + b.getY() + " " + b.getZ() + " " + nbt;
@@ -264,11 +254,8 @@ public class Clipboard {
 				}
 			}
 		}
-		
-		// Store an undo
 
-		Main.logDebug("Blocks pasted: " + undoList.size()); // ----
-		UndoManager.getUndo(owner).storeUndo(new UndoElement(undoList));
+		Main.logDebug("Blocks pasted successfully"); // ----
 		
 		owner.sendMessage("§dSelection pasted");
 		return true;

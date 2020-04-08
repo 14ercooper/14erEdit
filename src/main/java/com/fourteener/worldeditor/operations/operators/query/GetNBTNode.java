@@ -13,8 +13,9 @@ public class GetNBTNode extends Node {
 
 	@Override
 	public boolean performNode() {
-		Operator.currentPlayer.sendMessage("§dNBT: " + (new NBTExtractor()).getNBT(Operator.currentBlock));
-		return true;
+		String s = (new NBTExtractor()).getNBT(Operator.currentBlock);
+		Operator.currentPlayer.sendMessage("§dNBT: " + s);
+		return s.length() > 2;
 	}
 
 	@Override
