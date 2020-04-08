@@ -8,7 +8,6 @@ import net.minecraft.server.v1_15_R1.NBTTagCompound;
 
 public class NBTExtractor {
 	public String getNBT(BlockState bs) {
-		Main.logDebug(bs.getClass().getName());
 		if (!bs.getClass().getName().endsWith("CraftBlockState")) {
 			@SuppressWarnings("rawtypes")
 			CraftBlockEntityState cb = (CraftBlockEntityState) bs;
