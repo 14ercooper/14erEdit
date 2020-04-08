@@ -6,12 +6,14 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
 import com.fourteener.worldeditor.operations.Operator;
+import com.fourteener.worldeditor.selection.Clipboard;
 
 public class AsyncOperation {
 	protected String key = "";
 	protected Operator operation = null;
 	protected ArrayDeque<Block> toOperate = null;
 	protected Player player = null;
+	protected Clipboard clipboard = null; 
 	
 	public AsyncOperation (boolean startUndo, Player p) {
 		if (startUndo) {
@@ -28,6 +30,17 @@ public class AsyncOperation {
 		key = "edit";
 		operation = o;
 		player = p;
+		toOperate = b;
+	}
+	
+	public AsyncOperation (Clipboard c, ArrayDeque<Block> b, boolean save) {
+		if (save) {
+			key = "saveclip";
+		}
+		else {
+			key = "loadclip";
+		}
+		clipboard = c;
 		toOperate = b;
 	}
 	
