@@ -7,12 +7,14 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 
+import com.fourteener.worldeditor.main.Main;
+
 public class Undo {
 	// Whose undo is this?
 	public Player owner;
 	
 	// How many blocks should be stored
-	private int maxBlocks = 1000000;
+	private int maxBlocks = 250000;
 	
 	// Stores undo and redo elements
 	private ArrayDeque<BlockState> undoList = new ArrayDeque<BlockState>();
@@ -29,11 +31,14 @@ public class Undo {
 	
 	// Start an undo
 	public void startUndo () {
+		Main.logDebug("Starting undo for " + owner.getName());
 		positions = new HashSet<String>();
 	}
 	
 	// End an undo
 	public int finishUndo () {
+		Main.logDebug("Finished undo for " + owner.getName());
+		Main.logDebug(positions.size() + " block changes stored");
 		if (positions.size() <= 0) {
 			return 0;
 		}
@@ -48,8 +53,8 @@ public class Undo {
 		String posStr = x + ";" + y + ";" + z;
 		if (!positions.contains(posStr)) {
 			positions.add(posStr);
-			undoList.add(bs);
-			if (undoList.size() > maxBlocks) {
+			undoList.addLast(bs);
+			while (undoList.size() > maxBlocks) {
 				int numRem = undoSizes.removeLast();
 				while (numRem-- > 0) {
 					undoList.removeLast();
@@ -66,23 +71,26 @@ public class Undo {
 	
 	// Undo a number of changes
 	public int undoChanges (int number) {
+		number = number < 1 ? 1 : number > undoSizes.size() ? undoSizes.size() : number;
 		int numPlaced = 0;
+		Main.logDebug("Undoing " + number + " edits");
 		while (number-- > 0) {
 			int numRem = undoSizes.removeFirst();
-			redoSizes.addFirst(numRem);
 			numPlaced += numRem;
+			Main.logDebug("Undoing " + numRem + " block edits");
 			while (numRem-- > 0) {
-				BlockState bs = undoList.removeFirst();
-				redoList.addFirst(bs);
+				BlockState bs = undoList.removeLast();
 				Block b = bs.getBlock();
+				redoList.addFirst(b.getState());
 				b.setType(bs.getType(), true);
 				b.setBlockData(bs.getBlockData(), true);
 			}
-			if (redoList.size() > maxBlocks) {
-				numRem = redoSizes.removeLast();
-				while (numRem-- > 0) {
-					redoList.removeLast();
-				}
+		}
+		redoSizes.addFirst(numPlaced);
+		while (redoList.size() > maxBlocks) {
+			int numRem = redoSizes.removeLast();
+			while (numRem-- > 0) {
+				redoList.removeLast();
 			}
 		}
 		return numPlaced;
@@ -90,23 +98,26 @@ public class Undo {
 	
 	// Redo a number of changes
 	public int redoChanges (int number) {
+		number = number < 1 ? 1 : number > redoSizes.size() ? redoSizes.size() : number;
 		int numPlaced = 0;
+		Main.logDebug("Redoing " + number + " edits");
 		while (number-- > 0) {
 			int numRem = redoSizes.removeFirst();
-			undoSizes.addFirst(numRem);
 			numPlaced += numRem;
+			Main.logDebug("Redoing " + numRem + " block edits");
 			while (numRem-- > 0) {
 				BlockState bs = redoList.removeFirst();
-				undoList.addFirst(bs);
+				undoList.addLast(bs);
 				Block b = bs.getBlock();
 				b.setType(bs.getType(), true);
 				b.setBlockData(bs.getBlockData(), true);
 			}
-			if (undoList.size() > maxBlocks) {
-				numRem = undoSizes.removeLast();
-				while (numRem-- > 0) {
-					undoList.removeLast();
-				}
+		}
+		undoSizes.addFirst(numPlaced);
+		while (undoList.size() > maxBlocks) {
+			int numRem = undoSizes.removeLast();
+			while (numRem-- > 0) {
+				undoList.removeLast();
 			}
 		}
 		return numPlaced;
