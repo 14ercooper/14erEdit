@@ -2,13 +2,9 @@ package com.fourteener.worldeditor.scripts.bundled.easyedit;
 
 import java.util.LinkedList;
 
-import org.bukkit.Material;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
-import com.fourteener.worldeditor.main.GlobalVars;
 import com.fourteener.worldeditor.main.Main;
-import com.fourteener.worldeditor.main.SetBlock;
 import com.fourteener.worldeditor.scripts.Craftscript;
 import com.fourteener.worldeditor.selection.SelectionManager;
 
@@ -38,13 +34,7 @@ public class ScriptCaternary extends Craftscript {
 		Main.logDebug("Y: " + y0 + " " + dy + " " + dy2);
 		Main.logDebug("Z: " + z0 + " " + dz);
 		
-		for (double t = 0; t < 1 + (step / 2); t += step) {
-			int x = (int) (x0 + (t * dx));
-			int y = (int) (y0 + (t * dy) + (t * t * dy2));
-			int z = (int) (z0 + (t * dz));
-			Block b = GlobalVars.world.getBlockAt(x, y, z);
-			SetBlock.setMaterial(b, Material.matchMaterial(block));
-		}
+		player.performCommand("run $catenary{" + x0 + ";" + y0 + ";" + z0 + ";" + dx + ";" + dy + ";" + dy2 + ";" + dz + ";" + step + ";" + block + "}");
 		
 		return true;
 	}

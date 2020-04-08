@@ -2,12 +2,9 @@ package com.fourteener.worldeditor.scripts.bundled.easyedit;
 
 import java.util.LinkedList;
 
-import org.bukkit.Material;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
-import com.fourteener.worldeditor.main.*;
 import com.fourteener.worldeditor.scripts.Craftscript;
 
 public class ScriptLine extends Craftscript {
@@ -23,22 +20,18 @@ public class ScriptLine extends Craftscript {
 		else {
 			length = Integer.MAX_VALUE;
 		}
-		Material mat = Material.matchMaterial(block);
+
+		Vector blockPos = player.getLocation().getDirection();
+		Vector playerPos = player.getLocation().toVector();
 		
-		for (int i = 1; i < length; i++) {
-			Vector blockPos = player.getLocation().getDirection();
-			Vector playerPos = player.getLocation().toVector();
-			blockPos.setX(blockPos.getX() * i + playerPos.getX());
-			blockPos.setY(blockPos.getY() * i + playerPos.getY() + 1);
-			blockPos.setZ(blockPos.getZ() * i + playerPos.getZ());
-			
-			Block b = GlobalVars.world.getBlockAt(blockPos.getBlockX(), blockPos.getBlockY(), blockPos.getBlockZ());
-			
-			if (b.getType() != Material.AIR && b.getType() != mat) {
-				break;
-			}
-			SetBlock.setMaterial(b, mat);
-		}
+		int x1 = (int) playerPos.getX();
+		int y1 = (int) playerPos.getY();
+		int z1 = (int) playerPos.getZ();
+		int x2 = (int)(blockPos.getX() * length + playerPos.getX());
+		int y2 = (int)(blockPos.getY() * length + playerPos.getY());
+		int z2 = (int)(blockPos.getZ() * length + playerPos.getZ());
+		
+		player.performCommand("run $line{" + x1 + ";" + y1 + ";" + z1 + ";" + x2 + ";" + y2 + ";" + z2 + ";" + block + "}");
 		
 		return true;
 	}
