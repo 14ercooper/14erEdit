@@ -1,0 +1,33 @@
+package com.fourteener.worldeditor.async;
+
+import java.util.ArrayDeque;
+
+import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
+
+import com.fourteener.worldeditor.operations.Operator;
+
+public class AsyncOperation {
+	protected String key = "";
+	protected Operator operation = null;
+	protected ArrayDeque<Block> toOperate = null;
+	protected Player player = null;
+	
+	public AsyncOperation (boolean startUndo, Player p) {
+		if (startUndo) {
+			key = "startUndo";
+			player = p;
+		}
+		else {
+			key = "finishUndo";
+			player = p;
+		}
+	}
+	
+	public AsyncOperation (Operator o, Player p, ArrayDeque<Block> b) {
+		key = "edit";
+		operation = o;
+		player = p;
+		toOperate = b;
+	}
+}
