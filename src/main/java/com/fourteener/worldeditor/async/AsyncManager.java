@@ -17,14 +17,9 @@ import com.fourteener.worldeditor.main.NBTExtractor;
 import com.fourteener.worldeditor.main.SetBlock;
 import com.fourteener.worldeditor.operations.Operator;
 import com.fourteener.worldeditor.selection.Clipboard;
-import com.fourteener.worldeditor.undo.Undo;
 import com.fourteener.worldeditor.undo.UndoManager;
 
 public class AsyncManager {
-	
-	// How heavy of a load should the async place on the server?
-	public static final long delayTicks = 4;
-	public static final long blockOperations = 10000;
 
 	// NBT extractor for clipboard
 	NBTExtractor nbtExtractor = new NBTExtractor();
@@ -43,7 +38,7 @@ public class AsyncManager {
 			public void run () {
 				GlobalVars.asyncManager.performOperation();
 			}
-		} , delayTicks, delayTicks);
+		} , GlobalVars.ticksPerAsync, GlobalVars.ticksPerAsync);
 	}
 	
 	// Schedule a new task cleanly
@@ -51,7 +46,7 @@ public class AsyncManager {
 		if (p == null) {
 			operations.add(new AsyncOperation(o, b));
 		}
-		else if (b.size() > Undo.maxBlocks) {
+		else if (b.size() > GlobalVars.undoLimit) {
 			largeOps.add(new AsyncOperation(o, p, b));
 			p.sendMessage("§aThis is a large edit that cannot be undone.");
 			p.sendMessage("§aPlease type §b/confirm §ato confirm or §b/cancel §a to cancel");
@@ -71,7 +66,7 @@ public class AsyncManager {
 	}
 	
 	public void scheduleEdit (Clipboard c, ArrayDeque<Block> b, boolean save) {
-		if (b.size() > Undo.maxBlocks) {
+		if (b.size() > GlobalVars.undoLimit) {
 			largeOps.add(new AsyncOperation(c, b, save));
 			c.owner.sendMessage("§aThis is a large edit that cannot be undone.");
 			c.owner.sendMessage("§aPlease type §b/confirm §ato confirm or §b/cancel §a to cancel");
@@ -118,7 +113,7 @@ public class AsyncManager {
 		long doneOperations = 0;
 		
 		// Loop until finished
-		while (doneOperations < blockOperations && operations.size() > 0) {
+		while (doneOperations < GlobalVars.blocksPerAsync && operations.size() > 0) {
 			AsyncOperation op = operations.peek();
 			if (op.key.equalsIgnoreCase("startundo")) {
 				Main.logDebug("Async undo started for player " + op.player.getName());
@@ -141,7 +136,7 @@ public class AsyncManager {
 			}
 			else if (op.key.equalsIgnoreCase("edit")) {
 				Main.logDebug("Started async edit for player " + op.player.getName());
-				while (doneOperations < blockOperations && op.toOperate.size() > 0) {
+				while (doneOperations < GlobalVars.blocksPerAsync && op.toOperate.size() > 0) {
 					Block b = op.toOperate.removeFirst();
 					op.operation.operateOnBlock(b, op.player);
 					doneOperations++;
@@ -152,7 +147,7 @@ public class AsyncManager {
 			}
 			else if (op.key.equalsIgnoreCase("rawedit")) {
 				Main.logDebug("Started async raw edit for player " + op.player.getName());
-				while (doneOperations < blockOperations && op.toOperate.size() > 0) {
+				while (doneOperations < GlobalVars.blocksPerAsync && op.toOperate.size() > 0) {
 					Block b = op.toOperate.removeFirst();
 					op.operation.operateOnBlock(b);
 					doneOperations++;
@@ -163,7 +158,7 @@ public class AsyncManager {
 			}
 			else if (op.key.equalsIgnoreCase("saveclip")) {
 				Main.logDebug("Started async copy for player " + op.clipboard.owner.getName());
-				while (doneOperations < blockOperations && op.toOperate.size() > 0) {
+				while (doneOperations < GlobalVars.blocksPerAsync && op.toOperate.size() > 0) {
 					Block b = op.toOperate.removeFirst();
 					int xB = Math.abs(b.getX() - op.clipboard.xNeg);
 					int yB = Math.abs(b.getY() - op.clipboard.yNeg);
@@ -179,7 +174,7 @@ public class AsyncManager {
 			}
 			else if (op.key.equalsIgnoreCase("loadclip")) {
 				Main.logDebug("Started async paste for player " + op.clipboard.owner.getName());
-				while (doneOperations < blockOperations && op.toOperate.size() > 0) {
+				while (doneOperations < GlobalVars.blocksPerAsync && op.toOperate.size() > 0) {
 					Block b = op.toOperate.removeFirst();
 					Material blockMat = Material.matchMaterial(op.clipboard.blockData.get(op.clipboard.loadPos).split("\\[")[0]);
 					BlockData blockDat = Bukkit.getServer().createBlockData(op.clipboard.blockData.get(op.clipboard.loadPos));

@@ -17,7 +17,7 @@ public class GetSpawnerCommandNode extends Node {
 	
 	public GetSpawnerCommandNode newNode() {
 		GetSpawnerCommandNode node = new GetSpawnerCommandNode();
-		node.name = GlobalVars.operationParser.parseStringNode();
+		node.name = GlobalVars.operationParser.parseStringNode().contents;
 		node.path = "plugins/14erEdit/Commands/" + GlobalVars.operationParser.parseStringNode();
 		return node;
 	}

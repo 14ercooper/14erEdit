@@ -27,4 +27,9 @@ public class GlobalVars {
 	
 	// For debugging
 	public static boolean isDebug = false;
+	
+	// Configs
+	public static long undoLimit = 250000;
+	public static long blocksPerAsync = 10000;
+	public static long ticksPerAsync = 4;
 }

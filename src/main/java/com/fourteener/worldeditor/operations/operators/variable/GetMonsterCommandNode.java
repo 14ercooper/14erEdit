@@ -17,7 +17,7 @@ public class GetMonsterCommandNode extends Node {
 	
 	public GetMonsterCommandNode newNode() {
 		GetMonsterCommandNode node = new GetMonsterCommandNode();
-		node.name = GlobalVars.operationParser.parseStringNode();
+		node.name = GlobalVars.operationParser.parseStringNode().contents;
 		node.path = "plugins/14erEdit/Commands/" + GlobalVars.operationParser.parseStringNode();
 		return node;
 	}

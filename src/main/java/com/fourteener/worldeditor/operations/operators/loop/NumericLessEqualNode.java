@@ -12,7 +12,7 @@ public class NumericLessEqualNode extends Node {
 	
 	public NumericLessEqualNode newNode() {
 		NumericLessEqualNode node = new NumericLessEqualNode();
-		node.name = GlobalVars.operationParser.parseStringNode();
+		node.name = GlobalVars.operationParser.parseStringNode().contents;
 		node.val = GlobalVars.operationParser.parseNumberNode();
 		return node;
 	}

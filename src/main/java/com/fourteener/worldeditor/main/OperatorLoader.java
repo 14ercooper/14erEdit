@@ -31,6 +31,7 @@ public class OperatorLoader {
 		GlobalVars.operationParser.AddOperator("-", new RangeNode());
 		GlobalVars.operationParser.AddOperator(";", new RemainderNode());
 		GlobalVars.operationParser.AddOperator("#", new SimplexNode());
+		GlobalVars.operationParser.AddOperator("-con", new StringContainsNode());
 	}
 	
 	private static void LoadLogical() {

@@ -12,7 +12,7 @@ public class RemainderNode extends Node {
 	
 	public RemainderNode newNode() {
 		RemainderNode node = new RemainderNode();
-		String dim = GlobalVars.operationParser.parseStringNode();
+		String dim = GlobalVars.operationParser.parseStringNode().contents;
 		if (dim.equalsIgnoreCase("x")) {
 			node.arg1 = 0;
 		}

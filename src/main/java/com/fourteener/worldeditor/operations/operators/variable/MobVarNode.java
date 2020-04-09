@@ -11,7 +11,7 @@ public class MobVarNode extends Node{
 	
 	public MobVarNode newNode() {
 		MobVarNode node = new MobVarNode();
-		node.name = GlobalVars.operationParser.parseStringNode();
+		node.name = GlobalVars.operationParser.parseStringNode().contents;
 		return node;
 	}
 	

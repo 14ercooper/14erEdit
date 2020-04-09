@@ -11,7 +11,7 @@ public class NumericVarNode extends Node{
 	
 	public NumericVarNode newNode() {
 		NumericVarNode node = new NumericVarNode();
-		node.name = GlobalVars.operationParser.parseStringNode();
+		node.name = GlobalVars.operationParser.parseStringNode().contents;
 		return node;
 	}
 	

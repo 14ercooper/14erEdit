@@ -14,7 +14,7 @@ public class SetBlockVarNode extends Node {
 	
 	public SetBlockVarNode newNode() {
 		SetBlockVarNode node = new SetBlockVarNode();
-		node.name = GlobalVars.operationParser.parseStringNode();
+		node.name = GlobalVars.operationParser.parseStringNode().contents;
 		return node;
 	}
 	

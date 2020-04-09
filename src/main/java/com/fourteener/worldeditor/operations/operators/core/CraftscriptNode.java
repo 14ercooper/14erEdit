@@ -9,7 +9,7 @@ import com.fourteener.worldeditor.operations.operators.Node;
 
 public class CraftscriptNode extends Node {
 	
-	public String arg;
+	public StringNode arg;
 	
 	public CraftscriptNode newNode() {
 		CraftscriptNode node = new CraftscriptNode();
@@ -18,8 +18,8 @@ public class CraftscriptNode extends Node {
 	}
 	
 	public boolean performNode () {
-		String label = arg.split("{")[0];
-		LinkedList<String> args = new LinkedList<String>(Arrays.asList(arg.split("{")[1].replace("}", "").split(",")));
+		String label = arg.contents.split("{")[0];
+		LinkedList<String> args = new LinkedList<String>(Arrays.asList(arg.contents.split("{")[1].replace("}", "").split(",")));
 		return GlobalVars.scriptManager.runCraftscript(label, args, Operator.currentPlayer);
 	}
 	

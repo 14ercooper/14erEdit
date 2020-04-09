@@ -18,9 +18,9 @@ public class LoadVariableNode extends Node {
 	@Override
 	public LoadVariableNode newNode() {
 		LoadVariableNode node = new LoadVariableNode();
-		node.type = GlobalVars.operationParser.parseStringNode();
-		node.name = GlobalVars.operationParser.parseStringNode();
-		node.path = "plugins/14erEdit/vars/" + GlobalVars.operationParser.parseStringNode().replace('/', File.pathSeparatorChar);
+		node.type = GlobalVars.operationParser.parseStringNode().contents;
+		node.name = GlobalVars.operationParser.parseStringNode().contents;
+		node.path = "plugins/14erEdit/vars/" + GlobalVars.operationParser.parseStringNode().contents.replace('/', File.pathSeparatorChar);
 		return node;
 	}
 

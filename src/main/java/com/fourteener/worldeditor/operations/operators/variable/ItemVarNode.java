@@ -11,7 +11,7 @@ public class ItemVarNode extends Node{
 	
 	public ItemVarNode newNode() {
 		ItemVarNode node = new ItemVarNode();
-		node.name = GlobalVars.operationParser.parseStringNode();
+		node.name = GlobalVars.operationParser.parseStringNode().contents;
 		return node;
 	}
 	

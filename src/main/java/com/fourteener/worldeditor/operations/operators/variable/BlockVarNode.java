@@ -11,7 +11,7 @@ public class BlockVarNode extends Node{
 	
 	public BlockVarNode newNode() {
 		BlockVarNode node = new BlockVarNode();
-		node.name = GlobalVars.operationParser.parseStringNode();
+		node.name = GlobalVars.operationParser.parseStringNode().contents;
 		return node;
 	}
 	

@@ -11,7 +11,7 @@ public class SpawnMonsterNode extends Node {
 	
 	public SpawnMonsterNode newNode() {
 		SpawnMonsterNode node = new SpawnMonsterNode();
-		node.name = GlobalVars.operationParser.parseStringNode();
+		node.name = GlobalVars.operationParser.parseStringNode().contents;
 		return node;
 	}
 	

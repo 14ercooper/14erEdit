@@ -7,14 +7,12 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 
+import com.fourteener.worldeditor.main.GlobalVars;
 import com.fourteener.worldeditor.main.Main;
 
 public class Undo {
 	// Whose undo is this?
 	public Player owner;
-	
-	// How many blocks should be stored
-	public static final int maxBlocks = 250000;
 	
 	// Stores undo and redo elements
 	private ArrayDeque<BlockState> undoList = new ArrayDeque<BlockState>();
@@ -54,7 +52,7 @@ public class Undo {
 		if (!positions.contains(posStr)) {
 			positions.add(posStr);
 			undoList.addLast(bs);
-			while (undoList.size() > maxBlocks) {
+			while (undoList.size() > GlobalVars.undoLimit) {
 				int numRem = undoSizes.removeLast();
 				while (numRem-- > 0) {
 					undoList.removeLast();
@@ -87,7 +85,7 @@ public class Undo {
 			}
 		}
 		redoSizes.addFirst(numPlaced);
-		while (redoList.size() > maxBlocks) {
+		while (redoList.size() > GlobalVars.undoLimit) {
 			int numRem = redoSizes.removeLast();
 			while (numRem-- > 0) {
 				redoList.removeLast();
@@ -114,7 +112,7 @@ public class Undo {
 			}
 		}
 		undoSizes.addFirst(numPlaced);
-		while (undoList.size() > maxBlocks) {
+		while (undoList.size() > GlobalVars.undoLimit) {
 			int numRem = undoSizes.removeLast();
 			while (numRem-- > 0) {
 				undoList.removeLast();

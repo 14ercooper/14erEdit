@@ -21,9 +21,9 @@ public class ModifyVarNode extends Node {
 	
 	public ModifyVarNode newNode() {
 		ModifyVarNode node = new ModifyVarNode();
-		node.type = GlobalVars.operationParser.parseStringNode();
-		node.name = GlobalVars.operationParser.parseStringNode();
-		node.mod = Arrays.asList(GlobalVars.operationParser.parseStringNode().split(","));
+		node.type = GlobalVars.operationParser.parseStringNode().contents;
+		node.name = GlobalVars.operationParser.parseStringNode().contents;
+		node.mod = Arrays.asList(GlobalVars.operationParser.parseStringNode().contents.split(","));
 		return node;
 	}
 	

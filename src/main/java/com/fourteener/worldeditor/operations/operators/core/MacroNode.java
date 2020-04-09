@@ -6,7 +6,7 @@ import com.fourteener.worldeditor.operations.operators.Node;
 
 public class MacroNode extends Node {
 	
-	String arg;
+	StringNode arg;
 	
 	public MacroNode newNode() {
 		MacroNode node = new MacroNode();
@@ -16,7 +16,7 @@ public class MacroNode extends Node {
 	
 	public boolean performNode () {
 		Main.logDebug("Performing macro node"); // ----
-		return GlobalVars.macroLauncher.launchMacro(arg, Operator.currentBlock.getLocation());
+		return GlobalVars.macroLauncher.launchMacro(arg.contents, Operator.currentBlock.getLocation());
 	}
 	
 	public int getArgCount () {

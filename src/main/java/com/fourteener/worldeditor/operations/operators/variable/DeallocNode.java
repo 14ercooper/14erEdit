@@ -10,8 +10,8 @@ public class DeallocNode extends Node {
 	
 	public DeallocNode newNode() {
 		DeallocNode node = new DeallocNode();
-		node.type = GlobalVars.operationParser.parseStringNode();
-		node.name = GlobalVars.operationParser.parseStringNode();
+		node.type = GlobalVars.operationParser.parseStringNode().contents;
+		node.name = GlobalVars.operationParser.parseStringNode().contents;
 		return node;
 	}
 	

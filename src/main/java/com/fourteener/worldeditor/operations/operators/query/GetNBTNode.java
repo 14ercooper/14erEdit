@@ -2,10 +2,12 @@ package com.fourteener.worldeditor.operations.operators.query;
 
 import com.fourteener.worldeditor.main.NBTExtractor;
 import com.fourteener.worldeditor.operations.Operator;
-import com.fourteener.worldeditor.operations.operators.Node;
+import com.fourteener.worldeditor.operations.operators.core.StringNode;
 
-public class GetNBTNode extends Node {
+public class GetNBTNode extends StringNode {
 
+	String contents = "";
+	
 	@Override
 	public GetNBTNode newNode() {
 		return new GetNBTNode();
@@ -14,8 +16,13 @@ public class GetNBTNode extends Node {
 	@Override
 	public boolean performNode() {
 		String s = (new NBTExtractor()).getNBT(Operator.currentBlock);
-		Operator.currentPlayer.sendMessage("§dNBT: " + s);
+		contents = s;
 		return s.length() > 2;
+	}
+	
+	@Override
+	public String getText () {
+		return contents;
 	}
 
 	@Override

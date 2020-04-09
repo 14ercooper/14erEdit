@@ -12,7 +12,7 @@ public class NumericEqualityNode extends Node {
 	
 	public NumericEqualityNode newNode() {
 		NumericEqualityNode node = new NumericEqualityNode();
-		node.name = GlobalVars.operationParser.parseStringNode();
+		node.name = GlobalVars.operationParser.parseStringNode().contents;
 		node.val = GlobalVars.operationParser.parseNumberNode();
 		return node;
 	}

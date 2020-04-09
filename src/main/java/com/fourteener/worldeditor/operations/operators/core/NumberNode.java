@@ -12,7 +12,7 @@ public class NumberNode extends Node {
 	public NumberNode newNode() {
 		NumberNode node = new NumberNode();
 		GlobalVars.operationParser.index--;
-		node.arg = Double.parseDouble(GlobalVars.operationParser.parseStringNode());
+		node.arg = Double.parseDouble(GlobalVars.operationParser.parseStringNode().contents);
 		return node;
 	}
 

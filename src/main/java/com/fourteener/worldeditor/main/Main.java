@@ -38,6 +38,9 @@ public class Main extends JavaPlugin {
 		GlobalVars.simplexNoise = new SimplexNoise (GlobalVars.world.getSeed()); // Seeded using the world seed for variance between worlds but consistency in the same world
 		GlobalVars.plugin = this;
 		
+		// Load config
+		loadConfig();
+		
 		// Load managers
 		GlobalVars.scriptManager = new CraftscriptManager();
 		GlobalVars.macroLauncher = new MacroLauncher();
@@ -58,5 +61,13 @@ public class Main extends JavaPlugin {
 	
 	public static void logDebug (String message) {
 		if (GlobalVars.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] " + message); // ----
+	}
+	
+	private static void loadConfig () {
+		GlobalVars.plugin.saveDefaultConfig();
+		
+		GlobalVars.undoLimit = GlobalVars.plugin.getConfig().getLong("undoLimit");
+		GlobalVars.blocksPerAsync = GlobalVars.plugin.getConfig().getLong("blocksPerAsync");
+		GlobalVars.ticksPerAsync = GlobalVars.plugin.getConfig().getLong("ticksPerAsync");
 	}
 }

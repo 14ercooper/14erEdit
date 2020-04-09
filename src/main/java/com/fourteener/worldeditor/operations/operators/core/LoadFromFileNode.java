@@ -13,7 +13,7 @@ import com.fourteener.worldeditor.operations.operators.Node;
 
 public class LoadFromFileNode extends Node {
 	
-	String path;
+	StringNode path;
 	
 	public LoadFromFileNode newNode() {
 		LoadFromFileNode node = new LoadFromFileNode();
@@ -22,7 +22,7 @@ public class LoadFromFileNode extends Node {
 	}
 	
 	public boolean performNode () {
-		if (!Operator.fileLoads.containsKey(path)) {
+		if (!Operator.fileLoads.containsKey(path.contents)) {
 			List<String> lines = new ArrayList<String>();
 			try {
 				lines = Files.readAllLines(Paths.get(("plugins/14erEdit/ops/" + path).replace("/", File.separator)));
@@ -42,9 +42,9 @@ public class LoadFromFileNode extends Node {
 				toParse += s + " ";
 			}
 			Operator o = new Operator(toParse);
-			Operator.fileLoads.put(path, o);
+			Operator.fileLoads.put(path.contents, o);
 		}
-		Operator o = Operator.fileLoads.get(path);
+		Operator o = Operator.fileLoads.get(path.contents);
 		return o.messyOperate();
 	}
 	

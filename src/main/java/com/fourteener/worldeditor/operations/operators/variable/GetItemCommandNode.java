@@ -17,7 +17,7 @@ public class GetItemCommandNode extends Node {
 	
 	public GetItemCommandNode newNode() {
 		GetItemCommandNode node = new GetItemCommandNode();
-		node.name = GlobalVars.operationParser.parseStringNode();
+		node.name = GlobalVars.operationParser.parseStringNode().contents;
 		node.path = "plugins/14erEdit/Commands/" + GlobalVars.operationParser.parseStringNode();
 		return node;
 	}

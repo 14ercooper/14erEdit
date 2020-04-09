@@ -11,7 +11,7 @@ public class GetSpawnerItemNode extends Node {
 	
 	public GetSpawnerItemNode newNode() {
 		GetSpawnerItemNode node = new GetSpawnerItemNode();
-		node.name = GlobalVars.operationParser.parseStringNode();
+		node.name = GlobalVars.operationParser.parseStringNode().contents;
 		return node;
 	}
 	

@@ -11,7 +11,7 @@ public class SetSpawnerNode extends Node {
 	
 	public SetSpawnerNode newNode() {
 		SetSpawnerNode node = new SetSpawnerNode();
-		node.name = GlobalVars.operationParser.parseStringNode();
+		node.name = GlobalVars.operationParser.parseStringNode().contents;
 		return node;
 	}
 	

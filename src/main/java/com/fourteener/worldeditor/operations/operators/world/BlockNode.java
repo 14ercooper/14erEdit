@@ -17,14 +17,14 @@ public class BlockNode extends Node {
 	// Creates a new node
 	public BlockNode newNode() {
 		BlockNode node = new BlockNode();
-		node.arg1 = Material.matchMaterial(GlobalVars.operationParser.parseStringNode());
+		node.arg1 = Material.matchMaterial(GlobalVars.operationParser.parseStringNode().contents);
 		return node;
 	}
 	
 	// Creates a new node
 	public BlockNode newNode(boolean overload) {
 		BlockNode node = new BlockNode();
-		String data = GlobalVars.operationParser.parseStringNode();
+		String data = GlobalVars.operationParser.parseStringNode().contents;
 		node.arg1 = Material.matchMaterial(data.split("\\[")[0]);
 		node.arg2 = Bukkit.getServer().createBlockData(data);
 		return node;

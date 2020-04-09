@@ -12,7 +12,7 @@ public class SetNBTNode extends Node {
 	
 	public SetNBTNode newNode() {
 		SetNBTNode node = new SetNBTNode();
-		node.nbt = GlobalVars.operationParser.parseStringNode();
+		node.nbt = GlobalVars.operationParser.parseStringNode().contents;
 		return node;
 	}
 	

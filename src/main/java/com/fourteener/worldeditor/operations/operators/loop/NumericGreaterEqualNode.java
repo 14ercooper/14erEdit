@@ -12,7 +12,7 @@ public class NumericGreaterEqualNode extends Node {
 	
 	public NumericGreaterEqualNode newNode() {
 		NumericGreaterEqualNode node = new NumericGreaterEqualNode();
-		node.name = GlobalVars.operationParser.parseStringNode();
+		node.name = GlobalVars.operationParser.parseStringNode().contents;
 		node.val = GlobalVars.operationParser.parseNumberNode();
 		return node;
 	}

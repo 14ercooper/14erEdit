@@ -12,7 +12,7 @@ public class NumericGreaterNode extends Node {
 	
 	public NumericGreaterNode newNode() {
 		NumericGreaterNode node = new NumericGreaterNode();
-		node.name = GlobalVars.operationParser.parseStringNode();
+		node.name = GlobalVars.operationParser.parseStringNode().contents;
 		node.val = GlobalVars.operationParser.parseNumberNode();
 		return node;
 	}

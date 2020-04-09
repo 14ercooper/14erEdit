@@ -67,8 +67,9 @@ public class Parser {
 			return new BlockNode().newNode(true);
 		}
 		else {
-			Main.logDebug("Null node created"); // -----
-			return null;
+			index--;
+			Main.logDebug("String node created"); // -----
+			return parseStringNode();
 		}
 	}
 	
@@ -84,9 +85,11 @@ public class Parser {
 		return new RangeNode().newNode();
 	}
 	
-	public String parseStringNode () {
+	public StringNode parseStringNode () {
 		index ++;
 		Main.logDebug("String node created"); // -----
-		return parts.get(index);
+		StringNode node = new StringNode();
+		node.contents = parts.get(index);
+		return node;
 	}
 }

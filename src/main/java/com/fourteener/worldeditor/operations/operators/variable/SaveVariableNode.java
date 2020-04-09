@@ -19,9 +19,9 @@ public class SaveVariableNode extends Node {
 	@Override
 	public SaveVariableNode newNode() {
 		SaveVariableNode node = new SaveVariableNode();
-		node.type = GlobalVars.operationParser.parseStringNode();
-		node.name = GlobalVars.operationParser.parseStringNode();
-		node.path = "plugins/14erEdit/vars/" + GlobalVars.operationParser.parseStringNode().replace('/', File.pathSeparatorChar);
+		node.type = GlobalVars.operationParser.parseStringNode().contents;
+		node.name = GlobalVars.operationParser.parseStringNode().contents;
+		node.path = "plugins/14erEdit/vars/" + GlobalVars.operationParser.parseStringNode().contents.replace('/', File.pathSeparatorChar);
 		return node;
 	}
 

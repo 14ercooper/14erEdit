@@ -11,7 +11,7 @@ public class GetMonsterItemNode extends Node {
 	
 	public GetMonsterItemNode newNode() {
 		GetMonsterItemNode node = new GetMonsterItemNode();
-		node.name = GlobalVars.operationParser.parseStringNode();
+		node.name = GlobalVars.operationParser.parseStringNode().contents;
 		return node;
 	}
 	

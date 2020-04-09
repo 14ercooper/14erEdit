@@ -11,7 +11,7 @@ public class SpawnerVarNode extends Node{
 	
 	public SpawnerVarNode newNode() {
 		SpawnerVarNode node = new SpawnerVarNode();
-		node.name = GlobalVars.operationParser.parseStringNode();
+		node.name = GlobalVars.operationParser.parseStringNode().contents;
 		return node;
 	}
 	
