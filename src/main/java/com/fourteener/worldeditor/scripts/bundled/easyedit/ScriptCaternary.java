@@ -34,7 +34,7 @@ public class ScriptCaternary extends Craftscript {
 		Main.logDebug("Y: " + y0 + " " + dy + " " + dy2);
 		Main.logDebug("Z: " + z0 + " " + dz);
 		
-		player.performCommand("run $catenary{" + x0 + ";" + y0 + ";" + z0 + ";" + dx + ";" + dy + ";" + dy2 + ";" + dz + ";" + step + ";" + block + "}");
+		player.performCommand("run $ catenary{" + x0 + ";" + y0 + ";" + z0 + ";" + dx + ";" + dy + ";" + dy2 + ";" + dz + ";" + step + ";" + block + "}");
 		
 		return true;
 	}

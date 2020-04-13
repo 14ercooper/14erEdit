@@ -6,6 +6,7 @@ import org.bukkit.block.Block;
 
 import com.fourteener.worldeditor.macros.macros.Macro;
 import com.fourteener.worldeditor.main.GlobalVars;
+import com.fourteener.worldeditor.main.Main;
 import com.fourteener.worldeditor.main.SetBlock;
 
 public class LineMacro extends Macro {
@@ -25,6 +26,9 @@ public class LineMacro extends Macro {
 		dx = (x1 - x2) / 1000f;
 		dy = (y1 - y2) / 1000f;
 		dz = (z1 - z2) / 1000f;
+		
+		Main.logDebug("Placing line from " + x1 + "," + y1 + "," + z1 + " in direction " + dx + "," + dy + "," + dz);
+		
 		double x = x1, y = y1, z = z1;
 		for (int i = 0; i < 1000; i++) {
 			Block b = GlobalVars.world.getBlockAt((int) x, (int) y, (int) z);

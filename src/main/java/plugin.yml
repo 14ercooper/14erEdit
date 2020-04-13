@@ -30,9 +30,9 @@ commands:
     debug:
         description: Toggle debug messages globally
         usage: "Usage: /debug"
-    info:
+    14erEdit:
         description: Display plugin information
-        usage: "Usage: /info"
+        usage: "Usage: /14erEdit"
     confirm:
         description: Confirm large edits
         usage: "Usage: /confirm [number]"

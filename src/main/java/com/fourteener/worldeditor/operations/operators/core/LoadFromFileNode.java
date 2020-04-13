@@ -25,9 +25,10 @@ public class LoadFromFileNode extends Node {
 		if (!Operator.fileLoads.containsKey(path.contents)) {
 			List<String> lines = new ArrayList<String>();
 			try {
-				lines = Files.readAllLines(Paths.get(("plugins/14erEdit/ops/" + path).replace("/", File.separator)));
+				lines = Files.readAllLines(Paths.get(("plugins/14erEdit/ops/" + path.getText()).replace("/", File.separator)));
 			} catch (IOException e) {
-				Main.logDebug("Issue opening file");
+				Main.logDebug("Issue opening file " + Paths.get(("plugins/14erEdit/ops/" + path.getText()).replace("/", File.separator)).toString());
+				e.printStackTrace();
 			}
 			List<String> newOperators = new ArrayList<String>();
 			for (String s : lines) {

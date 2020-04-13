@@ -79,7 +79,18 @@ public class SchematicMacro extends Macro {
 			rx++;
 			
 			Material blockMat = Material.matchMaterial(blockData.get(i).split("\\[")[0]);
-			BlockData blockDat = Bukkit.getServer().createBlockData(blockData.get(i));
+			BlockData blockDat;
+			if (blockData.get(i).equalsIgnoreCase("minecraft:")) {
+				blockDat = null;
+			}
+			else {
+				try {
+					blockDat = Bukkit.getServer().createBlockData(blockData.get(i));
+				}
+				catch (Exception e) {
+					blockDat = null;
+				}
+			}
 			String nbt = blockNbt.get(i);
 			
 			Block b = GlobalVars.world.getBlockAt(x + rx - xOff - 1, y + ry - yOff, z + rz - zOff);
@@ -87,7 +98,8 @@ public class SchematicMacro extends Macro {
 			if (blockMat == Material.AIR) {
 				if (setAir) {
 					SetBlock.setMaterial(b, blockMat);
-					b.setBlockData(blockDat);
+					if (blockDat != null)
+						b.setBlockData(blockDat);
 					if (!nbt.equalsIgnoreCase("")) {
 						String command = "data merge block " + b.getX() + " " + b.getY() + " " + b.getZ() + " " + nbt;
 						Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), command);
@@ -96,7 +108,8 @@ public class SchematicMacro extends Macro {
 			}
 			else {
 				SetBlock.setMaterial(b, blockMat);
-				b.setBlockData(blockDat);
+				if (blockDat != null)
+					b.setBlockData(blockDat);
 				if (!nbt.equalsIgnoreCase("")) {
 					String command = "data merge block " + b.getX() + " " + b.getY() + " " + b.getZ() + " " + nbt;
 					Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), command);
