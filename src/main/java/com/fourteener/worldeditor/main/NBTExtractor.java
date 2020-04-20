@@ -27,4 +27,8 @@ public class NBTExtractor {
 	public String getNBT(Block b) {
 		return getNBT(b.getState());
 	}
+	
+	public void setNBT(int x, int y, int z, String nbt) {
+		// TODO implement this
+	}
 }

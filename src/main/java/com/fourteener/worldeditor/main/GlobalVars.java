@@ -4,6 +4,7 @@ import org.bukkit.World;
 import org.bukkit.plugin.Plugin;
 
 import com.fourteener.worldeditor.async.AsyncManager;
+import com.fourteener.worldeditor.blockiterator.IteratorManager;
 import com.fourteener.worldeditor.macros.MacroLauncher;
 import com.fourteener.worldeditor.operations.Parser;
 import com.fourteener.worldeditor.scripts.CraftscriptManager;
@@ -24,6 +25,7 @@ public class GlobalVars {
 	public static MacroLauncher macroLauncher;
 	public static Parser operationParser;
 	public static AsyncManager asyncManager;
+	public static IteratorManager iteratorManager;
 	
 	// For debugging
 	public static boolean isDebug = false;

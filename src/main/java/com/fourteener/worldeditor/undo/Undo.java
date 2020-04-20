@@ -55,7 +55,7 @@ public class Undo {
 			while (undoList.size() > GlobalVars.undoLimit) {
 				int numRem = undoSizes.removeLast();
 				while (numRem-- > 0) {
-					undoList.removeLast();
+					undoList.removeFirst();
 				}
 			}
 			return true;

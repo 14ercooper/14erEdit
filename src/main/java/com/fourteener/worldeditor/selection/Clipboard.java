@@ -138,6 +138,13 @@ public class Clipboard {
 	
 	// X,Y,Z stores the origin of the clipboard; blocks is the blocks to save
 	public boolean saveToClipboard (int xOrigin, int yOrigin, int zOrigin, List<Block> blocks) {
+		// Clear the existing clipboard
+		blockData = new LinkedList<String>();
+		nbtData = new LinkedList<String>();
+		x = -1; y = -1; z = -1;
+		length = -1; width = -1; height = -1;
+		loadPos = 0;
+		
 		// First, figure out the most negative corner of the selection
 		for (Block b : blocks) {
 			if (b.getX() < xNeg)

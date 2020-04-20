@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.fourteener.worldeditor.async.AsyncManager;
+import com.fourteener.worldeditor.blockiterator.IteratorManager;
 import com.fourteener.worldeditor.brush.BrushListener;
 import com.fourteener.worldeditor.commands.*;
 import com.fourteener.worldeditor.macros.MacroLauncher;
@@ -46,6 +47,7 @@ public class Main extends JavaPlugin {
 		GlobalVars.macroLauncher = new MacroLauncher();
 		GlobalVars.operationParser = new Parser();
 		GlobalVars.asyncManager = new AsyncManager();
+		GlobalVars.iteratorManager = new IteratorManager();
 		
 		// Register the prepackaged things to managers
 		CraftscriptLoader.LoadBundledCraftscripts();

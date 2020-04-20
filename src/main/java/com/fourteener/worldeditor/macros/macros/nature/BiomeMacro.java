@@ -32,14 +32,17 @@ public class BiomeMacro extends Macro {
 		// Location of the brush
 		double x = pos.getX();
 		double z = pos.getZ();
+		double y = pos.getY();
 		
 		// Generate the sphere
 		int radiusInt = (int) Math.round(radius);
 		List<Block> blockArray = new ArrayList<Block>();
 		for (int rx = -radiusInt; rx <= radiusInt; rx++) {
 			for (int rz = -radiusInt; rz <= radiusInt; rz++) {
-				if (rx*rx + rz*rz <= (radius + 0.5)*(radius + 0.5)) {
-					blockArray.add(GlobalVars.world.getBlockAt((int) x + rx, 1, (int) z + rz));
+				for (int ry = -radiusInt; ry < radiusInt; ry++) {
+					if (rx*rx + rz*rz + ry*ry <= (radius + 0.5)*(radius + 0.5)) {
+						blockArray.add(GlobalVars.world.getBlockAt((int) x + rx, (int) y + ry, (int) z + rz));
+					}
 				}
 			}
 		}
