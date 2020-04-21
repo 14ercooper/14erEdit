@@ -49,6 +49,9 @@ public class ErodeMacro extends Macro {
 			else if (args[2].equalsIgnoreCase("lift")) {
 				erodeSubtype = 3;
 			}
+			else if (args[2].equalsIgnoreCase("carve")) {
+				erodeSubtype = 4;
+			}
 		}
 	}
 	
@@ -80,6 +83,11 @@ public class ErodeMacro extends Macro {
 		// Melt lift erosion
 		if (erodeType == 0 && erodeSubtype == 3) {
 			snapshotArray = meltLiftErosion(snapshotArray);
+		}
+		
+		// Melt carve erosion
+		if (erodeType == 0 && erodeSubtype == 4) {
+			snapshotArray = meltCarveErosion(snapshotArray);
 		}
 		
 		// Blend erosion
@@ -354,6 +362,74 @@ public class ErodeMacro extends Macro {
 	private List<BlockState> meltCutErosion(List<BlockState> snapshotArray) {
 		Main.logDebug("Starting melt cut erode"); // ----
 		int airCut = 3; // Nearby air to make air
+		int solidCut = 4; // Nearby solid to make solid
+		// Iterate through each block
+		List<BlockState> snapshotCopy = new ArrayList<BlockState>();
+		for (BlockState b : snapshotArray) {
+			// First get the adjacent blocks
+			Block current = GlobalVars.world.getBlockAt(b.getLocation());
+			BlockState currentState = b;
+			List<Block> adjBlocks = new ArrayList<Block>();
+			adjBlocks.add(current.getRelative(BlockFace.UP));
+			adjBlocks.add(current.getRelative(BlockFace.DOWN));
+			adjBlocks.add(current.getRelative(BlockFace.NORTH));
+			adjBlocks.add(current.getRelative(BlockFace.SOUTH));
+			adjBlocks.add(current.getRelative(BlockFace.EAST));
+			adjBlocks.add(current.getRelative(BlockFace.WEST));
+			
+			// Logic for non-air blocks
+			if (b.getType() != Material.AIR) {
+				// Count how many adjacent blocks are air
+				int airCount = 0;
+				for (Block adjBlock : adjBlocks) {
+					if (adjBlock == null)
+						continue;
+					if (adjBlock.getType() == Material.AIR)
+						airCount++;
+				}
+				
+				// If air count is large, make this air
+				if (airCount >= airCut) {
+					currentState.setType(Material.AIR);
+					snapshotCopy.add(currentState);
+				}
+				// Otherwise return in place
+				else {
+					snapshotCopy.add(currentState);
+				}
+			}
+			
+			// Logic for air blocks
+			else {
+				int blockCount = 0;
+				Material adjMaterial = Material.AIR;
+				for (Block adjBlock : adjBlocks) {
+					if (adjBlock == null)
+						continue;
+					if (adjBlock.getType() != Material.AIR) {
+						blockCount++;
+						adjMaterial = adjBlock.getType();
+					}
+				}
+				
+				// If there are a lot of blocks nearby, make this solid
+				if (blockCount >= solidCut) {
+					currentState.setType(adjMaterial);
+					snapshotCopy.add(currentState);
+				}
+				
+				// Otherwise return in place
+				else {
+					snapshotCopy.add(currentState);
+				}
+			}
+		}
+		return snapshotCopy;
+	}
+
+	private List<BlockState> meltCarveErosion(List<BlockState> snapshotArray) {
+		Main.logDebug("Starting melt cut erode"); // ----
+		int airCut = 1; // Nearby air to make air
 		int solidCut = 4; // Nearby solid to make solid
 		// Iterate through each block
 		List<BlockState> snapshotCopy = new ArrayList<BlockState>();

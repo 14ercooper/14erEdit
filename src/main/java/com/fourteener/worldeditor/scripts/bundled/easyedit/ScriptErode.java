@@ -13,7 +13,7 @@ public class ScriptErode extends Craftscript {
 		String radius = args.get(0);
 		String modeArg = args.get(1);
 		String mode = "";
-		if (modeArg.equalsIgnoreCase("cut") || modeArg.equalsIgnoreCase("raise") || modeArg.equalsIgnoreCase("smooth") || modeArg.equalsIgnoreCase("lift")) {
+		if (modeArg.equalsIgnoreCase("cut") || modeArg.equalsIgnoreCase("raise") || modeArg.equalsIgnoreCase("smooth") || modeArg.equalsIgnoreCase("lift") || modeArg.equalsIgnoreCase("carve")) {
 			mode = "melt";
 		}
 		return player.performCommand("fx br s 0 0.5 $ erode{" + radius + ";" + mode + ";" + modeArg + "}");

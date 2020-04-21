@@ -7,6 +7,7 @@ public class MacroLoader {
 
 	public static void LoadMacros () {
 		GlobalVars.macroLauncher.addMacro("erode", new ErodeMacro());
+		GlobalVars.macroLauncher.addMacro("adverode", new AdvancedErodeMacro());
 		GlobalVars.macroLauncher.addMacro("tree", new BasicTreeMacro());
 		GlobalVars.macroLauncher.addMacro("biome", new BiomeMacro());
 		GlobalVars.macroLauncher.addMacro("grass", new GrassMacro());
