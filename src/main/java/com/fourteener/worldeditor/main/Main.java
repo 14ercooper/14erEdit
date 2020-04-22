@@ -54,6 +54,7 @@ public class Main extends JavaPlugin {
 		MacroLoader.LoadMacros();
 		BrushLoader.LoadBrushes();
 		OperatorLoader.LoadOperators();
+		IteratorLoader.LoadIterators();
 	}
 	
 	@Override

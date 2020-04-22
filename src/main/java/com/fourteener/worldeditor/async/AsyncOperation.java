@@ -5,6 +5,7 @@ import java.util.ArrayDeque;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
+import com.fourteener.worldeditor.blockiterator.BlockIterator;
 import com.fourteener.worldeditor.operations.Operator;
 import com.fourteener.worldeditor.selection.Clipboard;
 
@@ -12,8 +13,10 @@ public class AsyncOperation {
 	protected String key = "";
 	protected Operator operation = null;
 	protected ArrayDeque<Block> toOperate = null;
+	protected BlockIterator blocks = null;
 	protected Player player = null;
-	protected Clipboard clipboard = null; 
+	protected Clipboard clipboard = null;
+	protected String path = "";
 	
 	public AsyncOperation (boolean startUndo, Player p) {
 		if (startUndo) {
@@ -24,6 +27,32 @@ public class AsyncOperation {
 			key = "finishUndo";
 			player = p;
 		}
+	}
+	
+	public AsyncOperation (Operator o, Player p, BlockIterator b) {
+		key = "iteredit";
+		operation = o;
+		player = p;
+		blocks = b;
+	}
+	
+	public AsyncOperation (Operator o, BlockIterator b) {
+		key = "rawiteredit";
+		operation = o;
+		blocks = b;
+	}
+	
+	public AsyncOperation (BlockIterator b, Player p, String filepath) {
+		key = "saveschem";
+		player = p;
+		blocks = b;
+		path = filepath;
+	}
+	
+	public AsyncOperation (Player p, String filepath) {
+		key = "pasteschem";
+		player = p;
+		path = filepath;
 	}
 	
 	public AsyncOperation (Operator o, Player p, ArrayDeque<Block> b) {

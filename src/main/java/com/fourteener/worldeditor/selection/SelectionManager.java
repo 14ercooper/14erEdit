@@ -3,9 +3,9 @@ package com.fourteener.worldeditor.selection;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
+import com.fourteener.worldeditor.blockiterator.BlockIterator;
 import com.fourteener.worldeditor.main.*;
 
 public class SelectionManager {
@@ -168,17 +168,17 @@ public class SelectionManager {
 	}
 	
 	// Get a list of blocks contained by this selection
-	public List<Block> getBlocks () {
+	public BlockIterator getBlocks () {
 		double[] pos1 = mostNegativeCorner;
 		double[]pos2 = mostPositiveCorner;
-		List<Block> blockArray = new ArrayList<Block>();
-		for (int x = (int) pos1[0]; x <= pos2[0]; x++) {
-			for (int y = (int) pos1[1]; y <= pos2[1]; y++) {
-				for (int z = (int) pos1[2]; z <= pos2[2]; z++) {
-					blockArray.add(GlobalVars.world.getBlockAt(x, y, z));
-				}
-			}
-		}
-		return blockArray;
+		List<String> args = new ArrayList<String>();
+		args.add(Integer.toString((int) pos1[0]));
+		args.add(Integer.toString((int) pos1[1]));
+		args.add(Integer.toString((int) pos1[2]));
+		args.add(Integer.toString((int) pos2[0]));
+		args.add(Integer.toString((int) pos2[1]));
+		args.add(Integer.toString((int) pos2[2]));
+		BlockIterator iter = GlobalVars.iteratorManager.getIterator("cube").newIterator(args);
+		return iter;
 	}
 }

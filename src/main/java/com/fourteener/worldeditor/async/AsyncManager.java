@@ -11,6 +11,7 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitScheduler;
 
+import com.fourteener.worldeditor.blockiterator.BlockIterator;
 import com.fourteener.worldeditor.main.GlobalVars;
 import com.fourteener.worldeditor.main.Main;
 import com.fourteener.worldeditor.main.NBTExtractor;
@@ -25,7 +26,7 @@ public class AsyncManager {
 	NBTExtractor nbtExtractor = new NBTExtractor();
 	
 	// Store operations
-	private Queue<AsyncOperation> operations = new ArrayDeque<AsyncOperation>();
+	private ArrayDeque<AsyncOperation> operations = new ArrayDeque<AsyncOperation>();
 	
 	// Store large operations
 	private Queue<AsyncOperation> largeOps = new ArrayDeque<AsyncOperation>();
@@ -41,14 +42,39 @@ public class AsyncManager {
 		} , GlobalVars.ticksPerAsync, GlobalVars.ticksPerAsync);
 	}
 	
-	// Schedule a new task cleanly
-	public void scheduleEdit (Operator o, Player p, ArrayDeque<Block> b) {
+	// TODO add a command to call this
+	// Drops the head of the async queue
+	public void dropAsync () {
+		operations.remove();
+	}
+	
+	// TODO add a command that calls this
+	// About how big is the async queue?
+	public void asyncProgress (Player p) {
+		long remBlocks = 0;
+		for (AsyncOperation a : operations) {
+			if (a.blocks != null) {
+				remBlocks += a.blocks.getRemainingBlocks();
+			}
+			else if (a.toOperate != null) {
+				remBlocks += a.toOperate.size();
+			}
+			else {
+				remBlocks += 100;
+			}
+		}
+		int remTime = (int) (((double) remBlocks) / (GlobalVars.blocksPerAsync * (20.0 / GlobalVars.ticksPerAsync)));
+		p.sendMessage("§aThere are " + remBlocks + " blocks in the async queue, for an estimated remaining time of " + remTime + " seconds.");
+	}
+	
+	// Schedule a block iterator task
+	public void scheduleEdit (Operator o, Player p, BlockIterator b) {
 		if (p == null) {
 			operations.add(new AsyncOperation(o, b));
 		}
-		else if (b.size() > GlobalVars.undoLimit) {
+		else if (b.getTotalBlocks() > GlobalVars.undoLimit) {
 			largeOps.add(new AsyncOperation(o, p, b));
-			p.sendMessage("§aThis is a large edit that cannot be undone.");
+			p.sendMessage("§aThis is a large edit that cannot be undone, and may stall 14erEdit for a while.");
 			p.sendMessage("§aPlease type §b/confirm §ato confirm or §b/cancel §a to cancel");
 			
 		}
@@ -58,17 +84,27 @@ public class AsyncManager {
 			operations.add(new AsyncOperation(false, p));
 		}
 	}
+
+	public void scheduleEdit (Operator o, BlockIterator b) {
+		operations.add(new AsyncOperation(o, b));
+	}
 	
-	public void scheduleEdit(Operator o, Player p, List<Block> b) {
-		ArrayDeque<Block> d = new ArrayDeque<Block>();
-		d.addAll(b);
-		scheduleEdit(o, p, d);
+	public void scheduleEdit (BlockIterator b, Player p, String path) {
+		largeOps.add(new AsyncOperation(b, p, path));
+		p.sendMessage("§aThis is a large edit that cannot be undone, and may stall 14erEdit for a while.");
+		p.sendMessage("§aPlease type §b/confirm §ato confirm or §b/cancel §a to cancel");
+	}
+	
+	public void scheduleEdit (Player p, String path) {
+		largeOps.add(new AsyncOperation(p, path));
+		p.sendMessage("§aThis is a large edit that cannot be undone, and may stall 14erEdit for a while.");
+		p.sendMessage("§aPlease type §b/confirm §ato confirm or §b/cancel §a to cancel");
 	}
 	
 	public void scheduleEdit (Clipboard c, ArrayDeque<Block> b, boolean save) {
 		if (b.size() > GlobalVars.undoLimit) {
 			largeOps.add(new AsyncOperation(c, b, save));
-			c.owner.sendMessage("§aThis is a large edit that cannot be undone.");
+			c.owner.sendMessage("§aThis is a large edit that cannot be undone, and may stall 14erEdit for a while.");
 			c.owner.sendMessage("§aPlease type §b/confirm §ato confirm or §b/cancel §a to cancel");
 			
 		}
@@ -129,10 +165,34 @@ public class AsyncManager {
 				operations.remove();
 				doneOperations += 100;
 			}
+			else if (op.key.equalsIgnoreCase("iteredit")) {
+				Main.logDebug("Started async iter edit for player " + op.player.getName());
+				Block b = null;
+				while (doneOperations < GlobalVars.blocksPerAsync) {
+					b = op.blocks.getNext();
+					op.operation.operateOnBlock(b, op.player);
+					doneOperations++;
+				}
+				if (b == null) {
+					operations.remove();
+				}
+			}
+			else if (op.key.equalsIgnoreCase("rawiteredit")) {
+				Main.logDebug("Started async raw iter edit for player " + op.player.getName());
+				Block b = null;
+				while (doneOperations < GlobalVars.blocksPerAsync && op.toOperate.size() > 0) {
+					b = op.blocks.getNext();
+					op.operation.operateOnBlock(b);
+					doneOperations++;
+				}
+				if (b == null) {
+					operations.remove();
+				}
+			}
 			else if (op.key.equalsIgnoreCase("messyedit")) {
 				Main.logDebug("Async messy edit started for player " + op.player.getName());
 				operations.remove().operation.messyOperate();
-				doneOperations += 10;
+				doneOperations += 100;
 			}
 			else if (op.key.equalsIgnoreCase("edit")) {
 				Main.logDebug("Started async edit for player " + op.player.getName());
@@ -206,6 +266,8 @@ public class AsyncManager {
 					operations.remove();
 				}
 			}
+			// TODO: saveschem
+			// TODO: loadschem
 			else {
 				operations.remove();
 			}

@@ -8,6 +8,7 @@ import java.util.List;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
+import com.fourteener.worldeditor.blockiterator.BlockIterator;
 import com.fourteener.worldeditor.main.*;
 import com.fourteener.worldeditor.operations.Operator;
 
@@ -208,8 +209,8 @@ public class SelectionCommand {
 	@SuppressWarnings("static-access")
 	private static boolean operate (SelectionManager manager, SelectionWand wand, String[] brushOperation) {
 		// Build an array of blocks within this selection
-		List<Block> blockArray = manager.getBlocks();
-		Main.logDebug("Block array size is " + Integer.toString(blockArray.size())); // -----
+		BlockIterator blockArray = manager.getBlocks();
+		Main.logDebug("Block array size is " + Long.toString(blockArray.getTotalBlocks())); // -----
 		
 		// Construct the operation
 		int brushOpOffset = 2;

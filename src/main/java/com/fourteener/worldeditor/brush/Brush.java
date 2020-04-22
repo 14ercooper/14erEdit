@@ -6,10 +6,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import com.fourteener.worldeditor.blockiterator.BlockIterator;
 import com.fourteener.worldeditor.main.*;
 import com.fourteener.worldeditor.operations.Operator;
 
@@ -105,12 +105,12 @@ public class Brush {
 	public boolean operate (double x, double y, double z) {
 		
 		// Build an array of all blocks to operate on
-		List<Block> blockArray = shapeGenerator.GetBlocks(shapeArgs, x, y, z);
+		BlockIterator blockArray = shapeGenerator.GetBlocks(shapeArgs, x, y, z);
 		
-		if (blockArray.isEmpty()) {
+		if (blockArray.getTotalBlocks() == 0) {
 			return false;
 		}
-		Main.logDebug("Block array size is " + Integer.toString(blockArray.size())); // -----
+		Main.logDebug("Block array size is " + Long.toString(blockArray.getTotalBlocks())); // -----
 		
 		GlobalVars.asyncManager.scheduleEdit(operation, owner, blockArray);
 

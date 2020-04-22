@@ -3,13 +3,13 @@ package com.fourteener.worldeditor.commands;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.bukkit.block.Block;
 import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 
+import com.fourteener.worldeditor.blockiterator.BlockIterator;
 import com.fourteener.worldeditor.brush.Brush;
 import com.fourteener.worldeditor.brush.BrushShape;
 import com.fourteener.worldeditor.main.GlobalVars;
@@ -67,7 +67,7 @@ public class CommandRunat implements CommandExecutor {
 			z = Double.parseDouble(args[2]);
 		}
 		
-		List<Block> blocks = brSh.GetBlocks(argList, x, y, z);
+		BlockIterator blocks = brSh.GetBlocks(argList, x, y, z);
 
 		// Parse the operator
 		String opStr = "";
