@@ -170,11 +170,12 @@ public class AsyncManager {
 				Block b = null;
 				while (doneOperations < GlobalVars.blocksPerAsync) {
 					b = op.blocks.getNext();
+					if (b == null) {
+						operations.remove();
+						break;
+					}
 					op.operation.operateOnBlock(b, op.player);
 					doneOperations++;
-				}
-				if (b == null) {
-					operations.remove();
 				}
 			}
 			else if (op.key.equalsIgnoreCase("rawiteredit")) {
@@ -182,11 +183,12 @@ public class AsyncManager {
 				Block b = null;
 				while (doneOperations < GlobalVars.blocksPerAsync && op.toOperate.size() > 0) {
 					b = op.blocks.getNext();
+					if (b == null) {
+						operations.remove();
+						break;
+					}
 					op.operation.operateOnBlock(b);
 					doneOperations++;
-				}
-				if (b == null) {
-					operations.remove();
 				}
 			}
 			else if (op.key.equalsIgnoreCase("messyedit")) {

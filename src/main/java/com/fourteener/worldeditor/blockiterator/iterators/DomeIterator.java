@@ -12,6 +12,7 @@ public class DomeIterator extends BlockIterator {
 	long totalBlocks;
 	long doneBlocks = 0;
 	int x, y, z;
+	int xC, yC, zC;
 	int xMin, xMax, yMin, yMax, zMin, zMax;
 	int radMin, radMax;
 	double radCorr;
@@ -28,11 +29,14 @@ public class DomeIterator extends BlockIterator {
 		iterator.radMax = Integer.parseInt(args.get(6));
 		iterator.radMin = Integer.parseInt(args.get(7));
 		iterator.radCorr = Double.parseDouble(args.get(8));
+		iterator.radCorr = Double.parseDouble(args.get(9));
+		iterator.radCorr = Double.parseDouble(args.get(10));
+		iterator.radCorr = Double.parseDouble(args.get(11));
 		iterator.totalBlocks = (2 * iterator.radMax + 1) *(2 * iterator.radMax + 1) *(2 * iterator.radMax + 1);
 		iterator.x = iterator.xMin - 1;
 		iterator.y = iterator.yMin;
 		iterator.z = iterator.zMin;
-		return null;
+		return iterator;
 	}
 
 	@Override
@@ -65,7 +69,7 @@ public class DomeIterator extends BlockIterator {
 			break;
 		}
 
-		return GlobalVars.world.getBlockAt(x, y, z);
+		return GlobalVars.world.getBlockAt(x + xC, y + yC, z + zC);
 	}
 
 	@Override

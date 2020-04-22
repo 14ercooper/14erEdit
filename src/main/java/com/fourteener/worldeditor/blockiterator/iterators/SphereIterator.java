@@ -29,7 +29,7 @@ public class SphereIterator extends BlockIterator {
 		iterator.x = -iterator.radMax - 1;
 		iterator.y = -iterator.radMax;
 		iterator.z = -iterator.radMax;
-		return null;
+		return iterator;
 	}
 
 	@Override
@@ -56,13 +56,17 @@ public class SphereIterator extends BlockIterator {
 			
 			// Min radius check
 			else if (x*x + y*y + z*z <= (radMin - radCorr)*(radMin - radCorr)) {
-				continue;
+				if (x == 0 && y == 0 && z == 0) {
+					// Do nothing
+				}
+				else
+					continue;
 			}
 			
 			break;
 		}
 
-		return GlobalVars.world.getBlockAt(x, y, z);
+		return GlobalVars.world.getBlockAt(x + xC, y + yC, z + zC);
 	}
 
 	@Override

@@ -46,6 +46,9 @@ public class Dome extends BrushShape {
 		argList.add(Integer.toString(radius));
 		argList.add("0");
 		argList.add(Double.toString(radiusCorrection));
+		argList.add(Double.toString(x));
+		argList.add(Double.toString(y));
+		argList.add(Double.toString(z));
 		return GlobalVars.iteratorManager.getIterator("dome").newIterator(argList);
 	}
 

@@ -25,13 +25,19 @@ public class CubeIterator extends BlockIterator {
 		iterator.y2 = Integer.parseInt(args.get(4));
 		iterator.z2 = Integer.parseInt(args.get(5));
 		if (iterator.x2 > iterator.x1) {
-			iterator.x1 = iterator.x1 ^ iterator.x2 ^ (iterator.x2 = iterator.x1);
+			int temp = iterator.x1;
+			iterator.x1 = iterator.x2;
+			iterator.x2 = temp;
 		}
 		if (iterator.y2 > iterator.y1) {
-			iterator.y1 = iterator.y1 ^ iterator.y2 ^ (iterator.y2 = iterator.y1);
+			int temp = iterator.y1;
+			iterator.y1 = iterator.y2;
+			iterator.y2 = temp;
 		}
 		if (iterator.z2 > iterator.z1) {
-			iterator.z1 = iterator.z1 ^ iterator.z2 ^ (iterator.z2 = iterator.z1);
+			int temp = iterator.z1;
+			iterator.z1 = iterator.z2;
+			iterator.z2 = temp;
 		}
 		int dx = iterator.x2 - iterator.x1 + 1;
 		int dy = iterator.y2 - iterator.y1 + 1;

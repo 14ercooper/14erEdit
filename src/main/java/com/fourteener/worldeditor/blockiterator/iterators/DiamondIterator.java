@@ -26,7 +26,7 @@ public class DiamondIterator extends BlockIterator {
 		iterator.x = -iterator.radius - 1;
 		iterator.y = -iterator.radius;
 		iterator.z = -iterator.radius;
-		return null;
+		return iterator;
 	}
 
 	@Override
@@ -54,7 +54,7 @@ public class DiamondIterator extends BlockIterator {
 			break;
 		}
 
-		return GlobalVars.world.getBlockAt(x, y, z);
+		return GlobalVars.world.getBlockAt(x + xC, y + yC, z + zC);
 	}
 
 	@Override

@@ -30,7 +30,7 @@ public class EllipseIterator extends BlockIterator {
 		iterator.x = -iterator.rx - 1;
 		iterator.y = -iterator.ry;
 		iterator.z = -iterator.rz;
-		return null;
+		return iterator;
 	}
 
 	@Override
@@ -58,7 +58,7 @@ public class EllipseIterator extends BlockIterator {
 			break;
 		}
 
-		return GlobalVars.world.getBlockAt(x, y, z);
+		return GlobalVars.world.getBlockAt(x + xC, y + yC, z + zC);
 	}
 
 	@Override
