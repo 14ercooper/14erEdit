@@ -75,16 +75,11 @@ public class BrushListener implements Listener {
 		Block lastBlock = iter.next();
 		while (iter.hasNext()) {
 			lastBlock = iter.next();
-			if (!GlobalVars.targetLiquid) {
-				if (lastBlock.getType() == Material.AIR || lastBlock.getType() == Material.LAVA || lastBlock.getType() == Material.WATER) {
-					continue;
-				}
+			
+			if (GlobalVars.targetMask.contains(lastBlock.getType())) {
+				continue;
 			}
-			else {
-				if (lastBlock.getType() == Material.AIR) {
-					continue;
-				}
-			}
+				
 			break;
 		}
 		return lastBlock;

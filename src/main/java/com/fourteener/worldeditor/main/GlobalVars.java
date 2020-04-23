@@ -1,5 +1,8 @@
 package com.fourteener.worldeditor.main;
 
+import java.util.Set;
+
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.plugin.Plugin;
 
@@ -21,7 +24,7 @@ public class GlobalVars {
 	public static Undo currentUndo = null;
 	
 	// Target liquids?
-	public static boolean targetLiquid = false;
+	public static Set<Material> targetMask;
 	
 	// Managers
 	public static CraftscriptManager scriptManager;
