@@ -1,6 +1,9 @@
 package com.fourteener.worldeditor.main;
 
+import java.util.HashSet;
+
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.fourteener.worldeditor.async.AsyncManager;
@@ -31,6 +34,10 @@ public class Main extends JavaPlugin {
 		this.getCommand("14erEdit").setExecutor(new CommandInfo());
 		this.getCommand("async").setExecutor(new CommandAsync());
 		this.getCommand("brmask").setExecutor(new CommandLiquid());
+		
+		// Set up brush mask
+		GlobalVars.targetMask = new HashSet<Material>();
+		GlobalVars.targetMask.add(Material.AIR);
 		
 		// Register listeners for brushes and wands
 		getServer().getPluginManager().registerEvents(new SelectionWandListener(), this);
