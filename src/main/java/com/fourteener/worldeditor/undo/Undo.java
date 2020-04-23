@@ -20,6 +20,8 @@ public class Undo {
 	private ArrayDeque<Integer> undoSizes = new ArrayDeque<Integer>();
 	private ArrayDeque<Integer> redoSizes = new ArrayDeque<Integer>();
 	
+	private int nestedUndos = 0;
+	
 	// For consolidating undos
 	private HashSet<String> positions = new HashSet<String>();
 	
@@ -30,18 +32,25 @@ public class Undo {
 	// Start an undo
 	public void startUndo () {
 		Main.logDebug("Starting undo for " + owner.getName());
-		positions = new HashSet<String>();
+		if (nestedUndos == 0) {
+			positions = new HashSet<String>();
+		}
+		nestedUndos++;
 	}
 	
 	// End an undo
 	public int finishUndo () {
 		Main.logDebug("Finished undo for " + owner.getName());
-		Main.logDebug(positions.size() + " block changes stored");
-		if (positions.size() <= 0) {
-			return 0;
+		nestedUndos--;
+		if (nestedUndos == 0) {
+			Main.logDebug(positions.size() + " block changes stored");
+			if (positions.size() <= 0) {
+				return 0;
+			}
+			undoSizes.addFirst(positions.size());
+			return positions.size();
 		}
-		undoSizes.addFirst(positions.size());
-		return positions.size();
+		return 0;
 	}
 	
 	public boolean storeBlock(BlockState bs) {

@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import com.fourteener.worldeditor.blockiterator.BlockIterator;
 import com.fourteener.worldeditor.operations.Operator;
 import com.fourteener.worldeditor.selection.Clipboard;
+import com.fourteener.worldeditor.undo.Undo;
 
 public class AsyncOperation {
 	protected String key = "";
@@ -17,17 +18,8 @@ public class AsyncOperation {
 	protected Player player = null;
 	protected Clipboard clipboard = null;
 	protected String path = "";
-	
-	public AsyncOperation (boolean startUndo, Player p) {
-		if (startUndo) {
-			key = "startUndo";
-			player = p;
-		}
-		else {
-			key = "finishUndo";
-			player = p;
-		}
-	}
+	protected Undo undo = null;
+	protected boolean undoRunning = false;
 	
 	public AsyncOperation (Operator o, Player p, BlockIterator b) {
 		key = "iteredit";

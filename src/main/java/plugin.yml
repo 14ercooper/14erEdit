@@ -39,3 +39,6 @@ commands:
     cancel:
         description: Cancel large edits
         usage: "Usage: /cancel [number]"
+    async:
+        description: Used to manage the async system
+        usage: "Usage: /async <drop|status>"
