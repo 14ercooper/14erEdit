@@ -30,6 +30,7 @@ public class Main extends JavaPlugin {
 		this.getCommand("debug").setExecutor(new CommandDebug());
 		this.getCommand("14erEdit").setExecutor(new CommandInfo());
 		this.getCommand("async").setExecutor(new CommandAsync());
+		this.getCommand("liquid").setExecutor(new CommandLiquid());
 		
 		// Register listeners for brushes and wands
 		getServer().getPluginManager().registerEvents(new SelectionWandListener(), this);

@@ -13,6 +13,8 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.BlockIterator;
 
+import com.fourteener.worldeditor.main.GlobalVars;
+
 public class BrushListener implements Listener {
 	
 	// Store all active brushes
@@ -67,17 +69,24 @@ public class BrushListener implements Listener {
 		// And perform the operation there
 		brush.operate(block.getX(), block.getY(), block.getZ());
 	}
-	
+
 	private Block getTargetBlock(Player player, int range) {
-        BlockIterator iter = new BlockIterator(player, range);
-        Block lastBlock = iter.next();
-        while (iter.hasNext()) {
-            lastBlock = iter.next();
-            if (lastBlock.getType() == Material.AIR) {
-                continue;
-            }
-            break;
-        }
-        return lastBlock;
-    }
+		BlockIterator iter = new BlockIterator(player, range);
+		Block lastBlock = iter.next();
+		while (iter.hasNext()) {
+			lastBlock = iter.next();
+			if (!GlobalVars.targetLiquid) {
+				if (lastBlock.getType() == Material.AIR || lastBlock.getType() == Material.LAVA || lastBlock.getType() == Material.WATER) {
+					continue;
+				}
+			}
+			else {
+				if (lastBlock.getType() == Material.AIR) {
+					continue;
+				}
+			}
+			break;
+		}
+		return lastBlock;
+	}
 }

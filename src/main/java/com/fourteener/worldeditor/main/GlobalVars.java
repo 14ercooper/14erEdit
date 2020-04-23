@@ -20,6 +20,9 @@ public class GlobalVars {
 	// Used to track undos
 	public static Undo currentUndo = null;
 	
+	// Target liquids?
+	public static boolean targetLiquid = false;
+	
 	// Managers
 	public static CraftscriptManager scriptManager;
 	public static MacroLauncher macroLauncher;

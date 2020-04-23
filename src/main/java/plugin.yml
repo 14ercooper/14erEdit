@@ -42,3 +42,6 @@ commands:
     async:
         description: Used to manage the async system
         usage: "Usage: /async <drop|status>"
+    liquid:
+        description: Toggles brushes targeting liquid
+        usage: "Usage: /liquid"
