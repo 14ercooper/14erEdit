@@ -6,6 +6,7 @@ import org.bukkit.block.Block;
 
 import com.fourteener.worldeditor.blockiterator.BlockIterator;
 import com.fourteener.worldeditor.main.GlobalVars;
+import com.fourteener.worldeditor.main.Main;
 
 public class CubeIterator extends BlockIterator {
 
@@ -24,17 +25,17 @@ public class CubeIterator extends BlockIterator {
 		iterator.x2 = Integer.parseInt(args.get(3));
 		iterator.y2 = Integer.parseInt(args.get(4));
 		iterator.z2 = Integer.parseInt(args.get(5));
-		if (iterator.x2 > iterator.x1) {
+		if (iterator.x2 < iterator.x1) {
 			int temp = iterator.x1;
 			iterator.x1 = iterator.x2;
 			iterator.x2 = temp;
 		}
-		if (iterator.y2 > iterator.y1) {
+		if (iterator.y2 < iterator.y1) {
 			int temp = iterator.y1;
 			iterator.y1 = iterator.y2;
 			iterator.y2 = temp;
 		}
-		if (iterator.z2 > iterator.z1) {
+		if (iterator.z2 < iterator.z1) {
 			int temp = iterator.z1;
 			iterator.z1 = iterator.z2;
 			iterator.z2 = temp;
@@ -43,17 +44,17 @@ public class CubeIterator extends BlockIterator {
 		int dy = iterator.y2 - iterator.y1 + 1;
 		int dz = iterator.z2 - iterator.z1 + 1;
 		iterator.totalBlocks = dx * dy * dz;
-		iterator.x = iterator.x1;
+		iterator.x = iterator.x1 - 1;
 		iterator.y = iterator.y1;
 		iterator.z = iterator.z1;
+		Main.logDebug("From " + iterator.x1 + "," + iterator.y1 + "," + iterator.z1 + " to " + iterator.x2 + "," + iterator.y2 + "," + iterator.z2);
 		return iterator;
 	}
 
 	@Override
 	public Block getNext() {
-		Block b = GlobalVars.world.getBlockAt(x, y, z);
-		
 		x++;
+		doneBlocks++;
 		if (x > x2) {
 			z++;
 			x = x1;
@@ -63,13 +64,10 @@ public class CubeIterator extends BlockIterator {
 			z = z1;
 		}
 		if (y > y2) {
-			if (x != x1)
-				b = null;
+			return null;
 		}
-		
-		doneBlocks++;
-		
-		return b;
+
+		return GlobalVars.world.getBlockAt(x, y, z);
 	}
 
 	@Override

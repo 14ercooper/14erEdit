@@ -29,6 +29,9 @@ public class SphereIterator extends BlockIterator {
 		iterator.x = -iterator.radMax - 1;
 		iterator.y = -iterator.radMax;
 		iterator.z = -iterator.radMax;
+		while (y + yC < 0) {
+			y++;
+		}
 		return iterator;
 	}
 
@@ -45,7 +48,7 @@ public class SphereIterator extends BlockIterator {
 				y++;
 				z = -radMax;
 			}
-			if (y > radMax) {
+			if (y > radMax || y + yC > 255) {
 				return null;
 			}
 			
@@ -55,12 +58,8 @@ public class SphereIterator extends BlockIterator {
 			}
 			
 			// Min radius check
-			else if (x*x + y*y + z*z <= (radMin - radCorr)*(radMin - radCorr)) {
-				if (x == 0 && y == 0 && z == 0) {
-					// Do nothing
-				}
-				else
-					continue;
+			if (radMin > 1 && x*x + y*y + z*z <= (radMin - radCorr)*(radMin - radCorr)) {
+				continue;
 			}
 			
 			break;

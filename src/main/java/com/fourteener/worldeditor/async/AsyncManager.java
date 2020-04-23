@@ -43,9 +43,9 @@ public class AsyncManager {
 	}
 	
 	// TODO add a command to call this
-	// Drops the head of the async queue
+	// Drops the async queue
 	public void dropAsync () {
-		operations.remove();
+		// TODO implement this making sure to not leave danging undos
 	}
 	
 	// TODO add a command that calls this

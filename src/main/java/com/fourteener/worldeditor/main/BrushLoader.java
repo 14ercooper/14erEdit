@@ -13,7 +13,6 @@ public class BrushLoader {
 		RandomSphere randomSphere = new RandomSphere();
 		Sphere sphere = new Sphere();
 		Voxel voxel = new Voxel();
-		Dome dome = new Dome();
 		Brush.AddBrushShape("cube", cube);
 		Brush.AddBrushShape("square", cube);
 		Brush.AddBrushShape("diamond", diamond);
@@ -29,6 +28,5 @@ public class BrushLoader {
 		Brush.AddBrushShape("s", sphere);
 		Brush.AddBrushShape("voxel", voxel);
 		Brush.AddBrushShape("v", voxel);
-		Brush.AddBrushShape("dome", dome);
 	}
 }

@@ -29,5 +29,5 @@ public class NumberNode extends Node {
 	public int getArgCount () {
 		return 1;
 	}
-
+	
 }

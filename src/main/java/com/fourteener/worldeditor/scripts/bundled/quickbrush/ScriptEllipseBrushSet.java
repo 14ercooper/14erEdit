@@ -69,6 +69,6 @@ public class ScriptEllipseBrushSet extends Craftscript {
 			opToRun = opToRun.concat("false");
 		}
 		// Perform the set command
-		return player.performCommand("fx br e " + rx + " " + ry + " " + rz + " 0.5 " + opToRun);
+		return player.performCommand("fx br e " + rx + " " + ry + " " + rz + " 0.1 " + opToRun);
 	}
 }

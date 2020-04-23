@@ -14,9 +14,9 @@ public class Diamond extends BrushShape {
 		// This uses the Manhattan distance
 		List<String> argList = new ArrayList<String>();
 		int radius = (int) (double) args.get(0);
-		argList.add(Double.toString(x));
-		argList.add(Double.toString(y));
-		argList.add(Double.toString(z));
+		argList.add(Integer.toString((int) x));
+		argList.add(Integer.toString((int) y));
+		argList.add(Integer.toString((int) z));
 		argList.add(Integer.toString(radius));
 		return GlobalVars.iteratorManager.getIterator("diamond").newIterator(argList);
 	}

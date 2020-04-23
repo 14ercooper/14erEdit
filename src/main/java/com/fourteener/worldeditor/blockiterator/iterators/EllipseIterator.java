@@ -11,9 +11,9 @@ public class EllipseIterator extends BlockIterator {
 
 	long totalBlocks;
 	long doneBlocks = 0;
-	int x, y, z;
+	double x, y, z;
 	int xC, yC, zC;
-	int rx, ry, rz;
+	double rx, ry, rz;
 	double radCorr;
 	
 	@Override
@@ -26,7 +26,7 @@ public class EllipseIterator extends BlockIterator {
 		iterator.ry = Integer.parseInt(args.get(4));
 		iterator.rz = Integer.parseInt(args.get(5));
 		iterator.radCorr = Double.parseDouble(args.get(6));
-		iterator.totalBlocks = (2 * iterator.rx + 1) *(2 * iterator.ry + 1) *(2 * iterator.rz + 1);
+		iterator.totalBlocks = (2 * (int) iterator.rx + 1) *(2 * (int) iterator.ry + 1) *(2 * (int) iterator.rz + 1);
 		iterator.x = -iterator.rx - 1;
 		iterator.y = -iterator.ry;
 		iterator.z = -iterator.rz;
@@ -51,14 +51,14 @@ public class EllipseIterator extends BlockIterator {
 			}
 			
 			// Radius check
-			if ((x*x) / rx + (y*y) / ry + (z*z) / rz >= (1 + radCorr)) {
+			if (((x*x) / (rx*rx)) + ((y*y) / (ry*ry)) + ((z*z) / (rz*rz)) > (1 + radCorr)) {
 				continue;
 			}
 			
 			break;
 		}
 
-		return GlobalVars.world.getBlockAt(x + xC, y + yC, z + zC);
+		return GlobalVars.world.getBlockAt((int) x + xC, (int) y + yC, (int) z + zC);
 	}
 
 	@Override

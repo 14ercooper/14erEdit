@@ -24,6 +24,9 @@ public class OperatorLoader {
 		GlobalVars.operationParser.AddOperator("/", new LinkerNode());
 		GlobalVars.operationParser.AddOperator(">f", new LoadFromFileNode());
 		GlobalVars.operationParser.AddOperator("$", new MacroNode());
+		GlobalVars.operationParser.AddOperator("x", new XNode());
+		GlobalVars.operationParser.AddOperator("y", new YNode());
+		GlobalVars.operationParser.AddOperator("z", new ZNode());
 	}
 	
 	private static void LoadFunction() {

@@ -16,7 +16,7 @@ public class Cube extends BrushShape {
 		argList.add(Integer.toString((int) x - cubeRad));
 		argList.add(Integer.toString((int) y - cubeRad));
 		argList.add(Integer.toString((int) z - cubeRad));
-		argList.add(Integer.toString((int) x - cubeRad));
+		argList.add(Integer.toString((int) x + cubeRad));
 		argList.add(Integer.toString((int) y + cubeRad));
 		argList.add(Integer.toString((int) z + cubeRad));
 		return GlobalVars.iteratorManager.getIterator("cube").newIterator(argList);
