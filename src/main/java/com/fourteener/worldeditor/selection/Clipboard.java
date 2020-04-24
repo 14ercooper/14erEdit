@@ -27,6 +27,7 @@ public class Clipboard {
 		owner = player;
 	}
 	
+	// TODO shift to schemlite
 	public boolean mirrorClipboard (String direction) {
 		// Get the mirror direction and mirrors the origin
 		// 2 is X, 3 is Y, 5 is Z
@@ -137,6 +138,7 @@ public class Clipboard {
 	}
 	
 	// X,Y,Z stores the origin of the clipboard; blocks is the blocks to save
+	// TODO shift to schemlite
 	public boolean saveToClipboard (int xOrigin, int yOrigin, int zOrigin, List<Block> blocks) {
 		// Clear the existing clipboard
 		blockData = new LinkedList<String>();
@@ -202,6 +204,7 @@ public class Clipboard {
 	}
 	
 	// Paste this clipboard with the origin at x,y,z
+	// TODO shift to schemlite
 	public boolean pasteClipboard (int xPos, int yPos, int zPos, boolean air) {
 		// Loop through the blocks, along X from negative to positive, Z negative to positive, Y negative to positive
 		int rx = 0, ry = 0, rz = 0;
@@ -234,6 +237,7 @@ public class Clipboard {
 	
 	// Save a schematic to a file
 	// This code, violating DRY, is also in the macro and below
+	// TODO shift to schemlite
 	public boolean saveToFile (String path) {
 		path = ("plugins/14erEdit/schematics/" + path).replace("/", File.separator);
 		int[] origin = {x,y,z};
@@ -243,6 +247,7 @@ public class Clipboard {
 	}
 	
 	// Load a schematic from a file, setting an offset
+	// TODO add schemlite support
 	public boolean loadFromFile (String path, int xOff, int yOff, int zOff) {
 		path = ("plugins/14erEdit/schematics/" + path).replace("/", File.separator);
 		String[] splitPath = path.split(".");
@@ -271,6 +276,7 @@ public class Clipboard {
 	
 	// Load a schematic from a file, without setting an offset
 	// This code, violating DRY, is also in the macro and above
+	// TODO add schemlite support
 	public boolean loadFromFile (String path) {
 		path = ("plugins/14erEdit/schematics/" + path).replace("/", File.separator);
 		if (!(path.contains(".matschem") || path.contains(".schematic") || path.contains(".schem"))) {

@@ -51,6 +51,7 @@ public class SelectionCommand {
 		
 		// Copy a selection
 		else if (args[1].equalsIgnoreCase("copy")) {
+			// TODO update to schemlite
 			double[] pos1 = manager.getMostNegativeCorner();
 			double[] pos2 = manager.getMostPositiveCorner();
 			List<Block> blockArray = new ArrayList<Block>();
@@ -69,6 +70,7 @@ public class SelectionCommand {
 		
 		// Paste a selection
 		else if (args[1].equalsIgnoreCase("paste")) {
+			// TODO update to schemlite
 			return ClipboardManager.getClipboard(wand.owner).pasteClipboard(
 					wand.owner.getLocation().getBlockX(),
 					wand.owner.getLocation().getBlockY(),
@@ -77,6 +79,7 @@ public class SelectionCommand {
 		}
 		
 		// Shift the origin of the clipboard
+		// TODO update to schemlite
 		else if (args[1].equalsIgnoreCase("origin")) {
 			if (args[2].equalsIgnoreCase("set")) {
 				if (args[3].equalsIgnoreCase("x")) {

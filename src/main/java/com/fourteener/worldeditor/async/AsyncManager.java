@@ -205,6 +205,7 @@ public class AsyncManager {
 					opSize--;
 					doneOperations += 100;
 				}
+				// TODO remove
 				else if (op.key.equalsIgnoreCase("edit")) {
 					Block b = op.toOperate.removeFirst();
 					if (op.undo != null) {
@@ -224,6 +225,7 @@ public class AsyncManager {
 						opSize--;
 					}
 				}
+				// TODO remove
 				else if (op.key.equalsIgnoreCase("rawedit")) {
 					Block b = op.toOperate.removeFirst();
 					if (op.undo != null) {
@@ -243,6 +245,7 @@ public class AsyncManager {
 						opSize--;
 					}
 				}
+				// TODO update to new system
 				else if (op.key.equalsIgnoreCase("saveclip")) {
 					Block b = op.toOperate.removeFirst();
 					int xB = Math.abs(b.getX() - op.clipboard.xNeg);
@@ -258,6 +261,7 @@ public class AsyncManager {
 						opSize--;
 					}
 				}
+				// TODO update to new system
 				else if (op.key.equalsIgnoreCase("loadclip")) {
 					Block b = op.toOperate.removeFirst();
 					if (op.undo != null) {

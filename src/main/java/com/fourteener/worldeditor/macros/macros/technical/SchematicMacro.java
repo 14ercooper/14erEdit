@@ -23,6 +23,7 @@ public class SchematicMacro extends Macro {
 	boolean setAir = false;
 	
 	// Create a new macro
+	// TODO add schemlite support
 	private void SetupMacro(String[] args, Location loc) {
 		// First parse the offset
 		xOff = Integer.parseInt(args[1]) * -1;
