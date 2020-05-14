@@ -14,6 +14,12 @@ Directly access the operations system for maximum power and customizability, or 
  - Create custom items without leaving the game
  - Little to no time and effort requred to update to new Minecraft versions
  - Easily setup and install servers and profiles with the megaserver
+ 
+### Top Tier Supporters
+
+ - CooleyBrekka
+
+Thanks for helping keep these projects running!
 
 ### Contributors
 
