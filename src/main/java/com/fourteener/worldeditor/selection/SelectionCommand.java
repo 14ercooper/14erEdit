@@ -50,16 +50,19 @@ public class SelectionCommand {
 		// Copy selection to clipboard
 		else if (args[1].equalsIgnoreCase("copy")) {
 			Main.logDebug("Copying clipboard");
+			player.sendMessage("§aCopying clipboard.");
 			manager.clipboardOffset[0] = (int) (manager.getMostNegativeCorner()[0] - player.getLocation().getBlockX());
 			manager.clipboardOffset[1] = (int) (manager.getMostNegativeCorner()[1] - player.getLocation().getBlockY());
 			manager.clipboardOffset[2] = (int) (manager.getMostNegativeCorner()[2] - player.getLocation().getBlockZ());
 			Main.logDebug("Offset " + manager.clipboardOffset[0] + " " + manager.clipboardOffset[1] + " " + manager.clipboardOffset[2]);
+			manager.mirrorString = "";
 			return SchematicHandler.saveSchematic(getSchematicName(player), player);
 		}
 		
 		// Paste the clipboard
 		else if (args[1].equalsIgnoreCase("paste")) {
 			Main.logDebug("Pasting clipboard");
+			player.sendMessage("§aPasting clipboard.");
 			try {
 				return SchematicHandler.loadSchematic(getSchematicName(player), player, manager.mirrorString, Boolean.parseBoolean(args[2]), manager.clipboardOffset);
 			} catch (IndexOutOfBoundsException e) {
@@ -71,12 +74,14 @@ public class SelectionCommand {
 		else if (args[1].equalsIgnoreCase("mirror")) {
 			Main.logDebug("Mirroring clipboard");
 			manager.mirrorString = args[2];
+			player.sendMessage("§aClipboard mirrored.");
 			return true;
 		}
 		
 		// Shift origin/offset of clipboard
 		else if (args[1].equalsIgnoreCase("origin") && args[2].equalsIgnoreCase("shift")) {
 			Main.logDebug("Shifting clipboard origin");
+			player.sendMessage("§aClipboard origin shifted.");
 			manager.clipboardOffset[0] += Integer.parseInt(args[3]);
 			manager.clipboardOffset[0] += Integer.parseInt(args[4]);
 			manager.clipboardOffset[0] += Integer.parseInt(args[5]);
@@ -86,10 +91,11 @@ public class SelectionCommand {
 		// Set origin/offset of the clipboard
 		else if (args[1].equalsIgnoreCase("origin") && args[2].equalsIgnoreCase("set")) {
 			Main.logDebug("Setting clipboard origin");
+			player.sendMessage("§aClipboard origin set.");
 			manager.clipboardOffset[0] = Integer.parseInt(args[3]);
 			manager.clipboardOffset[0] = Integer.parseInt(args[4]);
 			manager.clipboardOffset[0] = Integer.parseInt(args[5]);
-			return false;
+			return true;
 		}
 		
 		// Reset a selection

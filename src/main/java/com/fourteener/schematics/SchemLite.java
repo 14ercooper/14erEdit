@@ -56,13 +56,19 @@ public class SchemLite {
 		int yE = yStart + ySize - 1;
 		int zE = zStart + zSize - 1;
 		if (xMirror) {
-			xS = xS ^ xE ^ (xE = xS);
+			int temp = xS;
+			xS = xE;
+			xE = temp;
 		}
 		if (yMirror) {
-			yS = yS ^ yE ^ (yE = yS);
+			int temp = yS;
+			yS = yE;
+			yE = temp;
 		}
 		if (zMirror) {
-			zS = zS ^ zE ^ (zE = zS);
+			int temp = zS;
+			zS = zE;
+			zE = temp;
 		}
 		List<String> iterArgs = new ArrayList<String>();
 		iterArgs.add(Integer.toString(xS));

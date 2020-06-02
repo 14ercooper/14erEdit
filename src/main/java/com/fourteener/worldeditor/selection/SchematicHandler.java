@@ -66,4 +66,22 @@ public class SchematicHandler {
 		GlobalVars.asyncManager.scheduleEdit(schem, false, p, origin);
 		return true;
 	}
+	
+	// Load a schematic into the world at position
+	public static boolean loadSchematic (String file, int[] origin, String mirror, boolean setAir, Player p) {
+		Main.logDebug("Loading schematic from " + file);
+		String path = file;
+		SchemLite schem = new SchemLite(path, setAir);
+		try {
+			schem.openRead();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if (!mirror.isEmpty()) {
+			schem.mirror(mirror.contains("x"), mirror.contains("y"), mirror.contains("z"));
+		}
+		GlobalVars.asyncManager.scheduleEdit(schem, false, p, origin);
+		return true;
+	}
 }
