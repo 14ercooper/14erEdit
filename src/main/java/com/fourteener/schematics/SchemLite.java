@@ -13,13 +13,12 @@ import java.util.List;
 
 import com.fourteener.worldeditor.blockiterator.BlockIterator;
 import com.fourteener.worldeditor.main.GlobalVars;
+import com.fourteener.worldeditor.main.Main;
 
 public class SchemLite {
 	
 	// The size of the schem lite
 	int xSize, ySize, zSize;
-	// Offset (used by clipboard)
-	int xOff, yOff, zOff;
 	// Where this is on disk; within the 14erEdit folder
 	String outPath;
 	// Creator details
@@ -40,21 +39,8 @@ public class SchemLite {
 		creationDate = date;
 	}
 	
-	// Set the offset
-	public void setOffset (int x, int y, int z) {
-		xOff = x;
-		yOff = y;
-		zOff = z;
-	}
-	public void setOffset (int[] offset) {
-		// Wrapper for overloaded function
-		setOffset(offset[0], offset[1], offset[2]);
-	}
-	
-	// Get the offset
-	public int[] getOffset () {
-		int[] offset = {xOff, yOff, zOff};
-		return offset;
+	public SchemLite (String inPath) {
+		this.outPath = "plugins/14erEdit/" + inPath;
 	}
 	
 	// Get a block iterator corresponding with this schem lite
@@ -130,6 +116,7 @@ public class SchemLite {
 		zSize = Integer.parseInt(reader.readLine());
 		authorName = reader.readLine();
 		creationDate = reader.readLine();
+		Main.logDebug("Opened read");
 	}
 	
 	// Get the next block in this schem lite

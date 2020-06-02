@@ -1,11 +1,9 @@
 package com.fourteener.worldeditor.selection;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
 import com.fourteener.worldeditor.blockiterator.BlockIterator;
@@ -49,85 +47,20 @@ public class SelectionCommand {
 			return expand(manager, Double.parseDouble(args[2]), args[3], wand.owner);
 		}
 		
-		// Copy a selection
-		else if (args[1].equalsIgnoreCase("copy")) {
-			// TODO update to schemlite
-			double[] pos1 = manager.getMostNegativeCorner();
-			double[] pos2 = manager.getMostPositiveCorner();
-			List<Block> blockArray = new ArrayList<Block>();
-			for (int x = (int) pos1[0]; x <= pos2[0]; x++) {
-				for (int y = (int) pos1[1]; y <= pos2[1]; y++) {
-					for (int z = (int) pos1[2]; z <= pos2[2]; z++) {
-						blockArray.add(GlobalVars.world.getBlockAt(x, y, z));
-					}
-				}
-			}
-			return ClipboardManager.getClipboard(wand.owner).saveToClipboard(
-					wand.owner.getLocation().getBlockX(),
-					wand.owner.getLocation().getBlockY(),
-					wand.owner.getLocation().getBlockZ(), blockArray);
-		}
+		// TODO copy
 		
-		// Paste a selection
-		else if (args[1].equalsIgnoreCase("paste")) {
-			// TODO update to schemlite
-			return ClipboardManager.getClipboard(wand.owner).pasteClipboard(
-					wand.owner.getLocation().getBlockX(),
-					wand.owner.getLocation().getBlockY(),
-					wand.owner.getLocation().getBlockZ(),
-					true);
-		}
+		// TODO paste
 		
-		// Shift the origin of the clipboard
-		// TODO update to schemlite
-		else if (args[1].equalsIgnoreCase("origin")) {
-			if (args[2].equalsIgnoreCase("set")) {
-				if (args[3].equalsIgnoreCase("x")) {
-					ClipboardManager.getClipboard(wand.owner).x = Integer.parseInt(args[4]);
-					wand.owner.sendMessage("§dSelection origin set");
-					return true;
-				}
-				else if (args[3].equalsIgnoreCase("y")) {
-					ClipboardManager.getClipboard(wand.owner).y = Integer.parseInt(args[4]);
-					wand.owner.sendMessage("§dSelection origin set");
-					return true;
-				}
-				else if (args[3].equalsIgnoreCase("z")) {
-					ClipboardManager.getClipboard(wand.owner).z = Integer.parseInt(args[4]);
-					wand.owner.sendMessage("§dSelection origin set");
-					return true;
-				}
-			}
-			else if (args[2].equalsIgnoreCase("shift")) {
-				if (args[3].equalsIgnoreCase("x")) {
-					ClipboardManager.getClipboard(wand.owner).x = ClipboardManager.getClipboard(wand.owner).x + Integer.parseInt(args[4]);
-					wand.owner.sendMessage("§dSelection origin shifted");
-					return true;
-				}
-				else if (args[3].equalsIgnoreCase("y")) {
-					ClipboardManager.getClipboard(wand.owner).y = ClipboardManager.getClipboard(wand.owner).z + Integer.parseInt(args[4]);
-					wand.owner.sendMessage("§dSelection origin shifted");
-					return true;
-				}
-				else if (args[3].equalsIgnoreCase("z")) {
-					ClipboardManager.getClipboard(wand.owner).z = ClipboardManager.getClipboard(wand.owner).y + Integer.parseInt(args[4]);
-					wand.owner.sendMessage("§dSelection origin shifted");
-					return true;
-				}
-			}
-			return false;
-		}
+		// TODO mirror
+		
+		// TODO shift origin
+		
+		// TODO set origin
 		
 		// Reset a selection
 		else if (args[1].equalsIgnoreCase("reset")) {
 			player.sendMessage("§dRegion reset");
 			return manager.resetSelection();
-		}
-		
-		// Mirror the clipboard
-		else if (args[1].equalsIgnoreCase("mirror")) {
-			player.sendMessage("§dSelection mirrored");
-			return ClipboardManager.getClipboard(wand.owner).mirrorClipboard(args[2].toLowerCase());
 		}
 		
 		// Update pos1
@@ -188,19 +121,6 @@ public class SelectionCommand {
 				return manager.updatePositionTwo(x, y, z, wand.owner);
 			}
 			return manager.updatePositionTwo(player.getLocation().getBlockX(), player.getLocation().getBlockY(), player.getLocation().getBlockZ(), wand.owner);
-		}
-		
-		// Handles schematics
-		else if (args[1].equalsIgnoreCase("schematic") || args[1].equalsIgnoreCase("schem")) {
-			if (args[2].equalsIgnoreCase("save")) {
-				wand.owner.sendMessage("§dSaving schematic");
-				return ClipboardManager.getClipboard(wand.owner).saveToFile(args[3]);
-			}
-			else if (args[2].equalsIgnoreCase("load")) {
-				wand.owner.sendMessage("§dLoading schematic");
-				return ClipboardManager.getClipboard(wand.owner).loadFromFile(args[3]);
-			}
-			return false;
 		}
 		
 		else {
