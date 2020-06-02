@@ -16,6 +16,7 @@ import com.fourteener.worldeditor.blockiterator.BlockIterator;
 import com.fourteener.worldeditor.main.GlobalVars;
 import com.fourteener.worldeditor.main.Main;
 import com.fourteener.worldeditor.main.NBTExtractor;
+import com.fourteener.worldeditor.main.SetBlock;
 import com.fourteener.worldeditor.operations.Operator;
 import com.fourteener.worldeditor.undo.UndoManager;
 
@@ -304,11 +305,13 @@ public class AsyncManager {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					b.setType(Material.matchMaterial(results[0]));
-					b.setBlockData(Bukkit.getServer().createBlockData(results[1]));
-					if (!results[2].isEmpty()) {
-						String command = "data merge block " + b.getX() + " " + b.getY() + " " + b.getZ() + " " + results[2];
-						Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), command);
+					if (!Material.matchMaterial(results[0]).isAir() || op.schem.setAir()) {
+						SetBlock.setMaterial(b, Material.matchMaterial(results[0]), false);
+						b.setBlockData(Bukkit.getServer().createBlockData(results[1]));
+						if (!results[2].isEmpty()) {
+							String command = "data merge block " + b.getX() + " " + b.getY() + " " + b.getZ() + " " + results[2];
+							Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), command);
+						}
 					}
 					doneOperations++;
 					GlobalVars.currentUndo = null;

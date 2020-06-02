@@ -34,7 +34,7 @@ public class SchematicHandler {
 		Main.logDebug("Loading schematic from " + file);
 		int[] origin = {p.getLocation().getBlockX(), p.getLocation().getBlockY(), p.getLocation().getBlockZ()};
 		String path = file;
-		SchemLite schem = new SchemLite(path);
+		SchemLite schem = new SchemLite(path, setAir);
 		try {
 			schem.openRead();
 		} catch (IOException e) {
@@ -53,7 +53,7 @@ public class SchematicHandler {
 		Main.logDebug("Loading schematic from " + file);
 		int[] origin = {p.getLocation().getBlockX() + offset[0], p.getLocation().getBlockY() + offset[1], p.getLocation().getBlockZ() + offset[2]};
 		String path = file;
-		SchemLite schem = new SchemLite(path);
+		SchemLite schem = new SchemLite(path, setAir);
 		try {
 			schem.openRead();
 		} catch (IOException e) {

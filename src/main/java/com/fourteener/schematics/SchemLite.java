@@ -28,6 +28,8 @@ public class SchemLite {
 	BufferedWriter writer;
 	// Mirrors?
 	boolean xMirror = false, yMirror = false, zMirror = false;
+	// Set air?
+	boolean setAir = true;
 	
 	// Create a new schem lite object
 	public SchemLite (int x, int y, int z, String outPath, String author, String date) {
@@ -39,7 +41,7 @@ public class SchemLite {
 		creationDate = date;
 	}
 	
-	public SchemLite (String inPath) {
+	public SchemLite (String inPath, boolean setAir) {
 		this.outPath = "plugins/14erEdit/" + inPath;
 	}
 	
@@ -156,5 +158,10 @@ public class SchemLite {
 		xMirror = x;
 		yMirror = y;
 		zMirror = z;
+	}
+	
+	// Is this marked as setting air?
+	public boolean setAir() {
+		return setAir;
 	}
 }
