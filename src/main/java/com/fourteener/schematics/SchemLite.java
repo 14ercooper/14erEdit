@@ -36,13 +36,14 @@ public class SchemLite {
 		xSize = x;
 		ySize = y;
 		zSize = z;
-		this.outPath = "plugins/14erEdit/" + outPath;
+		this.outPath = "plugins/14erEdit/schematics/" + outPath;
 		authorName = author;
 		creationDate = date;
 	}
 	
 	public SchemLite (String inPath, boolean setAir) {
-		this.outPath = "plugins/14erEdit/" + inPath;
+		this.outPath = "plugins/14erEdit/schematics/" + inPath;
+		this.setAir = setAir;
 	}
 	
 	// Get a block iterator corresponding with this schem lite
@@ -136,7 +137,7 @@ public class SchemLite {
 	// Move a schem lite object's disk reference
 	public void moveRef (String newPath) throws IOException {
 		// Move the file
-		Files.move(Paths.get(outPath), Paths.get("plugins/14erEdit/" + newPath), StandardCopyOption.REPLACE_EXISTING);
+		Files.move(Paths.get(outPath), Paths.get("plugins/14erEdit/schematics/" + newPath), StandardCopyOption.REPLACE_EXISTING);
 		// Update the path
 		outPath = "plugins/14erEdit/" + newPath;
 	}
@@ -144,13 +145,13 @@ public class SchemLite {
 	// Clone the schem lite's data to a persistent file
 	public void cloneTo (String path) throws IOException {
 		// Copy the file
-		Files.copy(Paths.get(outPath), Paths.get("plugins/14erEdit/" + path), StandardCopyOption.REPLACE_EXISTING);
+		Files.copy(Paths.get(outPath), Paths.get("plugins/14erEdit/schematics/" + path), StandardCopyOption.REPLACE_EXISTING);
 	}
 	
 	// Load the schem lite's data from a persistent file
 	public void loadFrom (String path) throws IOException {
 		// Clone the new file
-		Files.copy(Paths.get("plugins/14erEdit/" + path), Paths.get(outPath), StandardCopyOption.REPLACE_EXISTING);
+		Files.copy(Paths.get("plugins/14erEdit/schematics/" + path), Paths.get(outPath), StandardCopyOption.REPLACE_EXISTING);
 	}
 	
 	// Mirror the schem lite

@@ -47,15 +47,50 @@ public class SelectionCommand {
 			return expand(manager, Double.parseDouble(args[2]), args[3], wand.owner);
 		}
 		
-		// TODO copy
+		// Copy selection to clipboard
+		else if (args[1].equalsIgnoreCase("copy")) {
+			Main.logDebug("Copying clipboard");
+			manager.clipboardOffset[0] = (int) (manager.getMostNegativeCorner()[0] - player.getLocation().getBlockX());
+			manager.clipboardOffset[1] = (int) (manager.getMostNegativeCorner()[1] - player.getLocation().getBlockY());
+			manager.clipboardOffset[2] = (int) (manager.getMostNegativeCorner()[2] - player.getLocation().getBlockZ());
+			Main.logDebug("Offset " + manager.clipboardOffset[0] + " " + manager.clipboardOffset[1] + " " + manager.clipboardOffset[2]);
+			return SchematicHandler.saveSchematic(getSchematicName(player), player);
+		}
 		
-		// TODO paste
+		// Paste the clipboard
+		else if (args[1].equalsIgnoreCase("paste")) {
+			Main.logDebug("Pasting clipboard");
+			try {
+				return SchematicHandler.loadSchematic(getSchematicName(player), player, manager.mirrorString, Boolean.parseBoolean(args[2]), manager.clipboardOffset);
+			} catch (IndexOutOfBoundsException e) {
+				return SchematicHandler.loadSchematic(getSchematicName(player), player, manager.mirrorString, true, manager.clipboardOffset);
+			}
+		}
 		
-		// TODO mirror
+		// Mirror the clipboard
+		else if (args[1].equalsIgnoreCase("mirror")) {
+			Main.logDebug("Mirroring clipboard");
+			manager.mirrorString = args[2];
+			return true;
+		}
 		
-		// TODO shift origin
+		// Shift origin/offset of clipboard
+		else if (args[1].equalsIgnoreCase("origin") && args[2].equalsIgnoreCase("shift")) {
+			Main.logDebug("Shifting clipboard origin");
+			manager.clipboardOffset[0] += Integer.parseInt(args[3]);
+			manager.clipboardOffset[0] += Integer.parseInt(args[4]);
+			manager.clipboardOffset[0] += Integer.parseInt(args[5]);
+			return true;
+		}
 		
-		// TODO set origin
+		// Set origin/offset of the clipboard
+		else if (args[1].equalsIgnoreCase("origin") && args[2].equalsIgnoreCase("set")) {
+			Main.logDebug("Setting clipboard origin");
+			manager.clipboardOffset[0] = Integer.parseInt(args[3]);
+			manager.clipboardOffset[0] = Integer.parseInt(args[4]);
+			manager.clipboardOffset[0] = Integer.parseInt(args[5]);
+			return false;
+		}
 		
 		// Reset a selection
 		else if (args[1].equalsIgnoreCase("reset")) {
@@ -159,5 +194,10 @@ public class SelectionCommand {
 	// Note that using the wand afterwards doesn't reflect the changes
 	private static boolean expand (SelectionManager manager, double amt, String dir, Player player) {
 		return manager.expandSelection(amt, dir, player);
+	}
+	
+	// Get a schematic file name for a player
+	private static String getSchematicName(Player p) {
+		return p.getDisplayName() + "_clipboard";
 	}
 }

@@ -65,5 +65,6 @@ public class AsyncOperation {
 		else {
 			key = "loadschem";
 		}
+		player = p;
 	}
 }
