@@ -29,6 +29,11 @@ public class Parser {
 		return true;
 	}
 	
+	public Node GetOperator(String name) {
+		if (!operators.containsKey(name)) return null;
+		return operators.get(name);
+	}
+	
 	public EntryNode parseOperation (String op) {
 		
 		// Here there be parsing magic
