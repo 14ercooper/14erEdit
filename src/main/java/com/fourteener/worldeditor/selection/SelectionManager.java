@@ -11,6 +11,8 @@ import com.fourteener.worldeditor.main.*;
 public class SelectionManager {
 	private double positionOne[] = {-1.0, -1.0, -1.0};
 	private double positionTwo[] = {-1.0, -1.0, -1.0};
+	protected int[] clipboardOffset = {0, 0, 0};
+	protected String mirrorString = "";
 	
 	// These two variables make the world editing math a bit easier
 	private double mostNegativeCorner[] = new double[3];

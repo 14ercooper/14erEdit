@@ -8,6 +8,5 @@ public class IteratorLoader {
 		GlobalVars.iteratorManager.addIterator("sphere", new SphereIterator());
 		GlobalVars.iteratorManager.addIterator("ellipse", new EllipseIterator());
 		GlobalVars.iteratorManager.addIterator("diamond", new DiamondIterator());
-		GlobalVars.iteratorManager.addIterator("voxel", new VoxelIterator());
 	}
 }

@@ -6,6 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.fourteener.worldeditor.brush.Brush;
+import com.fourteener.worldeditor.selection.SchematicHandler;
 import com.fourteener.worldeditor.selection.SelectionCommand;
 import com.fourteener.worldeditor.selection.SelectionWand;
 import com.fourteener.worldeditor.selection.SelectionWandListener;
@@ -56,6 +57,19 @@ public class CommandFx implements CommandExecutor {
 			} else if (args[argOffset].equalsIgnoreCase("redo")) {
 				return UndoManager.getUndo((Player) sender).redoChanges(Integer.parseInt(args[argOffset + 1])) > 0;
 			}
+			
+			// Save and load schematics
+			else if (args[argOffset].equalsIgnoreCase("schem")) {
+				if (args[argOffset + 1].equalsIgnoreCase("save")) {
+					SchematicHandler.saveSchematic(args[argOffset + 2], (Player) sender);
+					return true;
+				}
+				else if (args[argOffset + 1].equalsIgnoreCase("load")) {
+					SchematicHandler.loadSchematic(args[argOffset + 2], (Player) sender, args.length > argOffset + 4 ? args[argOffset + 3] : "", args.length > argOffset + 5 ? Boolean.parseBoolean(args[argOffset + 4]) : false);
+					return true;
+				}
+			}
+			
 			return false;
 		}
 		return false;

@@ -15,6 +15,9 @@ public class Voxel extends BrushShape {
 		argList.add(Double.toString(x));
 		argList.add(Double.toString(y));
 		argList.add(Double.toString(z));
+		argList.add("1");
+		argList.add("0");
+		argList.add("-0.5");
 		return GlobalVars.iteratorManager.getIterator("voxel").newIterator(argList);
 	}
 
