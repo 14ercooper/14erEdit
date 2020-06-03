@@ -56,6 +56,8 @@ public class OperatorLoader {
 		GlobalVars.operationParser.AddOperator("false", new FalseNode());
 		GlobalVars.operationParser.AddOperator("?", new IfNode());
 		GlobalVars.operationParser.AddOperator("if", GlobalVars.operationParser.GetOperator("?"));
+		GlobalVars.operationParser.AddOperator(":", new ElseNode());
+		GlobalVars.operationParser.AddOperator("else", GlobalVars.operationParser.GetOperator(":"));
 		GlobalVars.operationParser.AddOperator("~", new NotNode());
 		GlobalVars.operationParser.AddOperator("not", GlobalVars.operationParser.GetOperator("~"));
 		GlobalVars.operationParser.AddOperator("|", new OrNode());
@@ -133,7 +135,7 @@ public class OperatorLoader {
 		GlobalVars.operationParser.AddOperator(">", new SetNode());
 		GlobalVars.operationParser.AddOperator("set", GlobalVars.operationParser.GetOperator(">"));
 		GlobalVars.operationParser.AddOperator("set_block", GlobalVars.operationParser.GetOperator(">"));
-		GlobalVars.operationParser.AddOperator(">>", new SetPlusNode());
+		GlobalVars.operationParser.AddOperator(">>", GlobalVars.operationParser.GetOperator(">"));
 		GlobalVars.operationParser.AddOperator("grav", new GravityNode());
 	}
 }

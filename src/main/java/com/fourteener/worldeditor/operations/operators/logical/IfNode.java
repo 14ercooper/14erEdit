@@ -16,12 +16,22 @@ public class IfNode extends Node {
 	}
 	
 	public boolean performNode () {
-		if (arg1.performNode()) {
-			return arg2.performNode();
+		boolean isTrue = arg1.performNode();
+		boolean toReturn = false;
+		if (isTrue) {
+			Main.logDebug("Is true");
+			toReturn = arg2.performNode();
 		}
-		else {
-			return arg3.performNode();
+		if (arg3 == null) {
+			return toReturn;
 		}
+		if (arg3 instanceof ElseNode && !isTrue) {
+			toReturn = arg3.performNode();
+		}
+		if (!(arg3 instanceof ElseNode)) {
+			toReturn = arg3.performNode() && toReturn;
+		}
+		return toReturn;
 	}
 	
 	public int getArgCount () {

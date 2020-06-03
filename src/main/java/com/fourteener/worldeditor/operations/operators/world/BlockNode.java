@@ -1,57 +1,127 @@
 package com.fourteener.worldeditor.operations.operators.world;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Random;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 
-import com.fourteener.worldeditor.main.*;
+import com.fourteener.worldeditor.main.GlobalVars;
 import com.fourteener.worldeditor.operations.Operator;
 import com.fourteener.worldeditor.operations.operators.Node;
 
 public class BlockNode extends Node {
 	
 	// Stores this node's argument
-	public Material arg1;
-	public BlockData arg2 = null;
+	public List<BlockInstance> blockList;
+	public BlockInstance nextBlock;
 	
 	// Creates a new node
 	public BlockNode newNode() {
 		BlockNode node = new BlockNode();
-		node.arg1 = Material.matchMaterial(GlobalVars.operationParser.parseStringNode().contents);
+		String[] data = GlobalVars.operationParser.parseStringNode().getText().split(",");
+		node.blockList = new LinkedList<BlockInstance>();
+		for (String s : data) {
+			node.blockList.add(new BlockInstance(s));
+		}
+		if (node.blockList.size() == 0) {
+			return null;
+		}
 		return node;
 	}
-	
-	// Creates a new node
-	public BlockNode newNode(boolean overload) {
+	public BlockNode newNode(String input) {
 		BlockNode node = new BlockNode();
-		String data = GlobalVars.operationParser.parseStringNode().contents;
-		node.arg1 = Material.matchMaterial(data.split("\\[")[0]);
-		node.arg2 = Bukkit.getServer().createBlockData(data);
+		String[] data = input.split(",");
+		node.blockList = new LinkedList<BlockInstance>();
+		for (String s : data) {
+			node.blockList.add(new BlockInstance(s));
+		}
+		if (node.blockList.size() == 0) {
+			return null;
+		}
 		return node;
 	}
 	
 	// Return the material this node references
 	public Material getBlock () {
-		return arg1;
+		nextBlock = blockList.get(0).GetRandom(blockList);
+		return nextBlock.mat;
 	}
 	
 	// Get the data of this block
 	public BlockData getData () {
-		return arg2;
+		return nextBlock.data;
 	}
 	
 	// Check if it's the correct block
 	public boolean performNode () {
-		if (arg2 == null) {
-			return Operator.currentBlock.getType().equals(arg1);
-		}
-		else {
-			return Operator.currentBlock.getBlockData().matches(arg2) && Operator.currentBlock.getType().equals(arg1);
-		}
+		return blockList.get(0).Contains(blockList, Operator.currentBlock);
 	}
 	
 	// Returns how many arguments this node takes
 	public int getArgCount () {
 		return 1;
+	}
+	
+	// Nested class to make parsing , and % lists easier
+	private class BlockInstance {
+		Material mat;
+		BlockData data;
+		int weight;
+		
+		// Construct a new block instance from an input string
+		BlockInstance (String input) {
+			if (input.contains("%")) {
+				if (input.contains("[")) {
+					mat = Material.matchMaterial(input.split("%")[1].split("\\[")[0]);
+					data = Bukkit.getServer().createBlockData(input.split("%")[1]);
+					weight = Integer.parseInt(input.split("%")[0]);
+				}
+				else {
+					mat = Material.matchMaterial(input.split("%")[1]);
+					data = null;
+					weight = Integer.parseInt(input.split("%")[0]);
+				}
+			}
+			else {
+				if (input.contains("[")) {
+					mat = Material.matchMaterial(input.split("\\[")[0]);
+					data = Bukkit.getServer().createBlockData(input);
+					weight = 1;
+				}
+				else {
+					mat = Material.matchMaterial(input);
+					data = null;
+					weight = 1;
+				}
+			}
+		}
+		
+		// Does the list contain a certain block (for masking)
+		boolean Contains(List<BlockInstance> list ,Block b) {
+			Material testMat = b.getType();
+			for (BlockInstance bi : list) {
+				if (bi.mat == testMat) return true;
+			}
+			return false;
+		}
+		
+		// Get a random block from the list (for setting)
+		BlockInstance GetRandom(List<BlockInstance> list) {
+			int totalWeight = 0;
+			for (BlockInstance bi : list) {
+				totalWeight += bi.weight;
+			}
+			Random rand = new Random();
+			int randNum = rand.nextInt(totalWeight);
+			for (BlockInstance bi : list) {
+				randNum -= bi.weight;
+				if (randNum <= 0) return bi;
+			}
+			return null;
+		}
 	}
 }
