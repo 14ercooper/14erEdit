@@ -11,6 +11,7 @@ import org.bukkit.block.BlockState;
 
 import com.fourteener.worldeditor.macros.macros.Macro;
 import com.fourteener.worldeditor.main.*;
+import com.fourteener.worldeditor.operations.Operator;
 
 public class BiomeMacro extends Macro {
 	
@@ -20,8 +21,16 @@ public class BiomeMacro extends Macro {
 	
 	// Create a new macro
 	private void SetupMacro(String[] args, Location loc) {
-		radius = Double.parseDouble(args[0]);
-		biome = Biome.valueOf(args[1].toUpperCase(Locale.ROOT));
+		try {
+			radius = Double.parseDouble(args[0]);
+		} catch (Exception e) {
+			Main.logError("Could not parse biome macro. " + args[0] + " is not a number.", Operator.currentPlayer);
+		}
+		try {
+			biome = Biome.valueOf(args[1].toUpperCase(Locale.ROOT));
+		} catch (Exception e) {
+			Main.logError("Could not parse biome macro. " + args[1] + " is not a known biome.", Operator.currentPlayer);
+		}
 		pos = loc;
 	}
 	

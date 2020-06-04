@@ -11,34 +11,43 @@ import org.bukkit.block.BlockState;
 
 import com.fourteener.worldeditor.macros.macros.Macro;
 import com.fourteener.worldeditor.main.*;
+import com.fourteener.worldeditor.operations.Operator;
 
 public class AdvancedErodeMacro extends Macro {
-	
+
 	public int erodeRadius = -1; // The radius to actually erode within
 	public int solidCut = 3;
 	public int airCut = 3;
 	public Location erodeCenter;
-	
+
 	private void SetupMacro(String[] args, Location loc) {
-		erodeRadius = Integer.parseInt(args[0]);
+		try {
+			erodeRadius = Integer.parseInt(args[0]);
+		} catch (Exception e) {
+			Main.logError("Could not parse advanced erode macro. Is your radius a valid number?", Operator.currentPlayer);
+		}
 		erodeCenter = loc;
-		
-		solidCut = Integer.parseInt(args[1]);
-		airCut = Integer.parseInt(args[2]);
+
+		try {
+			solidCut = Integer.parseInt(args[1]);
+			airCut = Integer.parseInt(args[2]);
+		} catch (Exception e) {
+			Main.logError("Could not parse advanced erode macro. Did you provide integers for both solid and air cut?", Operator.currentPlayer);
+		}
 	}
-	
+
 	public boolean performMacro (String[] args, Location loc) {
 		SetupMacro(args, loc);
-		
+
 		// Location of the brush
 		double x = erodeCenter.getX();
 		double y = erodeCenter.getY();
 		double z = erodeCenter.getZ();
-		
+
 		List<BlockState> snapshotArray = generateSnapshotArray(x, y, z);
-		
+
 		snapshotArray = doErosion(snapshotArray);
-		
+
 		// Apply the snapshot to the world, thus completing the erosion
 		applyToWorld(snapshotArray);
 		return true;
@@ -57,13 +66,13 @@ public class AdvancedErodeMacro extends Macro {
 			}
 		}
 		Main.logDebug("Erosion array size: " + Integer.toString(erosionArray.size())); // ----
-		
+
 		// Generate a snapshot to use for eroding (erode in this, read from world)
 		List<BlockState> snapshotArray = new ArrayList<BlockState>();
 		for (Block b : erosionArray) {
 			snapshotArray.add(b.getState());
 		}
-		
+
 		erosionArray = null; // This is no longer needed, so clean it up
 		return snapshotArray;
 	}
@@ -92,7 +101,7 @@ public class AdvancedErodeMacro extends Macro {
 			adjBlocks.add(current.getRelative(BlockFace.SOUTH));
 			adjBlocks.add(current.getRelative(BlockFace.EAST));
 			adjBlocks.add(current.getRelative(BlockFace.WEST));
-			
+
 			// Logic for non-air blocks
 			if (b.getType() != Material.AIR) {
 				// Count how many adjacent blocks are air
@@ -103,7 +112,7 @@ public class AdvancedErodeMacro extends Macro {
 					if (adjBlock.getType() == Material.AIR)
 						airCount++;
 				}
-				
+
 				// If air count is large, make this air
 				if (airCount >= airCut) {
 					currentState.setType(Material.AIR);
@@ -114,7 +123,7 @@ public class AdvancedErodeMacro extends Macro {
 					snapshotCopy.add(currentState);
 				}
 			}
-			
+
 			// Logic for air blocks
 			else {
 				int blockCount = 0;
@@ -127,13 +136,13 @@ public class AdvancedErodeMacro extends Macro {
 						adjMaterial = adjBlock.getType();
 					}
 				}
-				
+
 				// If there are a lot of blocks nearby, make this solid
 				if (blockCount >= solidCut) {
 					currentState.setType(adjMaterial);
 					snapshotCopy.add(currentState);
 				}
-				
+
 				// Otherwise return in place
 				else {
 					snapshotCopy.add(currentState);

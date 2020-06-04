@@ -11,6 +11,7 @@ import org.bukkit.block.BlockFace;
 
 import com.fourteener.worldeditor.macros.macros.Macro;
 import com.fourteener.worldeditor.main.*;
+import com.fourteener.worldeditor.operations.Operator;
 
 public class BasicTreeMacro extends Macro {
 	
@@ -21,10 +22,14 @@ public class BasicTreeMacro extends Macro {
 	// Type, leaves, trunk, size, variance
 	private void SetupMacro(String[] args, Location loc) {
 		plantOn = loc;
-		size = Integer.parseInt(args[3]);
-		variance = (int) Math.ceil(Double.parseDouble(args[4]));
-		leaves = Material.matchMaterial(args[1]);
-		trunk = Material.matchMaterial(args[2]);
+		try {
+			size = Integer.parseInt(args[3]);
+			variance = (int) Math.ceil(Double.parseDouble(args[4]));
+			leaves = Material.matchMaterial(args[1]);
+			trunk = Material.matchMaterial(args[2]);
+		} catch (Exception e) {
+			Main.logError("Could not parse tree macro. Did you provide all 4 arguments correctly?", Operator.currentPlayer);
+		}
 		
 		// Type 1 - Trunk with sphere of leaves (oak)
 		if (args[0].equalsIgnoreCase("oak")) {
@@ -61,6 +66,10 @@ public class BasicTreeMacro extends Macro {
 		// Type 9 - Tall central trunk with short branches and platforms (jungle)
 		if (args[0].equalsIgnoreCase("jungle")) {
 			type = 9;
+		}
+		
+		if (type == -1) {
+			Main.logError("Could not parse tree macro. Did you provide a valid tree type?", Operator.currentPlayer);
 		}
 	}
 	

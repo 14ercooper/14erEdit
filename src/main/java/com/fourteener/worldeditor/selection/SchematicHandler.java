@@ -38,8 +38,7 @@ public class SchematicHandler {
 		try {
 			schem.openRead();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Main.logError("Could not load schematic. File " + file + " not found.", p);
 		}
 		if (!mirror.isEmpty()) {
 			schem.mirror(mirror.contains("x"), mirror.contains("y"), mirror.contains("z"));
@@ -57,8 +56,7 @@ public class SchematicHandler {
 		try {
 			schem.openRead();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Main.logError("Could not load schematic. File " + file + " not found.", p);
 		}
 		if (!mirror.isEmpty()) {
 			schem.mirror(mirror.contains("x"), mirror.contains("y"), mirror.contains("z"));
@@ -75,8 +73,7 @@ public class SchematicHandler {
 		try {
 			schem.openRead();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Main.logError("Could not load schematic. File " + file + " not found.", p);
 		}
 		if (!mirror.isEmpty()) {
 			schem.mirror(mirror.contains("x"), mirror.contains("y"), mirror.contains("z"));

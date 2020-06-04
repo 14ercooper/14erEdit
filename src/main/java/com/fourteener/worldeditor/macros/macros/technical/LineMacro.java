@@ -8,21 +8,27 @@ import com.fourteener.worldeditor.macros.macros.Macro;
 import com.fourteener.worldeditor.main.GlobalVars;
 import com.fourteener.worldeditor.main.Main;
 import com.fourteener.worldeditor.main.SetBlock;
+import com.fourteener.worldeditor.operations.Operator;
 
 public class LineMacro extends Macro {
 
 	@Override
 	public boolean performMacro(String[] args, Location loc) {
-		int x1, x2, y1, y2, z1, z2;
+		int x1 = 0, x2 = 0, y1 = 0, y2 = 0, z1 = 0, z2 = 0;
 		double dx, dy, dz;
-		Material mat;
-		x1 = Integer.parseInt(args[0]);
-		y1 = Integer.parseInt(args[1]);
-		z1 = Integer.parseInt(args[2]);
-		x2 = Integer.parseInt(args[3]);
-		y2 = Integer.parseInt(args[4]);
-		z2 = Integer.parseInt(args[5]);
-		mat = Material.matchMaterial(args[6]);
+		Material mat = null;
+		try {
+			x1 = Integer.parseInt(args[0]);
+			y1 = Integer.parseInt(args[1]);
+			z1 = Integer.parseInt(args[2]);
+			x2 = Integer.parseInt(args[3]);
+			y2 = Integer.parseInt(args[4]);
+			z2 = Integer.parseInt(args[5]);
+			mat = Material.matchMaterial(args[6]);
+		} catch (Exception e) {
+			Main.logError("Error parsing line macro. Did you provide start and end coordinates and a block material?", Operator.currentPlayer);
+			return false;
+		}
 		dx = (x1 - x2) / 1000f;
 		dy = (y1 - y2) / 1000f;
 		dz = (z1 - z2) / 1000f;

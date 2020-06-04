@@ -319,6 +319,7 @@ public class AsyncManager {
 				
 				
 				else {
+					Main.logError("Invalid operation in async queue. Removing operation.", Bukkit.getConsoleSender());
 					operations.remove(i);
 					i--;
 					opSize--;

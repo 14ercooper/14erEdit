@@ -14,6 +14,7 @@ import org.bukkit.block.BlockState;
 
 import com.fourteener.worldeditor.macros.macros.Macro;
 import com.fourteener.worldeditor.main.*;
+import com.fourteener.worldeditor.operations.Operator;
 
 public class VinesMacro extends Macro {
 	
@@ -23,15 +24,25 @@ public class VinesMacro extends Macro {
 	
 	// Create a new macro
 	private void SetupMacro(String[] args, Location loc) {
-		radius = Double.parseDouble(args[0]);
-		length = Double.parseDouble(args[1]);
-		variance = Double.parseDouble(args[2]);
-		density = Double.parseDouble(args[3]);
 		try {
-			block = args[4];
+			radius = Double.parseDouble(args[0]);
+			length = Double.parseDouble(args[1]);
+			variance = Double.parseDouble(args[2]);
+			density = Double.parseDouble(args[3]);
+			try {
+				block = args[4];
+			}
+			catch (Exception e) {
+				block = "vine";
+			}
+		} catch (Exception e) {
+			Main.logError("Error parsing vine macro. Did you pass in radius, length, variance, density, and optionally block material?", Operator.currentPlayer);
 		}
-		catch (Exception e) {
-			block = "vine";
+		try {
+			Material m = Material.matchMaterial(block);
+			if (m == null) throw new Exception();
+		} catch (Exception e) {
+			Main.logError("Error parsing vine macro. " + block + " is not a valid block.", Operator.currentPlayer);
 		}
 		pos = loc;
 	}

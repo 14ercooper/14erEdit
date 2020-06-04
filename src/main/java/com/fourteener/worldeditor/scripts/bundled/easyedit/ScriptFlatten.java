@@ -7,6 +7,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
 import com.fourteener.worldeditor.main.*;
+import com.fourteener.worldeditor.operations.Operator;
 import com.fourteener.worldeditor.scripts.Craftscript;
 import com.fourteener.worldeditor.selection.SelectionManager;
 
@@ -14,29 +15,34 @@ public class ScriptFlatten extends Craftscript {
 
 	@Override
 	public boolean perform(LinkedList<String> args, Player player, String label) {
-		boolean useSelection = true;
-		double height = Double.parseDouble(args.get(0));
-		Material block = Material.matchMaterial(args.get(1));
-		if (args.size() > 2) {
-			useSelection = false;
+		try {
+			boolean useSelection = true;
+			double height = Double.parseDouble(args.get(0));
+			Material block = Material.matchMaterial(args.get(1));
+			if (args.size() > 2) {
+				useSelection = false;
+			}
+			if (label.equalsIgnoreCase("flatten")) {
+				if (useSelection) {
+					return selectionFlatten(player, height, block);
+				}
+				else {
+					return player.performCommand("fx br s 0 0.5 $ flatten{" + args.get(2) + ";" + "false" + ";" + args.get(0) + ";" + args.get(1) + "}");
+				}
+			}
+			else if (label.equalsIgnoreCase("absflatten")) {
+				if (useSelection) {
+					return absoluteSelectionFlatten(player, height, block);
+				}
+				else {
+					return player.performCommand("fx br s 0 0.5 $ flatten{" + args.get(2) + ";" + "true" + ";" + args.get(0) + ";" + args.get(1) + "}");
+				}
+			}
+			return false;
+		} catch (Exception e) {
+			Main.logError("Could not parse flatten script. Did you pass in the correct arguments?", Operator.currentPlayer);
+			return false;
 		}
-		if (label.equalsIgnoreCase("flatten")) {
-			if (useSelection) {
-				return selectionFlatten(player, height, block);
-			}
-			else {
-				return player.performCommand("fx br s 0 0.5 $ flatten{" + args.get(2) + ";" + "false" + ";" + args.get(0) + ";" + args.get(1) + "}");
-			}
-		}
-		else if (label.equalsIgnoreCase("absflatten")) {
-			if (useSelection) {
-				return absoluteSelectionFlatten(player, height, block);
-			}
-			else {
-				return player.performCommand("fx br s 0 0.5 $ flatten{" + args.get(2) + ";" + "true" + ";" + args.get(0) + ";" + args.get(1) + "}");
-			}
-		}
-		return false;
 	}
 
 	private boolean selectionFlatten(Player player, double height, Material block) {

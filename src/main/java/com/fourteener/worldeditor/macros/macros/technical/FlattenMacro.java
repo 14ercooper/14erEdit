@@ -11,6 +11,7 @@ import org.bukkit.block.BlockState;
 
 import com.fourteener.worldeditor.macros.macros.Macro;
 import com.fourteener.worldeditor.main.*;
+import com.fourteener.worldeditor.operations.Operator;
 
 public class FlattenMacro extends Macro {
 	
@@ -22,10 +23,14 @@ public class FlattenMacro extends Macro {
 	
 	// Create a new macro
 	private void SetupMacro (String[] args, Location loc) {
-		radius = Double.parseDouble(args[0]);
-		isAbsolute = Boolean.parseBoolean(args[1]);
-		height = Double.parseDouble(args[2]);
-		block = Material.matchMaterial(args[3]);
+		try {
+			radius = Double.parseDouble(args[0]);
+			isAbsolute = Boolean.parseBoolean(args[1]);
+			height = Double.parseDouble(args[2]);
+			block = Material.matchMaterial(args[3]);
+		} catch (Exception e) {
+			Main.logError("Could not parse flatten macro. Did you provide radius, absolute flatten, height setting, and a block material?", Operator.currentPlayer);
+		}
 		pos = loc;
 	}
 	

@@ -6,6 +6,8 @@ import org.bukkit.block.Block;
 
 import com.fourteener.worldeditor.blockiterator.BlockIterator;
 import com.fourteener.worldeditor.main.GlobalVars;
+import com.fourteener.worldeditor.main.Main;
+import com.fourteener.worldeditor.operations.Operator;
 
 public class SphereIterator extends BlockIterator {
 
@@ -15,24 +17,29 @@ public class SphereIterator extends BlockIterator {
 	int xC, yC, zC;
 	int radMin, radMax;
 	double radCorr;
-	
+
 	@Override
 	public SphereIterator newIterator(List<String> args) {
-		SphereIterator iterator = new SphereIterator();
-		iterator.xC = Integer.parseInt(args.get(0));
-		iterator.yC = Integer.parseInt(args.get(1));
-		iterator.zC = Integer.parseInt(args.get(2));
-		iterator.radMax = Integer.parseInt(args.get(3));
-		iterator.radMin = Integer.parseInt(args.get(4));
-		iterator.radCorr = Double.parseDouble(args.get(5));
-		iterator.totalBlocks = (2 * iterator.radMax + 1) *(2 * iterator.radMax + 1) *(2 * iterator.radMax + 1);
-		iterator.x = -iterator.radMax - 1;
-		iterator.y = -iterator.radMax;
-		iterator.z = -iterator.radMax;
-		while (y + yC < 0) {
-			y++;
+		try {
+			SphereIterator iterator = new SphereIterator();
+			iterator.xC = Integer.parseInt(args.get(0));
+			iterator.yC = Integer.parseInt(args.get(1));
+			iterator.zC = Integer.parseInt(args.get(2));
+			iterator.radMax = Integer.parseInt(args.get(3));
+			iterator.radMin = Integer.parseInt(args.get(4));
+			iterator.radCorr = Double.parseDouble(args.get(5));
+			iterator.totalBlocks = (2 * iterator.radMax + 1) *(2 * iterator.radMax + 1) *(2 * iterator.radMax + 1);
+			iterator.x = -iterator.radMax - 1;
+			iterator.y = -iterator.radMax;
+			iterator.z = -iterator.radMax;
+			while (y + yC < 0) {
+				y++;
+			}
+			return iterator;
+		} catch (Exception e) {
+			Main.logError("Error creating sphere iterator. Please check your brush parameters.", Operator.currentPlayer);
+			return null;
 		}
-		return iterator;
 	}
 
 	@Override
@@ -51,17 +58,17 @@ public class SphereIterator extends BlockIterator {
 			if (y > radMax || y + yC > 255) {
 				return null;
 			}
-			
+
 			// Max radius check
 			if (x*x + y*y + z*z >= (radMax + radCorr)*(radMax + radCorr)) {
 				continue;
 			}
-			
+
 			// Min radius check
 			if (radMin > 1 && x*x + y*y + z*z <= (radMin - radCorr)*(radMin - radCorr)) {
 				continue;
 			}
-			
+
 			break;
 		}
 

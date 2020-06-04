@@ -14,6 +14,7 @@ import org.bukkit.block.BlockState;
 
 import com.fourteener.worldeditor.macros.macros.Macro;
 import com.fourteener.worldeditor.main.*;
+import com.fourteener.worldeditor.operations.Operator;
 
 public class GrassMacro extends Macro {
 	
@@ -25,10 +26,14 @@ public class GrassMacro extends Macro {
 	
 	// Create a new macro
 	private void SetupMacro(String[] args, Location loc) {
-		radius = Double.parseDouble(args[0]);
-		blockMix = args[1];
-		airSpaces = Double.parseDouble(args[2]);
-		density = Double.parseDouble(args[3]);
+		try {
+			radius = Double.parseDouble(args[0]);
+			blockMix = args[1];
+			airSpaces = Double.parseDouble(args[2]);
+			density = Double.parseDouble(args[3]);
+		} catch (Exception e) {
+			Main.logError("Could not parse grass macro. Did you provide all 4 arguments?", Operator.currentPlayer);
+		}
 		pos = loc;
 	}
 	
