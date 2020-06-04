@@ -4,6 +4,7 @@ import java.util.HashSet;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.fourteener.worldeditor.async.AsyncManager;
@@ -73,6 +74,10 @@ public class Main extends JavaPlugin {
 	
 	public static void logDebug (String message) {
 		if (GlobalVars.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] " + message); // ----
+	}
+	
+	public static void logError (String message, Player p) {
+		p.sendMessage("§6[ERROR] " + message);
 	}
 	
 	private static void loadConfig () {

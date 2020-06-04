@@ -13,7 +13,7 @@ public class ScriptLine extends Craftscript {
 	@Override
 	public boolean perform(LinkedList<String> args, Player player, String label) {
 		String block = args.get(0);
-		int length;
+		int length = 10;
 		if (args.size() > 1) {
 			length = Integer.parseInt(args.get(1));
 		}
@@ -31,7 +31,7 @@ public class ScriptLine extends Craftscript {
 		int y2 = (int)(blockPos.getY() * -1 * length + playerPos.getY());
 		int z2 = (int)(blockPos.getZ() * -1 * length + playerPos.getZ());
 		
-		player.performCommand("run $ line{" + x1 + ";" + y1 + ";" + z1 + ";" + x2 + ";" + y2 + ";" + z2 + ";" + block + "}");
+		player.performCommand("run $ line_old{" + x1 + ";" + y1 + ";" + z1 + ";" + x2 + ";" + y2 + ";" + z2 + ";" + block + "}");
 		
 		return true;
 	}

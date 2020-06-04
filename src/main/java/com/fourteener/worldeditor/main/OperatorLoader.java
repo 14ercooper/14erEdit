@@ -101,21 +101,43 @@ public class OperatorLoader {
 	
 	private static void LoadVariable() {
 		GlobalVars.operationParser.AddOperator("blk", new BlockVarNode());
+		GlobalVars.operationParser.AddOperator("block", GlobalVars.operationParser.GetOperator("blk"));
 		GlobalVars.operationParser.AddOperator("dealloc", new DeallocNode());
+		GlobalVars.operationParser.AddOperator("deallocate", GlobalVars.operationParser.GetOperator("dealloc"));
 		GlobalVars.operationParser.AddOperator(">>i", new GetItemCommandNode());
+		GlobalVars.operationParser.AddOperator("get_item_command", GlobalVars.operationParser.GetOperator(">>i"));
+		GlobalVars.operationParser.AddOperator("item_command", GlobalVars.operationParser.GetOperator(">>i"));
 		GlobalVars.operationParser.AddOperator(">i", new GetItemVarNode());
+		GlobalVars.operationParser.AddOperator("get_item", GlobalVars.operationParser.GetOperator(">i"));
 		GlobalVars.operationParser.AddOperator(">>m", new GetMonsterCommandNode());
+		GlobalVars.operationParser.AddOperator("get_monster_command", GlobalVars.operationParser.GetOperator(">>m"));
+		GlobalVars.operationParser.AddOperator("monster_command", GlobalVars.operationParser.GetOperator(">>m"));
 		GlobalVars.operationParser.AddOperator(">>s", new GetSpawnerCommandNode());
+		GlobalVars.operationParser.AddOperator("get_spawner_command", GlobalVars.operationParser.GetOperator(">>s"));
+		GlobalVars.operationParser.AddOperator("spawner_command", GlobalVars.operationParser.GetOperator(">>s"));
 		GlobalVars.operationParser.AddOperator("itm", new ItemVarNode());
+		GlobalVars.operationParser.AddOperator("item", GlobalVars.operationParser.GetOperator("itm"));
 		GlobalVars.operationParser.AddOperator("mob", new MobVarNode());
+		GlobalVars.operationParser.AddOperator("monster", GlobalVars.operationParser.GetOperator("mob"));
 		GlobalVars.operationParser.AddOperator("var", new ModifyVarNode());
+		GlobalVars.operationParser.AddOperator("modify_variable", GlobalVars.operationParser.GetOperator("var"));
 		GlobalVars.operationParser.AddOperator("num", new NumericVarNode());
+		GlobalVars.operationParser.AddOperator("numeric", GlobalVars.operationParser.GetOperator("num"));
+		GlobalVars.operationParser.AddOperator("number", GlobalVars.operationParser.GetOperator("num"));
 		GlobalVars.operationParser.AddOperator("spwn", new SpawnerVarNode());
+		GlobalVars.operationParser.AddOperator("spawner", GlobalVars.operationParser.GetOperator("spwn"));
 		GlobalVars.operationParser.AddOperator(">s", new SetSpawnerNode());
+		GlobalVars.operationParser.AddOperator("set_spawner", GlobalVars.operationParser.GetOperator(">s"));
 		GlobalVars.operationParser.AddOperator(">m", new SpawnMonsterNode());
+		GlobalVars.operationParser.AddOperator("spawn_monster", GlobalVars.operationParser.GetOperator(">m"));
 		GlobalVars.operationParser.AddOperator(">b", new SetBlockVarNode());
+		GlobalVars.operationParser.AddOperator("set_block_variable", GlobalVars.operationParser.GetOperator(">b"));
 		GlobalVars.operationParser.AddOperator(">im", new GetMonsterItemNode());
+		GlobalVars.operationParser.AddOperator("monster_item", GlobalVars.operationParser.GetOperator(">im"));
+		GlobalVars.operationParser.AddOperator("get_monster_item", GlobalVars.operationParser.GetOperator(">im"));
 		GlobalVars.operationParser.AddOperator(">is", new GetSpawnerItemNode());
+		GlobalVars.operationParser.AddOperator("spawner_item", GlobalVars.operationParser.GetOperator(">is"));
+		GlobalVars.operationParser.AddOperator("get_spawner_item", GlobalVars.operationParser.GetOperator(">is"));
 		GlobalVars.operationParser.AddOperator("save", new SaveVariableNode());
 		GlobalVars.operationParser.AddOperator("load", new LoadVariableNode());
 	}
