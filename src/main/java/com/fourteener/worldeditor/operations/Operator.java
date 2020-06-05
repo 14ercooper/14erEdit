@@ -3,6 +3,7 @@ package com.fourteener.worldeditor.operations;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
@@ -21,33 +22,50 @@ public class Operator {
 	public static Map<String, MonsterVar> monsterVars = new HashMap<String, MonsterVar>();
 	public static Map<String, SpawnerVar> spawnerVars = new HashMap<String, SpawnerVar>();
 	public static Map<String, Operator> fileLoads = new HashMap<String, Operator>();
-	
+
 	public EntryNode entryNode;
-	
+
 	public boolean operateOnBlock (Block block, Player p) {
-		// Set global operator variables
-		currentOperator = this;
-		currentBlock = block;
-		currentPlayer = p;
-		
-		// Perform the operation
-		return entryNode.performNode();
+		try {
+			// Set global operator variables
+			currentOperator = this;
+			currentBlock = block;
+			currentPlayer = p;
+
+			// Perform the operation
+			return entryNode.performNode();
+		} catch (Exception e) {
+			Main.logError("Could not perform operation. Please check your syntax.", p);
+			return false;
+		}
 	}
-	
+
 	public boolean operateOnBlock (Block block) {
-		// Set global operator variables
-		currentOperator = this;
-		currentBlock = block;
-		
-		// Perform the operation
-		return entryNode.performNode();
+		try {
+			// Set global operator variables
+			currentOperator = this;
+			currentBlock = block;
+			currentPlayer = null;
+
+			// Perform the operation
+			return entryNode.performNode();
+		} catch (Exception e) {
+			Main.logError("Could not perform operation. Please check your syntax.", Bukkit.getConsoleSender());
+			return false;
+		}
 	}
-	
+
 	public boolean messyOperate () {
-		return entryNode.performNode();
+		try {
+			return entryNode.performNode();
+		} catch (Exception e) {
+			Main.logError("Could not perform operation. Please check your syntax.", Bukkit.getConsoleSender());
+			return false;
+		}
 	}
-	
-	public Operator (String op) {
+
+	public Operator (String op, Player p) {
+		currentPlayer = p; // Used to show errors in the parse process
 		entryNode = GlobalVars.operationParser.parseOperation(op);
 	}
 }

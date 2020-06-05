@@ -15,7 +15,7 @@ import com.fourteener.worldeditor.operations.type.*;
 public class SaveVariableNode extends Node {
 
 	String type, name, path;
-	
+
 	@Override
 	public SaveVariableNode newNode() {
 		SaveVariableNode node = new SaveVariableNode();
@@ -27,45 +27,54 @@ public class SaveVariableNode extends Node {
 
 	@Override
 	public boolean performNode() {
-		File f = new File(path);
-		f.getParentFile().mkdirs();
-		if (type.equalsIgnoreCase("itm")) {
-			ItemVar var = Operator.itemVars.get(name);
-			try {
-				Files.deleteIfExists(f.toPath());
-				ObjectOutputStream oo = new ObjectOutputStream(new FileOutputStream(path));
-				oo.writeObject(var);
-				oo.close();
-				return true;
-			} catch (IOException e) {
-				Main.logDebug(e.getMessage());
+		try {
+			File f = new File(path);
+			f.getParentFile().mkdirs();
+			if (type.equalsIgnoreCase("itm")) {
+				ItemVar var = Operator.itemVars.get(name);
+				try {
+					Files.deleteIfExists(f.toPath());
+					ObjectOutputStream oo = new ObjectOutputStream(new FileOutputStream(path));
+					oo.writeObject(var);
+					oo.close();
+					return true;
+				} catch (IOException e) {
+					Main.logError("Could not open file to save variable.", Operator.currentPlayer);
+					Main.logDebug(e.getMessage());
+				}
 			}
-		}
-		if (type.equalsIgnoreCase("mob")) {
-			MonsterVar var = Operator.monsterVars.get(name);
-			try {
-				Files.deleteIfExists(f.toPath());
-				ObjectOutputStream oo = new ObjectOutputStream(new FileOutputStream(path));
-				oo.writeObject(var);
-				oo.close();
-				return true;
-			} catch (IOException e) {
-				Main.logDebug(e.getMessage());
+			if (type.equalsIgnoreCase("mob")) {
+				MonsterVar var = Operator.monsterVars.get(name);
+				try {
+					Files.deleteIfExists(f.toPath());
+					ObjectOutputStream oo = new ObjectOutputStream(new FileOutputStream(path));
+					oo.writeObject(var);
+					oo.close();
+					return true;
+				} catch (IOException e) {
+					Main.logError("Could not open file to save variable.", Operator.currentPlayer);
+					Main.logDebug(e.getMessage());
+				}
 			}
-		}
-		if (type.equalsIgnoreCase("spwn")) {
-			SpawnerVar var = Operator.spawnerVars.get(name);
-			try {
-				Files.deleteIfExists(f.toPath());
-				ObjectOutputStream oo = new ObjectOutputStream(new FileOutputStream(path));
-				oo.writeObject(var);
-				oo.close();
-				return true;
-			} catch (IOException e) {
-				Main.logDebug(e.getMessage());
+			if (type.equalsIgnoreCase("spwn")) {
+				SpawnerVar var = Operator.spawnerVars.get(name);
+				try {
+					Files.deleteIfExists(f.toPath());
+					ObjectOutputStream oo = new ObjectOutputStream(new FileOutputStream(path));
+					oo.writeObject(var);
+					oo.close();
+					return true;
+				} catch (IOException e) {
+					Main.logError("Could not open file to save variable.", Operator.currentPlayer);
+					Main.logDebug(e.getMessage());
+				}
 			}
+			Main.logError("Could not save variable to disk. Only items, monsters, and spawners may be saved.", Operator.currentPlayer);
+			return false;
+		} catch (Exception e) {
+			Main.logError("Error saving variable to disk. Please check your syntax.", Operator.currentPlayer);
+			return false;
 		}
-		return false;
 	}
 
 	@Override

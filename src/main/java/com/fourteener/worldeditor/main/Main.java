@@ -77,6 +77,7 @@ public class Main extends JavaPlugin {
 	}
 	
 	public static void logError (String message, CommandSender p) {
+		if (p == null) p = Bukkit.getConsoleSender();
 		p.sendMessage("§6[ERROR] " + message);
 	}
 	

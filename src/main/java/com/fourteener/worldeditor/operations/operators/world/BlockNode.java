@@ -10,68 +10,95 @@ import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 
 import com.fourteener.worldeditor.main.GlobalVars;
+import com.fourteener.worldeditor.main.Main;
 import com.fourteener.worldeditor.operations.Operator;
 import com.fourteener.worldeditor.operations.operators.Node;
 
 public class BlockNode extends Node {
-	
+
 	// Stores this node's argument
 	public List<BlockInstance> blockList;
 	public BlockInstance nextBlock;
-	
+
 	// Creates a new node
 	public BlockNode newNode() {
 		BlockNode node = new BlockNode();
-		String[] data = GlobalVars.operationParser.parseStringNode().getText().split(",");
-		node.blockList = new LinkedList<BlockInstance>();
-		for (String s : data) {
-			node.blockList.add(new BlockInstance(s));
-		}
-		if (node.blockList.size() == 0) {
+		try {
+			String[] data = GlobalVars.operationParser.parseStringNode().getText().split(",");
+			node.blockList = new LinkedList<BlockInstance>();
+			for (String s : data) {
+				node.blockList.add(new BlockInstance(s));
+			}
+			if (node.blockList.size() == 0) {
+				Main.logError("Error creating block node. No blocks were provided.", Operator.currentPlayer);
+				return null;
+			}
+		} catch (Exception e) {
+			Main.logError("Could not parse block node. Block name required, but not found.", Operator.currentPlayer);
 			return null;
 		}
 		return node;
 	}
 	public BlockNode newNode(String input) {
 		BlockNode node = new BlockNode();
-		String[] data = input.split(",");
-		node.blockList = new LinkedList<BlockInstance>();
-		for (String s : data) {
-			node.blockList.add(new BlockInstance(s));
-		}
-		if (node.blockList.size() == 0) {
+		try {
+			String[] data = input.split(",");
+			node.blockList = new LinkedList<BlockInstance>();
+			for (String s : data) {
+				node.blockList.add(new BlockInstance(s));
+			}
+			if (node.blockList.size() == 0) {
+				Main.logError("Error creating block node. No blocks were provided.", Operator.currentPlayer);
+				return null;
+			}
+		} catch (Exception e) {
+			Main.logError("Could not parse block node. Block name required, but not found.", Operator.currentPlayer);
 			return null;
 		}
 		return node;
 	}
-	
+
 	// Return the material this node references
 	public Material getBlock () {
-		nextBlock = blockList.get(0).GetRandom(blockList);
+		try {
+			nextBlock = blockList.get(0).GetRandom(blockList);
+		} catch (Exception e) {
+			Main.logError("Error performing block node. Does it contain blocks?", Operator.currentPlayer);
+			return null;
+		}
 		return nextBlock.mat;
 	}
-	
+
 	// Get the data of this block
 	public BlockData getData () {
-		return nextBlock.data;
+		try {
+			return nextBlock.data;
+		} catch (Exception e) {
+			return null;
+		}
 	}
-	
+
 	// Check if it's the correct block
 	public boolean performNode () {
-		return blockList.get(0).Contains(blockList, Operator.currentBlock);
+		try {
+			return blockList.get(0).Contains(blockList, Operator.currentBlock);
+		} catch (Exception e) {
+			Main.logError("Error performing block node. Does it contain blocks?", Operator.currentPlayer);
+			return false;
+		}
 	}
-	
+
 	// Returns how many arguments this node takes
 	public int getArgCount () {
 		return 1;
 	}
-	
+
 	// Nested class to make parsing , and % lists easier
 	private class BlockInstance {
 		Material mat;
 		BlockData data;
 		int weight;
-		
+
 		// Construct a new block instance from an input string
 		BlockInstance (String input) {
 			if (input.contains("%")) {
@@ -99,7 +126,7 @@ public class BlockNode extends Node {
 				}
 			}
 		}
-		
+
 		// Does the list contain a certain block (for masking)
 		boolean Contains(List<BlockInstance> list ,Block b) {
 			Material testMat = b.getType();
@@ -108,7 +135,7 @@ public class BlockNode extends Node {
 			}
 			return false;
 		}
-		
+
 		// Get a random block from the list (for setting)
 		BlockInstance GetRandom(List<BlockInstance> list) {
 			int totalWeight = 0;

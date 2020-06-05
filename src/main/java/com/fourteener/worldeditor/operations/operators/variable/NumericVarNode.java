@@ -17,6 +17,7 @@ public class NumericVarNode extends Node{
 	
 	public boolean performNode () {
 		if (Operator.numericVars.containsKey(name)) {
+			Main.logError("Could not create numeric variable. Does it already exist?", Operator.currentPlayer);
 			return false;
 		}
 		Operator.numericVars.put(name, new NumericVar());

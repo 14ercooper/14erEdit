@@ -104,6 +104,8 @@ public class OperatorLoader {
 		GlobalVars.operationParser.AddOperator("block", GlobalVars.operationParser.GetOperator("blk"));
 		GlobalVars.operationParser.AddOperator("dealloc", new DeallocNode());
 		GlobalVars.operationParser.AddOperator("deallocate", GlobalVars.operationParser.GetOperator("dealloc"));
+		GlobalVars.operationParser.AddOperator("delete", GlobalVars.operationParser.GetOperator("dealloc"));
+		GlobalVars.operationParser.AddOperator("delete_variable", GlobalVars.operationParser.GetOperator("dealloc"));
 		GlobalVars.operationParser.AddOperator(">>i", new GetItemCommandNode());
 		GlobalVars.operationParser.AddOperator("get_item_command", GlobalVars.operationParser.GetOperator(">>i"));
 		GlobalVars.operationParser.AddOperator("item_command", GlobalVars.operationParser.GetOperator(">>i"));
@@ -153,7 +155,7 @@ public class OperatorLoader {
 		GlobalVars.operationParser.AddOperator("same", new SameNode());
 		GlobalVars.operationParser.AddOperator("facing", new FacingNode());
 		GlobalVars.operationParser.AddOperator(">>n", new SetNBTNode());
-		GlobalVars.operationParser.AddOperator("set_nbt", GlobalVars.operationParser.GetOperator(""));
+		GlobalVars.operationParser.AddOperator("set_nbt", GlobalVars.operationParser.GetOperator(">>n"));
 		GlobalVars.operationParser.AddOperator(">", new SetNode());
 		GlobalVars.operationParser.AddOperator("set", GlobalVars.operationParser.GetOperator(">"));
 		GlobalVars.operationParser.AddOperator("set_block", GlobalVars.operationParser.GetOperator(">"));

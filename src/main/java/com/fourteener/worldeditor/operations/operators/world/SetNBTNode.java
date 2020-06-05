@@ -7,25 +7,38 @@ import com.fourteener.worldeditor.operations.Operator;
 import com.fourteener.worldeditor.operations.operators.Node;
 
 public class SetNBTNode extends Node {
-	
+
 	String nbt;
-	
+
 	public SetNBTNode newNode() {
 		SetNBTNode node = new SetNBTNode();
-		node.nbt = GlobalVars.operationParser.parseStringNode().contents;
+		try {
+			node.nbt = GlobalVars.operationParser.parseStringNode().contents;
+		} catch (Exception e) {
+			Main.logError("Error creating set NBT node. Please check your syntax.", Operator.currentPlayer);
+			return null;
+		}
+		if (node.nbt.isEmpty()) {
+			Main.logError("Could not parse set NBT node. Requires NBT, but did not find nay.", Operator.currentPlayer);
+		}
 		return node;
 	}
-	
+
 	public boolean performNode () {
-		String command = "data merge block ";
-		command += Operator.currentBlock.getLocation().getBlockX() + " ";
-		command += Operator.currentBlock.getLocation().getBlockY() + " ";
-		command += Operator.currentBlock.getLocation().getBlockZ() + " ";
-		command += nbt.replaceAll("_", " ");
-		Bukkit.dispatchCommand(Bukkit.getServer().getConsoleSender(), command);
-		return true;
+		try {
+			String command = "data merge block ";
+			command += Operator.currentBlock.getLocation().getBlockX() + " ";
+			command += Operator.currentBlock.getLocation().getBlockY() + " ";
+			command += Operator.currentBlock.getLocation().getBlockZ() + " ";
+			command += nbt.replaceAll("_", " ");
+			Bukkit.dispatchCommand(Bukkit.getServer().getConsoleSender(), command);
+			return true;
+		} catch (Exception e) {
+			Main.logError("Error performing set NBT node. Please check your syntax.", Operator.currentPlayer);
+			return false;
+		}
 	}
-	
+
 	public int getArgCount () {
 		return 1;
 	}

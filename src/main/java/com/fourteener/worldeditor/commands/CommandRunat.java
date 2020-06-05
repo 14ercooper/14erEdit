@@ -76,7 +76,7 @@ public class CommandRunat implements CommandExecutor {
 			for (int i = numArgs + 4; i < args.length; i++) {
 				opStr = opStr.concat(args[i]).concat(" ");
 			}
-			Operator op = new Operator(opStr);
+			Operator op = new Operator(opStr, null);
 
 			GlobalVars.asyncManager.scheduleEdit(op, null, blocks);
 

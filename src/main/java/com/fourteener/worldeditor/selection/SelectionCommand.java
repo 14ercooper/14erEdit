@@ -229,7 +229,7 @@ public class SelectionCommand {
 			opStr = opStr.concat(s).concat(" ");
 		}
 		// And turn the string into an operation
-		Operator operator = new Operator(opStr);
+		Operator operator = new Operator(opStr, wand.owner);
 
 		GlobalVars.asyncManager.scheduleEdit(operator, wand.owner, blockArray);
 

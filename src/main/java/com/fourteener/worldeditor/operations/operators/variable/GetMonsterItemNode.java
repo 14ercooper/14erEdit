@@ -16,6 +16,10 @@ public class GetMonsterItemNode extends Node {
 	}
 	
 	public boolean performNode () {
+		if (!Operator.monsterVars.containsKey(name)) {
+			Main.logError("Error performing get monster item node. Please check your syntax (does the variable exist?).", Operator.currentPlayer);
+			return false;
+		}
 		MonsterVar var = Operator.monsterVars.get(name);
 		String command = "give @s minecraft:" + var.getType();
 		command += "_spawn_egg{EntityTag:";

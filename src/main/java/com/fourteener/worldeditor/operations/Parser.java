@@ -28,7 +28,10 @@ public class Parser {
 	}
 
 	public Node GetOperator(String name) {
-		if (!operators.containsKey(name)) return null;
+		if (!operators.containsKey(name)) {
+			Main.logError("Operator \"" + name + "\" not found. Please check that you input a valid operator.", Operator.currentPlayer);
+			return null;
+		}
 		return operators.get(name);
 	}
 
@@ -42,8 +45,10 @@ public class Parser {
 
 		// This is an error if this is true
 		// Probably user error with an invalid operation
-		if (rootNode == null)
+		if (rootNode == null) {
+			Main.logError("Operation parse failed. Please check your syntax.", Operator.currentPlayer);
 			return null;
+		}
 
 		// Generate the entry node of the operation
 		Main.logDebug("Building entry node from root node"); // -----
@@ -81,20 +86,35 @@ public class Parser {
 	public NumberNode parseNumberNode () {
 		index ++;
 		Main.logDebug("Number node created"); // -----
-		return new NumberNode().newNode();
+		try {
+			return new NumberNode().newNode();
+		} catch (Exception e) {
+			Main.logError("Number expected. Did not find a number.", Operator.currentPlayer);
+			return null;
+		}
 	}
 
 	public RangeNode parseRangeNode () {
 		index ++;
 		Main.logDebug("Range node created"); // -----
-		return new RangeNode().newNode();
+		try {
+			return new RangeNode().newNode();
+		} catch (Exception e) {
+			Main.logError("Range node expected. Could not create a range node.", Operator.currentPlayer);
+			return null;
+		}
 	}
 
 	public StringNode parseStringNode () {
 		index ++;
 		Main.logDebug("String node created"); // -----
-		StringNode node = new StringNode();
-		node.contents = parts.get(index);
-		return node;
+		try {
+			StringNode node = new StringNode();
+			node.contents = parts.get(index);
+			return node;
+		} catch (Exception e) {
+			Main.logError("Ran off end of operator (could not create string node). Are you missing arguments?", Operator.currentPlayer);
+			return null;
+		}
 	}
 }

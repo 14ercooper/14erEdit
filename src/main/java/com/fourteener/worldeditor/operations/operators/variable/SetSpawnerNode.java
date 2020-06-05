@@ -16,6 +16,10 @@ public class SetSpawnerNode extends Node {
 	}
 	
 	public boolean performNode () {
+		if (!Operator.spawnerVars.containsKey(name)) {
+			Main.logError("Error performing set spawner node. Please check your syntax (does the variable exist?).", Operator.currentPlayer);
+			return false;
+		}
 		SpawnerVar var = Operator.spawnerVars.get(name);
 		GlobalVars.currentUndo.storeBlock(Operator.currentBlock);
 		String command = "setblock " + Operator.currentBlock.getX();

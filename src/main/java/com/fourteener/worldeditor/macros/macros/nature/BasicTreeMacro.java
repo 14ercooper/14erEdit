@@ -130,6 +130,7 @@ public class BasicTreeMacro extends Macro {
 			return true;
 		}
 		
+		Main.logError("Could not perform tree macro. An invalid tree type was given.", Operator.currentPlayer);
 		return false;
 	}
 

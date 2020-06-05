@@ -22,7 +22,7 @@ public class ScriptMegaoperate extends Craftscript {
 			int zMin  = Integer.parseInt(args.get(4));
 			int zMax  = Integer.parseInt(args.get(5));
 			String op  = args.get(6);
-			Operator operator = new Operator(op);
+			Operator operator = new Operator(op, Operator.currentPlayer);
 			Bukkit.getServer().broadcastMessage("Starting operation...");
 			for (int x = xMin; x <= xMax; x++) {
 				for (int y = yMin; y <= yMax; y++) {

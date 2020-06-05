@@ -73,9 +73,14 @@ public class Brush {
 
 			// Get the shape generator, and store the args
 			shapeGenerator = brushShapes.get(brushOperation[1]);
-			for (int i = 0; i < shapeGenerator.GetArgCount(); i++) {
-				shapeArgs.add(Double.parseDouble(brushOperation[2+i]));
-				brushOpOffset++;
+			try {
+				for (int i = 0; i < shapeGenerator.GetArgCount(); i++) {
+					shapeArgs.add(Double.parseDouble(brushOperation[2+i]));
+					brushOpOffset++;
+				}
+			} catch (Exception e) {
+				Main.logError("Could not parse brush arguments. Please check that you provided enough numerical arguments for the brush shape.", player);
+				return;
 			}
 
 			// Construct the operator
@@ -91,7 +96,7 @@ public class Brush {
 				opStr = opStr.concat(s).concat(" ");
 			}
 			// And then construct the operator
-			operation = new Operator(opStr);
+			operation = new Operator(opStr, player);
 
 			// Invalid operator?
 			if (operation == null)
@@ -99,7 +104,7 @@ public class Brush {
 
 			// Store the brush and return success
 			BrushListener.brushes.add(this);
-			player.sendMessage("§dBrush created successfully!");
+			player.sendMessage("§dBrush created and bound to item in hand.");
 		} catch (Exception e) {
 			Main.logError("Error creating brush. Please check your syntax.", player);
 		}

@@ -16,6 +16,10 @@ public class GetItemVarNode extends Node {
 	}
 	
 	public boolean performNode () {
+		if (!Operator.itemVars.containsKey(name)) {
+			Main.logError("Error performing get item variable node. Please check your syntax (does the variable exist?).", Operator.currentPlayer);
+			return false;
+		}
 		ItemVar iv = Operator.itemVars.get(name);
 		String command = "give @s ";
 		command += iv.getType().toLowerCase();
