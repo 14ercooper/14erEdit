@@ -36,7 +36,7 @@ public class OperatorLoader {
 	private static void LoadFunction() {
 		GlobalVars.operationParser.AddOperator("%", new OddsNode());
 		GlobalVars.operationParser.AddOperator("odds", GlobalVars.operationParser.GetOperator("%"));
-		GlobalVars.operationParser.AddOperator("change", GlobalVars.operationParser.GetOperator("%"));
+		GlobalVars.operationParser.AddOperator("chance", GlobalVars.operationParser.GetOperator("%"));
 		GlobalVars.operationParser.AddOperator("-", new RangeNode());
 		GlobalVars.operationParser.AddOperator("range", GlobalVars.operationParser.GetOperator("-"));
 		GlobalVars.operationParser.AddOperator("inrange", GlobalVars.operationParser.GetOperator("-"));
