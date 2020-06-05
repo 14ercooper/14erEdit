@@ -22,6 +22,7 @@ public class OperatorLoader {
 	private static void LoadCore() {
 		GlobalVars.operationParser.AddOperator("$$", new CraftscriptNode());
 		GlobalVars.operationParser.AddOperator("craftscript", GlobalVars.operationParser.GetOperator("$$"));
+		GlobalVars.operationParser.AddOperator("script", GlobalVars.operationParser.GetOperator("$$"));
 		GlobalVars.operationParser.AddOperator("/", new LinkerNode());
 		GlobalVars.operationParser.AddOperator("link", GlobalVars.operationParser.GetOperator("/"));
 		GlobalVars.operationParser.AddOperator(">f", new LoadFromFileNode());
@@ -161,5 +162,6 @@ public class OperatorLoader {
 		GlobalVars.operationParser.AddOperator("set_block", GlobalVars.operationParser.GetOperator(">"));
 		GlobalVars.operationParser.AddOperator(">>", GlobalVars.operationParser.GetOperator(">"));
 		GlobalVars.operationParser.AddOperator("grav", new GravityNode());
+		GlobalVars.operationParser.AddOperator("gravity", GlobalVars.operationParser.GetOperator("grav"));
 	}
 }
