@@ -35,7 +35,7 @@ public class BlockAtNode extends Node {
 	public boolean performNode() {
 		try {
 			Block currBlock = Operator.currentBlock;
-			Operator.currentBlock = GlobalVars.world.getBlockAt((int) x.getValue() + currBlock.getX(), (int) y.getValue() + currBlock.getY(), (int) z.getValue() + currBlock.getZ());
+			Operator.currentBlock = Operator.currentPlayer.getWorld().getBlockAt((int) x.getValue() + currBlock.getX(), (int) y.getValue() + currBlock.getY(), (int) z.getValue() + currBlock.getZ());
 			boolean matches = node.performNode();
 			Operator.currentBlock = currBlock;
 			return matches;

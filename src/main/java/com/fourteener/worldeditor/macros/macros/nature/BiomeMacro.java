@@ -50,7 +50,7 @@ public class BiomeMacro extends Macro {
 			for (int rz = -radiusInt; rz <= radiusInt; rz++) {
 				for (int ry = -radiusInt; ry < radiusInt; ry++) {
 					if (rx*rx + rz*rz + ry*ry <= (radius + 0.5)*(radius + 0.5)) {
-						blockArray.add(GlobalVars.world.getBlockAt((int) x + rx, (int) y + ry, (int) z + rz));
+						blockArray.add(Operator.currentPlayer.getWorld().getBlockAt((int) x + rx, (int) y + ry, (int) z + rz));
 					}
 				}
 			}
@@ -67,7 +67,7 @@ public class BiomeMacro extends Macro {
 		
 		// OPERATE
 		for (BlockState bs : snapshotArray) {
-			Block b = GlobalVars.world.getBlockAt(bs.getLocation());
+			Block b = Operator.currentPlayer.getWorld().getBlockAt(bs.getLocation());
 			b.setBiome(biome);
 		}
 		

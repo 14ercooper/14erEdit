@@ -5,7 +5,6 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 
 import com.fourteener.worldeditor.macros.macros.Macro;
-import com.fourteener.worldeditor.main.GlobalVars;
 import com.fourteener.worldeditor.main.Main;
 import com.fourteener.worldeditor.main.SetBlock;
 import com.fourteener.worldeditor.operations.Operator;
@@ -37,7 +36,7 @@ public class LineMacro extends Macro {
 		
 		double x = x1, y = y1, z = z1;
 		for (int i = 0; i < 1000; i++) {
-			Block b = GlobalVars.world.getBlockAt((int) x, (int) y, (int) z);
+			Block b = Operator.currentPlayer.getWorld().getBlockAt((int) x, (int) y, (int) z);
 			SetBlock.setMaterial(b, mat);
 			x += dx;
 			y += dy;

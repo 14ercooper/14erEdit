@@ -32,7 +32,7 @@ public class FacesExposedNode extends Node {
 		// Count the number of faces
 		// Basically check for air in each of the four directions
 		int faceCount = 0;
-		Block b = GlobalVars.world.getBlockAt(Operator.currentBlock.getLocation());
+		Block b = Operator.currentPlayer.getWorld().getBlockAt(Operator.currentBlock.getLocation());
 		if (b.getRelative(BlockFace.NORTH).getType() == Material.AIR) {
 			faceCount++;
 		}

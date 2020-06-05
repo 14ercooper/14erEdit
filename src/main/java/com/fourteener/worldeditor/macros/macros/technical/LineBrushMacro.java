@@ -6,7 +6,6 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
 import com.fourteener.worldeditor.macros.macros.Macro;
-import com.fourteener.worldeditor.main.GlobalVars;
 import com.fourteener.worldeditor.main.Main;
 import com.fourteener.worldeditor.main.SetBlock;
 import com.fourteener.worldeditor.operations.Operator;
@@ -53,7 +52,7 @@ public class LineBrushMacro extends Macro {
 			int xPos = (int) (xStart - (xStep * t));
 			int yPos = (int) (yStart - (yStep * t));
 			int zPos = (int) (zStart - (zStep * t));
-			Block b = GlobalVars.world.getBlockAt(xPos, yPos, zPos);
+			Block b = Operator.currentPlayer.getWorld().getBlockAt(xPos, yPos, zPos);
 			SetBlock.setMaterial(b, m);
 		}
 		

@@ -5,7 +5,6 @@ import java.util.List;
 import org.bukkit.block.Block;
 
 import com.fourteener.worldeditor.blockiterator.BlockIterator;
-import com.fourteener.worldeditor.main.GlobalVars;
 import com.fourteener.worldeditor.main.Main;
 import com.fourteener.worldeditor.operations.Operator;
 
@@ -65,7 +64,7 @@ public class EllipseIterator extends BlockIterator {
 			break;
 		}
 
-		return GlobalVars.world.getBlockAt((int) x + xC, (int) y + yC, (int) z + zC);
+		return Operator.currentPlayer.getWorld().getBlockAt((int) x + xC, (int) y + yC, (int) z + zC);
 	}
 
 	@Override

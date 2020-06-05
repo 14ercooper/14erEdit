@@ -28,7 +28,7 @@ public class BlocksAboveNode extends Node {
 	}
 
 	public boolean performNode () {
-		Block currBlock = GlobalVars.world.getBlockAt(Operator.currentBlock.getLocation());
+		Block currBlock = Operator.currentPlayer.getWorld().getBlockAt(Operator.currentBlock.getLocation());
 		int x = currBlock.getX();
 		int y = currBlock.getY();
 		int z = currBlock.getZ();
@@ -37,7 +37,7 @@ public class BlocksAboveNode extends Node {
 		boolean blockRangeMet = true;
 
 		for (int dy = y + min; dy <= y + max; dy++) {
-			Operator.currentBlock = GlobalVars.world.getBlockAt(x, dy, z);
+			Operator.currentBlock = Operator.currentPlayer.getWorld().getBlockAt(x, dy, z);
 			if (!(arg2.performNode()))
 				blockRangeMet = false;
 		}

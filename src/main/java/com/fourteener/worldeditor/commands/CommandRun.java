@@ -6,7 +6,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.fourteener.worldeditor.main.GlobalVars;
 import com.fourteener.worldeditor.main.Main;
 import com.fourteener.worldeditor.operations.Operator;
 
@@ -21,7 +20,7 @@ public class CommandRun implements CommandExecutor {
 					opStr = opStr.concat(s).concat(" ");
 				}
 				Operator op = new Operator(opStr, (Player) sender);
-				Block b = GlobalVars.world.getBlockAt(((Player) sender).getLocation());
+				Block b = ((Player) sender).getWorld().getBlockAt(((Player) sender).getLocation());
 				op.operateOnBlock(b, (Player) sender);
 				return true;
 			}

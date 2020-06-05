@@ -56,11 +56,11 @@ public class ScriptFlatten extends Craftscript {
 				for (int rz = (int) negCorner[2]; rz <= posCorner[2]; rz++) {
 					for (int ry = (int) negCorner[1]; ry <= posCorner[1]; ry++) {
 						if (ry <= Math.round(height)) {
-							Block b = GlobalVars.world.getBlockAt(rx, ry, rz);
+							Block b = Operator.currentPlayer.getWorld().getBlockAt(rx, ry, rz);
 							SetBlock.setMaterial(b, block);
 						}
 						else {
-							Block b = GlobalVars.world.getBlockAt(rx, ry, rz);
+							Block b = Operator.currentPlayer.getWorld().getBlockAt(rx, ry, rz);
 							SetBlock.setMaterial(b, Material.AIR);
 						}
 					}
@@ -82,11 +82,11 @@ public class ScriptFlatten extends Craftscript {
 				for (int rz = (int) negCorner[2]; rz <= posCorner[2]; rz++) {
 					for (int ry = 0; ry <= 255; ry++) {
 						if (ry <= Math.round(height)) {
-							Block b = GlobalVars.world.getBlockAt(rx, ry, rz);
+							Block b = Operator.currentPlayer.getWorld().getBlockAt(rx, ry, rz);
 							SetBlock.setMaterial(b, block);
 						}
 						else {
-							Block b = GlobalVars.world.getBlockAt(rx, ry, rz);
+							Block b = Operator.currentPlayer.getWorld().getBlockAt(rx, ry, rz);
 							SetBlock.setMaterial(b, Material.AIR);
 						}
 					}

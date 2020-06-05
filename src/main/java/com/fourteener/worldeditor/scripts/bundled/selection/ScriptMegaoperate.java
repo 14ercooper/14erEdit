@@ -5,7 +5,6 @@ import java.util.LinkedList;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import com.fourteener.worldeditor.main.GlobalVars;
 import com.fourteener.worldeditor.main.Main;
 import com.fourteener.worldeditor.operations.Operator;
 import com.fourteener.worldeditor.scripts.Craftscript;
@@ -27,7 +26,7 @@ public class ScriptMegaoperate extends Craftscript {
 			for (int x = xMin; x <= xMax; x++) {
 				for (int y = yMin; y <= yMax; y++) {
 					for (int z = zMin; z <= zMax; z++) {
-						operator.operateOnBlock(GlobalVars.world.getBlockAt(x, y, z));
+						operator.operateOnBlock(Operator.currentPlayer.getWorld().getBlockAt(x, y, z));
 					}
 				}
 			}

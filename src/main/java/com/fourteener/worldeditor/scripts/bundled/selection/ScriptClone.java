@@ -7,7 +7,6 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
-import com.fourteener.worldeditor.main.GlobalVars;
 import com.fourteener.worldeditor.main.Main;
 import com.fourteener.worldeditor.operations.Operator;
 import com.fourteener.worldeditor.scripts.Craftscript;
@@ -30,8 +29,8 @@ public class ScriptClone extends Craftscript {
 			for (int x = xMin; x <= xMax; x++) {
 				for (int y = yMin; y <= yMax; y++) {
 					for (int z = zMin; z <= zMax; z++) {
-						Material m = GlobalVars.world.getBlockAt(x, y, z).getType();
-						Block b = GlobalVars.world.getBlockAt(x + xOff, y + yOff, z + zOff);
+						Material m = Operator.currentPlayer.getWorld().getBlockAt(x, y, z).getType();
+						Block b = Operator.currentPlayer.getWorld().getBlockAt(x + xOff, y + yOff, z + zOff);
 						b.setType(m);
 					}
 				}

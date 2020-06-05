@@ -45,8 +45,7 @@ public class Main extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new BrushListener(), this);
 		
 		// These are needed by the plugin, but should only be loaded once as they are very slow to load
-		GlobalVars.world = Bukkit.getWorlds().get(0);
-		GlobalVars.simplexNoise = new SimplexNoise (GlobalVars.world.getSeed()); // Seeded using the world seed for variance between worlds but consistency in the same world
+		GlobalVars.simplexNoise = new SimplexNoise (Bukkit.getWorlds().get(0).getSeed()); // Seeded using the world seed for variance between worlds but consistency in the same world
 		GlobalVars.plugin = this;
 		
 		// Load config

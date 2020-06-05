@@ -63,7 +63,7 @@ public class VinesMacro extends Macro {
 			for (int rz = -radiusInt; rz <= radiusInt; rz++) {
 				for (int ry = -radiusInt; ry <= radiusInt; ry++) {
 					if (rx*rx + ry*ry + rz*rz <= (radius + 0.5)*(radius + 0.5)) {
-						blockArray.add(GlobalVars.world.getBlockAt((int) x + rx, (int) y + ry, (int) z + rz));
+						blockArray.add(Operator.currentPlayer.getWorld().getBlockAt((int) x + rx, (int) y + ry, (int) z + rz));
 					}
 				}
 			}
@@ -82,7 +82,7 @@ public class VinesMacro extends Macro {
 		// OPERATE
 		Random rand = new Random();
 		for (BlockState bs : snapshotArray) {
-			Block b = GlobalVars.world.getBlockAt(bs.getLocation());
+			Block b = Operator.currentPlayer.getWorld().getBlockAt(bs.getLocation());
 			// Make sure this block is air
 			if (b.getType() != Material.AIR || b.getRelative(BlockFace.DOWN).getType() != Material.AIR) {
 				continue;
@@ -193,7 +193,7 @@ public class VinesMacro extends Macro {
 		Main.logDebug("Operated on and now placing " + Integer.toString(operatedBlocks.size()) + " blocks");
 		// Apply the changes to the world
 		for (BlockState bs : operatedBlocks) {
-			Block b = GlobalVars.world.getBlockAt(bs.getLocation());
+			Block b = Operator.currentPlayer.getWorld().getBlockAt(bs.getLocation());
 			SetBlock.setMaterial(b, bs.getType());
 			b.setBlockData(bs.getBlockData());
 		}

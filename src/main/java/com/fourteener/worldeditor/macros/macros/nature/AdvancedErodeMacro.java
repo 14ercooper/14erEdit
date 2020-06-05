@@ -60,7 +60,7 @@ public class AdvancedErodeMacro extends Macro {
 			for (int rz = -erodeRadius; rz <= erodeRadius; rz++) {
 				for (int ry = -erodeRadius; ry <= erodeRadius; ry++) {
 					if (rx*rx + ry*ry + rz*rz <= (erodeRadius + 0.5)*(erodeRadius + 0.5)) {
-						erosionArray.add(GlobalVars.world.getBlockAt((int) x + rx, (int) y + ry, (int) z + rz));
+						erosionArray.add(Operator.currentPlayer.getWorld().getBlockAt((int) x + rx, (int) y + ry, (int) z + rz));
 					}
 				}
 			}
@@ -80,7 +80,7 @@ public class AdvancedErodeMacro extends Macro {
 	private void applyToWorld(List<BlockState> snapshotArray) {
 		for (BlockState b : snapshotArray) {
 			Location l = b.getLocation();
-			Block block = GlobalVars.world.getBlockAt(l);
+			Block block = Operator.currentPlayer.getWorld().getBlockAt(l);
 			SetBlock.setMaterial(block, b.getType());
 			block.setBlockData(b.getBlockData());
 		}
@@ -92,7 +92,7 @@ public class AdvancedErodeMacro extends Macro {
 		List<BlockState> snapshotCopy = new ArrayList<BlockState>();
 		for (BlockState b : snapshotArray) {
 			// First get the adjacent blocks
-			Block current = GlobalVars.world.getBlockAt(b.getLocation());
+			Block current = Operator.currentPlayer.getWorld().getBlockAt(b.getLocation());
 			BlockState currentState = b;
 			List<Block> adjBlocks = new ArrayList<Block>();
 			adjBlocks.add(current.getRelative(BlockFace.UP));

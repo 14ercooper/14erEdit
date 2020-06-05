@@ -3,7 +3,6 @@ package com.fourteener.worldeditor.main;
 import java.util.Set;
 
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.plugin.Plugin;
 
 import com.fourteener.worldeditor.async.AsyncManager;
@@ -16,7 +15,6 @@ import com.fourteener.worldeditor.undo.Undo;
 public class GlobalVars {
 	
 	// Global variables
-	public static World world;
 	public static SimplexNoise simplexNoise;
 	public static Plugin plugin;
 	
