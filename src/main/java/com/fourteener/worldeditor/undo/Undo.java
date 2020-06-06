@@ -91,8 +91,8 @@ public class Undo {
 					BlockState bs = undoList.removeLast();
 					Block b = bs.getBlock();
 					redoList.addFirst(b.getState());
-					b.setType(bs.getType(), true);
-					b.setBlockData(bs.getBlockData(), true);
+					b.setType(bs.getType(), false);
+					b.setBlockData(bs.getBlockData(), false);
 				}
 			}
 			redoSizes.addFirst(numPlaced);
@@ -123,8 +123,8 @@ public class Undo {
 					BlockState bs = redoList.removeFirst();
 					undoList.addLast(bs);
 					Block b = bs.getBlock();
-					b.setType(bs.getType(), true);
-					b.setBlockData(bs.getBlockData(), true);
+					b.setType(bs.getType(), false);
+					b.setBlockData(bs.getBlockData(), false);
 				}
 			}
 			undoSizes.addFirst(numPlaced);

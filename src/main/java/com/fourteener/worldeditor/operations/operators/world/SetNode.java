@@ -11,6 +11,7 @@ import org.bukkit.block.data.BlockData;
 import com.fourteener.worldeditor.main.*;
 import com.fourteener.worldeditor.operations.Operator;
 import com.fourteener.worldeditor.operations.operators.Node;
+import com.fourteener.worldeditor.operations.operators.query.BlockAtNode;
 
 public class SetNode extends Node {
 
@@ -32,6 +33,21 @@ public class SetNode extends Node {
 
 	public boolean performNode () {
 		try {
+			// Block at nodes are handled specially
+			if (arg instanceof BlockAtNode) {
+				// Set material
+				SetBlock.setMaterial(Operator.currentBlock, Material.matchMaterial(arg.getBlock()), Operator.ignoringPhysics);
+				// Set data
+				Operator.currentBlock.setBlockData(Bukkit.getServer().createBlockData(arg.getData()), Operator.ignoringPhysics);
+				// Clone NBT (if there is any)
+				String nbt = arg.getNBT();
+				if (nbt.length() > 2) {
+					String command = "data merge block " + Operator.currentBlock.getX() + " " + Operator.currentBlock.getY() + " " + Operator.currentBlock.getZ() + " " + nbt;
+					Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), command);
+				}
+				return true;
+			}
+			
 			Material storedMaterial = Operator.currentBlock.getType();
 			String storedData = Operator.currentBlock.getBlockData().getAsString();
 			String setMaterial = arg.getBlock();
@@ -55,7 +71,7 @@ public class SetNode extends Node {
 				}
 				newData = newData.substring(0, newData.length() - 1);
 				newData = newData + "]";
-				Operator.currentBlock.setBlockData(Bukkit.getServer().createBlockData(newData));
+				Operator.currentBlock.setBlockData(Bukkit.getServer().createBlockData(newData), Operator.ignoringPhysics);
 			}
 			// Case NBT only, merge nbt
 			else if (setMaterial.equalsIgnoreCase("nbtonly")) {
@@ -71,7 +87,7 @@ public class SetNode extends Node {
 					if (!setMaterial.contains("minecraft:")) setMaterial = "minecraft:" + setMaterial;
 					String newData = setMaterial + "[" + storedData.split("\\[")[1];
 					BlockData data = Bukkit.getServer().createBlockData(newData);
-					Operator.currentBlock.setBlockData(data);
+					Operator.currentBlock.setBlockData(data, Operator.ignoringPhysics);
 				} catch (Exception e) {
 					// Nothing needs to be done, new block can't take the existing data so no worries
 				}
@@ -80,17 +96,18 @@ public class SetNode extends Node {
 			else {
 				// Case materials match (update data) - this is slightly faster in some cases
 				if (storedMaterial == Material.matchMaterial(setMaterial)) {
-					Operator.currentBlock.setBlockData(Bukkit.getServer().createBlockData(setData));
+					Operator.currentBlock.setBlockData(Bukkit.getServer().createBlockData(setData), Operator.ignoringPhysics);
 				}
 				// Case materials don't match (set all)
 				else {
 					SetBlock.setMaterial(Operator.currentBlock, Material.matchMaterial(setMaterial), Operator.ignoringPhysics);
-					Operator.currentBlock.setBlockData(Bukkit.getServer().createBlockData(setData));
+					Operator.currentBlock.setBlockData(Bukkit.getServer().createBlockData(setData), Operator.ignoringPhysics);
 				}
 			}
 
 			return true;
 		} catch (Exception e) {
+			e.printStackTrace();
 			Main.logError("Error performing block set node. Please check your syntax.", Operator.currentPlayer);
 			return false;
 		}

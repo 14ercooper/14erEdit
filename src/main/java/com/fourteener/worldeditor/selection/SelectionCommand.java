@@ -132,6 +132,23 @@ public class SelectionCommand {
 					Main.logError("Could not reset selection.", player);
 				}
 			}
+			
+			// Clone selection
+			else if (args[1].equalsIgnoreCase("clone")) {
+				try {
+					BlockIterator b = manager.getBlocks();
+					int[] offset = {0,0,0};
+					offset[0] = Integer.parseInt(args[2]);
+					offset[1] = Integer.parseInt(args[3]);
+					offset[2] = Integer.parseInt(args[4]);
+					int times = Integer.parseInt(args[5]);
+					boolean delOriginal = Boolean.parseBoolean(args[6]);
+					GlobalVars.asyncManager.scheduleEdit(b, offset, times, delOriginal, player);
+					return true;
+				} catch (Exception e) {
+					Main.logError("Could not set up selection clone. Please check your syntax.", player);
+				}
+			}
 
 			// Update pos1
 			else if (args[1].equalsIgnoreCase("pos1")) {

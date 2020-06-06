@@ -4,34 +4,38 @@ import org.bukkit.block.Block;
 
 import com.fourteener.worldeditor.main.GlobalVars;
 import com.fourteener.worldeditor.main.Main;
+import com.fourteener.worldeditor.main.NBTExtractor;
 import com.fourteener.worldeditor.operations.Operator;
 import com.fourteener.worldeditor.operations.operators.Node;
 import com.fourteener.worldeditor.operations.operators.core.NumberNode;
+import com.fourteener.worldeditor.operations.operators.world.BlockNode;
 
-public class BlockAtNode extends Node {
+public class BlockAtNode extends BlockNode {
 
 	NumberNode x, y, z;
 	Node node;
 
-	@Override
 	public BlockAtNode newNode() {
 		BlockAtNode baNode = new BlockAtNode();
 		try {
 			baNode.x = GlobalVars.operationParser.parseNumberNode();
 			baNode.y = GlobalVars.operationParser.parseNumberNode();
 			baNode.z = GlobalVars.operationParser.parseNumberNode();
-			baNode.node = GlobalVars.operationParser.parsePart();
+			try {
+				baNode.node = GlobalVars.operationParser.parsePart();
+			} catch (Exception e) {
+				Main.logDebug("Block at created with type blocknode");
+			}
 		} catch (Exception e) {
 			Main.logError("Error creating block at node. Please check your syntax.", Operator.currentPlayer);
 			return null;
 		}
-		if (baNode.node == null) {
-			Main.logError("Could not parse block at node. Three numbers and an operation are required, but not given.", Operator.currentPlayer);
+		if (baNode.z == null) {
+			Main.logError("Could not parse block at node. Three numbers and optionally an operation are required, but not given.", Operator.currentPlayer);
 		}
 		return baNode;
 	}
 
-	@Override
 	public boolean performNode() {
 		try {
 			Block currBlock = Operator.currentBlock;
@@ -44,8 +48,23 @@ public class BlockAtNode extends Node {
 			return false;
 		}
 	}
+	
+	// Return the material this node references
+	public String getBlock () {
+		return Operator.currentBlock.getRelative((int) x.getValue(), (int) y.getValue(), (int) z.getValue()).getType().toString();
+	}
 
-	@Override
+	// Get the data of this block
+	public String getData () {
+		return Operator.currentBlock.getRelative((int) x.getValue(), (int) y.getValue(), (int) z.getValue()).getBlockData().getAsString();
+	}
+	
+	// Get the NBT of this block
+	public String getNBT() {
+		NBTExtractor nbt = new NBTExtractor();
+		return nbt.getNBT(Operator.currentBlock.getRelative((int) x.getValue(), (int) y.getValue(), (int) z.getValue()));
+	}
+
 	public int getArgCount() {
 		return 4;
 	}
