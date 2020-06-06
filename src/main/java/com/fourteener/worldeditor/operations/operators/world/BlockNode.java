@@ -16,6 +16,7 @@ public class BlockNode extends Node {
 
 	// Stores this node's argument
 	public List<BlockInstance> blockList;
+	public List<String> textMasks;
 	public BlockInstance nextBlock;
 
 	// Creates a new node
@@ -24,10 +25,18 @@ public class BlockNode extends Node {
 		try {
 			String[] data = GlobalVars.operationParser.parseStringNode().getText().split(",");
 			node.blockList = new LinkedList<BlockInstance>();
+			node.textMasks = new LinkedList<String>();
 			for (String s : data) {
-				node.blockList.add(new BlockInstance(s));
+				if (s.contains("#")) {
+					Main.logDebug("Created text mask");
+					node.textMasks.add(s.replaceAll("#", ""));
+				}
+				else {
+					Main.logDebug("Created block instance");
+					node.blockList.add(new BlockInstance(s));
+				}
 			}
-			if (node.blockList.size() == 0) {
+			if (node.blockList.isEmpty() && node.textMasks.isEmpty()) {
 				Main.logError("Error creating block node. No blocks were provided.", Operator.currentPlayer);
 				return null;
 			}
@@ -42,10 +51,18 @@ public class BlockNode extends Node {
 		try {
 			String[] data = input.split(",");
 			node.blockList = new LinkedList<BlockInstance>();
+			node.textMasks = new LinkedList<String>();
 			for (String s : data) {
-				node.blockList.add(new BlockInstance(s));
+				if (s.contains("#")) {
+					Main.logDebug("Created text mask");
+					node.textMasks.add(s.replaceAll("#", ""));
+				}
+				else {
+					Main.logDebug("Created block instance");
+					node.blockList.add(new BlockInstance(s));
+				}
 			}
-			if (node.blockList.size() == 0) {
+			if (node.blockList.isEmpty() && node.textMasks.isEmpty()) {
 				Main.logError("Error creating block node. No blocks were provided.", Operator.currentPlayer);
 				return null;
 			}
@@ -59,7 +76,7 @@ public class BlockNode extends Node {
 	// Return the material this node references
 	public String getBlock () {
 		try {
-			nextBlock = blockList.get(0).GetRandom(blockList);
+			nextBlock = (new BlockInstance()).GetRandom(blockList);
 		} catch (Exception e) {
 			Main.logError("Error performing block node. Does it contain blocks?", Operator.currentPlayer);
 			return null;
@@ -79,7 +96,7 @@ public class BlockNode extends Node {
 	// Check if it's the correct block
 	public boolean performNode () {
 		try {
-			return blockList.get(0).Contains(blockList, Operator.currentBlock);
+			return (new BlockInstance()).Contains(blockList, textMasks, Operator.currentBlock);
 		} catch (Exception e) {
 			Main.logError("Error performing block node. Does it contain blocks?", Operator.currentPlayer);
 			return false;
@@ -131,11 +148,22 @@ public class BlockNode extends Node {
 			}
 		}
 
+		// Empty constructor
+		BlockInstance() {}
+
 		// Does the list contain a certain block (for masking)
-		boolean Contains(List<BlockInstance> list ,Block b) {
+		boolean Contains(List<BlockInstance> list, List<String> masks, Block b) {
 			Material testMat = b.getType();
-			for (BlockInstance bi : list) {
-				if (Material.matchMaterial(bi.mat) == testMat) return true;
+			if (!list.isEmpty()) {
+				for (BlockInstance bi : list) {
+					if (Material.matchMaterial(bi.mat) == testMat) return true;
+				}
+			}
+			if (!masks.isEmpty()) {
+				String testString = b.getType().toString().toLowerCase();
+				for (String mS : masks) {
+					if (testString.contains(mS)) return true;
+				}
 			}
 			return false;
 		}
