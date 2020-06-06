@@ -33,9 +33,9 @@ public class FacingNode extends BlockNode {
 		return node;
 	}
 
-	public BlockData getData () {
+	public String getData () {
 		try {
-			BlockData dat = arg.getData();
+			BlockData dat = Bukkit.getServer().createBlockData(arg.getData());
 			Random rand = new Random();
 
 			List<String> dirs = new ArrayList<String>();
@@ -67,7 +67,7 @@ public class FacingNode extends BlockNode {
 				dat = dat.merge(newDat);
 			}
 
-			return dat;
+			return dat.getAsString();
 		} catch (Exception e) {
 			Main.logError("Error performing facing node. Please check your syntax.", Operator.currentPlayer);
 			return null;

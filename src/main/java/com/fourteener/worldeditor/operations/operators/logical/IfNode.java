@@ -29,7 +29,6 @@ public class IfNode extends Node {
 			boolean isTrue = arg1.performNode();
 			boolean toReturn = false;
 			if (isTrue) {
-				Main.logDebug("Is true");
 				toReturn = arg2.performNode();
 			}
 			if (arg3 == null) {

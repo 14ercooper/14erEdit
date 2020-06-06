@@ -1,5 +1,9 @@
 package com.fourteener.worldeditor.operations.operators.world;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
@@ -29,29 +33,56 @@ public class SetNode extends Node {
 	public boolean performNode () {
 		try {
 			boolean didSet = true;
-			if (Operator.currentBlock.getType() == arg.getBlock()) {
-				didSet = false;
-			}
-			if (arg.getData() != null && Operator.currentBlock.getBlockData() == arg.getData()) {
-				didSet = false;
-			}
 
 			Material storedMaterial = Operator.currentBlock.getType();
-			BlockData storedData = null;
-			if (arg.getData() == null) {
-				storedData = Operator.currentBlock.getBlockData();
+			String storedData = Operator.currentBlock.getBlockData().getAsString();
+			String setMaterial = arg.getBlock();
+			String setData = arg.getData();
+			// Case only data to set, do the data merge
+			if (setMaterial.equalsIgnoreCase("dataonly")) {
+				// Step 1, convert the old data into a map
+				Map<String, String> oldData = new HashMap<String, String>();
+				for (String s : storedData.split("\\[")[1].replaceAll("\\]", "").split(",")) {
+					oldData.put(s.split("=")[0], s.split("=")[1]);
+				}
+				// Step 2, merge the new data into the map
+				for (String s : setData.split("\\[")[0].replaceAll("\\]", "").split(",")) {
+					if (oldData.containsKey(s.split("=")[0])) oldData.remove(s.split("=")[0]);
+					oldData.put(s.split("=")[0], s.split("=")[1]);
+				}
+				// Step 3, rebuild the data and set
+				String newData = storedMaterial.toString().toLowerCase() + "[";
+				for (Entry<String,String> e : oldData.entrySet()) {
+					newData = newData + e.getKey() + "=" + e.getValue() + ",";
+				}
+				newData = newData.substring(0, newData.length() - 1);
+				newData = newData + "]";
+				Operator.currentBlock.setBlockData(Bukkit.getServer().createBlockData(newData));
 			}
-			SetBlock.setMaterial(Operator.currentBlock, arg.getBlock());
-			if (arg.getData() != null) {
-				Operator.currentBlock.setBlockData(arg.getData());
-			}
-			else if (storedData != null && Operator.currentBlock.getType() == storedMaterial) {
+			// Case no data to set
+			else if (setData == null) {
+				// Try carry over data
+				SetBlock.setMaterial(Operator.currentBlock, Material.matchMaterial(setMaterial));
+				didSet = storedMaterial == Material.matchMaterial(setMaterial);
 				try {
-					String blockMat = storedData.getAsString().split("\\[")[1];
-					blockMat = Operator.currentBlock.getType().toString() + "[" + blockMat;
-					Operator.currentBlock.setBlockData(Bukkit.getServer().createBlockData(blockMat));
+					if (!setMaterial.contains("minecraft:")) setMaterial = "minecraft:" + setMaterial;
+					String newData = setMaterial + "[" + storedData.split("\\[")[1];
+					BlockData data = Bukkit.getServer().createBlockData(newData);
+					Operator.currentBlock.setBlockData(data);
 				} catch (Exception e) {
-					// nothing needs to be done here
+					// Nothing needs to be done, new block can't take the existing data so no worries
+				}
+			}
+			// If both provided
+			else {
+				// Case materials match (update data) - this is slightly faster in some cases
+				if (storedMaterial == Material.matchMaterial(setMaterial)) {
+					Operator.currentBlock.setBlockData(Bukkit.getServer().createBlockData(setData));
+				}
+				// Case materials don't match (set all)
+				else {
+					SetBlock.setMaterial(Operator.currentBlock, Material.matchMaterial(setMaterial));
+					Operator.currentBlock.setBlockData(Bukkit.getServer().createBlockData(setData));
 				}
 			}
 

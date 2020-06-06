@@ -4,10 +4,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.block.data.BlockData;
 
 import com.fourteener.worldeditor.main.GlobalVars;
 import com.fourteener.worldeditor.main.Main;
@@ -59,7 +57,7 @@ public class BlockNode extends Node {
 	}
 
 	// Return the material this node references
-	public Material getBlock () {
+	public String getBlock () {
 		try {
 			nextBlock = blockList.get(0).GetRandom(blockList);
 		} catch (Exception e) {
@@ -70,7 +68,7 @@ public class BlockNode extends Node {
 	}
 
 	// Get the data of this block
-	public BlockData getData () {
+	public String getData () {
 		try {
 			return nextBlock.data;
 		} catch (Exception e) {
@@ -95,32 +93,38 @@ public class BlockNode extends Node {
 
 	// Nested class to make parsing , and % lists easier
 	private class BlockInstance {
-		Material mat;
-		BlockData data;
+		String mat;
+		String data;
 		int weight;
 
 		// Construct a new block instance from an input string
 		BlockInstance (String input) {
-			if (input.contains("%")) {
+			if (input.toCharArray()[0] == '[') {
+				// Data only
+				mat = "dataonly";
+				data = input.replaceAll("[\\[\\]]", "");
+				weight = 1;
+			}
+			else if (input.contains("%")) {
 				if (input.contains("[")) {
-					mat = Material.matchMaterial(input.split("%")[1].split("\\[")[0]);
-					data = Bukkit.getServer().createBlockData(input.split("%")[1]);
+					mat = input.split("%")[1].split("\\[")[0];
+					data = input.split("%")[1];
 					weight = Integer.parseInt(input.split("%")[0]);
 				}
 				else {
-					mat = Material.matchMaterial(input.split("%")[1]);
+					mat = input.split("%")[1];
 					data = null;
 					weight = Integer.parseInt(input.split("%")[0]);
 				}
 			}
 			else {
 				if (input.contains("[")) {
-					mat = Material.matchMaterial(input.split("\\[")[0]);
-					data = Bukkit.getServer().createBlockData(input);
+					mat = input.split("\\[")[0];
+					data = input;
 					weight = 1;
 				}
 				else {
-					mat = Material.matchMaterial(input);
+					mat = input;
 					data = null;
 					weight = 1;
 				}
@@ -131,7 +135,7 @@ public class BlockNode extends Node {
 		boolean Contains(List<BlockInstance> list ,Block b) {
 			Material testMat = b.getType();
 			for (BlockInstance bi : list) {
-				if (bi.mat == testMat) return true;
+				if (Material.matchMaterial(bi.mat) == testMat) return true;
 			}
 			return false;
 		}
