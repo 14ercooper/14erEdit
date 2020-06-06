@@ -57,6 +57,12 @@ public class SetNode extends Node {
 				newData = newData + "]";
 				Operator.currentBlock.setBlockData(Bukkit.getServer().createBlockData(newData));
 			}
+			// Case NBT only, merge nbt
+			else if (setMaterial.equalsIgnoreCase("nbtonly")) {
+				String command = "data merge block " + Operator.currentBlock.getX() + " " + Operator.currentBlock.getY() + " " + Operator.currentBlock.getZ();
+				command = command + " " + arg.getNBT();
+				Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), command);
+			}
 			// Case no data to set
 			else if (setData == null) {
 				// Try carry over data

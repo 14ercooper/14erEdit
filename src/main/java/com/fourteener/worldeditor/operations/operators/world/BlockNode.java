@@ -9,6 +9,7 @@ import org.bukkit.block.Block;
 
 import com.fourteener.worldeditor.main.GlobalVars;
 import com.fourteener.worldeditor.main.Main;
+import com.fourteener.worldeditor.main.NBTExtractor;
 import com.fourteener.worldeditor.operations.Operator;
 import com.fourteener.worldeditor.operations.operators.Node;
 
@@ -92,6 +93,11 @@ public class BlockNode extends Node {
 			return null;
 		}
 	}
+	
+	// Get the NBT of this block
+	public String getNBT() {
+		return nextBlock.nbt;
+	}
 
 	// Check if it's the correct block
 	public boolean performNode () {
@@ -112,6 +118,7 @@ public class BlockNode extends Node {
 	private class BlockInstance {
 		String mat;
 		String data;
+		String nbt = "";
 		int weight;
 
 		// Construct a new block instance from an input string
@@ -120,6 +127,16 @@ public class BlockNode extends Node {
 				// Data only
 				mat = "dataonly";
 				data = input.replaceAll("[\\[\\]]", "");
+				weight = 1;
+			}
+			if (input.toCharArray()[0] == '{') {
+				// NBT only
+				mat = "nbtonly";
+				data = null;
+				while (input.charAt(input.length() - 1) != '}') {
+					input = input + " " + GlobalVars.operationParser.parseStringNode().getText();
+				}
+				nbt = input.replaceAll("[{}]", "");
 				weight = 1;
 			}
 			else if (input.contains("%")) {
@@ -157,6 +174,14 @@ public class BlockNode extends Node {
 			if (!list.isEmpty()) {
 				for (BlockInstance bi : list) {
 					if (Material.matchMaterial(bi.mat) == testMat) return true;
+					if (bi.mat.equalsIgnoreCase("dataonly")) {
+						for (String s : bi.data.split(","))
+							if (b.getBlockData().getAsString().toLowerCase().contains(s.toLowerCase())) return true;
+					}
+					if (bi.mat.equalsIgnoreCase("nbtonly")) {
+						NBTExtractor nbt = new NBTExtractor();
+						if (nbt.getNBT(b).contains(bi.nbt.replaceAll("[{}]", ""))) return true;
+					}
 				}
 			}
 			if (!masks.isEmpty()) {
