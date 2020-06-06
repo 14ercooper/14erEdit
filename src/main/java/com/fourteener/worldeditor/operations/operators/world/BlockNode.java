@@ -124,12 +124,14 @@ public class BlockNode extends Node {
 		// Construct a new block instance from an input string
 		BlockInstance (String input) {
 			if (input.toCharArray()[0] == '[') {
+				Main.logDebug("Data only node");
 				// Data only
 				mat = "dataonly";
 				data = input.replaceAll("[\\[\\]]", "");
 				weight = 1;
 			}
-			if (input.toCharArray()[0] == '{') {
+			else if (input.toCharArray()[0] == '{') {
+				Main.logDebug("NBT node");
 				// NBT only
 				mat = "nbtonly";
 				data = null;
@@ -173,10 +175,13 @@ public class BlockNode extends Node {
 			Material testMat = b.getType();
 			if (!list.isEmpty()) {
 				for (BlockInstance bi : list) {
-					if (Material.matchMaterial(bi.mat) == testMat) return true;
+					try {
+						if (Material.matchMaterial(bi.mat) == testMat) return true;
+					} catch (Exception e) {
+						// No material found. That's okay
+					}
 					if (bi.mat.equalsIgnoreCase("dataonly")) {
-						for (String s : bi.data.replaceAll("[\\[\\]]", "").split(","))
-							if (b.getBlockData().getAsString().toLowerCase().contains(s.toLowerCase())) return true;
+						if (b.getBlockData().getAsString().toLowerCase().contains(bi.data.replaceAll("[\\[\\]]", "").toLowerCase())) return true;
 					}
 					if (bi.mat.equalsIgnoreCase("nbtonly")) {
 						NBTExtractor nbt = new NBTExtractor();
