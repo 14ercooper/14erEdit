@@ -175,7 +175,7 @@ public class BlockNode extends Node {
 				for (BlockInstance bi : list) {
 					if (Material.matchMaterial(bi.mat) == testMat) return true;
 					if (bi.mat.equalsIgnoreCase("dataonly")) {
-						for (String s : bi.data.split(","))
+						for (String s : bi.data.replaceAll("[\\[\\]]", "").split(","))
 							if (b.getBlockData().getAsString().toLowerCase().contains(s.toLowerCase())) return true;
 					}
 					if (bi.mat.equalsIgnoreCase("nbtonly")) {
