@@ -32,8 +32,6 @@ public class SetNode extends Node {
 
 	public boolean performNode () {
 		try {
-			boolean didSet = true;
-
 			Material storedMaterial = Operator.currentBlock.getType();
 			String storedData = Operator.currentBlock.getBlockData().getAsString();
 			String setMaterial = arg.getBlock();
@@ -62,8 +60,7 @@ public class SetNode extends Node {
 			// Case no data to set
 			else if (setData == null) {
 				// Try carry over data
-				SetBlock.setMaterial(Operator.currentBlock, Material.matchMaterial(setMaterial));
-				didSet = storedMaterial == Material.matchMaterial(setMaterial);
+				SetBlock.setMaterial(Operator.currentBlock, Material.matchMaterial(setMaterial), Operator.ignoringPhysics);
 				try {
 					if (!setMaterial.contains("minecraft:")) setMaterial = "minecraft:" + setMaterial;
 					String newData = setMaterial + "[" + storedData.split("\\[")[1];
@@ -81,12 +78,12 @@ public class SetNode extends Node {
 				}
 				// Case materials don't match (set all)
 				else {
-					SetBlock.setMaterial(Operator.currentBlock, Material.matchMaterial(setMaterial));
+					SetBlock.setMaterial(Operator.currentBlock, Material.matchMaterial(setMaterial), Operator.ignoringPhysics);
 					Operator.currentBlock.setBlockData(Bukkit.getServer().createBlockData(setData));
 				}
 			}
 
-			return didSet;
+			return true;
 		} catch (Exception e) {
 			Main.logError("Error performing block set node. Please check your syntax.", Operator.currentPlayer);
 			return false;

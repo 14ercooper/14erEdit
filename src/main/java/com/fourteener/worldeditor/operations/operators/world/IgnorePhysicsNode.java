@@ -24,9 +24,9 @@ public class IgnorePhysicsNode extends Node {
 
 	public boolean performNode () {
 		try {
-			Operator.ignoringPhysics = true;
+			Operator.ignoringPhysics = !Operator.ignoringPhysics;
 			boolean output = arg.performNode();
-			Operator.ignoringPhysics = false;
+			Operator.ignoringPhysics = !Operator.ignoringPhysics;
 			return output;
 		} catch (Exception e) {
 			Main.logError("Error performing physics node. Please check your syntax.", Operator.currentPlayer);
