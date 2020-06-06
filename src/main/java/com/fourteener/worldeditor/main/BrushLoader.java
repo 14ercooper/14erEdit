@@ -12,6 +12,8 @@ public class BrushLoader {
 		RadiusSphere radiusSphere = new RadiusSphere();
 		RandomSphere randomSphere = new RandomSphere();
 		Sphere sphere = new Sphere();
+		ScaledSphere scaledSphere = new ScaledSphere();
+		Cylinder cylinder = new Cylinder();
 		Voxel voxel = new Voxel();
 		Brush.AddBrushShape("cube", cube);
 		Brush.AddBrushShape("square", cube);
@@ -28,5 +30,9 @@ public class BrushLoader {
 		Brush.AddBrushShape("s", sphere);
 		Brush.AddBrushShape("voxel", voxel);
 		Brush.AddBrushShape("v", voxel);
+		Brush.AddBrushShape("ss", scaledSphere);
+		Brush.AddBrushShape("scaledsphere", scaledSphere);
+		Brush.AddBrushShape("c", cylinder);
+		Brush.AddBrushShape("cylinder", cylinder);
 	}
 }

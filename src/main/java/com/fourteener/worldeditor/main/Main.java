@@ -39,6 +39,7 @@ public class Main extends JavaPlugin {
 		// Set up brush mask
 		GlobalVars.targetMask = new HashSet<Material>();
 		GlobalVars.targetMask.add(Material.AIR);
+		GlobalVars.targetMask.add(Material.CAVE_AIR);
 		
 		// Register listeners for brushes and wands
 		getServer().getPluginManager().registerEvents(new SelectionWandListener(), this);

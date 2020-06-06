@@ -12,13 +12,13 @@ public class Voxel extends BrushShape {
 	@Override
 	public BlockIterator GetBlocks(List<Double> args, double x, double y, double z) {
 		List<String> argList = new ArrayList<String>();
-		argList.add(Double.toString(x));
-		argList.add(Double.toString(y));
-		argList.add(Double.toString(z));
-		argList.add("1");
+		argList.add(Integer.toString((int) x));
+		argList.add(Integer.toString((int) y));
+		argList.add(Integer.toString((int) z));
 		argList.add("0");
-		argList.add("-0.5");
-		return GlobalVars.iteratorManager.getIterator("voxel").newIterator(argList);
+		argList.add("0");
+		argList.add("0.5");
+		return GlobalVars.iteratorManager.getIterator("sphere").newIterator(argList);
 	}
 
 	@Override
