@@ -72,12 +72,14 @@ public class SetNode extends Node {
 				newData = newData.substring(0, newData.length() - 1);
 				newData = newData + "]";
 				Operator.currentBlock.setBlockData(Bukkit.getServer().createBlockData(newData), Operator.ignoringPhysics);
+				return storedMaterial == Material.matchMaterial(setMaterial) && !storedData.equalsIgnoreCase(setData);
 			}
 			// Case NBT only, merge nbt
 			else if (setMaterial.equalsIgnoreCase("nbtonly")) {
 				String command = "data merge block " + Operator.currentBlock.getX() + " " + Operator.currentBlock.getY() + " " + Operator.currentBlock.getZ();
 				command = command + " " + arg.getNBT();
 				Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), command);
+				return true;
 			}
 			// Case no data to set
 			else if (setData == null) {
@@ -91,21 +93,22 @@ public class SetNode extends Node {
 				} catch (Exception e) {
 					// Nothing needs to be done, new block can't take the existing data so no worries
 				}
+				return storedMaterial == Material.matchMaterial(setMaterial);
 			}
 			// If both provided
 			else {
 				// Case materials match (update data) - this is slightly faster in some cases
 				if (storedMaterial == Material.matchMaterial(setMaterial)) {
 					Operator.currentBlock.setBlockData(Bukkit.getServer().createBlockData(setData), Operator.ignoringPhysics);
+					return !storedData.equalsIgnoreCase(setData);
 				}
 				// Case materials don't match (set all)
 				else {
 					SetBlock.setMaterial(Operator.currentBlock, Material.matchMaterial(setMaterial), Operator.ignoringPhysics);
 					Operator.currentBlock.setBlockData(Bukkit.getServer().createBlockData(setData), Operator.ignoringPhysics);
+					return storedMaterial == Material.matchMaterial(setMaterial) && !storedData.equalsIgnoreCase(setData);
 				}
 			}
-
-			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
 			Main.logError("Error performing block set node. Please check your syntax.", Operator.currentPlayer);
