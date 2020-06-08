@@ -102,6 +102,11 @@ public class OperatorLoader {
 		GlobalVars.operationParser.AddOperator("skylight", GlobalVars.operationParser.GetOperator("sky"));
 		GlobalVars.operationParser.AddOperator("bl", new SkylightNode());
 		GlobalVars.operationParser.AddOperator("blocklight", GlobalVars.operationParser.GetOperator("bl"));
+		GlobalVars.operationParser.AddOperator("ang", new AngleNode());
+		GlobalVars.operationParser.AddOperator("angle", GlobalVars.operationParser.GetOperator("ang"));
+		GlobalVars.operationParser.AddOperator("slope", GlobalVars.operationParser.GetOperator("ang"));
+		GlobalVars.operationParser.AddOperator("biome_is", new CheckBiomeNode());
+		GlobalVars.operationParser.AddOperator("get_biome", GlobalVars.operationParser.GetOperator("biome_is"));
 	}
 	
 	private static void LoadVariable() {
@@ -167,5 +172,7 @@ public class OperatorLoader {
 		GlobalVars.operationParser.AddOperator(">>", GlobalVars.operationParser.GetOperator(">"));
 		GlobalVars.operationParser.AddOperator("grav", new GravityNode());
 		GlobalVars.operationParser.AddOperator("gravity", GlobalVars.operationParser.GetOperator("grav"));
+		GlobalVars.operationParser.AddOperator("biome", new SetBiomeNode());
+		GlobalVars.operationParser.AddOperator("set_biome", GlobalVars.operationParser.GetOperator("biome"));
 	}
 }
