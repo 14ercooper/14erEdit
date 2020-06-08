@@ -98,6 +98,8 @@ public class OperatorLoader {
 		GlobalVars.operationParser.AddOperator("get_nbt", GlobalVars.operationParser.GetOperator("<<n"));
 		GlobalVars.operationParser.AddOperator("at", new BlockAtNode());
 		GlobalVars.operationParser.AddOperator("block_at", GlobalVars.operationParser.GetOperator("at"));
+		GlobalVars.operationParser.AddOperator("sky", new SkylightNode());
+		GlobalVars.operationParser.AddOperator("skylight", GlobalVars.operationParser.GetOperator("sky"));
 	}
 	
 	private static void LoadVariable() {
