@@ -9,5 +9,6 @@ public class IteratorLoader {
 		GlobalVars.iteratorManager.addIterator("cylinder", new CylinderIterator());
 		GlobalVars.iteratorManager.addIterator("ellipse", new EllipseIterator());
 		GlobalVars.iteratorManager.addIterator("diamond", new DiamondIterator());
+		GlobalVars.iteratorManager.addIterator("multi", new MultiIterator());
 	}
 }

@@ -15,12 +15,20 @@ public class BrushLoader {
 		ScaledSphere scaledSphere = new ScaledSphere();
 		Cylinder cylinder = new Cylinder();
 		Voxel voxel = new Voxel();
+		Splatter splatter = new Splatter();
+		RandomSplatter randomSplatter= new RandomSplatter();
+		RandomEllipse randomEllipse = new RandomEllipse();
+		RandomCylinder randomCylinder = new RandomCylinder();
+		RandomHollowSphere randomHollowSphere = new RandomHollowSphere();
+		RandomCube randomCube = new RandomCube();
+		RandomDiamond randomDiamond = new RandomDiamond();
 		Brush.AddBrushShape("cube", cube);
 		Brush.AddBrushShape("square", cube);
 		Brush.AddBrushShape("diamond", diamond);
 		Brush.AddBrushShape("d", diamond);
 		Brush.AddBrushShape("ellipse", ellipse);
 		Brush.AddBrushShape("e", ellipse);
+		Brush.AddBrushShape("hollowsphere", hollowSphere);
 		Brush.AddBrushShape("hsphere", hollowSphere);
 		Brush.AddBrushShape("hs", hollowSphere);
 		Brush.AddBrushShape("radiussphere", radiusSphere);
@@ -34,5 +42,26 @@ public class BrushLoader {
 		Brush.AddBrushShape("scaledsphere", scaledSphere);
 		Brush.AddBrushShape("c", cylinder);
 		Brush.AddBrushShape("cylinder", cylinder);
+		Brush.AddBrushShape("splatter", splatter);
+		Brush.AddBrushShape("splat", splatter);
+		Brush.AddBrushShape("blob", splatter);
+		Brush.AddBrushShape("b", splatter);
+		Brush.AddBrushShape("randomsplatter", randomSplatter);
+		Brush.AddBrushShape("rsplat", randomSplatter);
+		Brush.AddBrushShape("randomblob", randomSplatter);
+		Brush.AddBrushShape("rb", randomSplatter);
+		Brush.AddBrushShape("randomellipse", randomEllipse);
+		Brush.AddBrushShape("re", randomEllipse);
+		Brush.AddBrushShape("randomcylinder", randomCylinder);
+		Brush.AddBrushShape("rc", randomCylinder);
+		Brush.AddBrushShape("randomhollowsphere", randomHollowSphere);
+		Brush.AddBrushShape("randomhsphere", randomHollowSphere);
+		Brush.AddBrushShape("rhs", randomHollowSphere);
+		Brush.AddBrushShape("randomcube", randomCube);
+		Brush.AddBrushShape("randomsquare", randomCube);
+		Brush.AddBrushShape("rcube", randomCube);
+		Brush.AddBrushShape("rsquare", randomCube);
+		Brush.AddBrushShape("randomdiamond", randomDiamond);
+		Brush.AddBrushShape("rd", randomDiamond);
 	}
 }
