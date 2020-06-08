@@ -67,8 +67,7 @@ public class BiomeMacro extends Macro {
 		
 		// OPERATE
 		for (BlockState bs : snapshotArray) {
-			Block b = Operator.currentPlayer.getWorld().getBlockAt(bs.getLocation());
-			b.setBiome(biome);
+			Operator.currentPlayer.getWorld().setBiome(bs.getX(), bs.getY(), bs.getZ(), biome);
 		}
 		
 		return true;
