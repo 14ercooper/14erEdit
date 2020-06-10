@@ -23,6 +23,10 @@ public class GetSpawnerCommandNode extends Node {
 	}
 	
 	public boolean performNode () {
+		if (!Operator.spawnerVars.containsKey(name)) {
+			Main.logError("Error performing get spawner command node. Please check your syntax (does the variable exist?).", Operator.currentPlayer);
+			return false;
+		}
 		SpawnerVar var = Operator.spawnerVars.get(name);
 		String command = "setblock " + Operator.currentBlock.getX();
 		command += " " + Operator.currentBlock.getY();

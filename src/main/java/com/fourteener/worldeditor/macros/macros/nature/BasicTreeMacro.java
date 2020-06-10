@@ -11,6 +11,7 @@ import org.bukkit.block.BlockFace;
 
 import com.fourteener.worldeditor.macros.macros.Macro;
 import com.fourteener.worldeditor.main.*;
+import com.fourteener.worldeditor.operations.Operator;
 
 public class BasicTreeMacro extends Macro {
 	
@@ -21,10 +22,14 @@ public class BasicTreeMacro extends Macro {
 	// Type, leaves, trunk, size, variance
 	private void SetupMacro(String[] args, Location loc) {
 		plantOn = loc;
-		size = Integer.parseInt(args[3]);
-		variance = (int) Math.ceil(Double.parseDouble(args[4]));
-		leaves = Material.matchMaterial(args[1]);
-		trunk = Material.matchMaterial(args[2]);
+		try {
+			size = Integer.parseInt(args[3]);
+			variance = (int) Math.ceil(Double.parseDouble(args[4]));
+			leaves = Material.matchMaterial(args[1]);
+			trunk = Material.matchMaterial(args[2]);
+		} catch (Exception e) {
+			Main.logError("Could not parse tree macro. Did you provide all 4 arguments correctly?", Operator.currentPlayer);
+		}
 		
 		// Type 1 - Trunk with sphere of leaves (oak)
 		if (args[0].equalsIgnoreCase("oak")) {
@@ -61,6 +66,10 @@ public class BasicTreeMacro extends Macro {
 		// Type 9 - Tall central trunk with short branches and platforms (jungle)
 		if (args[0].equalsIgnoreCase("jungle")) {
 			type = 9;
+		}
+		
+		if (type == -1) {
+			Main.logError("Could not parse tree macro. Did you provide a valid tree type?", Operator.currentPlayer);
 		}
 	}
 	
@@ -121,6 +130,7 @@ public class BasicTreeMacro extends Macro {
 			return true;
 		}
 		
+		Main.logError("Could not perform tree macro. An invalid tree type was given.", Operator.currentPlayer);
 		return false;
 	}
 
@@ -141,7 +151,7 @@ public class BasicTreeMacro extends Macro {
 		double eBranchZ = eBranchX, eBranchY = eBranchX * 0.7;
 		
 		// Stores the centers of the various ellipoids and starts of branches
-		Block currentBlock = GlobalVars.world.getBlockAt(plantOn);
+		Block currentBlock = Operator.currentPlayer.getWorld().getBlockAt(plantOn);
 		Block topBlock;
 		List<Block> branchEnds = new ArrayList<Block>();
 		List<Block> branchStarts = new ArrayList<Block>();
@@ -228,7 +238,7 @@ public class BasicTreeMacro extends Macro {
 				for (double rz = -eTopZ; rz <= eTopZ; rz++) {
 					double ellipsoidValue = (((rx * rx) / (eTopX * eTopX)) + ((ry * ry) / (eTopY * eTopY)) + ((rz * rz) / (eTopZ * eTopZ)));
 					if (ellipsoidValue <= (1.15)) {
-						leafBlocks.add(GlobalVars.world.getBlockAt((int) (x + rx), (int) (y + ry), (int) (z + rz)));
+						leafBlocks.add(Operator.currentPlayer.getWorld().getBlockAt((int) (x + rx), (int) (y + ry), (int) (z + rz)));
 					}
 				}
 			}
@@ -244,7 +254,7 @@ public class BasicTreeMacro extends Macro {
 					for (double rz = -eBranchZ; rz <= eBranchZ; rz++) {
 						double ellipsoidValue = (((rx * rx) / (eBranchX * eBranchX)) + ((ry * ry) / (eBranchY * eBranchY)) + ((rz * rz) / (eBranchZ * eBranchZ)));
 						if (ellipsoidValue <= (1.15)) {
-							leafBlocks.add(GlobalVars.world.getBlockAt((int) (x + rx), (int) (y + ry), (int) (z + rz)));
+							leafBlocks.add(Operator.currentPlayer.getWorld().getBlockAt((int) (x + rx), (int) (y + ry), (int) (z + rz)));
 						}
 					}
 				}
@@ -315,7 +325,7 @@ public class BasicTreeMacro extends Macro {
 		
 		// Generate the stem of the mushroom
 		Main.logDebug("Generating mushroom stem"); // -----
-		Block currentBlock = GlobalVars.world.getBlockAt(plantOn);
+		Block currentBlock = Operator.currentPlayer.getWorld().getBlockAt(plantOn);
 		BlockFace currentDirection = BlockFace.DOWN;
 		for (int i = 1; i <= treeSize; i++) {
 			// Update the current block
@@ -362,7 +372,7 @@ public class BasicTreeMacro extends Macro {
 			for (double rx = -cap1Cut; rx <= cap1Cut; rx++) {
 				for (double rz = -cap1Cut; rz <= cap1Cut; rz++) {
 					if ((rx * rx) + (rz * rz) <= ((cap1Cut + radiusCorrection) * (cap1Cut + radiusCorrection))) {
-						capBlocks.add(GlobalVars.world.getBlockAt((int) (x + rx), (int) (y), (int) (z + rz)));
+						capBlocks.add(Operator.currentPlayer.getWorld().getBlockAt((int) (x + rx), (int) (y), (int) (z + rz)));
 					}
 				}
 			}
@@ -374,7 +384,7 @@ public class BasicTreeMacro extends Macro {
 				for (int rz = -(int)cap2Cut; rz <= cap2Cut; rz++) {
 					if ((rx * rx) + (rz * rz) <= ((cap2Cut + radiusCorrection) * (cap2Cut + radiusCorrection))
 							&& (rx * rx) + (rz * rz) >= ((cap1Cut - radiusCorrection) * (cap1Cut - radiusCorrection))) {
-						capBlocks.add(GlobalVars.world.getBlockAt((int) (x + rx), (int) (y - 1), (int) (z + rz)));
+						capBlocks.add(Operator.currentPlayer.getWorld().getBlockAt((int) (x + rx), (int) (y - 1), (int) (z + rz)));
 					}
 				}
 			}
@@ -386,7 +396,7 @@ public class BasicTreeMacro extends Macro {
 				for (int rz = -(int)cap3Cut; rz <= cap3Cut; rz++) {
 					if ((rx * rx) + (rz * rz) <= ((cap3Cut + radiusCorrection) * (cap3Cut + radiusCorrection))
 							&& (rx * rx) + (rz * rz) >= ((cap2Cut - radiusCorrection) * (cap2Cut - radiusCorrection))) {
-						capBlocks.add(GlobalVars.world.getBlockAt((int) (x + rx), (int) (y - 2), (int) (z + rz)));
+						capBlocks.add(Operator.currentPlayer.getWorld().getBlockAt((int) (x + rx), (int) (y - 2), (int) (z + rz)));
 					}
 				}
 			}
@@ -398,7 +408,7 @@ public class BasicTreeMacro extends Macro {
 				for (int rz = -(int)cap4Cut; rz <= cap4Cut; rz++) {
 					if ((rx * rx) + (rz * rz) <= ((cap4Cut + radiusCorrection) * (cap4Cut + radiusCorrection))
 							&& (rx * rx) + (rz * rz) >= ((cap3Cut - radiusCorrection) * (cap3Cut - radiusCorrection))) {
-						capBlocks.add(GlobalVars.world.getBlockAt((int) (x + rx), (int) (y - 3), (int) (z + rz)));
+						capBlocks.add(Operator.currentPlayer.getWorld().getBlockAt((int) (x + rx), (int) (y - 3), (int) (z + rz)));
 					}
 				}
 			}
@@ -410,7 +420,7 @@ public class BasicTreeMacro extends Macro {
 				for (int rz = -(int)cap5Cut; rz <= cap5Cut; rz++) {
 					if ((rx * rx) + (rz * rz) <= ((cap5Cut + radiusCorrection) * (cap5Cut + radiusCorrection))
 							&& (rx * rx) + (rz * rz) >= ((cap4Cut - radiusCorrection) * (cap4Cut - radiusCorrection))) {
-						capBlocks.add(GlobalVars.world.getBlockAt((int) (x + rx), (int) (y - 2), (int) (z + rz)));
+						capBlocks.add(Operator.currentPlayer.getWorld().getBlockAt((int) (x + rx), (int) (y - 2), (int) (z + rz)));
 					}
 				}
 			}
@@ -431,7 +441,7 @@ public class BasicTreeMacro extends Macro {
 		Random rand = new Random ();
 		double actVariance = ((rand.nextDouble() * 2.0) - 1.0) * variance;
 		double treeSize = size + actVariance;
-		Block currentBlock = GlobalVars.world.getBlockAt(plantOn);
+		Block currentBlock = Operator.currentPlayer.getWorld().getBlockAt(plantOn);
 		BlockFace currentDirection = BlockFace.DOWN;
 		for (int i = 1; i <= treeSize; i++) {
 			// Update the current block
@@ -520,7 +530,7 @@ public class BasicTreeMacro extends Macro {
 		Random rand = new Random();
 		double actVariance = ((rand.nextDouble() * 2.0) - 1.0) * variance;
 		double treeSize = size + actVariance;
-		Block currentBlock = GlobalVars.world.getBlockAt(plantOn);
+		Block currentBlock = Operator.currentPlayer.getWorld().getBlockAt(plantOn);
 		BlockFace curveDirection;
 		// Determine the curve direction
 		double randNum = rand.nextDouble();
@@ -614,7 +624,7 @@ public class BasicTreeMacro extends Macro {
 				for (double rz = -eZ; rz <= eZ; rz++) {
 					double ellipsoidValue = (((rx * rx) / (eX * eX)) + ((ry * ry) / (eY * eY)) + ((rz * rz) / (eZ * eZ)));
 					if (ellipsoidValue <= (1.15)) {
-						Block toPlace = GlobalVars.world.getBlockAt((int) (x + rx), (int) (y + ry), (int) (z + rz));
+						Block toPlace = Operator.currentPlayer.getWorld().getBlockAt((int) (x + rx), (int) (y + ry), (int) (z + rz));
 						if (toPlace.getType() == Material.AIR) {
 							SetBlock.setMaterial(toPlace, leaves);
 						}
@@ -629,7 +639,7 @@ public class BasicTreeMacro extends Macro {
 		Random rand = new Random();
 		double actVariance = ((rand.nextDouble() * 2.0) - 1.0) * variance;
 		double treeSize = size + actVariance;
-		Block currentBlock = GlobalVars.world.getBlockAt(plantOn);
+		Block currentBlock = Operator.currentPlayer.getWorld().getBlockAt(plantOn);
 		for (int i = 1; i <= treeSize; i++) {
 			currentBlock = currentBlock.getRelative(BlockFace.UP);
 			if (currentBlock.getType() == Material.AIR) {
@@ -734,7 +744,7 @@ public class BasicTreeMacro extends Macro {
 
 	private void bushTreeGenerator() {
 		// Place the log block
-		Block baseBlock = GlobalVars.world.getBlockAt(plantOn).getRelative(BlockFace.UP);
+		Block baseBlock = Operator.currentPlayer.getWorld().getBlockAt(plantOn).getRelative(BlockFace.UP);
 		if (baseBlock.getType() == Material.AIR) {
 			SetBlock.setMaterial(baseBlock, trunk);
 		}
@@ -752,7 +762,7 @@ public class BasicTreeMacro extends Macro {
 				for (double rz = -eZ; rz <= eZ; rz++) {
 					double ellipsoidValue = (((rx * rx) / (eX * eX)) + ((ry * ry) / (eY * eY)) + ((rz * rz) / (eZ * eZ)));
 					if (ellipsoidValue <= (1.15)) {
-						Block toPlace = GlobalVars.world.getBlockAt((int) (x + rx), (int) (y + ry), (int) (z + rz));
+						Block toPlace = Operator.currentPlayer.getWorld().getBlockAt((int) (x + rx), (int) (y + ry), (int) (z + rz));
 						// Further leaves are less likely to get placed
 						if (1.0 - (ellipsoidValue * 0.869565217) < (rand.nextDouble() * 0.5)) {
 							continue;
@@ -799,7 +809,7 @@ public class BasicTreeMacro extends Macro {
 		// This is done by generating a "stick" up (with some curves) then creating circles around it
 		double startBranchThickness = baseSize, nextBranchThickness = baseSize;
 		List<Location> branchStarts = new ArrayList<Location>();
-		branchStarts.add(GlobalVars.world.getBlockAt(plantOn).getRelative(BlockFace.UP).getLocation());
+		branchStarts.add(Operator.currentPlayer.getWorld().getBlockAt(plantOn).getRelative(BlockFace.UP).getLocation());
 		double branchHeight = treeHeight;
 		for (int i = 1; i <= (numSplits + 1); i++) {
 			Main.logDebug("i value of " + Integer.toString(i)); // -----
@@ -832,7 +842,7 @@ public class BasicTreeMacro extends Macro {
 				Main.logDebug("First branch growing, number of locations equals " + Integer.toString(theseBranches.size())); // -----
 				for (Location startLoc : theseBranches) {
 					// Grow up
-					Block currentBlock = GlobalVars.world.getBlockAt(startLoc);
+					Block currentBlock = Operator.currentPlayer.getWorld().getBlockAt(startLoc);
 					for (int j = 1; j <= branchHeight; j++) {
 						branchThickness -= branchTaper;
 						// Place the central block
@@ -846,7 +856,7 @@ public class BasicTreeMacro extends Macro {
 						for (int rx = -(int)branchThickness; rx <= branchThickness; rx++) {
 							for (int rz = -(int)branchThickness; rz <= branchThickness; rz++) {
 								if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
-									Block b = GlobalVars.world.getBlockAt(x + rx, y, z + rz);	
+									Block b = Operator.currentPlayer.getWorld().getBlockAt(x + rx, y, z + rz);	
 									if (b.getType() == Material.AIR) {
 										SetBlock.setMaterial(b, trunk);
 									}
@@ -900,7 +910,7 @@ public class BasicTreeMacro extends Macro {
 					// Case N/S
 					if (rand.nextBoolean()) {
 						// North branch
-						Block currentBlock = GlobalVars.world.getBlockAt(startLoc);
+						Block currentBlock = Operator.currentPlayer.getWorld().getBlockAt(startLoc);
 						for (int j = 1; j <= branchHeight; j++) {
 							branchThickness -= branchTaper;
 							// Place the central block
@@ -914,7 +924,7 @@ public class BasicTreeMacro extends Macro {
 							for (int rx = -(int)branchThickness; rx <= branchThickness; rx++) {
 								for (int rz = -(int)branchThickness; rz <= branchThickness; rz++) {
 									if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
-										Block b = GlobalVars.world.getBlockAt(x + rx, y, z + rz);	
+										Block b = Operator.currentPlayer.getWorld().getBlockAt(x + rx, y, z + rz);	
 										if (b.getType() == Material.AIR) {
 											SetBlock.setMaterial(b, trunk);
 										}
@@ -939,7 +949,7 @@ public class BasicTreeMacro extends Macro {
 						branchStarts.add(currentBlock.getLocation());
 						
 						// South branch
-						currentBlock = GlobalVars.world.getBlockAt(startLoc);
+						currentBlock = Operator.currentPlayer.getWorld().getBlockAt(startLoc);
 						branchThickness = startBranchThickness;
 						for (int j = 1; j <= branchHeight; j++) {
 							branchThickness -= branchTaper;
@@ -954,7 +964,7 @@ public class BasicTreeMacro extends Macro {
 							for (int rx = -(int)branchThickness; rx <= branchThickness; rx++) {
 								for (int rz = -(int)branchThickness; rz <= branchThickness; rz++) {
 									if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
-										Block b = GlobalVars.world.getBlockAt(x + rx, y, z + rz);	
+										Block b = Operator.currentPlayer.getWorld().getBlockAt(x + rx, y, z + rz);	
 										if (b.getType() == Material.AIR) {
 											SetBlock.setMaterial(b, trunk);
 										}
@@ -982,7 +992,7 @@ public class BasicTreeMacro extends Macro {
 					// Case E/W
 					else {
 						// East branch
-						Block currentBlock = GlobalVars.world.getBlockAt(startLoc);
+						Block currentBlock = Operator.currentPlayer.getWorld().getBlockAt(startLoc);
 						for (int j = 1; j <= branchHeight; j++) {
 							branchThickness -= branchTaper;
 							// Place the central block
@@ -996,7 +1006,7 @@ public class BasicTreeMacro extends Macro {
 							for (int rx = -(int)branchThickness; rx <= branchThickness; rx++) {
 								for (int rz = -(int)branchThickness; rz <= branchThickness; rz++) {
 									if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
-										Block b = GlobalVars.world.getBlockAt(x + rx, y, z + rz);	
+										Block b = Operator.currentPlayer.getWorld().getBlockAt(x + rx, y, z + rz);	
 										if (b.getType() == Material.AIR) {
 											SetBlock.setMaterial(b, trunk);
 										}
@@ -1021,7 +1031,7 @@ public class BasicTreeMacro extends Macro {
 						branchStarts.add(currentBlock.getLocation());
 						
 						// West branch
-						currentBlock = GlobalVars.world.getBlockAt(startLoc);
+						currentBlock = Operator.currentPlayer.getWorld().getBlockAt(startLoc);
 						branchThickness = startBranchThickness;
 						for (int j = 1; j <= branchHeight; j++) {
 							branchThickness -= branchTaper;
@@ -1036,7 +1046,7 @@ public class BasicTreeMacro extends Macro {
 							for (int rx = -(int)branchThickness; rx <= branchThickness; rx++) {
 								for (int rz = -(int)branchThickness; rz <= branchThickness; rz++) {
 									if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
-										Block b = GlobalVars.world.getBlockAt(x + rx, y, z + rz);	
+										Block b = Operator.currentPlayer.getWorld().getBlockAt(x + rx, y, z + rz);	
 										if (b.getType() == Material.AIR) {
 											SetBlock.setMaterial(b, trunk);
 										}
@@ -1071,7 +1081,7 @@ public class BasicTreeMacro extends Macro {
 						// Case N
 						if (rand.nextBoolean()) {
 							// North branch
-							Block currentBlock = GlobalVars.world.getBlockAt(startLoc);
+							Block currentBlock = Operator.currentPlayer.getWorld().getBlockAt(startLoc);
 							for (int j = 1; j <= branchHeight; j++) {
 								branchThickness -= branchTaper;
 								// Place the central block
@@ -1085,7 +1095,7 @@ public class BasicTreeMacro extends Macro {
 								for (int rx = -(int)branchThickness; rx <= branchThickness; rx++) {
 									for (int rz = -(int)branchThickness; rz <= branchThickness; rz++) {
 										if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
-											Block b = GlobalVars.world.getBlockAt(x + rx, y, z + rz);	
+											Block b = Operator.currentPlayer.getWorld().getBlockAt(x + rx, y, z + rz);	
 											if (b.getType() == Material.AIR) {
 												SetBlock.setMaterial(b, trunk);
 											}
@@ -1110,7 +1120,7 @@ public class BasicTreeMacro extends Macro {
 							branchStarts.add(currentBlock.getLocation());
 							
 							// Southeast branch
-							currentBlock = GlobalVars.world.getBlockAt(startLoc);
+							currentBlock = Operator.currentPlayer.getWorld().getBlockAt(startLoc);
 							branchThickness = startBranchThickness;
 							for (int j = 1; j <= branchHeight; j++) {
 								branchThickness -= branchTaper;
@@ -1125,7 +1135,7 @@ public class BasicTreeMacro extends Macro {
 								for (int rx = -(int)branchThickness; rx <= branchThickness; rx++) {
 									for (int rz = -(int)branchThickness; rz <= branchThickness; rz++) {
 										if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
-											Block b = GlobalVars.world.getBlockAt(x + rx, y, z + rz);	
+											Block b = Operator.currentPlayer.getWorld().getBlockAt(x + rx, y, z + rz);	
 											if (b.getType() == Material.AIR) {
 												SetBlock.setMaterial(b, trunk);
 											}
@@ -1150,7 +1160,7 @@ public class BasicTreeMacro extends Macro {
 							branchStarts.add(currentBlock.getLocation());
 							
 							// Southwest branch
-							currentBlock = GlobalVars.world.getBlockAt(startLoc);
+							currentBlock = Operator.currentPlayer.getWorld().getBlockAt(startLoc);
 							branchThickness = startBranchThickness;
 							for (int j = 1; j <= branchHeight; j++) {
 								branchThickness -= branchTaper;
@@ -1165,7 +1175,7 @@ public class BasicTreeMacro extends Macro {
 								for (int rx = -(int)branchThickness; rx <= branchThickness; rx++) {
 									for (int rz = -(int)branchThickness; rz <= branchThickness; rz++) {
 										if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
-											Block b = GlobalVars.world.getBlockAt(x + rx, y, z + rz);	
+											Block b = Operator.currentPlayer.getWorld().getBlockAt(x + rx, y, z + rz);	
 											if (b.getType() == Material.AIR) {
 												SetBlock.setMaterial(b, trunk);
 											}
@@ -1193,7 +1203,7 @@ public class BasicTreeMacro extends Macro {
 						// Case S
 						else {
 							// South branch
-							Block currentBlock = GlobalVars.world.getBlockAt(startLoc);
+							Block currentBlock = Operator.currentPlayer.getWorld().getBlockAt(startLoc);
 							for (int j = 1; j <= branchHeight; j++) {
 								branchThickness -= branchTaper;
 								// Place the central block
@@ -1207,7 +1217,7 @@ public class BasicTreeMacro extends Macro {
 								for (int rx = -(int)branchThickness; rx <= branchThickness; rx++) {
 									for (int rz = -(int)branchThickness; rz <= branchThickness; rz++) {
 										if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
-											Block b = GlobalVars.world.getBlockAt(x + rx, y, z + rz);	
+											Block b = Operator.currentPlayer.getWorld().getBlockAt(x + rx, y, z + rz);	
 											if (b.getType() == Material.AIR) {
 												SetBlock.setMaterial(b, trunk);
 											}
@@ -1232,7 +1242,7 @@ public class BasicTreeMacro extends Macro {
 							branchStarts.add(currentBlock.getLocation());
 							
 							// Northeast branch
-							currentBlock = GlobalVars.world.getBlockAt(startLoc);
+							currentBlock = Operator.currentPlayer.getWorld().getBlockAt(startLoc);
 							branchThickness = startBranchThickness;
 							for (int j = 1; j <= branchHeight; j++) {
 								branchThickness -= branchTaper;
@@ -1247,7 +1257,7 @@ public class BasicTreeMacro extends Macro {
 								for (int rx = -(int)branchThickness; rx <= branchThickness; rx++) {
 									for (int rz = -(int)branchThickness; rz <= branchThickness; rz++) {
 										if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
-											Block b = GlobalVars.world.getBlockAt(x + rx, y, z + rz);	
+											Block b = Operator.currentPlayer.getWorld().getBlockAt(x + rx, y, z + rz);	
 											if (b.getType() == Material.AIR) {
 												SetBlock.setMaterial(b, trunk);
 											}
@@ -1272,7 +1282,7 @@ public class BasicTreeMacro extends Macro {
 							branchStarts.add(currentBlock.getLocation());
 							
 							// Northwest branch
-							currentBlock = GlobalVars.world.getBlockAt(startLoc);
+							currentBlock = Operator.currentPlayer.getWorld().getBlockAt(startLoc);
 							branchThickness = startBranchThickness;
 							for (int j = 1; j <= branchHeight; j++) {
 								branchThickness -= branchTaper;
@@ -1287,7 +1297,7 @@ public class BasicTreeMacro extends Macro {
 								for (int rx = -(int)branchThickness; rx <= branchThickness; rx++) {
 									for (int rz = -(int)branchThickness; rz <= branchThickness; rz++) {
 										if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
-											Block b = GlobalVars.world.getBlockAt(x + rx, y, z + rz);	
+											Block b = Operator.currentPlayer.getWorld().getBlockAt(x + rx, y, z + rz);	
 											if (b.getType() == Material.AIR) {
 												SetBlock.setMaterial(b, trunk);
 											}
@@ -1316,7 +1326,7 @@ public class BasicTreeMacro extends Macro {
 						// Case E
 						if (rand.nextBoolean()) {
 							// East branch
-							Block currentBlock = GlobalVars.world.getBlockAt(startLoc);
+							Block currentBlock = Operator.currentPlayer.getWorld().getBlockAt(startLoc);
 							for (int j = 1; j <= branchHeight; j++) {
 								branchThickness -= branchTaper;
 								// Place the central block
@@ -1330,7 +1340,7 @@ public class BasicTreeMacro extends Macro {
 								for (int rx = -(int)branchThickness; rx <= branchThickness; rx++) {
 									for (int rz = -(int)branchThickness; rz <= branchThickness; rz++) {
 										if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
-											Block b = GlobalVars.world.getBlockAt(x + rx, y, z + rz);	
+											Block b = Operator.currentPlayer.getWorld().getBlockAt(x + rx, y, z + rz);	
 											if (b.getType() == Material.AIR) {
 												SetBlock.setMaterial(b, trunk);
 											}
@@ -1355,7 +1365,7 @@ public class BasicTreeMacro extends Macro {
 							branchStarts.add(currentBlock.getLocation());
 							
 							// Northwest branch
-							currentBlock = GlobalVars.world.getBlockAt(startLoc);
+							currentBlock = Operator.currentPlayer.getWorld().getBlockAt(startLoc);
 							branchThickness = startBranchThickness;
 							for (int j = 1; j <= branchHeight; j++) {
 								branchThickness -= branchTaper;
@@ -1370,7 +1380,7 @@ public class BasicTreeMacro extends Macro {
 								for (int rx = -(int)branchThickness; rx <= branchThickness; rx++) {
 									for (int rz = -(int)branchThickness; rz <= branchThickness; rz++) {
 										if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
-											Block b = GlobalVars.world.getBlockAt(x + rx, y, z + rz);	
+											Block b = Operator.currentPlayer.getWorld().getBlockAt(x + rx, y, z + rz);	
 											if (b.getType() == Material.AIR) {
 												SetBlock.setMaterial(b, trunk);
 											}
@@ -1395,7 +1405,7 @@ public class BasicTreeMacro extends Macro {
 							branchStarts.add(currentBlock.getLocation());
 							
 							// Southwest branch
-							currentBlock = GlobalVars.world.getBlockAt(startLoc);
+							currentBlock = Operator.currentPlayer.getWorld().getBlockAt(startLoc);
 							branchThickness = startBranchThickness;
 							for (int j = 1; j <= branchHeight; j++) {
 								branchThickness -= branchTaper;
@@ -1410,7 +1420,7 @@ public class BasicTreeMacro extends Macro {
 								for (int rx = -(int)branchThickness; rx <= branchThickness; rx++) {
 									for (int rz = -(int)branchThickness; rz <= branchThickness; rz++) {
 										if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
-											Block b = GlobalVars.world.getBlockAt(x + rx, y, z + rz);	
+											Block b = Operator.currentPlayer.getWorld().getBlockAt(x + rx, y, z + rz);	
 											if (b.getType() == Material.AIR) {
 												SetBlock.setMaterial(b, trunk);
 											}
@@ -1438,7 +1448,7 @@ public class BasicTreeMacro extends Macro {
 						// Case W
 						else {
 							// West branch
-							Block currentBlock = GlobalVars.world.getBlockAt(startLoc);
+							Block currentBlock = Operator.currentPlayer.getWorld().getBlockAt(startLoc);
 							for (int j = 1; j <= branchHeight; j++) {
 								branchThickness -= branchTaper;
 								// Place the central block
@@ -1452,7 +1462,7 @@ public class BasicTreeMacro extends Macro {
 								for (int rx = -(int)branchThickness; rx <= branchThickness; rx++) {
 									for (int rz = -(int)branchThickness; rz <= branchThickness; rz++) {
 										if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
-											Block b = GlobalVars.world.getBlockAt(x + rx, y, z + rz);	
+											Block b = Operator.currentPlayer.getWorld().getBlockAt(x + rx, y, z + rz);	
 											if (b.getType() == Material.AIR) {
 												SetBlock.setMaterial(b, trunk);
 											}
@@ -1477,7 +1487,7 @@ public class BasicTreeMacro extends Macro {
 							branchStarts.add(currentBlock.getLocation());
 							
 							// Northeast branch
-							currentBlock = GlobalVars.world.getBlockAt(startLoc);
+							currentBlock = Operator.currentPlayer.getWorld().getBlockAt(startLoc);
 							branchThickness = startBranchThickness;
 							for (int j = 1; j <= branchHeight; j++) {
 								branchThickness -= branchTaper;
@@ -1492,7 +1502,7 @@ public class BasicTreeMacro extends Macro {
 								for (int rx = -(int)branchThickness; rx <= branchThickness; rx++) {
 									for (int rz = -(int)branchThickness; rz <= branchThickness; rz++) {
 										if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
-											Block b = GlobalVars.world.getBlockAt(x + rx, y, z + rz);	
+											Block b = Operator.currentPlayer.getWorld().getBlockAt(x + rx, y, z + rz);	
 											if (b.getType() == Material.AIR) {
 												SetBlock.setMaterial(b, trunk);
 											}
@@ -1517,7 +1527,7 @@ public class BasicTreeMacro extends Macro {
 							branchStarts.add(currentBlock.getLocation());
 							
 							// Southeast branch
-							currentBlock = GlobalVars.world.getBlockAt(startLoc);
+							currentBlock = Operator.currentPlayer.getWorld().getBlockAt(startLoc);
 							branchThickness = startBranchThickness;
 							for (int j = 1; j <= branchHeight; j++) {
 								branchThickness -= branchTaper;
@@ -1532,7 +1542,7 @@ public class BasicTreeMacro extends Macro {
 								for (int rx = -(int)branchThickness; rx <= branchThickness; rx++) {
 									for (int rz = -(int)branchThickness; rz <= branchThickness; rz++) {
 										if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
-											Block b = GlobalVars.world.getBlockAt(x + rx, y, z + rz);	
+											Block b = Operator.currentPlayer.getWorld().getBlockAt(x + rx, y, z + rz);	
 											if (b.getType() == Material.AIR) {
 												SetBlock.setMaterial(b, trunk);
 											}
@@ -1587,7 +1597,7 @@ public class BasicTreeMacro extends Macro {
 								continue;
 							}
 							// Set leaves
-							Block toSet = GlobalVars.world.getBlockAt(x + rx, y + ry, z + rz);
+							Block toSet = Operator.currentPlayer.getWorld().getBlockAt(x + rx, y + ry, z + rz);
 							if (toSet.getType() == Material.AIR) {
 								SetBlock.setMaterial(toSet, leaves);
 							}
@@ -1625,7 +1635,7 @@ public class BasicTreeMacro extends Macro {
 		List<Location> branch3Starts = new ArrayList<Location>();
 		
 		// Generate the first branch
-		Block currentBlock = GlobalVars.world.getBlockAt(plantOn);
+		Block currentBlock = Operator.currentPlayer.getWorld().getBlockAt(plantOn);
 		for (int i = 1; i < branchSize1; i++) {
 			currentBlock = currentBlock.getRelative(BlockFace.UP);
 			if (i >= branch2StartOffset && rand.nextDouble() <= branch2StartDensity) {
@@ -1639,7 +1649,7 @@ public class BasicTreeMacro extends Macro {
 		
 		// Generate the second branches
 		for (Location l : branch2Starts) {
-			currentBlock = GlobalVars.world.getBlockAt(l);
+			currentBlock = Operator.currentPlayer.getWorld().getBlockAt(l);
 			// Pick an initial direction
 			double randNum = rand.nextDouble();
 			BlockFace dir;
@@ -1685,7 +1695,7 @@ public class BasicTreeMacro extends Macro {
 		
 		// Generate the third branches
 		for (Location l : branch3Starts) {
-			currentBlock = GlobalVars.world.getBlockAt(l);
+			currentBlock = Operator.currentPlayer.getWorld().getBlockAt(l);
 			// Pick an initial direction
 			double randNum = rand.nextDouble();
 			BlockFace dir;
@@ -1745,7 +1755,7 @@ public class BasicTreeMacro extends Macro {
 								continue;
 							}
 							// Set leaves
-							Block toSet = GlobalVars.world.getBlockAt(x + rx, y + ry, z + rz);
+							Block toSet = Operator.currentPlayer.getWorld().getBlockAt(x + rx, y + ry, z + rz);
 							if (toSet.getType() == Material.AIR) {
 								SetBlock.setMaterial(toSet, leaves);
 							}
@@ -1774,7 +1784,7 @@ public class BasicTreeMacro extends Macro {
 								continue;
 							}
 							// Set leaves
-							Block toSet = GlobalVars.world.getBlockAt(x + rx, y + ry, z + rz);
+							Block toSet = Operator.currentPlayer.getWorld().getBlockAt(x + rx, y + ry, z + rz);
 							if (toSet.getType() == Material.AIR) {
 								SetBlock.setMaterial(toSet, leaves);
 							}
@@ -1803,7 +1813,7 @@ public class BasicTreeMacro extends Macro {
 								continue;
 							}
 							// Set leaves
-							Block toSet = GlobalVars.world.getBlockAt(x + rx, y + ry, z + rz);
+							Block toSet = Operator.currentPlayer.getWorld().getBlockAt(x + rx, y + ry, z + rz);
 							if (toSet.getType() == Material.AIR) {
 								SetBlock.setMaterial(toSet, leaves);
 							}
@@ -1824,7 +1834,7 @@ public class BasicTreeMacro extends Macro {
 		
 		
 		// Generate the trunk
-		Block currentBlock = GlobalVars.world.getBlockAt(plantOn);
+		Block currentBlock = Operator.currentPlayer.getWorld().getBlockAt(plantOn);
 		for (int i = 0; i < treeHeight; i++) {
 			currentBlock = currentBlock.getRelative(BlockFace.UP);
 			if (currentBlock.getType() == Material.AIR) {
@@ -1850,7 +1860,7 @@ public class BasicTreeMacro extends Macro {
 							continue;
 						}
 						// Set leaves
-						Block toSet = GlobalVars.world.getBlockAt(x + rx, y + ry, z + rz);
+						Block toSet = Operator.currentPlayer.getWorld().getBlockAt(x + rx, y + ry, z + rz);
 						if (toSet.getType() == Material.AIR) {
 							SetBlock.setMaterial(toSet, leaves);
 						}

@@ -7,6 +7,7 @@ import org.bukkit.Location;
 
 import com.fourteener.worldeditor.macros.macros.Macro;
 import com.fourteener.worldeditor.main.*;
+import com.fourteener.worldeditor.operations.Operator;
 
 public class MacroLauncher {
 	
@@ -18,7 +19,14 @@ public class MacroLauncher {
 		// First off, parse the macro for the macro name and arguments
 		String[] split1 = macro.split("\\{");
 		String macroName = split1[0];
-		String temp1 = split1[1].replace("}", "");
+		String temp1 = "";
+		try {
+			temp1 = split1[1].replace("}", "");
+		}
+		catch (IndexOutOfBoundsException e) {
+			Main.logError("Could not parse the macro. Did you provide arguments in {}?", Operator.currentPlayer);
+			return false;
+		}
 		String[] macroArgs = temp1.split(";");
 		return macros.get(macroName).performMacro(macroArgs, location);
 	}

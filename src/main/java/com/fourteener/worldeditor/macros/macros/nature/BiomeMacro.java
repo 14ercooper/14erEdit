@@ -11,6 +11,7 @@ import org.bukkit.block.BlockState;
 
 import com.fourteener.worldeditor.macros.macros.Macro;
 import com.fourteener.worldeditor.main.*;
+import com.fourteener.worldeditor.operations.Operator;
 
 public class BiomeMacro extends Macro {
 	
@@ -20,8 +21,16 @@ public class BiomeMacro extends Macro {
 	
 	// Create a new macro
 	private void SetupMacro(String[] args, Location loc) {
-		radius = Double.parseDouble(args[0]);
-		biome = Biome.valueOf(args[1].toUpperCase(Locale.ROOT));
+		try {
+			radius = Double.parseDouble(args[0]);
+		} catch (Exception e) {
+			Main.logError("Could not parse biome macro. " + args[0] + " is not a number.", Operator.currentPlayer);
+		}
+		try {
+			biome = Biome.valueOf(args[1].toUpperCase(Locale.ROOT));
+		} catch (Exception e) {
+			Main.logError("Could not parse biome macro. " + args[1] + " is not a known biome.", Operator.currentPlayer);
+		}
 		pos = loc;
 	}
 	
@@ -41,7 +50,7 @@ public class BiomeMacro extends Macro {
 			for (int rz = -radiusInt; rz <= radiusInt; rz++) {
 				for (int ry = -radiusInt; ry < radiusInt; ry++) {
 					if (rx*rx + rz*rz + ry*ry <= (radius + 0.5)*(radius + 0.5)) {
-						blockArray.add(GlobalVars.world.getBlockAt((int) x + rx, (int) y + ry, (int) z + rz));
+						blockArray.add(Operator.currentPlayer.getWorld().getBlockAt((int) x + rx, (int) y + ry, (int) z + rz));
 					}
 				}
 			}
@@ -58,8 +67,7 @@ public class BiomeMacro extends Macro {
 		
 		// OPERATE
 		for (BlockState bs : snapshotArray) {
-			Block b = GlobalVars.world.getBlockAt(bs.getLocation());
-			b.setBiome(biome);
+			Operator.currentPlayer.getWorld().setBiome(bs.getX(), bs.getY(), bs.getZ(), biome);
 		}
 		
 		return true;

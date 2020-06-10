@@ -36,6 +36,7 @@ public class CraftscriptManager {
 			registeredScripts.get(label).perform(args, player, label);
 		}
 		catch (Exception e) {
+			Main.logError("Error performing CraftScript. Check your syntax?", player);
 			e.printStackTrace();
 			GlobalVars.currentUndo.finishUndo();
 			GlobalVars.currentUndo = null;

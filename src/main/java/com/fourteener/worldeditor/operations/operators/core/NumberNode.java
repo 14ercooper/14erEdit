@@ -1,6 +1,7 @@
 package com.fourteener.worldeditor.operations.operators.core;
 
 import com.fourteener.worldeditor.main.*;
+import com.fourteener.worldeditor.operations.Operator;
 import com.fourteener.worldeditor.operations.operators.Node;
 
 public class NumberNode extends Node {
@@ -12,8 +13,15 @@ public class NumberNode extends Node {
 	public NumberNode newNode() {
 		NumberNode node = new NumberNode();
 		GlobalVars.operationParser.index--;
-		node.arg = Double.parseDouble(GlobalVars.operationParser.parseStringNode().contents);
+		String num = "undefined";
+		try {
+		num = GlobalVars.operationParser.parseStringNode().contents;
+		node.arg = Double.parseDouble(num);
 		return node;
+		} catch (Exception e) {
+			Main.logError("Could not parse number node. " + num + " is not a number.", Operator.currentPlayer);
+			return null;
+		}
 	}
 
 	public boolean performNode() {

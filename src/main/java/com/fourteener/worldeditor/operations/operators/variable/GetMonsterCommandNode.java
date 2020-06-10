@@ -23,6 +23,10 @@ public class GetMonsterCommandNode extends Node {
 	}
 	
 	public boolean performNode () {
+		if (!Operator.monsterVars.containsKey(name)) {
+			Main.logError("Error performing get monster command node. Please check your syntax (does the variable exist?).", Operator.currentPlayer);
+			return false;
+		}
 		MonsterVar var = Operator.monsterVars.get(name);
 		String command = "summon minecraft:" + var.getType();
 		command += " ~ ~ ~ ";

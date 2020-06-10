@@ -95,7 +95,7 @@ public class AsyncManager {
 	// Schedule a schematics operation
 	public void scheduleEdit (SchemLite sl, boolean saveSchem, Player p, int[] origin) {
 		AsyncOperation asyncOp = new AsyncOperation(sl, saveSchem, origin, p);
-		if (sl.getIterator(0, 0, 0).getTotalBlocks() > GlobalVars.undoLimit) {
+		if (asyncOp.blocks.getTotalBlocks() > GlobalVars.undoLimit) {
 			largeOps.add(asyncOp);
 			p.sendMessage("§aThis is a large edit that cannot be undone, and may stall 14erEdit for a while.");
 			p.sendMessage("§aPlease type §b/confirm §ato confirm or §b/cancel §a to cancel");
@@ -105,6 +105,20 @@ public class AsyncManager {
 			operations.add(asyncOp);
 		}
 	}
+	
+	// Schedule a selection clone operation
+	public void scheduleEdit (BlockIterator b, int[] offset, int times, boolean delOriginal, Player p) {
+		AsyncOperation asyncOp = new AsyncOperation(b, offset, times, delOriginal, p);
+		if (asyncOp.blocks.getTotalBlocks() * times > GlobalVars.undoLimit) {
+			largeOps.add(asyncOp);
+			p.sendMessage("§aThis is a large edit that cannot be undone, and may stall 14erEdit for a while.");
+			p.sendMessage("§aPlease type §b/confirm §ato confirm or §b/cancel §a to cancel");
+		}
+		else {
+			asyncOp.undo = UndoManager.getUndo(p);
+			operations.add(asyncOp);
+		}
+	}	
 
 	// Confirm large edits
 	public void confirmEdits (int number) {
@@ -233,7 +247,7 @@ public class AsyncManager {
 				// Save schematic
 				else if (op.key.equalsIgnoreCase("saveschem")) {
 					Block b = null;
-					b = op.bIter.getNext();
+					b = op.blocks.getNext();
 					if (op.undo != null) {
 						if (!op.undoRunning) {
 							op.undo.startUndo();
@@ -264,8 +278,7 @@ public class AsyncManager {
 					try {
 						op.schem.writeBlock(material, data, nbt);
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+						// Don't need to do anything
 					}
 					doneOperations++;
 					GlobalVars.currentUndo = null;
@@ -274,7 +287,7 @@ public class AsyncManager {
 				// Load schematic
 				else if (op.key.equalsIgnoreCase("loadschem")) {
 					Block b = null;
-					b = op.bIter.getNext();
+					b = op.blocks.getNext();
 					if (op.undo != null) {
 						if (!op.undoRunning) {
 							op.undo.startUndo();
@@ -292,8 +305,7 @@ public class AsyncManager {
 						try {
 							op.schem.closeRead();
 						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
+							// Don't need to do anything
 						}
 						op.player.sendMessage("§aData loaded");
 						continue;
@@ -302,8 +314,7 @@ public class AsyncManager {
 					try {
 						results = op.schem.readNext();
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+						// Don't need to do anything
 					}
 					if (!Material.matchMaterial(results[0]).isAir() || op.schem.setAir()) {
 						SetBlock.setMaterial(b, Material.matchMaterial(results[0]), false);
@@ -317,8 +328,52 @@ public class AsyncManager {
 					GlobalVars.currentUndo = null;
 				}
 				
+				// Selection move/stack
+				else if (op.key.equalsIgnoreCase("selclone")) {
+					Player tempPlayer = Operator.currentPlayer;
+					Operator.currentPlayer = op.player;
+					Block b = op.blocks.getNext();
+					Operator.currentPlayer = tempPlayer;
+					if (op.undo != null) {
+						if (!op.undoRunning) {
+							op.undo.startUndo();
+						}
+						GlobalVars.currentUndo = op.undo;
+						op.undoRunning = true;
+					}
+					if (b == null) {
+						if (op.undo != null) {
+							op.undo.finishUndo();
+						}
+						operations.remove(i);
+						i--;
+						opSize--;
+						continue;
+					}
+					// Actually do the clone
+					for (int timesDone = 0; timesDone < op.times; timesDone++) {
+						Block toEdit = b.getRelative(op.offset[0] * (1 + timesDone), op.offset[1] * (1 + timesDone), op.offset[2] * (1 + timesDone));
+						SetBlock.setMaterial(toEdit, b.getType(), false);
+						toEdit.setBlockData(b.getBlockData(), false);
+						NBTExtractor nbt = new NBTExtractor();
+						String nbtStr = nbt.getNBT(b);
+						if (nbtStr.length() > 2) {
+							String command = "data merge block " + toEdit.getX() + " " + toEdit.getY() + " " + toEdit.getZ() + " " + nbtStr;
+							Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), command);
+							doneOperations++;
+						}
+					}
+					if (op.delOriginal) {
+						SetBlock.setMaterial(b, Material.AIR, false);
+						doneOperations++;
+					}
+					doneOperations += op.times;
+					GlobalVars.currentUndo = null;
+				}
+				
 				
 				else {
+					Main.logError("Invalid operation in async queue. Removing operation.", Bukkit.getConsoleSender());
 					operations.remove(i);
 					i--;
 					opSize--;

@@ -19,6 +19,10 @@ public class SetBlockVarNode extends Node {
 	}
 	
 	public boolean performNode () {
+		if (!Operator.blockVars.containsKey(name)) {
+			Main.logError("Error performing set block var node. Please check your syntax (does the variable exist?).", Operator.currentPlayer);
+			return false;
+		}
 		BlockVar bv = Operator.blockVars.get(name);
 		Operator.currentBlock.setType(Material.matchMaterial(bv.getType()));
 		if (!bv.getData().isEmpty()) {

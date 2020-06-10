@@ -5,22 +5,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.bukkit.Material;
-
 import com.fourteener.worldeditor.main.*;
 import com.fourteener.worldeditor.operations.operators.Node;
 import com.fourteener.worldeditor.operations.operators.core.*;
 import com.fourteener.worldeditor.operations.operators.function.*;
-import com.fourteener.worldeditor.operations.operators.world.*;
+import com.fourteener.worldeditor.operations.operators.world.BlockNode;
 
 public class Parser {
 	// This starts as -1 since the first thing the parser does is increment it
 	public int index = -1;
-	List<String> parts;
-	
+	public List<String> parts;
+
 	// Store operators
 	Map<String,Node> operators = new HashMap<String,Node>();
-	
+
 	public boolean AddOperator(String name, Node node) {
 		if (operators.containsKey(name)) {
 			return false;
@@ -28,68 +26,95 @@ public class Parser {
 		operators.put(name, node);
 		return true;
 	}
-	
+
+	public Node GetOperator(String name) {
+		if (!operators.containsKey(name)) {
+			Main.logError("Operator \"" + name + "\" not found. Please check that you input a valid operator.", Operator.currentPlayer);
+			return null;
+		}
+		return operators.get(name);
+	}
+
 	public EntryNode parseOperation (String op) {
-		
+
 		// Here there be parsing magic
 		// A massive recursive nightmare
 		index = -1;
 		parts = Arrays.asList(op.split(" "));
 		Node rootNode = parsePart();
-		
+
 		// This is an error if this is true
 		// Probably user error with an invalid operation
-		if (rootNode == null)
+		if (rootNode == null) {
+			Main.logError("Operation parse failed. Please check your syntax.", Operator.currentPlayer);
 			return null;
-		
+		}
+
 		// Generate the entry node of the operation
 		Main.logDebug("Building entry node from root node"); // -----
 		EntryNode entryNode = new EntryNode(rootNode);
 		return entryNode;
 	}
-	
+
 	// This is the massive recursive nightmare
 	public Node parsePart () {
 		index++;
-		
-		if (operators.containsKey(parts.get(index))) {
-			Main.logDebug(parts.get(index) + " node created");
-			return operators.get(parts.get(index)).newNode();
-		}
-		else if (Material.matchMaterial(parts.get(index)) != null) {
-			index--;
-			Main.logDebug("Block node created, type " + Material.matchMaterial(parts.get(index+1)).name()); // -----
-			return new BlockNode().newNode();
-		}
-		else if (Material.matchMaterial(parts.get(index).split("\\[")[0]) != null && parts.get(index).split("\\[").length > 1) {
-			index--;
-			Main.logDebug("Block node with data created, type " + Material.matchMaterial(parts.get(index+1).split("\\[")[0]).name()); // -----
-			return new BlockNode().newNode(true);
-		}
-		else {
-			index--;
-			Main.logDebug("String node created"); // -----
-			return parseStringNode();
+
+		try {
+			if (operators.containsKey(parts.get(index))) {
+				Main.logDebug(parts.get(index) + " node created");
+				return operators.get(parts.get(index)).newNode();
+			}
+			else {
+				index--;
+				StringNode strNode = parseStringNode();
+				BlockNode bn = new BlockNode().newNode(strNode.getText());
+				if (bn != null) {
+					Main.logDebug("Block node created");
+					return bn;
+				}
+				else {
+					Main.logDebug("String node created"); // -----
+					return strNode;
+				}
+			}
+		} catch (IndexOutOfBoundsException e) {
+			return null;
 		}
 	}
-	
+
 	public NumberNode parseNumberNode () {
 		index ++;
 		Main.logDebug("Number node created"); // -----
-		return new NumberNode().newNode();
+		try {
+			return new NumberNode().newNode();
+		} catch (Exception e) {
+			Main.logError("Number expected. Did not find a number.", Operator.currentPlayer);
+			return null;
+		}
 	}
-	
+
 	public RangeNode parseRangeNode () {
 		index ++;
 		Main.logDebug("Range node created"); // -----
-		return new RangeNode().newNode();
+		try {
+			return new RangeNode().newNode();
+		} catch (Exception e) {
+			Main.logError("Range node expected. Could not create a range node.", Operator.currentPlayer);
+			return null;
+		}
 	}
-	
+
 	public StringNode parseStringNode () {
 		index ++;
 		Main.logDebug("String node created"); // -----
-		StringNode node = new StringNode();
-		node.contents = parts.get(index);
-		return node;
+		try {
+			StringNode node = new StringNode();
+			node.contents = parts.get(index);
+			return node;
+		} catch (Exception e) {
+			Main.logError("Ran off end of operator (could not create string node). Are you missing arguments?", Operator.currentPlayer);
+			return null;
+		}
 	}
 }

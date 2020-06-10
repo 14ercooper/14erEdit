@@ -52,19 +52,33 @@ public class AsyncOperation {
 	
 	// New schematics system
 	protected SchemLite schem = null;
-	protected BlockIterator bIter = null;
 	protected int[] origin = {};
 	
 	public AsyncOperation (SchemLite sl, boolean saveSchem, int[] o, Player p) {
 		schem = sl;
 		origin = o;
-		bIter = schem.getIterator(origin[0], origin[1], origin[2]);
+		blocks = schem.getIterator(origin[0], origin[1], origin[2]);
 		if (saveSchem) {
 			key = "saveschem";
 		}
 		else {
 			key = "loadschem";
 		}
+		player = p;
+	}
+	
+	// Selection move/stack
+	protected int[] offset = {};
+	protected int times = 0;
+	protected boolean delOriginal = false;
+	// Uses the same iterator as other functions
+	
+	public AsyncOperation (BlockIterator selectionIter, int[] cloneOffset, int cloneTimes, boolean delOriginalBlocks, Player p) {
+		key = "selclone";
+		blocks = selectionIter;
+		offset = cloneOffset;
+		times = cloneTimes;
+		delOriginal = delOriginalBlocks;
 		player = p;
 	}
 }

@@ -4,6 +4,7 @@ import java.util.HashSet;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.fourteener.worldeditor.async.AsyncManager;
@@ -38,14 +39,14 @@ public class Main extends JavaPlugin {
 		// Set up brush mask
 		GlobalVars.targetMask = new HashSet<Material>();
 		GlobalVars.targetMask.add(Material.AIR);
+		GlobalVars.targetMask.add(Material.CAVE_AIR);
 		
 		// Register listeners for brushes and wands
 		getServer().getPluginManager().registerEvents(new SelectionWandListener(), this);
 		getServer().getPluginManager().registerEvents(new BrushListener(), this);
 		
 		// These are needed by the plugin, but should only be loaded once as they are very slow to load
-		GlobalVars.world = Bukkit.getWorlds().get(0);
-		GlobalVars.simplexNoise = new SimplexNoise (GlobalVars.world.getSeed()); // Seeded using the world seed for variance between worlds but consistency in the same world
+		GlobalVars.simplexNoise = new SimplexNoise (Bukkit.getWorlds().get(0).getSeed()); // Seeded using the world seed for variance between worlds but consistency in the same world
 		GlobalVars.plugin = this;
 		
 		// Load config
@@ -73,6 +74,11 @@ public class Main extends JavaPlugin {
 	
 	public static void logDebug (String message) {
 		if (GlobalVars.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] " + message); // ----
+	}
+	
+	public static void logError (String message, CommandSender p) {
+		if (p == null) p = Bukkit.getConsoleSender();
+		p.sendMessage("§6[ERROR] " + message);
 	}
 	
 	private static void loadConfig () {

@@ -16,6 +16,10 @@ public class GetSpawnerItemNode extends Node {
 	}
 	
 	public boolean performNode () {
+		if (!Operator.spawnerVars.containsKey(name)) {
+			Main.logError("Error performing get spawner item node. Please check your syntax (does the variable exist?).", Operator.currentPlayer);
+			return false;
+		}
 		SpawnerVar var = Operator.spawnerVars.get(name);
 		String command = "give @s minecraft:spawner{BlockEntityTag:";
 		command += var.getNBT();

@@ -14,6 +14,7 @@ import org.bukkit.block.BlockState;
 
 import com.fourteener.worldeditor.macros.macros.Macro;
 import com.fourteener.worldeditor.main.*;
+import com.fourteener.worldeditor.operations.Operator;
 
 public class VinesMacro extends Macro {
 	
@@ -23,15 +24,25 @@ public class VinesMacro extends Macro {
 	
 	// Create a new macro
 	private void SetupMacro(String[] args, Location loc) {
-		radius = Double.parseDouble(args[0]);
-		length = Double.parseDouble(args[1]);
-		variance = Double.parseDouble(args[2]);
-		density = Double.parseDouble(args[3]);
 		try {
-			block = args[4];
+			radius = Double.parseDouble(args[0]);
+			length = Double.parseDouble(args[1]);
+			variance = Double.parseDouble(args[2]);
+			density = Double.parseDouble(args[3]);
+			try {
+				block = args[4];
+			}
+			catch (Exception e) {
+				block = "vine";
+			}
+		} catch (Exception e) {
+			Main.logError("Error parsing vine macro. Did you pass in radius, length, variance, density, and optionally block material?", Operator.currentPlayer);
 		}
-		catch (Exception e) {
-			block = "vine";
+		try {
+			Material m = Material.matchMaterial(block);
+			if (m == null) throw new Exception();
+		} catch (Exception e) {
+			Main.logError("Error parsing vine macro. " + block + " is not a valid block.", Operator.currentPlayer);
 		}
 		pos = loc;
 	}
@@ -52,7 +63,7 @@ public class VinesMacro extends Macro {
 			for (int rz = -radiusInt; rz <= radiusInt; rz++) {
 				for (int ry = -radiusInt; ry <= radiusInt; ry++) {
 					if (rx*rx + ry*ry + rz*rz <= (radius + 0.5)*(radius + 0.5)) {
-						blockArray.add(GlobalVars.world.getBlockAt((int) x + rx, (int) y + ry, (int) z + rz));
+						blockArray.add(Operator.currentPlayer.getWorld().getBlockAt((int) x + rx, (int) y + ry, (int) z + rz));
 					}
 				}
 			}
@@ -71,7 +82,7 @@ public class VinesMacro extends Macro {
 		// OPERATE
 		Random rand = new Random();
 		for (BlockState bs : snapshotArray) {
-			Block b = GlobalVars.world.getBlockAt(bs.getLocation());
+			Block b = Operator.currentPlayer.getWorld().getBlockAt(bs.getLocation());
 			// Make sure this block is air
 			if (b.getType() != Material.AIR || b.getRelative(BlockFace.DOWN).getType() != Material.AIR) {
 				continue;
@@ -182,7 +193,7 @@ public class VinesMacro extends Macro {
 		Main.logDebug("Operated on and now placing " + Integer.toString(operatedBlocks.size()) + " blocks");
 		// Apply the changes to the world
 		for (BlockState bs : operatedBlocks) {
-			Block b = GlobalVars.world.getBlockAt(bs.getLocation());
+			Block b = Operator.currentPlayer.getWorld().getBlockAt(bs.getLocation());
 			SetBlock.setMaterial(b, bs.getType());
 			b.setBlockData(bs.getBlockData());
 		}
