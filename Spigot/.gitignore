@@ -1,0 +1,9 @@
+cbin/
+.classpath
+.project
+.settings/
+target/
+*.iml
+bash.exe.stackdump
+MovePlugin.bat
+compile.sh

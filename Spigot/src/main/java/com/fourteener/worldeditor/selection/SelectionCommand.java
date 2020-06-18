@@ -249,6 +249,7 @@ public class SelectionCommand {
 		Operator operator = new Operator(opStr, wand.owner);
 
 		GlobalVars.asyncManager.scheduleEdit(operator, wand.owner, blockArray);
+		GlobalVars.errorLogged = false;
 
 		return true;
 	}

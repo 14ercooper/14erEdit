@@ -149,6 +149,7 @@ public class AsyncManager {
 
 		// Loop until finished
 		while (doneOperations < GlobalVars.blocksPerAsync && operations.size() > 0) {
+			GlobalVars.errorLogged = false;
 			int opSize = operations.size();
 			for (int i = 0; i < opSize; i++) {
 				AsyncOperation op = operations.get(i);

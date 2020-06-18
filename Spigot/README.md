@@ -1,12 +1,12 @@
 # 14erEdit
 
-#### A Minecraft world-editing plugin featuring native 1.13+ support and lots of power to the user.
+#### Spigot Branch
 
 Manipulate the Minecraft world like never before! Use both brushes and selections to bend the world to your will. Manipulate items and fully customize blocks to fit your needs. The possibilities are endless! Underpinned by the extremely powerful and versatile operations system, the full power of the plugin sits in the hands of the user with the only restrictions being what you can dream up.
 
 Directly access the operations system for maximum power and customizability, or use the included Craftscripts to quickly and easily make common modifications to the world using both brushes and selection boxes. The choice is in your hands.
 
-14erEdit currently only supports Spigot. More platforms may be coming in the future.
+This is the Spigot branch of 14erEdit (and is the main development focus).
 
 ### Highlights
  - Manipulate the world with direct access to the underlying operations system
@@ -29,7 +29,9 @@ Thanks for helping keep these projects running!
 - 14er
 - NotQuiteAmish
 
-To help develop the plugin, please read [CONTRIBUTING.md](CONTRIBUTING.md).
+To use the megaserver, please see [Megaserver.md](Megaserver.md).
+
+To compile the plugin, please read [COMPILING.md](COMPILING.md).
 
 [14eReddit](https://www.reddit.com/r/14eReddit/).
 

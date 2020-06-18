@@ -61,6 +61,9 @@ public class Parser {
 		index++;
 
 		try {
+			if (index == 0 && !operators.containsKey(parts.get(index))) {
+				Main.logError("First node parsed was a string node. This is likely a mistake. Please check that you used a valid operator.", Operator.currentPlayer);
+			}
 			if (operators.containsKey(parts.get(index))) {
 				Main.logDebug(parts.get(index) + " node created");
 				return operators.get(parts.get(index)).newNode();

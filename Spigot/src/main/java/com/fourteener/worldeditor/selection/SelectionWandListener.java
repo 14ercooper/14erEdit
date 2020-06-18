@@ -15,6 +15,8 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import com.fourteener.worldeditor.main.Main;
+
 public class SelectionWandListener implements Listener {
 	
 	// Helps to differentiate between different player's selections and prevents duplication
@@ -53,6 +55,12 @@ public class SelectionWandListener implements Listener {
 		// If the player isn't holding a valid wand, return without further action
 		if (!isValidPlayer)
 			return;
+		
+		// No manager, return with an error
+		if (wand == null || wand.manager == null) {
+			Main.logError("Could not use wand. Did you get a new wand after relogging?", p);
+			return;
+		}
 		
 		// Player left clicked, update position one
 		if (event.getAction().equals(Action.LEFT_CLICK_BLOCK)) {
