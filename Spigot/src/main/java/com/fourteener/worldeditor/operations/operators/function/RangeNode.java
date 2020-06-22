@@ -15,7 +15,7 @@ public class RangeNode extends Node {
 			node.arg1 = GlobalVars.operationParser.parseNumberNode();
 			node.arg2 = GlobalVars.operationParser.parseNumberNode();
 		} catch (Exception e) {
-			Main.logError("Could not create range node. Please check your syntax.", Operator.currentPlayer);
+			Main.logError("Could not create range node. Please check your syntax (did you remember to create a range node?).", Operator.currentPlayer);
 			return null;
 		}
 		if (node.arg2 == null) {

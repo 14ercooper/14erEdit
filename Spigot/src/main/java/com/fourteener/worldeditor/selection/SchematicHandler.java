@@ -9,11 +9,13 @@ import org.bukkit.entity.Player;
 import com.fourteener.schematics.SchemLite;
 import com.fourteener.worldeditor.main.GlobalVars;
 import com.fourteener.worldeditor.main.Main;
+import com.fourteener.worldeditor.operations.Operator;
 
 public class SchematicHandler {
 	// Save a schematic to disk
 	public static boolean saveSchematic (String file, Player p) {
 		Main.logDebug("Saving schematic to " + file);
+		Operator.currentPlayer = p;
 		SelectionManager sm = SelectionManager.getSelectionManager(p);
 		double[] rawOrigin = sm.getMostNegativeCorner();
 		double[] posCorner = sm.getMostPositiveCorner();
@@ -32,6 +34,7 @@ public class SchematicHandler {
 	// Load a schematic into the world
 	public static boolean loadSchematic (String file, Player p, String mirror, boolean setAir) {
 		Main.logDebug("Loading schematic from " + file);
+		Operator.currentPlayer = p;
 		int[] origin = {p.getLocation().getBlockX(), p.getLocation().getBlockY(), p.getLocation().getBlockZ()};
 		String path = file;
 		SchemLite schem = new SchemLite(path, setAir);
@@ -50,6 +53,7 @@ public class SchematicHandler {
 	// Load a schematic into the world with offset
 	public static boolean loadSchematic (String file, Player p, String mirror, boolean setAir, int[] offset) {
 		Main.logDebug("Loading schematic from " + file);
+		Operator.currentPlayer = p;
 		int[] origin = {p.getLocation().getBlockX() + offset[0], p.getLocation().getBlockY() + offset[1], p.getLocation().getBlockZ() + offset[2]};
 		String path = file;
 		SchemLite schem = new SchemLite(path, setAir);
@@ -68,6 +72,7 @@ public class SchematicHandler {
 	// Load a schematic into the world at position
 	public static boolean loadSchematic (String file, int[] origin, String mirror, boolean setAir, Player p) {
 		Main.logDebug("Loading schematic from " + file);
+		Operator.currentPlayer = p;
 		String path = file;
 		SchemLite schem = new SchemLite(path, setAir);
 		try {

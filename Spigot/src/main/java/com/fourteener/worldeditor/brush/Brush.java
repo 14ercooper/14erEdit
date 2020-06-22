@@ -105,6 +105,7 @@ public class Brush {
 			// Store the brush and return success
 			BrushListener.brushes.add(this);
 			player.sendMessage("§dBrush created and bound to item in hand.");
+			GlobalVars.errorLogged = false;
 		} catch (Exception e) {
 			Main.logError("Error creating brush. Please check your syntax.", player);
 		}
