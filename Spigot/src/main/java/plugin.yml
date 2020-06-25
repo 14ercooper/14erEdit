@@ -1,4 +1,4 @@
-main: com.fourteener.worldeditor.main.Main
+main: com._14ercooper.worldeditor.main.Main
 name: 14erEdit
 version: 1.4.0
 api-version: 1.14
