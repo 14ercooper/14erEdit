@@ -24,7 +24,7 @@ public class BlockNode extends Node {
 	public BlockNode newNode() {
 		BlockNode node = new BlockNode();
 		try {
-			String[] data = GlobalVars.operationParser.parseStringNode().getText().split(",");
+			String[] data = GlobalVars.operationParser.parseStringNode().getText().split(";");
 			node.blockList = new LinkedList<BlockInstance>();
 			node.textMasks = new LinkedList<String>();
 			for (String s : data) {
@@ -50,7 +50,7 @@ public class BlockNode extends Node {
 	public BlockNode newNode(String input) {
 		BlockNode node = new BlockNode();
 		try {
-			String[] data = input.split(",");
+			String[] data = input.split(";");
 			node.blockList = new LinkedList<BlockInstance>();
 			node.textMasks = new LinkedList<String>();
 			for (String s : data) {

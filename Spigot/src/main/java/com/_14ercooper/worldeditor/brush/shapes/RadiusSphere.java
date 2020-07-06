@@ -20,7 +20,7 @@ public class RadiusSphere extends BrushShape {
 			argList.add(Integer.toString((int) z));
 			argList.add(Integer.toString(radius));
 			argList.add(Integer.toString(0));
-			argList.add("0");
+			argList.add("0.5");
 			return GlobalVars.iteratorManager.getIterator("sphere").newIterator(argList);
 		} catch (Exception e) {
 			Main.logError("Could not parse radius sphere. Did you provide a radius?", Operator.currentPlayer);
