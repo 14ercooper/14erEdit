@@ -27,9 +27,9 @@ public class ScriptOverlay extends Craftscript {
 			
 			String command = "fx br s " + radius + " 0.5 ? ~ air ";
 			for (int i = 0; i < depth; i++) {
-				command += "| ? ^ - " + (i+1) + " " + (air+i-1) + " air > " + block + " false ";
+				command += "| ? ^ - " + (i+1) + " " + (air+i-1) + " air > " + block + " : false ";
 			}
-			command += "false false";
+			command += ": false : false";
 			Main.logDebug("Overlay command: " + command);
 			
 			return player.performCommand(command);

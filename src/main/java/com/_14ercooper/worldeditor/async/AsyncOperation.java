@@ -32,19 +32,6 @@ public class AsyncOperation {
 		blocks = b;
 	}
 	
-	public AsyncOperation (Operator o, Player p, ArrayDeque<Block> b) {
-		key = "edit";
-		operation = o;
-		player = p;
-		toOperate = b;
-	}
-	
-	public AsyncOperation (Operator o, ArrayDeque<Block> b) {
-		key = "rawedit";
-		operation = o;
-		toOperate = b;
-	}
-	
 	public AsyncOperation (Operator o) {
 		key = "messyedit";
 		operation = o;

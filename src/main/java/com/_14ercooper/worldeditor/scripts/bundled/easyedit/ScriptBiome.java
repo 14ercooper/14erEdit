@@ -15,7 +15,7 @@ public class ScriptBiome extends Craftscript {
 		try {
 			String radius = args.get(1);
 			String biome = args.get(0);
-			return player.performCommand("fx br s 0 0.5 $ biome{" + radius + ";" + biome + "}");
+			return player.performCommand("fx br s " + radius + " 0.5 biome " + biome);
 		} catch (Exception e) {
 			Main.logError("Error parsing biome script. Did you pass in the correct arguments?", Operator.currentPlayer);
 			return false;

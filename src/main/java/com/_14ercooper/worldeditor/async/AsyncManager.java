@@ -205,47 +205,6 @@ public class AsyncManager {
 					doneOperations += 100;
 				}
 				
-				// TODO remove
-				else if (op.key.equalsIgnoreCase("edit")) {
-					Block b = op.toOperate.removeFirst();
-					if (op.undo != null) {
-						if (!op.undoRunning) op.undo.startUndo();
-						GlobalVars.currentUndo = op.undo;
-						op.undoRunning = true;
-					}
-					op.operation.operateOnBlock(b, op.player);
-					doneOperations++;
-					GlobalVars.currentUndo = null;
-					if (op.toOperate.size() == 0) {
-						if (op.undo != null) {
-							op.undo.finishUndo();
-						}
-						operations.remove(i);
-						i--;
-						opSize--;
-					}
-				}
-				// TODO remove
-				else if (op.key.equalsIgnoreCase("rawedit")) {
-					Block b = op.toOperate.removeFirst();
-					if (op.undo != null) {
-						if (!op.undoRunning) op.undo.startUndo();
-						GlobalVars.currentUndo = op.undo;
-						op.undoRunning = true;
-					}
-					op.operation.operateOnBlock(b);
-					doneOperations++;
-					GlobalVars.currentUndo = null;
-					if (op.toOperate.size() == 0) {
-						if (op.undo != null) {
-							op.undo.finishUndo();
-						}
-						operations.remove(i);
-						i--;
-						opSize--;
-					}
-				}
-				
 				// Save schematic
 				else if (op.key.equalsIgnoreCase("saveschem")) {
 					Block b = null;
@@ -256,8 +215,7 @@ public class AsyncManager {
 							try {
 								op.schem.resetWrite();
 							} catch (IOException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
+								Main.logError("Could not write to schematic file", op.player);
 							}
 						}
 						GlobalVars.currentUndo = op.undo;
