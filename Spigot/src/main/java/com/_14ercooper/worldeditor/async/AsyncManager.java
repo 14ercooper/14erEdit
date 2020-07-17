@@ -8,6 +8,7 @@ import java.util.Queue;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitScheduler;
 
@@ -53,7 +54,7 @@ public class AsyncManager {
 	}
 
 	// About how big is the async queue?
-	public void asyncProgress (Player p) {
+	public void asyncProgress (CommandSender p) {
 		long remBlocks = 0;
 		for (AsyncOperation a : operations) {
 			if (a.blocks != null) {

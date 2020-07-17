@@ -3,7 +3,6 @@ package com._14ercooper.worldeditor.commands;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
@@ -17,14 +16,14 @@ public class CommandAsync implements CommandExecutor {
 				return true;
 			}
 			else if (args[0].equalsIgnoreCase("status")) {
-				GlobalVars.asyncManager.asyncProgress((Player) sender);
+				GlobalVars.asyncManager.asyncProgress(sender);
 				return true;
 			}
 
-			Main.logError("Async command not provided. Please provide either drop or status.", (Player) sender); 
+			Main.logError("Async command not provided. Please provide either drop or status.", sender); 
 			return false;
 		} catch (Exception e) {
-			Main.logError("This must be run as a player.", sender);
+			Main.logError("Error performing async operation.", sender);
 			return false;
 		}
 	}

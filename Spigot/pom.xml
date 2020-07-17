@@ -53,7 +53,7 @@
 					<archive>
 						<manifest>
 							<addClasspath>true</addClasspath>
-							<mainClass>com.fourteener.megaserver.Main</mainClass>
+							<mainClass>com._14ercooper.megaserver.Main</mainClass>
 						</manifest>
 					</archive>
 				</configuration>

@@ -27,6 +27,11 @@ public class SchematicHandler {
 		String author = p.getDisplayName();
 		String date = (new SimpleDateFormat("yyyy-mm-dd")).format(Calendar.getInstance().getTime());
 		SchemLite schem = new SchemLite(xSize, ySize, zSize, path, author, date);
+		try {
+			schem.resetWrite();
+		} catch (IOException e) {
+			Main.logError("Could not write to schematic file.", p);
+		}
 		GlobalVars.asyncManager.scheduleEdit(schem, true, p, origin);
 		return true;
 	}
