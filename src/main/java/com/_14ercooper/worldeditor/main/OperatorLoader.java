@@ -100,7 +100,7 @@ public class OperatorLoader {
 		GlobalVars.operationParser.AddOperator("block_at", GlobalVars.operationParser.GetOperator("at"));
 		GlobalVars.operationParser.AddOperator("sky", new SkylightNode());
 		GlobalVars.operationParser.AddOperator("skylight", GlobalVars.operationParser.GetOperator("sky"));
-		GlobalVars.operationParser.AddOperator("bl", new SkylightNode());
+		GlobalVars.operationParser.AddOperator("bl", new BlocklightNode());
 		GlobalVars.operationParser.AddOperator("blocklight", GlobalVars.operationParser.GetOperator("bl"));
 		GlobalVars.operationParser.AddOperator("ang", new AngleNode());
 		GlobalVars.operationParser.AddOperator("angle", GlobalVars.operationParser.GetOperator("ang"));

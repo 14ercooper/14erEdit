@@ -1,5 +1,7 @@
 package com._14ercooper.worldeditor.operations.operators.query;
 
+import org.bukkit.block.BlockFace;
+
 import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.operations.operators.Node;
@@ -16,7 +18,13 @@ public class SkylightNode extends Node {
 	}
 
 	public boolean performNode() {
-		return Operator.currentBlock.getLightFromSky() >= arg.getValue();
+		BlockFace[] faces = {BlockFace.UP, BlockFace.DOWN, BlockFace.NORTH, BlockFace.SOUTH, BlockFace.EAST, BlockFace.WEST};
+		int light = Operator.currentBlock.getLightFromSky();
+		for (BlockFace face : faces) {
+			int l = Operator.currentBlock.getRelative(face).getLightFromSky();
+			if (l > light) light = l;
+		}
+		return light >= arg.getValue();
 	}
 
 	public int getArgCount() {
