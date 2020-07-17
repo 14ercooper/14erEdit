@@ -280,8 +280,8 @@ public class AsyncManager {
 						SetBlock.setMaterial(b, Material.matchMaterial(results[0]), false);
 						b.setBlockData(Bukkit.getServer().createBlockData(results[1]));
 						if (!results[2].isEmpty()) {
-							NBTExtractor nbt = new NBTExtractor();
-							nbt.setNBT(b, results[2]);
+							String command = "data merge block " + b.getX() + " " + b.getY() + " " + b.getZ() + " " + results[2];
+							Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
 						}
 					}
 					doneOperations++;

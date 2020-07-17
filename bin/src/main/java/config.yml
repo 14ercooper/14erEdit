@@ -1,0 +1,8 @@
+# Number of blocks to store as an undo
+undoLimit: 250000
+
+# Number of blocks to process per async tick
+blocksPerAsync: 10000
+
+# Number of real ticks between async ticks
+ticksPerAsync: 4
