@@ -13,6 +13,7 @@ public class SelectionManager {
 	private double positionTwo[] = {-1.0, -1.0, -1.0};
 	protected int[] clipboardOffset = {0, 0, 0};
 	protected String mirrorString = "";
+	protected int executionOrder = 0;
 	
 	// These two variables make the world editing math a bit easier
 	private double mostNegativeCorner[] = new double[3];

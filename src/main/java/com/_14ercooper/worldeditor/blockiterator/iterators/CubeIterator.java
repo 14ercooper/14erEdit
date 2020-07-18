@@ -17,6 +17,7 @@ public class CubeIterator extends BlockIterator {
 	long doneBlocks = 0;
 	int x, y, z;
 	int xStep = 1, yStep = 1, zStep = 1;
+	int executionOrder = 0;
 
 	@Override
 	public CubeIterator newIterator(List<String> args) {
@@ -28,6 +29,11 @@ public class CubeIterator extends BlockIterator {
 			iterator.x2 = Integer.parseInt(args.get(3));
 			iterator.y2 = Integer.parseInt(args.get(4));
 			iterator.z2 = Integer.parseInt(args.get(5));
+			if (args.size() > 6) {
+				executionOrder = Integer.parseInt(args.get(6));
+				if (executionOrder < 0) executionOrder = 0;
+				if (executionOrder > 5) executionOrder = 0;
+			}
 			if (iterator.x2 < iterator.x1) {
 				iterator.xStep = -1;
 			}
@@ -44,6 +50,9 @@ public class CubeIterator extends BlockIterator {
 			iterator.x = iterator.x1 - iterator.xStep;
 			iterator.y = iterator.y1;
 			iterator.z = iterator.z1;
+			if (iterator.executionOrder == 0 || iterator.executionOrder == 1) iterator.x -= iterator.xStep;
+			if (iterator.executionOrder == 2 || iterator.executionOrder == 4) iterator.z -= iterator.zStep;
+			if (iterator.executionOrder == 3 || iterator.executionOrder == 5) iterator.y -= iterator.yStep;
 			Main.logDebug("From " + iterator.x1 + "," + iterator.y1 + "," + iterator.z1 + " to " + iterator.x2 + "," + iterator.y2 + "," + iterator.z2);
 			Main.logDebug("Starting block: " + iterator.x + "," + iterator.y + "," + iterator.z);
 			Main.logDebug("Steps: " + iterator.xStep + "," + iterator.yStep + "," + iterator.zStep);
@@ -56,18 +65,95 @@ public class CubeIterator extends BlockIterator {
 
 	@Override
 	public Block getNext() {
-		x += xStep;
-		doneBlocks++;
-		if (!inRange(x, x1, x2)) {
+		if (executionOrder == 0) { // xzy
+			x += xStep;
+			doneBlocks++;
+			if (!inRange(x, x1, x2)) {
+				z += zStep;
+				x = x1;
+			}
+			if (!inRange(z, z1, z2)) {
+				y += yStep;
+				z = z1;
+			}
+			if (!inRange(y, y1, y2)) {
+				return null;
+			}
+		}
+		if (executionOrder == 1) { // xyz
+			x += xStep;
+			doneBlocks++;
+			if (!inRange(x, x1, x2)) {
+				y += yStep;
+				x = x1;
+			}
+			if (!inRange(y, y1, y2)) {
+				z += zStep;
+				y = y1;
+			}
+			if (!inRange(z, z1, z2)) {
+				return null;
+			}
+		}
+		if (executionOrder == 2) { // zxy
 			z += zStep;
-			x = x1;
+			doneBlocks++;
+			if (!inRange(z, z1, z2)) {
+				x += xStep;
+				z = z1;
+			}
+			if (!inRange(x, x1, x2)) {
+				y += yStep;
+				x = x1;
+			}
+			if (!inRange(y, y1, y2)) {
+				return null;
+			}
 		}
-		if (!inRange(z, z1, z2)) {
+		if (executionOrder == 3) { // yxz
 			y += yStep;
-			z = z1;
+			doneBlocks++;
+			if (!inRange(y, y1, y2)) {
+				x += xStep;
+				y = y1;
+			}
+			if (!inRange(x, x1, x2)) {
+				z += zStep;
+				x = x1;
+			}
+			if (!inRange(z, z1, z2)) {
+				return null;
+			}
 		}
-		if (!inRange(y, y1, y2)) {
-			return null;
+		if (executionOrder == 4) { // zyx
+			z += zStep;
+			doneBlocks++;
+			if (!inRange(z, z1, z2)) {
+				y += yStep;
+				z = z1;
+			}
+			if (!inRange(y, y1, y2)) {
+				x += xStep;
+				y = y1;
+			}
+			if (!inRange(x, x1, x2)) {
+				return null;
+			}
+		}
+		if (executionOrder == 5) { // yzx
+			y += yStep;
+			doneBlocks++;
+			if (!inRange(y, y1, y2)) {
+				z += zStep;
+				y = y1;
+			}
+			if (!inRange(z, z1, z2)) {
+				x += xStep;
+				z = z1;
+			}
+			if (!inRange(x, x1, x2)) {
+				return null;
+			}
 		}
 
 		return Operator.currentPlayer.getWorld().getBlockAt(x, y, z);

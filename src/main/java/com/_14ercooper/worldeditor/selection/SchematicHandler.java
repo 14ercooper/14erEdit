@@ -37,7 +37,7 @@ public class SchematicHandler {
 	}
 	
 	// Load a schematic into the world
-	public static boolean loadSchematic (String file, Player p, String mirror, boolean setAir) {
+	public static boolean loadSchematic (String file, Player p, String mirror, boolean setAir, int executionOrder) {
 		Main.logDebug("Loading schematic from " + file);
 		Operator.currentPlayer = p;
 		int[] origin = {p.getLocation().getBlockX(), p.getLocation().getBlockY(), p.getLocation().getBlockZ()};
@@ -51,12 +51,13 @@ public class SchematicHandler {
 		if (!mirror.isEmpty()) {
 			schem.mirror(mirror.contains("x"), mirror.contains("y"), mirror.contains("z"));
 		}
+		schem.executionOrder(executionOrder);
 		GlobalVars.asyncManager.scheduleEdit(schem, false, p, origin);
 		return true;
 	}
 	
 	// Load a schematic into the world with offset
-	public static boolean loadSchematic (String file, Player p, String mirror, boolean setAir, int[] offset) {
+	public static boolean loadSchematic (String file, Player p, String mirror, boolean setAir, int[] offset, int executionOrder) {
 		Main.logDebug("Loading schematic from " + file);
 		Operator.currentPlayer = p;
 		int[] origin = {p.getLocation().getBlockX() + offset[0], p.getLocation().getBlockY() + offset[1], p.getLocation().getBlockZ() + offset[2]};
@@ -70,12 +71,13 @@ public class SchematicHandler {
 		if (!mirror.isEmpty()) {
 			schem.mirror(mirror.contains("x"), mirror.contains("y"), mirror.contains("z"));
 		}
+		schem.executionOrder(executionOrder);
 		GlobalVars.asyncManager.scheduleEdit(schem, false, p, origin);
 		return true;
 	}
 	
 	// Load a schematic into the world at position
-	public static boolean loadSchematic (String file, int[] origin, String mirror, boolean setAir, Player p) {
+	public static boolean loadSchematic (String file, int[] origin, String mirror, boolean setAir, Player p, int executionOrder) {
 		Main.logDebug("Loading schematic from " + file);
 		Operator.currentPlayer = p;
 		String path = file;
@@ -88,6 +90,7 @@ public class SchematicHandler {
 		if (!mirror.isEmpty()) {
 			schem.mirror(mirror.contains("x"), mirror.contains("y"), mirror.contains("z"));
 		}
+		schem.executionOrder(executionOrder);
 		GlobalVars.asyncManager.scheduleEdit(schem, false, p, origin);
 		return true;
 	}

@@ -74,9 +74,9 @@ public class SelectionCommand {
 					Main.logDebug("Pasting clipboard");
 					player.sendMessage("§aPasting clipboard.");
 					try {
-						return SchematicHandler.loadSchematic(getSchematicName(player), player, manager.mirrorString, Boolean.parseBoolean(args[2]), manager.clipboardOffset);
+						return SchematicHandler.loadSchematic(getSchematicName(player), player, manager.mirrorString, Boolean.parseBoolean(args[2]), manager.clipboardOffset, manager.executionOrder);
 					} catch (IndexOutOfBoundsException e) {
-						return SchematicHandler.loadSchematic(getSchematicName(player), player, manager.mirrorString, true, manager.clipboardOffset);
+						return SchematicHandler.loadSchematic(getSchematicName(player), player, manager.mirrorString, true, manager.clipboardOffset, manager.executionOrder);
 					}
 				} catch (Exception e) {
 					Main.logError("Error pasting clipboard.", player);
@@ -92,6 +92,15 @@ public class SelectionCommand {
 					return true;
 				} catch (Exception e) {
 					Main.logError("Error mirroring clipboard. Did you provide a mirror axis(es)?", player);
+				}
+			}
+			
+			// Rotation
+			else if (args[1].equalsIgnoreCase("rotate")) {
+				try {
+					
+				} catch (Exception e) {
+					Main.logError("Error rotating clipboard. Did you provide a mirror value?", player);
 				}
 			}
 

@@ -28,6 +28,7 @@ public class SchemLite {
 	BufferedWriter writer;
 	// Mirrors?
 	boolean xMirror = false, yMirror = false, zMirror = false;
+	int executionOrder = 0;
 	// Set air?
 	boolean setAir = true;
 	
@@ -77,6 +78,7 @@ public class SchemLite {
 		iterArgs.add(Integer.toString(xE));
 		iterArgs.add(Integer.toString(yE));
 		iterArgs.add(Integer.toString(zE));
+		iterArgs.add(Integer.toString(executionOrder));
 		return GlobalVars.iteratorManager.getIterator("cube").newIterator(iterArgs);
 	}
 	
@@ -165,6 +167,12 @@ public class SchemLite {
 		xMirror = x;
 		yMirror = y;
 		zMirror = z;
+	}
+	
+	public void executionOrder (int order) {
+		executionOrder = order;
+		if (executionOrder < 0) executionOrder = 0;
+		if (executionOrder > 5) executionOrder = 0;
 	}
 	
 	// Is this marked as setting air?
