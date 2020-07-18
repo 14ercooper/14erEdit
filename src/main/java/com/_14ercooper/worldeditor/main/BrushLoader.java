@@ -22,6 +22,7 @@ public class BrushLoader {
 		RandomHollowSphere randomHollowSphere = new RandomHollowSphere();
 		RandomCube randomCube = new RandomCube();
 		RandomDiamond randomDiamond = new RandomDiamond();
+		Column column = new Column();
 		Brush.AddBrushShape("cube", cube);
 		Brush.AddBrushShape("square", cube);
 		Brush.AddBrushShape("diamond", diamond);
@@ -63,5 +64,7 @@ public class BrushLoader {
 		Brush.AddBrushShape("rsquare", randomCube);
 		Brush.AddBrushShape("randomdiamond", randomDiamond);
 		Brush.AddBrushShape("rd", randomDiamond);
+		Brush.AddBrushShape("column", column);
+		Brush.AddBrushShape("col", column);
 	}
 }
