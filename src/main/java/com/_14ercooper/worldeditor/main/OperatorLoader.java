@@ -48,6 +48,9 @@ public class OperatorLoader {
 		GlobalVars.operationParser.AddOperator("#", new SimplexNode());
 		GlobalVars.operationParser.AddOperator("simplex", GlobalVars.operationParser.GetOperator("#"));
 		GlobalVars.operationParser.AddOperator("-con", new StringContainsNode());
+		GlobalVars.operationParser.AddOperator(";;", new EveryXNode());
+		GlobalVars.operationParser.AddOperator("every", GlobalVars.operationParser.GetOperator(";;"));
+		GlobalVars.operationParser.AddOperator("step", GlobalVars.operationParser.GetOperator(";;"));
 	}
 	
 	private static void LoadLogical() {
@@ -137,7 +140,7 @@ public class OperatorLoader {
 		GlobalVars.operationParser.AddOperator("numeric", GlobalVars.operationParser.GetOperator("num"));
 		GlobalVars.operationParser.AddOperator("number", GlobalVars.operationParser.GetOperator("num"));
 		GlobalVars.operationParser.AddOperator("spwn", new SpawnerVarNode());
-		GlobalVars.operationParser.AddOperator("spawner", GlobalVars.operationParser.GetOperator("spwn"));
+		GlobalVars.operationParser.AddOperator("spawner_var", GlobalVars.operationParser.GetOperator("spwn"));
 		GlobalVars.operationParser.AddOperator(">s", new SetSpawnerNode());
 		GlobalVars.operationParser.AddOperator("set_spawner", GlobalVars.operationParser.GetOperator(">s"));
 		GlobalVars.operationParser.AddOperator(">m", new SpawnMonsterNode());
