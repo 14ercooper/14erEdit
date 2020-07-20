@@ -147,7 +147,9 @@ public class ErodeMacro extends Macro {
 			
 			// Pick a random one and update
 			BlockState setMat = adjBlocks.get(rand.nextInt(adjBlocks.size())).getState();
-			snapshotCopy.add(setMat);
+			b.setType(setMat.getType());
+			b.setBlockData(setMat.getBlockData());
+			snapshotCopy.add(b);
 		}
 		return snapshotCopy;
 	}
