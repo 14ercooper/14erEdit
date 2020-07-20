@@ -24,7 +24,7 @@ public class Operator {
 	public static Map<String, Operator> fileLoads = new HashMap<String, Operator>();
 
 	public EntryNode entryNode;
-
+	
 	public boolean operateOnBlock (Block block, Player p) {
 		try {
 			// Set global operator variables
@@ -67,5 +67,10 @@ public class Operator {
 	public Operator (String op, Player p) {
 		currentPlayer = p; // Used to show errors in the parse process
 		entryNode = GlobalVars.operationParser.parseOperation(op);
+	}
+	
+	public Operator (EntryNode e, Player p) {
+		currentPlayer = p;
+		entryNode = e;
 	}
 }

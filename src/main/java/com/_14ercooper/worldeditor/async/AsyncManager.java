@@ -88,6 +88,20 @@ public class AsyncManager {
 			operations.add(asyncOp);
 		}
 	}
+	
+	// Schedule a nested block iterator task
+	public void scheduleEdit (Operator o, Player p, BlockIterator b, boolean force) {
+		if (p == null) operations.add(new AsyncOperation(o,b));
+		else if (b.getTotalBlocks() > GlobalVars.undoLimit) {
+			AsyncOperation asyncOp = new AsyncOperation(o, p, b);
+			operations.add(asyncOp);
+		}
+		else {
+			AsyncOperation asyncOp = new AsyncOperation(o, p, b);
+			asyncOp.undo = UndoManager.getUndo(p);
+			operations.add(asyncOp);
+		}
+	}
 
 	public void scheduleEdit (Operator o, BlockIterator b) {
 		operations.add(new AsyncOperation(o, b));

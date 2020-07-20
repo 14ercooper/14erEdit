@@ -32,6 +32,8 @@ public class OperatorLoader {
 		GlobalVars.operationParser.AddOperator("x", new XNode());
 		GlobalVars.operationParser.AddOperator("y", new YNode());
 		GlobalVars.operationParser.AddOperator("z", new ZNode());
+		GlobalVars.operationParser.AddOperator("br", new BrushNode());
+		GlobalVars.operationParser.AddOperator("brush", GlobalVars.operationParser.GetOperator("br"));
 	}
 	
 	private static void LoadFunction() {
