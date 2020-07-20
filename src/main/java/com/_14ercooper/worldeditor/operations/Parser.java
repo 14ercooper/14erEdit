@@ -114,6 +114,7 @@ public class Parser {
 		try {
 			StringNode node = new StringNode();
 			node.contents = parts.get(index);
+			Main.logDebug(node.contents);
 			return node;
 		} catch (Exception e) {
 			Main.logError("Ran off end of operator (could not create string node). Are you missing arguments?", Operator.currentPlayer);

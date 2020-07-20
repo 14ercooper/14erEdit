@@ -15,9 +15,9 @@ public class NumberNode extends Node {
 		GlobalVars.operationParser.index--;
 		String num = "undefined";
 		try {
-		num = GlobalVars.operationParser.parseStringNode().contents;
-		node.arg = Double.parseDouble(num);
-		return node;
+			num = GlobalVars.operationParser.parseStringNode().contents;
+			node.arg = Double.parseDouble(num);
+			return node;
 		} catch (Exception e) {
 			Main.logError("Could not parse number node. " + num + " is not a number.", Operator.currentPlayer);
 			return null;

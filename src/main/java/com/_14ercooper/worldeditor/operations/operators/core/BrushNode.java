@@ -7,6 +7,7 @@ import com._14ercooper.worldeditor.blockiterator.BlockIterator;
 import com._14ercooper.worldeditor.brush.Brush;
 import com._14ercooper.worldeditor.brush.BrushShape;
 import com._14ercooper.worldeditor.main.GlobalVars;
+import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.operations.operators.Node;
 
@@ -18,6 +19,7 @@ public class BrushNode extends Node {
 	
 	@Override
 	public BrushNode newNode() {
+		try {
 		BrushNode node = new BrushNode();
 		node.shape = Brush.GetBrushShape(GlobalVars.operationParser.parseStringNode().contents);
 		node.brushArgs = new ArrayList<Double>();
@@ -26,6 +28,10 @@ public class BrushNode extends Node {
 		}
 		node.op = GlobalVars.operationParser.parsePart();
 		return node;
+		} catch (Exception e) {
+			Main.logError("Could not create brush node. Did you provide the correct number of arguments?", Operator.currentPlayer);
+			return null;
+		}
 	}
 
 	@Override

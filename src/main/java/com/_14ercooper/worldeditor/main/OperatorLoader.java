@@ -112,6 +112,9 @@ public class OperatorLoader {
 		GlobalVars.operationParser.AddOperator("slope", GlobalVars.operationParser.GetOperator("ang"));
 		GlobalVars.operationParser.AddOperator("biome_is", new CheckBiomeNode());
 		GlobalVars.operationParser.AddOperator("get_biome", GlobalVars.operationParser.GetOperator("biome_is"));
+		GlobalVars.operationParser.AddOperator("@@", new NearbyNode());
+		GlobalVars.operationParser.AddOperator("near", GlobalVars.operationParser.GetOperator("@@"));
+		GlobalVars.operationParser.AddOperator("nearby", GlobalVars.operationParser.GetOperator("@@"));
 	}
 	
 	private static void LoadVariable() {
