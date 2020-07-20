@@ -23,12 +23,12 @@ public class BlockAtNode extends BlockNode {
 			baNode.x = GlobalVars.operationParser.parseStringNode();
 			baNode.y = GlobalVars.operationParser.parseStringNode();
 			baNode.z = GlobalVars.operationParser.parseStringNode();
-			if (x.contents.contains("a")) xA = true;
-			if (y.contents.contains("a")) yA = true;
-			if (z.contents.contains("a")) zA = true;
-			xV = Integer.parseInt(x.contents.replaceAll("[^0-9]", ""));
-			yV = Integer.parseInt(y.contents.replaceAll("[^0-9]", ""));
-			zV = Integer.parseInt(z.contents.replaceAll("[^0-9]", ""));
+			if (baNode.x.contents.contains("a")) baNode.xA = true;
+			if (baNode.y.contents.contains("a")) baNode.yA = true;
+			if (baNode.z.contents.contains("a")) baNode.zA = true;
+			baNode.xV = Integer.parseInt(baNode.x.contents.replaceAll("[^0-9]", ""));
+			baNode.yV = Integer.parseInt(baNode.y.contents.replaceAll("[^0-9]", ""));
+			baNode.zV = Integer.parseInt(baNode.z.contents.replaceAll("[^0-9]", ""));
 			try {
 				baNode.node = GlobalVars.operationParser.parsePart();
 			} catch (Exception e) {
