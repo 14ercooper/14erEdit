@@ -2,8 +2,8 @@ package com._14ercooper.worldeditor.macros.macros.nature;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -18,7 +18,8 @@ public class ErodeMacro extends Macro {
 
 	public int erodeRadius = -1; // The radius to actually erode within
 	public int erodeType = -1; // 0 for melt, 1 for blendball, 2 for mix
-	public int erodeSubtype = -1; // -1 if no subtype, 0 for more subtractive, 1 for more additive, 2 for neutral
+	public int erodeSubtype = -1;
+	public boolean targetAir = false;
 	public Location erodeCenter;
 
 	private void SetupMacro(String[] args, Location loc) {
@@ -36,6 +37,8 @@ public class ErodeMacro extends Macro {
 			}
 			else if (args[1].equalsIgnoreCase("blend")) {
 				erodeType = 1;
+				erodeSubtype = Integer.parseInt(args[2]);
+				targetAir = Boolean.parseBoolean(args[3]);
 			}
 			else if (args[1].equalsIgnoreCase("mix")) {
 				erodeType = 2;
@@ -101,7 +104,7 @@ public class ErodeMacro extends Macro {
 
 		// Blend erosion
 		if (erodeType == 1) {
-			Bukkit.getServer().broadcastMessage("§cBlend erosion is not yet implemented");
+			snapshotArray = blendErode(snapshotArray);
 		}
 
 		// Mix erosion
@@ -112,6 +115,41 @@ public class ErodeMacro extends Macro {
 		// Apply the snapshot to the world, thus completing the erosion
 		applyToWorld(snapshotArray);
 		return true;
+	}
+
+	private List<BlockState> blendErode(List<BlockState> snapshotArray) {
+		Main.logDebug("Starting blend erode"); // ----
+		// Iterate through each block
+		List<BlockState> snapshotCopy = new ArrayList<BlockState>();
+		Random rand = new Random();
+		for (BlockState b : snapshotArray) {
+			// If air, make sure we're editing air
+			if (b.getType() == Material.AIR && !targetAir) {
+				snapshotCopy.add(b);
+				continue;
+			}
+			
+			// Make sure the chance is met
+			if (rand.nextInt(100) >= erodeSubtype) {
+				snapshotCopy.add(b);
+				continue;
+			}
+			
+			// Get the adjacent blocks
+			Block current = Operator.currentPlayer.getWorld().getBlockAt(b.getLocation());
+			List<Block> adjBlocks = new ArrayList<Block>();
+			adjBlocks.add(current.getRelative(BlockFace.UP));
+			adjBlocks.add(current.getRelative(BlockFace.DOWN));
+			adjBlocks.add(current.getRelative(BlockFace.NORTH));
+			adjBlocks.add(current.getRelative(BlockFace.SOUTH));
+			adjBlocks.add(current.getRelative(BlockFace.EAST));
+			adjBlocks.add(current.getRelative(BlockFace.WEST));
+			
+			// Pick a random one and update
+			BlockState setMat = adjBlocks.get(rand.nextInt(adjBlocks.size())).getState();
+			snapshotCopy.add(setMat);
+		}
+		return snapshotCopy;
 	}
 
 	private List<BlockState> generateSnapshotArray(double x, double y, double z) {
