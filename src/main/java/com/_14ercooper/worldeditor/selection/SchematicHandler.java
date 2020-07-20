@@ -42,7 +42,8 @@ public class SchematicHandler {
 		Operator.currentPlayer = p;
 		int[] origin = {p.getLocation().getBlockX(), p.getLocation().getBlockY(), p.getLocation().getBlockZ()};
 		String path = file;
-		SchemLite schem = new SchemLite(path, setAir);
+		SchemLite schem = new SchemLite(path, setAir, executionOrder);
+		Main.logDebug("Execution order " + executionOrder);
 		try {
 			schem.openRead();
 		} catch (IOException e) {
@@ -51,7 +52,6 @@ public class SchematicHandler {
 		if (!mirror.isEmpty()) {
 			schem.mirror(mirror.contains("x"), mirror.contains("y"), mirror.contains("z"));
 		}
-		schem.executionOrder(executionOrder);
 		GlobalVars.asyncManager.scheduleEdit(schem, false, p, origin);
 		return true;
 	}
@@ -62,7 +62,8 @@ public class SchematicHandler {
 		Operator.currentPlayer = p;
 		int[] origin = {p.getLocation().getBlockX() + offset[0], p.getLocation().getBlockY() + offset[1], p.getLocation().getBlockZ() + offset[2]};
 		String path = file;
-		SchemLite schem = new SchemLite(path, setAir);
+		SchemLite schem = new SchemLite(path, setAir, executionOrder);
+		Main.logDebug("Execution order " + executionOrder);
 		try {
 			schem.openRead();
 		} catch (IOException e) {
@@ -71,7 +72,6 @@ public class SchematicHandler {
 		if (!mirror.isEmpty()) {
 			schem.mirror(mirror.contains("x"), mirror.contains("y"), mirror.contains("z"));
 		}
-		schem.executionOrder(executionOrder);
 		GlobalVars.asyncManager.scheduleEdit(schem, false, p, origin);
 		return true;
 	}
@@ -81,7 +81,8 @@ public class SchematicHandler {
 		Main.logDebug("Loading schematic from " + file);
 		Operator.currentPlayer = p;
 		String path = file;
-		SchemLite schem = new SchemLite(path, setAir);
+		SchemLite schem = new SchemLite(path, setAir, executionOrder);
+		Main.logDebug("Execution order " + executionOrder);
 		try {
 			schem.openRead();
 		} catch (IOException e) {
@@ -90,7 +91,6 @@ public class SchematicHandler {
 		if (!mirror.isEmpty()) {
 			schem.mirror(mirror.contains("x"), mirror.contains("y"), mirror.contains("z"));
 		}
-		schem.executionOrder(executionOrder);
 		GlobalVars.asyncManager.scheduleEdit(schem, false, p, origin);
 		return true;
 	}

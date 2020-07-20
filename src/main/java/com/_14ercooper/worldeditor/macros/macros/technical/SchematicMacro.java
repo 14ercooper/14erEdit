@@ -11,6 +11,7 @@ public class SchematicMacro extends Macro {
 	int xPos = 0, yPos = 0, zPos = 0;
 	boolean setAir = false;
 	String mirrorOpts = "";
+	int executionOrder = 0;
 	
 	// Create a new macro
 	private void SetupMacro(String[] args, Location loc) {
@@ -28,12 +29,14 @@ public class SchematicMacro extends Macro {
 		// Parse the mirrorString
 		if (args.length > 5)
 			mirrorOpts = args[5];
+		if (args.length > 6)
+			executionOrder = Integer.parseInt(args[6]);
 	}
 	
 	// Run this macro
 	public boolean performMacro (String[] args, Location loc) {
 		SetupMacro(args, loc);
 		int[] origin = {xPos,  yPos,  zPos};
-		return SchematicHandler.loadSchematic(path, origin, mirrorOpts, setAir, Operator.currentPlayer);
+		return SchematicHandler.loadSchematic(path, origin, mirrorOpts, setAir, Operator.currentPlayer, executionOrder);
 	}
 }

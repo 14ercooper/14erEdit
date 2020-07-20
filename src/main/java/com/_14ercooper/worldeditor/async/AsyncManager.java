@@ -138,7 +138,7 @@ public class AsyncManager {
 			largeOps.remove();
 		}
 	}
-
+	
 	// Scheduled task to operate
 	public void performOperation () {
 		// If there isn't anything to do, return
@@ -153,52 +153,52 @@ public class AsyncManager {
 			GlobalVars.errorLogged = false;
 			int opSize = operations.size();
 			for (int i = 0; i < opSize; i++) {
-				AsyncOperation op = operations.get(i);
-				if (op.key.equalsIgnoreCase("iteredit")) {
+				AsyncOperation currentAsyncOp = operations.get(i);
+				if (currentAsyncOp.key.equalsIgnoreCase("iteredit")) {
 					Block b = null;
-					b = op.blocks.getNext();
-					if (op.undo != null) {
-						if (!op.undoRunning) op.undo.startUndo();
-						GlobalVars.currentUndo = op.undo;
-						op.undoRunning = true;
+					b = currentAsyncOp.blocks.getNext();
+					if (currentAsyncOp.undo != null) {
+						if (!currentAsyncOp.undoRunning) currentAsyncOp.undo.startUndo();
+						GlobalVars.currentUndo = currentAsyncOp.undo;
+						currentAsyncOp.undoRunning = true;
 					}
 					if (b == null) {
-						if (op.undo != null) {
-							op.undo.finishUndo();
+						if (currentAsyncOp.undo != null) {
+							currentAsyncOp.undo.finishUndo();
 						}
 						operations.remove(i);
 						i--;
 						opSize--;
 						continue;
 					}
-					op.operation.operateOnBlock(b, op.player);
+					currentAsyncOp.operation.operateOnBlock(b, currentAsyncOp.player);
 					doneOperations++;
 					GlobalVars.currentUndo = null;
 				}
 				
-				else if (op.key.equalsIgnoreCase("rawiteredit")) {
+				else if (currentAsyncOp.key.equalsIgnoreCase("rawiteredit")) {
 					Block b = null;
-					b = op.blocks.getNext();
-					if (op.undo != null) {
-						if (!op.undoRunning) op.undo.startUndo();
-						GlobalVars.currentUndo = op.undo;
-						op.undoRunning = true;
+					b = currentAsyncOp.blocks.getNext();
+					if (currentAsyncOp.undo != null) {
+						if (!currentAsyncOp.undoRunning) currentAsyncOp.undo.startUndo();
+						GlobalVars.currentUndo = currentAsyncOp.undo;
+						currentAsyncOp.undoRunning = true;
 					}
 					if (b == null) {
-						if (op.undo != null) {
-							op.undo.finishUndo();
+						if (currentAsyncOp.undo != null) {
+							currentAsyncOp.undo.finishUndo();
 						}
 						operations.remove(i);
 						i--;
 						opSize--;
 						continue;
 					}
-					op.operation.operateOnBlock(b);
+					currentAsyncOp.operation.operateOnBlock(b);
 					doneOperations++;
 					GlobalVars.currentUndo = null;
 				}
 				
-				else if (op.key.equalsIgnoreCase("messyedit")) {
+				else if (currentAsyncOp.key.equalsIgnoreCase("messyedit")) {
 					operations.remove(i).operation.messyOperate();
 					i--;
 					opSize--;
@@ -206,29 +206,29 @@ public class AsyncManager {
 				}
 				
 				// Save schematic
-				else if (op.key.equalsIgnoreCase("saveschem")) {
+				else if (currentAsyncOp.key.equalsIgnoreCase("saveschem")) {
 					Block b = null;
-					b = op.blocks.getNext();
-					if (op.undo != null) {
-						if (!op.undoRunning) {
-							op.undo.startUndo();
+					b = currentAsyncOp.blocks.getNext();
+					if (currentAsyncOp.undo != null) {
+						if (!currentAsyncOp.undoRunning) {
+							currentAsyncOp.undo.startUndo();
 							try {
-								op.schem.resetWrite();
+								currentAsyncOp.schem.resetWrite();
 							} catch (IOException e) {
-								Main.logError("Could not write to schematic file", op.player);
+								Main.logError("Could not write to schematic file", currentAsyncOp.player);
 							}
 						}
-						GlobalVars.currentUndo = op.undo;
-						op.undoRunning = true;
+						GlobalVars.currentUndo = currentAsyncOp.undo;
+						currentAsyncOp.undoRunning = true;
 					}
 					if (b == null) {
-						if (op.undo != null) {
-							op.undo.finishUndo();
+						if (currentAsyncOp.undo != null) {
+							currentAsyncOp.undo.finishUndo();
 						}
 						operations.remove(i);
 						i--;
 						opSize--;
-						op.player.sendMessage("§aSelection saved");
+						currentAsyncOp.player.sendMessage("§aSelection saved");
 						continue;
 					}
 					String material = b.getType().toString();
@@ -236,7 +236,7 @@ public class AsyncManager {
 					NBTExtractor nbtE = new NBTExtractor();
 					String nbt = nbtE.getNBT(b);
 					try {
-						op.schem.writeBlock(material, data, nbt);
+						currentAsyncOp.schem.writeBlock(material, data, nbt);
 					} catch (IOException e) {
 						// Don't need to do anything
 					}
@@ -245,38 +245,38 @@ public class AsyncManager {
 				}
 				
 				// Load schematic
-				else if (op.key.equalsIgnoreCase("loadschem")) {
+				else if (currentAsyncOp.key.equalsIgnoreCase("loadschem")) {
 					Block b = null;
-					b = op.blocks.getNext();
-					if (op.undo != null) {
-						if (!op.undoRunning) {
-							op.undo.startUndo();
+					b = currentAsyncOp.blocks.getNext();
+					if (currentAsyncOp.undo != null) {
+						if (!currentAsyncOp.undoRunning) {
+							currentAsyncOp.undo.startUndo();
 						}
-						GlobalVars.currentUndo = op.undo;
-						op.undoRunning = true;
+						GlobalVars.currentUndo = currentAsyncOp.undo;
+						currentAsyncOp.undoRunning = true;
 					}
 					if (b == null) {
-						if (op.undo != null) {
-							op.undo.finishUndo();
+						if (currentAsyncOp.undo != null) {
+							currentAsyncOp.undo.finishUndo();
 						}
 						operations.remove(i);
 						i--;
 						opSize--;
 						try {
-							op.schem.closeRead();
+							currentAsyncOp.schem.closeRead();
 						} catch (IOException e) {
 							// Don't need to do anything
 						}
-						op.player.sendMessage("§aData loaded");
+						currentAsyncOp.player.sendMessage("§aData loaded");
 						continue;
 					}
 					String[] results = {};
 					try {
-						results = op.schem.readNext();
+						results = currentAsyncOp.schem.readNext();
 					} catch (IOException e) {
 						// Don't need to do anything
 					}
-					if (!Material.matchMaterial(results[0]).isAir() || op.schem.setAir()) {
+					if (!Material.matchMaterial(results[0]).isAir() || currentAsyncOp.schem.setAir()) {
 						SetBlock.setMaterial(b, Material.matchMaterial(results[0]), false);
 						b.setBlockData(Bukkit.getServer().createBlockData(results[1]));
 						if (!results[2].isEmpty()) {
@@ -289,21 +289,21 @@ public class AsyncManager {
 				}
 				
 				// Selection move/stack
-				else if (op.key.equalsIgnoreCase("selclone")) {
+				else if (currentAsyncOp.key.equalsIgnoreCase("selclone")) {
 					Player tempPlayer = Operator.currentPlayer;
-					Operator.currentPlayer = op.player;
-					Block b = op.blocks.getNext();
+					Operator.currentPlayer = currentAsyncOp.player;
+					Block b = currentAsyncOp.blocks.getNext();
 					Operator.currentPlayer = tempPlayer;
-					if (op.undo != null) {
-						if (!op.undoRunning) {
-							op.undo.startUndo();
+					if (currentAsyncOp.undo != null) {
+						if (!currentAsyncOp.undoRunning) {
+							currentAsyncOp.undo.startUndo();
 						}
-						GlobalVars.currentUndo = op.undo;
-						op.undoRunning = true;
+						GlobalVars.currentUndo = currentAsyncOp.undo;
+						currentAsyncOp.undoRunning = true;
 					}
 					if (b == null) {
-						if (op.undo != null) {
-							op.undo.finishUndo();
+						if (currentAsyncOp.undo != null) {
+							currentAsyncOp.undo.finishUndo();
 						}
 						operations.remove(i);
 						i--;
@@ -311,8 +311,8 @@ public class AsyncManager {
 						continue;
 					}
 					// Actually do the clone
-					for (int timesDone = 0; timesDone < op.times; timesDone++) {
-						Block toEdit = b.getRelative(op.offset[0] * (1 + timesDone), op.offset[1] * (1 + timesDone), op.offset[2] * (1 + timesDone));
+					for (int timesDone = 0; timesDone < currentAsyncOp.times; timesDone++) {
+						Block toEdit = b.getRelative(currentAsyncOp.offset[0] * (1 + timesDone), currentAsyncOp.offset[1] * (1 + timesDone), currentAsyncOp.offset[2] * (1 + timesDone));
 						SetBlock.setMaterial(toEdit, b.getType(), false);
 						toEdit.setBlockData(b.getBlockData(), false);
 						NBTExtractor nbt = new NBTExtractor();
@@ -323,11 +323,11 @@ public class AsyncManager {
 							doneOperations++;
 						}
 					}
-					if (op.delOriginal) {
+					if (currentAsyncOp.delOriginal) {
 						SetBlock.setMaterial(b, Material.AIR, false);
 						doneOperations++;
 					}
-					doneOperations += op.times;
+					doneOperations += currentAsyncOp.times;
 					GlobalVars.currentUndo = null;
 				}
 				

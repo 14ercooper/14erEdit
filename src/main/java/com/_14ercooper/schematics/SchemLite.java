@@ -42,9 +42,10 @@ public class SchemLite {
 		creationDate = date;
 	}
 	
-	public SchemLite (String inPath, boolean setAir) {
+	public SchemLite (String inPath, boolean setAir, int executionOrder) {
 		this.outPath = "plugins/14erEdit/schematics/" + inPath;
 		this.setAir = setAir;
+		this.executionOrder = executionOrder;
 	}
 	
 	// Get a block iterator corresponding with this schem lite
@@ -167,12 +168,6 @@ public class SchemLite {
 		xMirror = x;
 		yMirror = y;
 		zMirror = z;
-	}
-	
-	public void executionOrder (int order) {
-		executionOrder = order;
-		if (executionOrder < 0) executionOrder = 0;
-		if (executionOrder > 5) executionOrder = 0;
 	}
 	
 	// Is this marked as setting air?

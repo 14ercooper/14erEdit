@@ -98,7 +98,10 @@ public class SelectionCommand {
 			// Rotation
 			else if (args[1].equalsIgnoreCase("rotate")) {
 				try {
-					
+					Main.logDebug("Rotating clipboard");
+					manager.executionOrder = Integer.parseInt(args[2]);
+					player.sendMessage("§aClipboard rotated.");
+					return true;
 				} catch (Exception e) {
 					Main.logError("Error rotating clipboard. Did you provide a mirror value?", player);
 				}

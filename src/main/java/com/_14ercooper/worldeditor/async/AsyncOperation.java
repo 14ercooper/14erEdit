@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 
 import com._14ercooper.schematics.SchemLite;
 import com._14ercooper.worldeditor.blockiterator.BlockIterator;
+import com._14ercooper.worldeditor.blockiterator.iterators.MultiIterator;
 import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.undo.Undo;
 
@@ -18,6 +19,7 @@ public class AsyncOperation {
 	protected Player player = null;
 	protected Undo undo = null;
 	protected boolean undoRunning = false;
+	public MultiIterator childOp = null;
 	
 	public AsyncOperation (Operator o, Player p, BlockIterator b) {
 		key = "iteredit";

@@ -30,9 +30,9 @@ public class CubeIterator extends BlockIterator {
 			iterator.y2 = Integer.parseInt(args.get(4));
 			iterator.z2 = Integer.parseInt(args.get(5));
 			if (args.size() > 6) {
-				executionOrder = Integer.parseInt(args.get(6));
-				if (executionOrder < 0) executionOrder = 0;
-				if (executionOrder > 5) executionOrder = 0;
+				iterator.executionOrder = Integer.parseInt(args.get(6));
+				if (iterator.executionOrder < 0) iterator.executionOrder = 0;
+				if (iterator.executionOrder > 5) iterator.executionOrder = 0;
 			}
 			if (iterator.x2 < iterator.x1) {
 				iterator.xStep = -1;
@@ -56,6 +56,7 @@ public class CubeIterator extends BlockIterator {
 			Main.logDebug("From " + iterator.x1 + "," + iterator.y1 + "," + iterator.z1 + " to " + iterator.x2 + "," + iterator.y2 + "," + iterator.z2);
 			Main.logDebug("Starting block: " + iterator.x + "," + iterator.y + "," + iterator.z);
 			Main.logDebug("Steps: " + iterator.xStep + "," + iterator.yStep + "," + iterator.zStep);
+			Main.logDebug("Cube iterator execution order: " + iterator.executionOrder);
 			return iterator;
 		} catch (Exception e) {
 			Main.logError("Could not create cube iterator. Please check your brush parameters/if you have a selection box.", Operator.currentPlayer);
