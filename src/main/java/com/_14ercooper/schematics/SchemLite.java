@@ -34,12 +34,17 @@ public class SchemLite {
 	
 	// Create a new schem lite object
 	public SchemLite (int x, int y, int z, String outPath, String author, String date) {
-		xSize = x;
-		ySize = y;
-		zSize = z;
+		this.xSize = x;
+		this.ySize = y;
+		this.zSize = z;
 		this.outPath = "plugins/14erEdit/schematics/" + outPath;
-		authorName = author;
-		creationDate = date;
+		this.authorName = author;
+		this.creationDate = date;
+		try {
+			this.resetWrite();
+		} catch (IOException e) {
+			Main.logDebug("Error initializing schematic file.");
+		}
 	}
 	
 	public SchemLite (String inPath, boolean setAir, int executionOrder) {
@@ -109,7 +114,7 @@ public class SchemLite {
 		writer.newLine();
 		writer.write(data);
 		writer.newLine();
-		writer.write(nbt);
+		writer.write(nbt.replaceAll("[\\n\\r]", "新しい線"));
 		writer.newLine();
 		writer.close();
 	}
@@ -134,7 +139,7 @@ public class SchemLite {
 	// Get the next block in this schem lite
 	public String[] readNext () throws IOException {
 		// Load the next three pieces of data into the array
-		String[] array = {reader.readLine(), reader.readLine(), reader.readLine()};
+		String[] array = {reader.readLine(), reader.readLine(), reader.readLine().replaceAll("新しい線", "\n")};
 		return array;
 	}
 	

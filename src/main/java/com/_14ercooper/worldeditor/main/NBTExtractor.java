@@ -12,11 +12,6 @@ public class NBTExtractor {
 			CraftBlockEntityState cb = (CraftBlockEntityState) bs;
 			NBTTagCompound ntc = cb.getSnapshotNBT();
 			String nbt = ntc.asString();
-			// THIS DELETES TOO MUCH
-			//nbt = nbt.replaceAll(",?[xz]:[\\d-]+", "");
-			//nbt = nbt.replaceAll(",y:[\\d-]+", "");
-			//nbt = nbt.replaceAll(",?id:\"[A-Za-z:]+\"", "");
-			//nbt = nbt.replaceAll("\\{,", "{");
 			return nbt;
 		}
 		else {

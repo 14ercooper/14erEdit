@@ -47,7 +47,7 @@ public class CubeIterator extends BlockIterator {
 			int dy = Math.abs(iterator.y2 - iterator.y1) + 1;
 			int dz = Math.abs(iterator.z2 - iterator.z1) + 1;
 			iterator.totalBlocks = dx * dy * dz;
-			iterator.x = iterator.x1 - iterator.xStep;
+			iterator.x = iterator.x1;
 			iterator.y = iterator.y1;
 			iterator.z = iterator.z1;
 			if (iterator.executionOrder == 0 || iterator.executionOrder == 1) iterator.x -= iterator.xStep;
