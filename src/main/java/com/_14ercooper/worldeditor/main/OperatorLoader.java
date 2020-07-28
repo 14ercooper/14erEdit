@@ -1,6 +1,7 @@
 package com._14ercooper.worldeditor.main;
 
 import com._14ercooper.worldeditor.operations.operators.core.*;
+import com._14ercooper.worldeditor.operations.operators.fun.*;
 import com._14ercooper.worldeditor.operations.operators.function.*;
 import com._14ercooper.worldeditor.operations.operators.logical.*;
 import com._14ercooper.worldeditor.operations.operators.loop.*;
@@ -17,6 +18,7 @@ public class OperatorLoader {
 		LoadQuery();
 		LoadVariable();
 		LoadWorld();
+		LoadFun();
 	}
 	
 	private static void LoadCore() {
@@ -182,5 +184,9 @@ public class OperatorLoader {
 		GlobalVars.operationParser.AddOperator("gravity", GlobalVars.operationParser.GetOperator("grav"));
 		GlobalVars.operationParser.AddOperator("biome", new SetBiomeNode());
 		GlobalVars.operationParser.AddOperator("set_biome", GlobalVars.operationParser.GetOperator("biome"));
+	}
+	
+	private static void LoadFun() {
+		GlobalVars.operationParser.AddOperator("smallruin", new SmallRuinNode());
 	}
 }

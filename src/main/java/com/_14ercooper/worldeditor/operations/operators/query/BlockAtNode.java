@@ -26,9 +26,9 @@ public class BlockAtNode extends BlockNode {
 			if (baNode.x.contents.contains("a")) baNode.xA = true;
 			if (baNode.y.contents.contains("a")) baNode.yA = true;
 			if (baNode.z.contents.contains("a")) baNode.zA = true;
-			baNode.xV = Integer.parseInt(baNode.x.contents.replaceAll("[^0-9]", ""));
-			baNode.yV = Integer.parseInt(baNode.y.contents.replaceAll("[^0-9]", ""));
-			baNode.zV = Integer.parseInt(baNode.z.contents.replaceAll("[^0-9]", ""));
+			baNode.xV = Integer.parseInt(baNode.x.contents.replaceAll("[a-zA-Z]", ""));
+			baNode.yV = Integer.parseInt(baNode.y.contents.replaceAll("[a-zA-Z]", ""));
+			baNode.zV = Integer.parseInt(baNode.z.contents.replaceAll("[a-zA-Z]", ""));
 			try {
 				baNode.node = GlobalVars.operationParser.parsePart();
 			} catch (Exception e) {

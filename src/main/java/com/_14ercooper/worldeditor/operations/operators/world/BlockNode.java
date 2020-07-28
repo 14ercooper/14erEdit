@@ -205,7 +205,7 @@ public class BlockNode extends Node {
 				totalWeight += bi.weight;
 			}
 			Random rand = new Random();
-			int randNum = rand.nextInt(totalWeight);
+			int randNum = rand.nextInt(totalWeight + 1);
 			for (BlockInstance bi : list) {
 				randNum -= bi.weight;
 				if (randNum <= 0) return bi;
