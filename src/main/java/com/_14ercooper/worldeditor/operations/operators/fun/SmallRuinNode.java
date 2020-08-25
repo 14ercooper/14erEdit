@@ -33,7 +33,10 @@ public class SmallRuinNode extends Node {
 		rand.nextInt();
 		int xSize = (int) (rand.nextInt((int) (xMax.getMax() - xMax.getMin())) + xMax.getMin());
 		int zSize = (int) (rand.nextInt((int) (zMax.getMax() - zMax.getMin())) + zMax.getMin());
-		int stackCount = (int) (rand.nextInt((int) (stackSize.getMax() - stackSize.getMin())) + stackSize.getMin());
+		
+		int stackCount = 1;
+		if (stackSize.getMax() == stackSize.getMin()) stackCount = (int) stackSize.getMax();
+		else stackCount = (int) (rand.nextInt((int) (stackSize.getMax() - stackSize.getMin())) + stackSize.getMin());
 
 		Block savedBlock = Operator.currentBlock;
 
