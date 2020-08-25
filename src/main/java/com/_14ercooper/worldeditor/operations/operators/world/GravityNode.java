@@ -1,8 +1,10 @@
 package com._14ercooper.worldeditor.operations.operators.world;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 
+import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.operations.operators.Node;
@@ -17,17 +19,13 @@ public class GravityNode extends Node {
 	@Override
 	public boolean performNode() {
 		try {
-			String mat = Operator.currentBlock.getType().toString().toLowerCase();
-			if (mat.equals("air")) {
-				return false;
+			Material mat = Operator.currentBlock.getType();
+			Block b = Operator.currentBlock;
+			while (true) {
+			    if (b.getX() == 0 || !GlobalVars.targetMask.contains(b.getRelative(BlockFace.DOWN).getType())) break;
+			    b = b.getRelative(BlockFace.DOWN);
 			}
-			Operator.currentBlock.setType(Material.AIR);
-			String command = "summon minecraft:falling_block " + Operator.currentBlock.getX() + " " + Operator.currentBlock.getY() + " " + Operator.currentBlock.getZ();
-			command += " {BlockState:{Name:\"minecraft:";
-			command += mat;
-			command += "\"},Time:1}";
-			Main.logDebug("Command: " + command);
-			Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), command);
+			b.setType(mat);
 			return true;
 		} catch (Exception e) {
 			Main.logError("Error performing gravity node. Please check your syntax (or tell 14er how you got here).", Operator.currentPlayer);
