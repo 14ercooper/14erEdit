@@ -87,7 +87,7 @@ public class Main extends JavaPlugin {
 
     @Override
     public void onDisable() {
-
+	// We don't need to do anything on disable
     }
 
     public static void logDebug(String message) {
