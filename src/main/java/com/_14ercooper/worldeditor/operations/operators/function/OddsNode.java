@@ -9,29 +9,31 @@ import com._14ercooper.worldeditor.operations.operators.core.NumberNode;
 
 public class OddsNode extends Node {
 
-	public NumberNode arg;
+    public NumberNode arg;
 
-	public OddsNode newNode() {
-		OddsNode node = new OddsNode();
-		try {
-			node.arg = GlobalVars.operationParser.parseNumberNode();
-		} catch (Exception e) {
-			Main.logError("Could not create odds node, argument is not a number.", Operator.currentPlayer);
-			return null;
-		}
-		if (node.arg == null) {
-			Main.logError("Error creating odds node. Requires a number, but no number was found.", Operator.currentPlayer);
-		}
-		return node;
+    public OddsNode newNode() {
+	OddsNode node = new OddsNode();
+	try {
+	    node.arg = GlobalVars.operationParser.parseNumberNode();
 	}
+	catch (Exception e) {
+	    Main.logError("Could not create odds node, argument is not a number.", Operator.currentPlayer);
+	    return null;
+	}
+	if (node.arg == null) {
+	    Main.logError("Error creating odds node. Requires a number, but no number was found.",
+		    Operator.currentPlayer);
+	}
+	return node;
+    }
 
-	public boolean performNode () {
-		Random rand = new Random();
-		double chance = rand.nextDouble() * 100.0;
-		return (chance < arg.getValue());
-	}
+    public boolean performNode() {
+	Random rand = new Random();
+	double chance = rand.nextDouble() * 100.0;
+	return (chance < arg.getValue());
+    }
 
-	public int getArgCount () {
-		return 1;
-	}
+    public int getArgCount() {
+	return 1;
+    }
 }

@@ -44,68 +44,80 @@ package org.jnbt;
  * 
  */
 public abstract class Tag {
-	
-	/**
-	 * The name of this tag.
-	 */
-	private final String name;
-	
-	/**
-	 * Creates the tag with the specified name.
-	 * 
-	 * @param name
-	 *            The name.
-	 */
-	public Tag(final String name) {
-	
-		this.name = name;
+
+    /**
+     * The name of this tag.
+     */
+    private final String name;
+
+    /**
+     * Creates the tag with the specified name.
+     * 
+     * @param name The name.
+     */
+    public Tag(final String name) {
+
+	this.name = name;
+    }
+
+    /**
+     * Gets the name of this tag.
+     * 
+     * @return The name of this tag.
+     */
+    public final String getName() {
+
+	return name;
+    }
+
+    /**
+     * Gets the value of this tag.
+     * 
+     * @return The value of this tag.
+     */
+    public abstract Object getValue();
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+
+	final int prime = 31;
+	int result = 1;
+	result = (prime * result) + ((name == null) ? 0 : name.hashCode());
+	return result;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(final Object obj) {
+
+	if (this == obj) {
+	    return true;
 	}
-	
-	/**
-	 * Gets the name of this tag.
-	 * 
-	 * @return The name of this tag.
-	 */
-	public final String getName() {
-	
-		return name;
+	if (obj == null) {
+	    return false;
 	}
-	
-	/**
-	 * Gets the value of this tag.
-	 * 
-	 * @return The value of this tag.
-	 */
-	public abstract Object getValue();
-	
-	/*
-	 * (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
-	 */
-	@Override
-	public int hashCode() {
-	
-		final int prime = 31;
-		int result = 1;
-		result = (prime * result) + ((name == null) ? 0 : name.hashCode());
-		return result;
+	if (!(obj instanceof Tag)) {
+	    return false;
 	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	@Override
-	public boolean equals(final Object obj) {
-	
-		if (this == obj) { return true; }
-		if (obj == null) { return false; }
-		if (!(obj instanceof Tag)) { return false; }
-		final Tag other = (Tag) obj;
-		if (name == null) {
-			if (other.name != null) { return false; }
-		} else if (!name.equals(other.name)) { return false; }
-		return true;
+	final Tag other = (Tag) obj;
+	if (name == null) {
+	    if (other.name != null) {
+		return false;
+	    }
 	}
-	
+	else if (!name.equals(other.name)) {
+	    return false;
+	}
+	return true;
+    }
+
 }

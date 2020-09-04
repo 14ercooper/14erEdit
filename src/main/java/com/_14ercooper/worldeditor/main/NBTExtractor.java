@@ -7,22 +7,22 @@ import org.bukkit.craftbukkit.v1_16_R2.block.CraftBlockEntityState;
 import net.minecraft.server.v1_16_R2.NBTTagCompound;
 
 public class NBTExtractor {
-	public String getNBT(BlockState bs) {
-		if (!bs.getClass().getName().endsWith("CraftBlockState")) {
-			@SuppressWarnings("rawtypes")
-			CraftBlockEntityState cb = (CraftBlockEntityState) bs;
-			NBTTagCompound ntc = cb.getSnapshotNBT();
-			String nbt = ntc.asString();
-			return nbt;
-		}
-		else {
-			return "";
-		}
+    public String getNBT(BlockState bs) {
+	if (!bs.getClass().getName().endsWith("CraftBlockState")) {
+	    @SuppressWarnings("rawtypes")
+	    CraftBlockEntityState cb = (CraftBlockEntityState) bs;
+	    NBTTagCompound ntc = cb.getSnapshotNBT();
+	    String nbt = ntc.asString();
+	    return nbt;
 	}
-	
-	public String getNBT(Block b) {
-		return getNBT(b.getState());
+	else {
+	    return "";
 	}
+    }
+
+    public String getNBT(Block b) {
+	return getNBT(b.getState());
+    }
 //	
 //	public void setNBT(BlockState block, String nbt) {
 //		// Get the NBT Tag Compound

@@ -10,37 +10,40 @@ import com._14ercooper.worldeditor.operations.operators.core.StringNode;
 
 public class SetBiomeNode extends Node {
 
-	StringNode biome;
-	
-	@Override
-	public Node newNode() {
-		try {
-			SetBiomeNode node = new SetBiomeNode();
-			node.biome = GlobalVars.operationParser.parseStringNode();
-			if (node.biome == null) {
-				Main.logError("Could not parse set biome node. Did you provide a biome?", Operator.currentPlayer);
-			}
-			return node;
-		} catch (Exception e) {
-			Main.logError("Error parisng biome node. Please check your syntax.", Operator.currentPlayer);
-			return null;
-		}
-	}
+    StringNode biome;
 
-	@Override
-	public boolean performNode() {
-		try {
-		Operator.currentPlayer.getWorld().setBiome(Operator.currentBlock.getX(), Operator.currentBlock.getY(), Operator.currentBlock.getZ(), Biome.valueOf(biome.getText()));
-		return true;
-		} catch (Exception e) {
-			Main.logError("Could not perform set biome node. Did you provide a valid biome?", Operator.currentPlayer);
-			return false;
-		}
+    @Override
+    public Node newNode() {
+	try {
+	    SetBiomeNode node = new SetBiomeNode();
+	    node.biome = GlobalVars.operationParser.parseStringNode();
+	    if (node.biome == null) {
+		Main.logError("Could not parse set biome node. Did you provide a biome?", Operator.currentPlayer);
+	    }
+	    return node;
 	}
+	catch (Exception e) {
+	    Main.logError("Error parisng biome node. Please check your syntax.", Operator.currentPlayer);
+	    return null;
+	}
+    }
 
-	@Override
-	public int getArgCount() {
-		return 1;
+    @Override
+    public boolean performNode() {
+	try {
+	    Operator.currentPlayer.getWorld().setBiome(Operator.currentBlock.getX(), Operator.currentBlock.getY(),
+		    Operator.currentBlock.getZ(), Biome.valueOf(biome.getText()));
+	    return true;
 	}
+	catch (Exception e) {
+	    Main.logError("Could not perform set biome node. Did you provide a valid biome?", Operator.currentPlayer);
+	    return false;
+	}
+    }
+
+    @Override
+    public int getArgCount() {
+	return 1;
+    }
 
 }

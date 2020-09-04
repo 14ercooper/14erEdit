@@ -20,85 +20,92 @@ import com._14ercooper.worldeditor.scripts.CraftscriptManager;
 import com._14ercooper.worldeditor.selection.SelectionWandListener;
 
 public class Main extends JavaPlugin {
-	
-	@Override
-	public void onEnable () {
-	    	// Create folders as needed
-	    	try {
-		    Files.createDirectories(Path.of("plugins/14erEdit/schematics"));
-		    Files.createDirectories(Path.of("plugins/14erEdit/ops"));
-		    Files.createDirectories(Path.of("plugins/14erEdit/Commands"));
-		    Files.createDirectories(Path.of("plugins/14erEdit/vars"));
-		} catch (IOException e) {
-		    Main.logDebug("Error creating directory structure. 14erEdit may not work properly until this is resolved.");
-		}
-	    	
-		// Register commands with the server
-		this.getCommand("fx").setExecutor(new CommandFx());
-		CommandUndo undoCmd = new CommandUndo();
-		this.getCommand("un").setExecutor(undoCmd);
-		this.getCommand("re").setExecutor(undoCmd);
-		CommandConfirm confirmCmd = new CommandConfirm();
-		this.getCommand("confirm").setExecutor(confirmCmd);
-		this.getCommand("cancel").setExecutor(confirmCmd);
-		this.getCommand("script").setExecutor(new CommandScript());
-		this.getCommand("run").setExecutor(new CommandRun());
-		this.getCommand("runat").setExecutor(new CommandRunat());
-		this.getCommand("debug").setExecutor(new CommandDebug());
-		this.getCommand("14erEdit").setExecutor(new CommandInfo());
-		this.getCommand("async").setExecutor(new CommandAsync());
-		this.getCommand("brmask").setExecutor(new CommandLiquid());
-		
-		// Set up brush mask
-		GlobalVars.targetMask = new HashSet<Material>();
-		GlobalVars.targetMask.add(Material.AIR);
-		GlobalVars.targetMask.add(Material.CAVE_AIR);
-		
-		// Register listeners for brushes and wands
-		getServer().getPluginManager().registerEvents(new SelectionWandListener(), this);
-		getServer().getPluginManager().registerEvents(new BrushListener(), this);
-		
-		// These are needed by the plugin, but should only be loaded once as they are very slow to load
-		GlobalVars.simplexNoise = new SimplexNoise (Bukkit.getWorlds().get(0).getSeed()); // Seeded using the world seed for variance between worlds but consistency in the same world
-		GlobalVars.plugin = this;
-		
-		// Load config
-		loadConfig();
-		
-		// Load managers
-		GlobalVars.scriptManager = new CraftscriptManager();
-		GlobalVars.macroLauncher = new MacroLauncher();
-		GlobalVars.operationParser = new Parser();
-		GlobalVars.asyncManager = new AsyncManager();
-		GlobalVars.iteratorManager = new IteratorManager();
-		
-		// Register the prepackaged things to managers
-		CraftscriptLoader.LoadBundledCraftscripts();
-		MacroLoader.LoadMacros();
-		BrushLoader.LoadBrushes();
-		OperatorLoader.LoadOperators();
-		IteratorLoader.LoadIterators();
+
+    @Override
+    public void onEnable() {
+	// Create folders as needed
+	try {
+	    Files.createDirectories(Path.of("plugins/14erEdit/schematics"));
+	    Files.createDirectories(Path.of("plugins/14erEdit/ops"));
+	    Files.createDirectories(Path.of("plugins/14erEdit/Commands"));
+	    Files.createDirectories(Path.of("plugins/14erEdit/vars"));
 	}
-	
-	@Override
-	public void onDisable () {
-		
+	catch (IOException e) {
+	    Main.logDebug("Error creating directory structure. 14erEdit may not work properly until this is resolved.");
 	}
-	
-	public static void logDebug (String message) {
-		if (GlobalVars.isDebug) Bukkit.getServer().broadcastMessage("§c[DEBUG] " + message); // ----
-	}
-	
-	public static void logError (String message, CommandSender p) {
-		if (p == null) p = Bukkit.getConsoleSender();
-		p.sendMessage("§6[ERROR] " + message);
-	}
-	
-	private static void loadConfig () {
-		GlobalVars.plugin.saveDefaultConfig();
-		
-		GlobalVars.undoLimit = GlobalVars.plugin.getConfig().getLong("undoLimit");
-		GlobalVars.blocksPerAsync = GlobalVars.plugin.getConfig().getLong("blocksPerAsync");
-		GlobalVars.ticksPerAsync = GlobalVars.plugin.getConfig().getLong("ticksPerAsync");
-	}
+
+	// Register commands with the server
+	this.getCommand("fx").setExecutor(new CommandFx());
+	CommandUndo undoCmd = new CommandUndo();
+	this.getCommand("un").setExecutor(undoCmd);
+	this.getCommand("re").setExecutor(undoCmd);
+	CommandConfirm confirmCmd = new CommandConfirm();
+	this.getCommand("confirm").setExecutor(confirmCmd);
+	this.getCommand("cancel").setExecutor(confirmCmd);
+	this.getCommand("script").setExecutor(new CommandScript());
+	this.getCommand("run").setExecutor(new CommandRun());
+	this.getCommand("runat").setExecutor(new CommandRunat());
+	this.getCommand("debug").setExecutor(new CommandDebug());
+	this.getCommand("14erEdit").setExecutor(new CommandInfo());
+	this.getCommand("async").setExecutor(new CommandAsync());
+	this.getCommand("brmask").setExecutor(new CommandLiquid());
+
+	// Set up brush mask
+	GlobalVars.brushMask = new HashSet<Material>();
+	GlobalVars.brushMask.add(Material.AIR);
+	GlobalVars.brushMask.add(Material.CAVE_AIR);
+
+	// Register listeners for brushes and wands
+	getServer().getPluginManager().registerEvents(new SelectionWandListener(), this);
+	getServer().getPluginManager().registerEvents(new BrushListener(), this);
+
+	// These are needed by the plugin, but should only be loaded once as they are
+	// very slow to load
+	GlobalVars.simplexNoise = new SimplexNoise(Bukkit.getWorlds().get(0).getSeed()); // Seeded using the world seed
+											 // for variance between worlds
+											 // but consistency in the same
+											 // world
+	GlobalVars.plugin = this;
+
+	// Load config
+	loadConfig();
+
+	// Load managers
+	GlobalVars.scriptManager = new CraftscriptManager();
+	GlobalVars.macroLauncher = new MacroLauncher();
+	GlobalVars.operationParser = new Parser();
+	GlobalVars.asyncManager = new AsyncManager();
+	GlobalVars.iteratorManager = new IteratorManager();
+
+	// Register the prepackaged things to managers
+	CraftscriptLoader.LoadBundledCraftscripts();
+	MacroLoader.LoadMacros();
+	BrushLoader.LoadBrushes();
+	OperatorLoader.LoadOperators();
+	IteratorLoader.LoadIterators();
+    }
+
+    @Override
+    public void onDisable() {
+
+    }
+
+    public static void logDebug(String message) {
+	if (GlobalVars.isDebug)
+	    Bukkit.getServer().broadcastMessage("§c[DEBUG] " + message); // ----
+    }
+
+    public static void logError(String message, CommandSender p) {
+	if (p == null)
+	    p = Bukkit.getConsoleSender();
+	p.sendMessage("§6[ERROR] " + message);
+    }
+
+    private static void loadConfig() {
+	GlobalVars.plugin.saveDefaultConfig();
+
+	GlobalVars.undoLimit = GlobalVars.plugin.getConfig().getLong("undoLimit");
+	GlobalVars.blocksPerAsync = GlobalVars.plugin.getConfig().getLong("blocksPerAsync");
+	GlobalVars.ticksPerAsync = GlobalVars.plugin.getConfig().getLong("ticksPerAsync");
+    }
 }

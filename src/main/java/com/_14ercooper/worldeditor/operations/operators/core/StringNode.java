@@ -8,31 +8,33 @@ import com._14ercooper.worldeditor.operations.operators.Node;
 
 public class StringNode extends Node {
 
-	public String contents = "undefined";
+    public String contents = "undefined";
 
-	@Override
-	public StringNode newNode() {
+    @Override
+    public StringNode newNode() {
 
-		return new StringNode();
+	return new StringNode();
+    }
+
+    @Override
+    public boolean performNode() {
+	try {
+	    return Operator.currentBlock.getType() == Material.matchMaterial(contents);
 	}
-
-	@Override
-	public boolean performNode() {
-		try {
-			return Operator.currentBlock.getType() == Material.matchMaterial(contents);
-		} catch (Exception e) {
-			Main.logError("Error performing string node. " + contents + " could not be resolved to a block.", Operator.currentPlayer);
-			return false;
-		}
+	catch (Exception e) {
+	    Main.logError("Error performing string node. " + contents + " could not be resolved to a block.",
+		    Operator.currentPlayer);
+	    return false;
 	}
+    }
 
-	public String getText () {
-		return contents;
-	}
+    public String getText() {
+	return contents;
+    }
 
-	@Override
-	public int getArgCount() {
-		return 1;
-	}
+    @Override
+    public int getArgCount() {
+	return 1;
+    }
 
 }

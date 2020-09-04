@@ -44,69 +44,77 @@ package org.jnbt;
  * 
  */
 public final class IntTag extends Tag {
-	
-	/**
-	 * The value.
-	 */
-	private final int value;
-	
-	/**
-	 * Creates the tag.
-	 * 
-	 * @param name
-	 *            The name.
-	 * @param value
-	 *            The value.
-	 */
-	public IntTag(final String name, final int value) {
-	
-		super(name);
-		this.value = value;
+
+    /**
+     * The value.
+     */
+    private final int value;
+
+    /**
+     * Creates the tag.
+     * 
+     * @param name  The name.
+     * @param value The value.
+     */
+    public IntTag(final String name, final int value) {
+
+	super(name);
+	this.value = value;
+    }
+
+    @Override
+    public Integer getValue() {
+
+	return value;
+    }
+
+    @Override
+    public String toString() {
+
+	final String name = getName();
+	String append = "";
+	if ((name != null) && !name.equals("")) {
+	    append = "(\"" + getName() + "\")";
 	}
-	
-	@Override
-	public Integer getValue() {
-	
-		return value;
+	return "TAG_Int" + append + ": " + value;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+
+	final int prime = 31;
+	int result = super.hashCode();
+	result = (prime * result) + value;
+	return result;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(final Object obj) {
+
+	if (this == obj) {
+	    return true;
 	}
-	
-	@Override
-	public String toString() {
-	
-		final String name = getName();
-		String append = "";
-		if ((name != null) && !name.equals("")) {
-			append = "(\"" + getName() + "\")";
-		}
-		return "TAG_Int" + append + ": " + value;
+	if (!super.equals(obj)) {
+	    return false;
 	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
-	 */
-	@Override
-	public int hashCode() {
-	
-		final int prime = 31;
-		int result = super.hashCode();
-		result = (prime * result) + value;
-		return result;
+	if (!(obj instanceof IntTag)) {
+	    return false;
 	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	@Override
-	public boolean equals(final Object obj) {
-	
-		if (this == obj) { return true; }
-		if (!super.equals(obj)) { return false; }
-		if (!(obj instanceof IntTag)) { return false; }
-		final IntTag other = (IntTag) obj;
-		if (value != other.value) { return false; }
-		return true;
+	final IntTag other = (IntTag) obj;
+	if (value != other.value) {
+	    return false;
 	}
-	
+	return true;
+    }
+
 }

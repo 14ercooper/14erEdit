@@ -13,49 +13,54 @@ import com._14ercooper.worldeditor.operations.operators.Node;
 
 public class LoadFromFileNode extends Node {
 
-	StringNode path = new StringNode();
+    StringNode path = new StringNode();
 
-	public LoadFromFileNode newNode() {
-		LoadFromFileNode node = new LoadFromFileNode();
-		try {
-			node.path = GlobalVars.operationParser.parseStringNode();
-			return node;
-		} catch (Exception e) {
-			Main.logError("Could not create file node, no file path was found.", Operator.currentPlayer);
-			return null;
+    public LoadFromFileNode newNode() {
+	LoadFromFileNode node = new LoadFromFileNode();
+	try {
+	    node.path = GlobalVars.operationParser.parseStringNode();
+	    return node;
+	}
+	catch (Exception e) {
+	    Main.logError("Could not create file node, no file path was found.", Operator.currentPlayer);
+	    return null;
+	}
+    }
+
+    public boolean performNode() {
+	if (!Operator.fileLoads.containsKey(path.contents)) {
+	    List<String> lines = new ArrayList<String>();
+	    try {
+		lines = Files.readAllLines(
+			Paths.get(("plugins/14erEdit/ops/" + path.getText()).replace("/", File.separator)));
+	    }
+	    catch (IOException e) {
+		Main.logDebug("Issue opening file " + Paths
+			.get(("plugins/14erEdit/ops/" + path.getText()).replace("/", File.separator)).toString());
+		Main.logError("Could not open file \"plugins/14erEdit/ops/" + path.contents + "\". Does it exist?",
+			Operator.currentPlayer);
+		e.printStackTrace();
+	    }
+	    List<String> newOperators = new ArrayList<String>();
+	    for (String s : lines) {
+		String[] strArr = s.split("\\s+");
+		for (String str : strArr) {
+		    newOperators.add(str);
 		}
-	}
 
-	public boolean performNode () {
-		if (!Operator.fileLoads.containsKey(path.contents)) {
-			List<String> lines = new ArrayList<String>();
-			try {
-				lines = Files.readAllLines(Paths.get(("plugins/14erEdit/ops/" + path.getText()).replace("/", File.separator)));
-			} catch (IOException e) {
-				Main.logDebug("Issue opening file " + Paths.get(("plugins/14erEdit/ops/" + path.getText()).replace("/", File.separator)).toString());
-				Main.logError("Could not open file \"plugins/14erEdit/ops/" + path.contents + "\". Does it exist?", Operator.currentPlayer);
-				e.printStackTrace();
-			}
-			List<String> newOperators = new ArrayList<String>();
-			for (String s : lines) {
-				String[] strArr = s.split("\\s+");
-				for (String str : strArr) {
-					newOperators.add(str);
-				}
-
-			}
-			String toParse = "";
-			for (String s : newOperators) {
-				toParse += s + " ";
-			}
-			Operator o = new Operator(toParse, Operator.currentPlayer);
-			Operator.fileLoads.put(path.contents, o);
-		}
-		Operator o = Operator.fileLoads.get(path.contents);
-		return o.messyOperate();
+	    }
+	    String toParse = "";
+	    for (String s : newOperators) {
+		toParse += s + " ";
+	    }
+	    Operator o = new Operator(toParse, Operator.currentPlayer);
+	    Operator.fileLoads.put(path.contents, o);
 	}
+	Operator o = Operator.fileLoads.get(path.contents);
+	return o.messyOperate();
+    }
 
-	public int getArgCount () {
-		return 1;
-	}
+    public int getArgCount() {
+	return 1;
+    }
 }
