@@ -85,7 +85,6 @@ public class CommandFx implements CommandExecutor {
 	}
 	catch (Exception e) {
 	    Main.logError("Error in fx command. Please check your syntax.", sender);
-	    e.printStackTrace();
 	    return false;
 	}
     }

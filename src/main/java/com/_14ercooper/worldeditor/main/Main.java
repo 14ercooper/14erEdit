@@ -2,7 +2,7 @@ package com._14ercooper.worldeditor.main;
 
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashSet;
 
 import org.bukkit.Bukkit;
@@ -25,10 +25,10 @@ public class Main extends JavaPlugin {
     public void onEnable() {
 	// Create folders as needed
 	try {
-	    Files.createDirectories(Path.of("plugins/14erEdit/schematics"));
-	    Files.createDirectories(Path.of("plugins/14erEdit/ops"));
-	    Files.createDirectories(Path.of("plugins/14erEdit/Commands"));
-	    Files.createDirectories(Path.of("plugins/14erEdit/vars"));
+	    Files.createDirectories(Paths.get("plugins/14erEdit/schematics"));
+	    Files.createDirectories(Paths.get("plugins/14erEdit/ops"));
+	    Files.createDirectories(Paths.get("plugins/14erEdit/Commands"));
+	    Files.createDirectories(Paths.get("plugins/14erEdit/vars"));
 	}
 	catch (IOException e) {
 	    Main.logDebug("Error creating directory structure. 14erEdit may not work properly until this is resolved.");

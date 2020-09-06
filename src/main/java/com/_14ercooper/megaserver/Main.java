@@ -98,8 +98,14 @@ public class Main {
 	    // Load vars from disk
 	    ArrayList<String> vars = new ArrayList<String>();
 	    vars.addAll(Arrays.asList(FileIO.readFromFile("profiles/" + profile + "/data.mms").split("&")));
-	    String version = vars.get(0);
-	    String RAM = vars.get(1);
+	    String version = vars.get(0).replace("\n", "").replace("\r", "");
+	    String RAM = "";
+	    try {
+		RAM = vars.get(1).replace("\n", "").replace("\r", "");
+	    }
+	    catch (IndexOutOfBoundsException e) {
+		RAM = "2048";
+	    }
 	    List<String> plugins = new ArrayList<String>();
 	    for (int i = 2; i < vars.size(); i++) {
 		plugins.add(vars.get(i).replace("\n", "").replace("\r", ""));
@@ -123,7 +129,7 @@ public class Main {
 		// Start server
 		String quarterRam = String.valueOf(Integer.parseInt(RAM) / 4);
 		String eighthRam = String.valueOf(Integer.parseInt(RAM) / 8);
-		String command = "java -jar -Xmx" + RAM + "M -Xms" + RAM + "M -Xss" + eighthRam + "M -Xmn" + quarterRam
+		String command = "java -jar -DIReallyKnowWhatIAmDoingISwear=true -Xmx" + RAM + "M -Xms" + RAM + "M -Xss" + eighthRam + "M -Xmn" + quarterRam
 			+ "M -XX:+UseParallelGC server.jar nogui";
 		Process p = runProcess(command, "profiles/" + profile);
 		while (p.isAlive()) {

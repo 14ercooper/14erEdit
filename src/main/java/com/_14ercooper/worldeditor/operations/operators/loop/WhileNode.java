@@ -28,9 +28,16 @@ public class WhileNode extends Node {
     public boolean performNode() {
 	try {
 	    boolean result = true;
+	    int loopsRun = 0;
 	    while (cond.performNode()) {
+		if (loopsRun > GlobalVars.maxLoopLength) {
+		    Main.logError("Max loop length exceeded. Async queue dropped.", Operator.currentPlayer);
+		    GlobalVars.asyncManager.dropAsync();
+		    return false;
+		}
 		boolean result2 = op.performNode();
 		result = result && result2;
+		loopsRun++;
 	    }
 	    return result;
 	}

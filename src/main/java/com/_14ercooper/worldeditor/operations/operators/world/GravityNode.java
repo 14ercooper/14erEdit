@@ -27,6 +27,7 @@ public class GravityNode extends Node {
 		b = b.getRelative(BlockFace.DOWN);
 	    }
 	    b.setType(mat);
+	    Operator.currentBlock.setType(Material.AIR);
 	    return true;
 	}
 	catch (Exception e) {

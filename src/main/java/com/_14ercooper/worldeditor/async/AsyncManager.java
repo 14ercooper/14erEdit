@@ -25,6 +25,9 @@ public class AsyncManager {
 
     // NBT extractor for clipboard
     NBTExtractor nbtExtractor = new NBTExtractor();
+    
+    // Flag queue dropped
+    boolean queueDropped = false;
 
     // Store operations
     private ArrayList<AsyncOperation> operations = new ArrayList<AsyncOperation>();
@@ -45,12 +48,14 @@ public class AsyncManager {
 
     // Drops the async queue
     public void dropAsync() {
+	Main.logDebug("Async queue dropped.");
 	for (AsyncOperation asyncOp : operations) {
 	    if (asyncOp.undo != null && asyncOp.undoRunning)
 		asyncOp.undo.finishUndo();
 	}
 	operations = new ArrayList<AsyncOperation>();
 	largeOps = new ArrayDeque<AsyncOperation>();
+	queueDropped = true;
     }
 
     // About how big is the async queue?
@@ -166,11 +171,23 @@ public class AsyncManager {
 	// Limit operations per run
 	long doneOperations = 0;
 
+	if (queueDropped) {
+	    queueDropped = false;
+	}
+	
 	// Loop until finished
 	while (doneOperations < GlobalVars.blocksPerAsync && operations.size() > 0) {
+	    if (queueDropped) {
+		queueDropped = false;
+		return;
+	    }
 	    GlobalVars.errorLogged = false;
 	    int opSize = operations.size();
 	    for (int i = 0; i < opSize; i++) {
+		if (queueDropped) {
+		    queueDropped = false;
+		    return;
+		}
 		AsyncOperation currentAsyncOp = operations.get(i);
 		if (currentAsyncOp.key.equalsIgnoreCase("iteredit")) {
 		    Block b = null;

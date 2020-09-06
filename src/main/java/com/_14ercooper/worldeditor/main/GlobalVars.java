@@ -38,6 +38,7 @@ public class GlobalVars {
     public static long undoLimit = 250000;
     public static long blocksPerAsync = 10000;
     public static long ticksPerAsync = 4;
+    public static int maxLoopLength = 5000;
 
     // No error spam
     public static boolean errorLogged = false;
