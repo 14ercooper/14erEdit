@@ -29,7 +29,13 @@ public class NoiseAtNode extends Node {
 	Block b = Operator.currentBlock;
 	int x = b.getX();
 	int z = b.getZ();
-	int y = (int) ((noise.getNum() * amplitude.getValue()) + midplane.getValue());
+	int y = 64;
+	if (midplane.getValue() < 0) {
+	    y = (int) ((noise.getNum() * amplitude.getValue()) + b.getY());
+	}
+	else {
+	    y = (int) ((noise.getNum() * amplitude.getValue()) + midplane.getValue());
+	}
 	Operator.currentBlock = Operator.currentPlayer.getWorld().getBlockAt(x, y, z);
 	boolean result = function.performNode();
 	Operator.currentBlock = b;
