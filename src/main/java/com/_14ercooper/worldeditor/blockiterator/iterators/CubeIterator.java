@@ -2,6 +2,7 @@ package com._14ercooper.worldeditor.blockiterator.iterators;
 
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 
 import com._14ercooper.worldeditor.blockiterator.BlockIterator;
@@ -166,7 +167,12 @@ public class CubeIterator extends BlockIterator {
 	    }
 	}
 
-	return Operator.currentPlayer.getWorld().getBlockAt(x, y, z);
+	try {
+	    return Operator.currentPlayer.getWorld().getBlockAt(x, y, z);
+	}
+	catch (NullPointerException e) {
+	    return Bukkit.getWorlds().get(0).getBlockAt(x, y, z);
+	}
     }
 
     @Override

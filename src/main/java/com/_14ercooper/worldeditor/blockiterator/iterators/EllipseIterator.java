@@ -2,6 +2,7 @@ package com._14ercooper.worldeditor.blockiterator.iterators;
 
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 
 import com._14ercooper.worldeditor.blockiterator.BlockIterator;
@@ -67,7 +68,12 @@ public class EllipseIterator extends BlockIterator {
 	    break;
 	}
 
-	return Operator.currentPlayer.getWorld().getBlockAt((int) x + xC, (int) y + yC, (int) z + zC);
+	try {
+	    return Operator.currentPlayer.getWorld().getBlockAt((int) x + xC, (int) y + yC, (int) z + zC);
+	}
+	catch (NullPointerException e) {
+	    return Bukkit.getWorlds().get(0).getBlockAt((int) x + xC, (int) y + yC, (int) z + zC);
+	}
     }
 
     @Override

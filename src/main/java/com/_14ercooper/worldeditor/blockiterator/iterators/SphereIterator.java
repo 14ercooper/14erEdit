@@ -2,6 +2,7 @@ package com._14ercooper.worldeditor.blockiterator.iterators;
 
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 
 import com._14ercooper.worldeditor.blockiterator.BlockIterator;
@@ -73,7 +74,12 @@ public class SphereIterator extends BlockIterator {
 	    break;
 	}
 
-	return Operator.currentPlayer.getWorld().getBlockAt(x + xC, y + yC, z + zC);
+	try {
+	    return Operator.currentPlayer.getWorld().getBlockAt(x + xC, y + yC, z + zC);
+	}
+	catch (NullPointerException e) {
+	    return Bukkit.getWorlds().get(0).getBlockAt(x + xC, y + yC, z + zC);
+	}
     }
 
     @Override
