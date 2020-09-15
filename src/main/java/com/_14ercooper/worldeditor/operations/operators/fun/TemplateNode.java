@@ -62,7 +62,7 @@ public class TemplateNode extends Node {
 	}
 	
 	// Clean up newlines
-	command = command.replaceAll("\\s+", " ");
+	command = command.replaceAll("[\\n\\r]+", " ");
 	
 	// Fill in template
 	for (int i = 0; i < args.size(); i++) {
