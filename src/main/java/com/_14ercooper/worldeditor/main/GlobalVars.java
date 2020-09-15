@@ -15,7 +15,7 @@ import com._14ercooper.worldeditor.undo.Undo;
 public class GlobalVars {
 
     // Global variables
-    public static SimplexNoise simplexNoise;
+    public static int noiseSeed;
     public static Plugin plugin;
 
     // Used to track undos

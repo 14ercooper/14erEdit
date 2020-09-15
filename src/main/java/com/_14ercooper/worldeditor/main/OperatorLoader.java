@@ -49,12 +49,16 @@ public class OperatorLoader {
 	GlobalVars.operationParser.AddOperator(";", new RemainderNode());
 	GlobalVars.operationParser.AddOperator("rem", GlobalVars.operationParser.GetOperator(";"));
 	GlobalVars.operationParser.AddOperator("remainder", GlobalVars.operationParser.GetOperator(";"));
-	GlobalVars.operationParser.AddOperator("#", new SimplexNode());
-	GlobalVars.operationParser.AddOperator("simplex", GlobalVars.operationParser.GetOperator("#"));
 	GlobalVars.operationParser.AddOperator("-con", new StringContainsNode());
 	GlobalVars.operationParser.AddOperator(";;", new EveryXNode());
 	GlobalVars.operationParser.AddOperator("every", GlobalVars.operationParser.GetOperator(";;"));
 	GlobalVars.operationParser.AddOperator("step", GlobalVars.operationParser.GetOperator(";;"));
+	GlobalVars.operationParser.AddOperator("#", new SimplexNode());
+	GlobalVars.operationParser.AddOperator("simplex", GlobalVars.operationParser.GetOperator("#"));
+	GlobalVars.operationParser.AddOperator("##", new NoiseNode());
+	GlobalVars.operationParser.AddOperator("noise", GlobalVars.operationParser.GetOperator("##"));
+	GlobalVars.operationParser.AddOperator("#a", new NoiseAtNode());
+	GlobalVars.operationParser.AddOperator("noiseat", GlobalVars.operationParser.GetOperator("#a"));
     }
 
     private static void LoadLogical() {

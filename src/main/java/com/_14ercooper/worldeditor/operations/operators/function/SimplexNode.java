@@ -3,6 +3,7 @@ package com._14ercooper.worldeditor.operations.operators.function;
 import org.bukkit.Location;
 
 import com._14ercooper.worldeditor.main.*;
+import com._14ercooper.worldeditor.main.FastNoise.NoiseType;
 import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.operations.operators.Node;
 import com._14ercooper.worldeditor.operations.operators.core.NumberNode;
@@ -37,17 +38,27 @@ public class SimplexNode extends Node {
 	    double scale = 4 * scaleFactor.getValue();
 	    if (arg1.getValue() <= 2.1 && arg1.getValue() >= 1.9) {
 		Location loc = Operator.currentBlock.getLocation();
-		return GlobalVars.simplexNoise.noise(loc.getX() / scale, loc.getZ() / scale) <= arg2.getValue();
+		FastNoise noise = new FastNoise();
+		noise.SetNoiseType(NoiseType.Simplex);
+		noise.SetSeed(GlobalVars.noiseSeed);
+		return noise.GetSimplex((float) (loc.getX() / scale), (float) (loc.getY() / scale)) <= arg2.getValue();
 	    }
 	    if (arg1.getValue() <= 3.1 && arg1.getValue() >= 2.9) {
 		Location loc = Operator.currentBlock.getLocation();
-		return GlobalVars.simplexNoise.noise(loc.getX() / scale, loc.getY() / scale, loc.getZ() / scale) <= arg2
-			.getValue();
+		FastNoise noise = new FastNoise();
+		noise.SetNoiseType(NoiseType.Simplex);
+		noise.SetSeed(GlobalVars.noiseSeed);
+		return noise.GetSimplex((float) (loc.getX() / scale), (float) (loc.getY() / scale),
+			(float) (loc.getZ() / scale)) <= arg2.getValue();
 	    }
 	    if (arg1.getValue() <= 4.1 && arg1.getValue() >= 3.9) {
 		Location loc = Operator.currentBlock.getLocation();
-		return GlobalVars.simplexNoise.noise(loc.getX() / scale, loc.getY() / scale, loc.getZ() / scale,
-			(loc.getX() + loc.getY() + loc.getZ()) * 0.33333333 / scale) <= arg2.getValue();
+		float average = (float) ((loc.getX() + loc.getY() + loc.getZ()) * 0.33333333);
+		FastNoise noise = new FastNoise();
+		noise.SetNoiseType(NoiseType.Simplex);
+		noise.SetSeed(GlobalVars.noiseSeed);
+		return noise.GetSimplex((float) (loc.getX() / scale), (float) (loc.getY() / scale),
+			(float) (loc.getZ() / scale), (float) (average / scale)) <= arg2.getValue();
 	    }
 	    Main.logError("Simplex in " + arg1.getValue() + " dimensions not found. Please check your simplex syntax.",
 		    Operator.currentPlayer);

@@ -61,10 +61,10 @@ public class Main extends JavaPlugin {
 
 	// These are needed by the plugin, but should only be loaded once as they are
 	// very slow to load
-	GlobalVars.simplexNoise = new SimplexNoise(Bukkit.getWorlds().get(0).getSeed()); // Seeded using the world seed
-											 // for variance between worlds
-											 // but consistency in the same
-											 // world
+	GlobalVars.noiseSeed = (int) Bukkit.getWorlds().get(0).getSeed(); // Seeded using the world seed
+									  // for variance between worlds
+									  // but consistency in the same
+									  // world
 	GlobalVars.plugin = this;
 
 	// Load config
