@@ -23,6 +23,8 @@ public class BrushLoader {
 	RandomCube randomCube = new RandomCube();
 	RandomDiamond randomDiamond = new RandomDiamond();
 	Column column = new Column();
+	Above above = new Above();
+	Below below = new Below();
 	Brush.AddBrushShape("cube", cube);
 	Brush.AddBrushShape("square", cube);
 	Brush.AddBrushShape("diamond", diamond);
@@ -66,5 +68,9 @@ public class BrushLoader {
 	Brush.AddBrushShape("rd", randomDiamond);
 	Brush.AddBrushShape("column", column);
 	Brush.AddBrushShape("col", column);
+	Brush.AddBrushShape("above", above);
+	Brush.AddBrushShape("up", above);
+	Brush.AddBrushShape("below", below);
+	Brush.AddBrushShape("down", below);
     }
 }

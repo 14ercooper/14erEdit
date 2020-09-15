@@ -4,21 +4,18 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 import com._14ercooper.worldeditor.main.Main;
 
 public class CommandTemplate implements CommandExecutor {
 
     @Override
-    public boolean onCommand(CommandSender arg0, Command arg1, String arg2, String[] arg3) {
-	if (!(arg0 instanceof Player))
-	    return false;
-	
-	Player player = (Player) arg0;
+    public boolean onCommand(CommandSender arg0, Command arg1, String arg2, String[] arg3) {	
+	CommandSender player = arg0;
 	
 	// Grab the filename
 	String filename;
@@ -66,7 +63,7 @@ public class CommandTemplate implements CommandExecutor {
 	
 	// Run the command
 	try {
-	    return player.performCommand(command);
+	    return Bukkit.dispatchCommand(player, command);
 	}
 	catch (Exception e) {
 	    Main.logError("Could not run command in template.", player);
