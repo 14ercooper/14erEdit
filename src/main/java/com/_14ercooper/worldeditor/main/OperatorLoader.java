@@ -192,5 +192,7 @@ public class OperatorLoader {
 
     private static void LoadFun() {
 	GlobalVars.operationParser.AddOperator("smallruin", new SmallRuinNode());
+	GlobalVars.operationParser.AddOperator("template", new TemplateNode());
+	GlobalVars.operationParser.AddOperator("tpl", GlobalVars.operationParser.GetOperator("template"));
     }
 }
