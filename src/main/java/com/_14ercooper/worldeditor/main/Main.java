@@ -29,6 +29,7 @@ public class Main extends JavaPlugin {
 	    Files.createDirectories(Paths.get("plugins/14erEdit/ops"));
 	    Files.createDirectories(Paths.get("plugins/14erEdit/Commands"));
 	    Files.createDirectories(Paths.get("plugins/14erEdit/vars"));
+	    Files.createDirectories(Paths.get("plugins/14erEdit/templates"));
 	}
 	catch (IOException e) {
 	    Main.logDebug("Error creating directory structure. 14erEdit may not work properly until this is resolved.");
@@ -49,6 +50,7 @@ public class Main extends JavaPlugin {
 	this.getCommand("14erEdit").setExecutor(new CommandInfo());
 	this.getCommand("async").setExecutor(new CommandAsync());
 	this.getCommand("brmask").setExecutor(new CommandLiquid());
+	this.getCommand("template").setExecutor(new CommandTemplate());
 
 	// Set up brush mask
 	GlobalVars.brushMask = new HashSet<Material>();

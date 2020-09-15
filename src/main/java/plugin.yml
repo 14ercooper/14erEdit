@@ -21,6 +21,10 @@ commands:
         description: Handles the ability to use craftscripts
         usage: "Usage: /script <script> [args]"
         aliases: [cs]
+    template:
+        description: Load templates for faster brushes
+        usage: "Usage: /template <file> [args...]"
+        aliases: [tpl]
     run:
         description: Run an operation without a defined world position
         usage: "Usage: /run <operation>"
