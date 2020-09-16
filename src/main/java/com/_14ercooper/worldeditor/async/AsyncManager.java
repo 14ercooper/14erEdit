@@ -3,6 +3,7 @@ package com._14ercooper.worldeditor.async;
 import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Queue;
 
 import org.bukkit.Bukkit;
@@ -25,7 +26,7 @@ public class AsyncManager {
 
     // NBT extractor for clipboard
     NBTExtractor nbtExtractor = new NBTExtractor();
-    
+
     // Flag queue dropped
     boolean queueDropped = false;
 
@@ -114,6 +115,14 @@ public class AsyncManager {
 	operations.add(new AsyncOperation(o, b));
     }
 
+    // Schedule a multibrush operation
+    public void scheduleEdit(List<BlockIterator> iterators, List<Operator> operations, Player p) {
+	AsyncOperation asyncOp = new AsyncOperation(iterators, operations, p);
+	largeOps.add(asyncOp);
+	p.sendMessage("§aMultibrushes can only be run in large edit mode without undos.");
+	p.sendMessage("§aPlease type §b/confirm §ato confirm or §b/cancel §a to cancel");
+    }
+
     // Schedule a schematics operation
     public void scheduleEdit(SchemLite sl, boolean saveSchem, Player p, int[] origin) {
 	AsyncOperation asyncOp = new AsyncOperation(sl, saveSchem, origin, p);
@@ -174,7 +183,7 @@ public class AsyncManager {
 	if (queueDropped) {
 	    queueDropped = false;
 	}
-	
+
 	// Loop until finished
 	while (doneOperations < GlobalVars.blocksPerAsync && operations.size() > 0) {
 	    if (queueDropped) {
@@ -189,6 +198,8 @@ public class AsyncManager {
 		    return;
 		}
 		AsyncOperation currentAsyncOp = operations.get(i);
+
+		// Iterator edit
 		if (currentAsyncOp.key.equalsIgnoreCase("iteredit")) {
 		    Block b = null;
 		    b = currentAsyncOp.blocks.getNext();
@@ -212,6 +223,7 @@ public class AsyncManager {
 		    GlobalVars.currentUndo = null;
 		}
 
+		// Raw iterator edit
 		else if (currentAsyncOp.key.equalsIgnoreCase("rawiteredit")) {
 		    Block b = null;
 		    b = currentAsyncOp.blocks.getNext();
@@ -231,6 +243,39 @@ public class AsyncManager {
 			continue;
 		    }
 		    currentAsyncOp.operation.operateOnBlock(b);
+		    doneOperations++;
+		    GlobalVars.currentUndo = null;
+		}
+
+		// Multibrush
+		else if (currentAsyncOp.key.equalsIgnoreCase("multibrush")) {
+		    Block b = null;
+		    boolean doContinue = false;
+		    while (true) {
+			b = currentAsyncOp.iterators.get(0).getNext();
+			if (b != null) {
+			    break;
+			}
+			if (b == null && currentAsyncOp.iterators.size() > 1) {
+			    currentAsyncOp.iterators.remove(0);
+			    currentAsyncOp.operations.remove(0);
+			    if (currentAsyncOp.iterators.size() == 0 || currentAsyncOp.operations.size() == 0) {
+				doContinue = true;
+				break;
+			    }
+			}
+			else {
+			    doContinue = true;
+			    break;
+			}
+		    }
+		    if (doContinue) {
+			this.operations.remove(i);
+			i--;
+			opSize--;
+			continue;
+		    }
+		    currentAsyncOp.operations.get(0).operateOnBlock(b, currentAsyncOp.player);
 		    doneOperations++;
 		    GlobalVars.currentUndo = null;
 		}

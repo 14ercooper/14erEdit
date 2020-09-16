@@ -30,6 +30,7 @@ public class Main extends JavaPlugin {
 	    Files.createDirectories(Paths.get("plugins/14erEdit/Commands"));
 	    Files.createDirectories(Paths.get("plugins/14erEdit/vars"));
 	    Files.createDirectories(Paths.get("plugins/14erEdit/templates"));
+	    Files.createDirectories(Paths.get("plugins/14erEdit/multibrushes"));
 	}
 	catch (IOException e) {
 	    Main.logDebug("Error creating directory structure. 14erEdit may not work properly until this is resolved.");

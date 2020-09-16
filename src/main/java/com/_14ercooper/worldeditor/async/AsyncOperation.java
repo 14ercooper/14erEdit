@@ -1,6 +1,7 @@
 package com._14ercooper.worldeditor.async;
 
 import java.util.ArrayDeque;
+import java.util.List;
 
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -69,6 +70,17 @@ public class AsyncOperation {
 	offset = cloneOffset;
 	times = cloneTimes;
 	delOriginal = delOriginalBlocks;
+	player = p;
+    }
+    
+    // Multibrush
+    List<BlockIterator> iterators;
+    List<Operator> operations;
+    
+    public AsyncOperation(List<BlockIterator> iterators, List<Operator> operations, Player p) {
+	key = "multibrush";
+	this.iterators = iterators;
+	this.operations = operations;
 	player = p;
     }
 }
