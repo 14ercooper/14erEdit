@@ -142,7 +142,7 @@ public class Brush {
 		List<String> brushes = new LinkedList<String>();
 		for (String s : brushesRaw) {
 		    if (!s.isEmpty()) {
-			for (int i = 2; i < brushOperation.length; i++) {
+			for (int i = brushOperation.length - 1; i >= 2; i--) {
 			    s = s.replaceAll("\\$" + (i - 2), brushOperation[i]);
 			}
 			brushes.add(s);

@@ -65,7 +65,7 @@ public class TemplateNode extends Node {
 	command = command.replaceAll("[\\n\\r]+", " ");
 	
 	// Fill in template
-	for (int i = 0; i < args.size(); i++) {
+	for (int i = args.size() - 1; i >= 0; i--) {
 	    command = command.replaceAll("\\$" + (i+1), args.get(i));
 	}
 	
