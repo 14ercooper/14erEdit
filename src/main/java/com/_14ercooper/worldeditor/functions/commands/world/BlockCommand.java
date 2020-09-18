@@ -33,7 +33,7 @@ public class BlockCommand extends InterpreterCommand {
 		returnVal = returnVal || blk.getType().toString().toLowerCase().contains(s.substring(1).toLowerCase());
 	    }
 	}
-	if (returnVal) function.cmpres = 1;
-	else function.cmpres = 0;
+	if (returnVal) function.cmpres = 0;
+	else function.cmpres = 1;
     }
 }

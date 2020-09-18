@@ -154,11 +154,14 @@ public class Function {
 		}
 
 		// Else (Minecraft command)
-		Bukkit.dispatchCommand(player, line);
+		boolean didRun = Bukkit.dispatchCommand(player, line);
+		if (!didRun) {
+		    Main.logError("Invalid command detected. Line " + currentLine, player);
+		}
 	    }
 	}
 	catch (Exception e) {
-	    Main.logError("Error executing function. Error on line " + currentLine + ".\nError: " + e.getMessage(), player);
+	    Main.logError("Error executing function. Error on line " + (currentLine + 1) + ".\nError: " + e.getMessage(), player);
 	    return;
 	}
 
@@ -203,14 +206,17 @@ public class Function {
 	    catch (Exception e) {
 		Main.logError("Invalid variable: " + var, player);
 	    }
+	    return;
 	}
 	if (var.equalsIgnoreCase("$ra")) {
 	    ra = num;
+	    return;
 	}
 	if (var.equalsIgnoreCase("$cmpres")) {
 	    cmpres = num;
+	    return;
 	}
-	Main.logError("Unknown variable:" + var, player);
+	Main.logError("Unknown variable: " + var, player);
     }
 
     public boolean checkCallback(int waitPos) {
