@@ -287,6 +287,7 @@ public class Main {
 	FileIO.makePath("14erEdit/vars");
 	FileIO.makePath("14erEdit/templates");
 	FileIO.makePath("14erEdit/multibrushes");
+	FileIO.makePath("14erEdit/functions");
 	System.out.println("Downloading artifacts (this could take a LONG time)...");
 	Artifacts.updateArtifacts();
 	FileIO.writeToFile("init.mms", false, "");

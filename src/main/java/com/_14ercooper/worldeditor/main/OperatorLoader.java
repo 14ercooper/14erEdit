@@ -59,6 +59,8 @@ public class OperatorLoader {
 	GlobalVars.operationParser.AddOperator("noise", GlobalVars.operationParser.GetOperator("##"));
 	GlobalVars.operationParser.AddOperator("#a", new NoiseAtNode());
 	GlobalVars.operationParser.AddOperator("noiseat", GlobalVars.operationParser.GetOperator("#a"));
+	GlobalVars.operationParser.AddOperator("fx", new FunctionNode());
+	GlobalVars.operationParser.AddOperator("function", GlobalVars.operationParser.GetOperator("fx"));
     }
 
     private static void LoadLogical() {

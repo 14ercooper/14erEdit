@@ -58,9 +58,9 @@ public class AsyncManager {
 	largeOps = new ArrayDeque<AsyncOperation>();
 	queueDropped = true;
     }
-
-    // About how big is the async queue?
-    public void asyncProgress(CommandSender p) {
+    
+    // How many blocks do we have less
+    public long getRemainingBlocks() {
 	long remBlocks = 0;
 	for (AsyncOperation a : operations) {
 	    if (a.blocks != null) {
@@ -73,6 +73,12 @@ public class AsyncManager {
 		remBlocks += 100;
 	    }
 	}
+	return remBlocks;
+    }
+
+    // About how big is the async queue?
+    public void asyncProgress(CommandSender p) {
+	long remBlocks = getRemainingBlocks();
 	int remTime = (int) (((double) remBlocks) / (GlobalVars.blocksPerAsync * (20.0 / GlobalVars.ticksPerAsync)));
 	p.sendMessage("§aThere are " + remBlocks
 		+ " blocks in the async queue, for an estimated remaining time of less than " + remTime + " seconds.");

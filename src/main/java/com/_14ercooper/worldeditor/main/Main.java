@@ -14,6 +14,7 @@ import com._14ercooper.worldeditor.async.AsyncManager;
 import com._14ercooper.worldeditor.blockiterator.IteratorManager;
 import com._14ercooper.worldeditor.brush.BrushListener;
 import com._14ercooper.worldeditor.commands.*;
+import com._14ercooper.worldeditor.functions.Function;
 import com._14ercooper.worldeditor.macros.MacroLauncher;
 import com._14ercooper.worldeditor.operations.Parser;
 import com._14ercooper.worldeditor.scripts.CraftscriptManager;
@@ -31,6 +32,7 @@ public class Main extends JavaPlugin {
 	    Files.createDirectories(Paths.get("plugins/14erEdit/vars"));
 	    Files.createDirectories(Paths.get("plugins/14erEdit/templates"));
 	    Files.createDirectories(Paths.get("plugins/14erEdit/multibrushes"));
+	    Files.createDirectories(Paths.get("plugins/14erEdit/functions"));
 	}
 	catch (IOException e) {
 	    Main.logDebug("Error creating directory structure. 14erEdit may not work properly until this is resolved.");
@@ -52,6 +54,7 @@ public class Main extends JavaPlugin {
 	this.getCommand("async").setExecutor(new CommandAsync());
 	this.getCommand("brmask").setExecutor(new CommandLiquid());
 	this.getCommand("template").setExecutor(new CommandTemplate());
+	this.getCommand("funct").setExecutor(new CommandFunction());
 
 	// Set up brush mask
 	GlobalVars.brushMask = new HashSet<Material>();
@@ -86,6 +89,7 @@ public class Main extends JavaPlugin {
 	BrushLoader.LoadBrushes();
 	OperatorLoader.LoadOperators();
 	IteratorLoader.LoadIterators();
+	Function.SetupFunctions();
     }
 
     @Override

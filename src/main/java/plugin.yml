@@ -28,6 +28,9 @@ commands:
     run:
         description: Run an operation without a defined world position
         usage: "Usage: /run <operation>"
+    funct:
+        description: Run a 14erEdit function
+        usage: "Usage: /funct <filename> [args...]"
     runat:
         description: Run a brush at a position
         usage: "Usage: /runat <x> <y> <z> <brush> <operation>"
