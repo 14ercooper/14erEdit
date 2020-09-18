@@ -1,0 +1,54 @@
+main: com._14ercooper.worldeditor.main.Main
+name: 14erEdit
+version: 1.6.0
+api-version: 1.14
+description: A world editor created by 14er for use by the Minecraft mapmaking community, including the CTMC.
+load: POSTWORLD
+author: 14er
+website: 14ercooper.com/edit
+
+commands:
+    fx:
+        description: This is the root command for editing the world
+        usage: "Usage: /fx <subcommands>"
+    un:
+        description: Undo edits to the world
+        usage: "Usage: /un [number]"
+    re:
+        description: Redo edits to the world
+        usage: "Usage: /re [number]"
+    script:
+        description: Handles the ability to use craftscripts
+        usage: "Usage: /script <script> [args]"
+        aliases: [cs]
+    template:
+        description: Load templates for faster brushes
+        usage: "Usage: /template <file> [args...]"
+        aliases: [tpl]
+    run:
+        description: Run an operation without a defined world position
+        usage: "Usage: /run <operation>"
+    funct:
+        description: Run a 14erEdit function
+        usage: "Usage: /funct <filename> [args...]"
+    runat:
+        description: Run a brush at a position
+        usage: "Usage: /runat <x> <y> <z> <brush> <operation>"
+    debug:
+        description: Toggle debug messages globally
+        usage: "Usage: /debug"
+    14erEdit:
+        description: Display plugin information
+        usage: "Usage: /14erEdit"
+    confirm:
+        description: Confirm large edits
+        usage: "Usage: /confirm [number]"
+    cancel:
+        description: Cancel large edits
+        usage: "Usage: /cancel [number]"
+    async:
+        description: Used to manage the async system
+        usage: "Usage: /async <drop|status>"
+    brmask:
+        description: Change the brush mask
+        usage: "Usage: /brmask [blocks ...]"
