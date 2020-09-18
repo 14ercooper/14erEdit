@@ -58,7 +58,7 @@ public class AsyncManager {
 	largeOps = new ArrayDeque<AsyncOperation>();
 	queueDropped = true;
     }
-    
+
     // How many blocks do we have less
     public long getRemainingBlocks() {
 	long remBlocks = 0;

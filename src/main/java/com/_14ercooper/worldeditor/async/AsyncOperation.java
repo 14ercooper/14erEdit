@@ -72,11 +72,11 @@ public class AsyncOperation {
 	delOriginal = delOriginalBlocks;
 	player = p;
     }
-    
+
     // Multibrush
     List<BlockIterator> iterators;
     List<Operator> operations;
-    
+
     public AsyncOperation(List<BlockIterator> iterators, List<Operator> operations, Player p) {
 	key = "multibrush";
 	this.iterators = iterators;

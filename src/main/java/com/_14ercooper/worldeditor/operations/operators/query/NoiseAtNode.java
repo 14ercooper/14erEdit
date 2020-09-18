@@ -13,7 +13,7 @@ public class NoiseAtNode extends Node {
     NoiseNode noise;
     NumberNode midplane, amplitude;
     Node function;
-    
+
     @Override
     public NoiseAtNode newNode() {
 	NoiseAtNode node = new NoiseAtNode();

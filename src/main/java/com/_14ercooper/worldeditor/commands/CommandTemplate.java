@@ -14,18 +14,19 @@ import com._14ercooper.worldeditor.main.Main;
 public class CommandTemplate implements CommandExecutor {
 
     @Override
-    public boolean onCommand(CommandSender arg0, Command arg1, String arg2, String[] arg3) {	
+    public boolean onCommand(CommandSender arg0, Command arg1, String arg2, String[] arg3) {
 	CommandSender player = arg0;
-	
+
 	// Grab the filename
 	String filename;
 	try {
 	    filename = "plugins/14erEdit/templates/" + arg3[0];
-	} catch (Exception e) {
+	}
+	catch (Exception e) {
 	    Main.logError("Template name required to use this command.", player);
 	    return false;
 	}
-	
+
 	// Extension expansion
 	if (Files.exists(Paths.get(filename))) {
 	    // Filename is good, keep it
@@ -40,7 +41,7 @@ public class CommandTemplate implements CommandExecutor {
 	    Main.logError("Template not found.", player);
 	    return false;
 	}
-	
+
 	// Grab the command
 	String command;
 	try {
@@ -50,17 +51,17 @@ public class CommandTemplate implements CommandExecutor {
 	    Main.logError("Error reading template file.", player);
 	    return false;
 	}
-	
+
 	// Clean up newlines
 	command = command.replaceAll("[\\n\\r]+", " ");
-	
+
 	// Fill in template
 	for (int i = arg3.length - 1; i >= 1; i--) {
 	    command = command.replaceAll("\\$" + i, arg3[i]);
 	}
-	
+
 	Main.logDebug("Template command: " + command);
-	
+
 	// Run the command
 	try {
 	    return Bukkit.dispatchCommand(player, command);

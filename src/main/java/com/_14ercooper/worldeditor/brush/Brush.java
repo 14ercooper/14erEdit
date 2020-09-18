@@ -122,7 +122,7 @@ public class Brush {
 	    else {
 		// Mark as multibrush
 		multibrush = true;
-		
+
 		// Get the file name
 		String filename = "plugins/14erEdit/multibrushes/" + brushOperation[2];
 		if (Files.exists(Paths.get(filename))) {
@@ -188,7 +188,7 @@ public class Brush {
 		    // Invalid operator?
 		    if (operation == null)
 			continue;
-		    
+
 		    // Add to the lists
 		    shapeGenerators.add(shapeGenerator);
 		    shapeArgList.add(thisShapeArgs);
@@ -230,9 +230,9 @@ public class Brush {
 		for (int i = 0; i < shapeGenerators.size(); i++) {
 		    iters.add(shapeGenerators.get(i).GetBlocks(shapeArgList.get(i), x, y, z));
 		}
-		
+
 		GlobalVars.asyncManager.scheduleEdit(iters, ops, owner);
-		
+
 		return true;
 	    }
 	}

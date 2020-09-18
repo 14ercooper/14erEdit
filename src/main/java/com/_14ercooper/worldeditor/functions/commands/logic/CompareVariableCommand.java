@@ -10,7 +10,9 @@ public class CompareVariableCommand extends InterpreterCommand {
     @Override
     public void run(List<String> args, Function function) {
 	boolean isEqual = function.parseVariable(args.get(0)) - function.parseVariable(args.get(1)) < 0.0005;
-	if (isEqual) function.cmpres = 1;
-	else function.cmpres = 0;
+	if (isEqual)
+	    function.cmpres = 1;
+	else
+	    function.cmpres = 0;
     }
 }

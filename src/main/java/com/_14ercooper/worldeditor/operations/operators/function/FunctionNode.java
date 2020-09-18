@@ -12,7 +12,7 @@ public class FunctionNode extends Node {
 
     String filename;
     List<String> args = new ArrayList<String>();
-    
+
     @Override
     public FunctionNode newNode() {
 	FunctionNode node = new FunctionNode();

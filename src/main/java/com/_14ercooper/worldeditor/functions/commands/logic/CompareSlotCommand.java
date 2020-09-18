@@ -18,8 +18,9 @@ public class CompareSlotCommand extends InterpreterCommand {
 	else {
 	    slot = Integer.parseInt(args.get(0));
 	}
-	
-	Material handItem = slot >= 0 ? function.player.getInventory().getItem(slot).getType() : function.player.getInventory().getItemInMainHand().getType();
+
+	Material handItem = slot >= 0 ? function.player.getInventory().getItem(slot).getType()
+		: function.player.getInventory().getItemInMainHand().getType();
 	String[] elements = args.get(1).split(";");
 	boolean foundMatch = false;
 	for (String s : elements) {
@@ -30,7 +31,9 @@ public class CompareSlotCommand extends InterpreterCommand {
 		foundMatch = foundMatch || handItem == Material.matchMaterial(s);
 	    }
 	}
-	if (foundMatch) function.cmpres = 1;
-	else function.cmpres = 0;
+	if (foundMatch)
+	    function.cmpres = 1;
+	else
+	    function.cmpres = 0;
     }
 }

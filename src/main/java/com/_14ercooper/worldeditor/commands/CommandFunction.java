@@ -19,7 +19,7 @@ public class CommandFunction implements CommandExecutor {
 	    Main.logError("This command must be run as a player.", arg0);
 	    return false;
 	}
-	
+
 	Player player = (Player) arg0;
 	String filename = "";
 	try {

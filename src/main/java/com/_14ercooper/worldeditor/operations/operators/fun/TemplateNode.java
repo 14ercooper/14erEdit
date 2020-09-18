@@ -19,7 +19,7 @@ public class TemplateNode extends Node {
 
     String filename;
     List<String> args = new ArrayList<String>();
-    
+
     @Override
     public TemplateNode newNode() {
 	TemplateNode node = new TemplateNode();
@@ -28,14 +28,14 @@ public class TemplateNode extends Node {
 	for (int i = 0; i < argCount; i++) {
 	    node.args.add(GlobalVars.operationParser.parseStringNode().getText());
 	}
-	
+
 	return node;
     }
 
     @Override
     public boolean performNode() {
 	Player player = Operator.currentPlayer;
-	
+
 	// Extension expansion
 	if (Files.exists(Paths.get(filename))) {
 	    // Filename is good, keep it
@@ -50,7 +50,7 @@ public class TemplateNode extends Node {
 	    Main.logError("Template not found.", player);
 	    return false;
 	}
-	
+
 	// Grab the command
 	String command;
 	try {
@@ -60,17 +60,17 @@ public class TemplateNode extends Node {
 	    Main.logError("Error reading template file.", player);
 	    return false;
 	}
-	
+
 	// Clean up newlines
 	command = command.replaceAll("[\\n\\r]+", " ");
-	
+
 	// Fill in template
 	for (int i = args.size() - 1; i >= 0; i--) {
-	    command = command.replaceAll("\\$" + (i+1), args.get(i));
+	    command = command.replaceAll("\\$" + (i + 1), args.get(i));
 	}
-	
+
 	Main.logDebug("Template command: " + command);
-	
+
 	// Run the command
 	try {
 	    Location loc = player.getLocation();

@@ -62,7 +62,7 @@ public class Function {
 	templateArgs.addAll(args);
 	this.player = player;
 	this.isOperator = isOperator;
-	
+
 	for (int i = 0; i < 10; i++) {
 	    variables.add(0.0);
 	}
@@ -115,7 +115,7 @@ public class Function {
 		    exit = true;
 		    continue;
 		}
-		
+
 		// Log error and exit if running too long
 		if (iters > GlobalVars.maxFunctionIters) {
 		    exit = true;
@@ -161,7 +161,9 @@ public class Function {
 	    }
 	}
 	catch (Exception e) {
-	    Main.logError("Error executing function. Error on line " + (currentLine + 1) + ".\nError: " + e.getMessage(), player);
+	    Main.logError(
+		    "Error executing function. Error on line " + (currentLine + 1) + ".\nError: " + e.getMessage(),
+		    player);
 	    return;
 	}
 
@@ -170,7 +172,7 @@ public class Function {
 	    waitingFunctions.add(this);
 	}
     }
-    
+
     public double parseVariable(String var) {
 	if (var.contains("$v")) {
 	    String s = var.substring(2);
@@ -196,7 +198,7 @@ public class Function {
 	    return 0;
 	}
     }
-    
+
     public void setVariable(String var, double num) {
 	if (var.contains("$v")) {
 	    String s = var.substring(2);

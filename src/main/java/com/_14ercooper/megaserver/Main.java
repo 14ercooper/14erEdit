@@ -129,8 +129,8 @@ public class Main {
 		// Start server
 		String quarterRam = String.valueOf(Integer.parseInt(RAM) / 4);
 		String eighthRam = String.valueOf(Integer.parseInt(RAM) / 8);
-		String command = "java -jar -DIReallyKnowWhatIAmDoingISwear=true -Xmx" + RAM + "M -Xms" + RAM + "M -Xss" + eighthRam + "M -Xmn" + quarterRam
-			+ "M -XX:+UseParallelGC server.jar nogui";
+		String command = "java -jar -DIReallyKnowWhatIAmDoingISwear=true -Xmx" + RAM + "M -Xms" + RAM + "M -Xss"
+			+ eighthRam + "M -Xmn" + quarterRam + "M -XX:+UseParallelGC server.jar nogui";
 		Process p = runProcess(command, "profiles/" + profile);
 		while (p.isAlive()) {
 		    Thread.sleep(5000);

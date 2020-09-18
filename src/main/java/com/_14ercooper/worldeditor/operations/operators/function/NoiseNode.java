@@ -20,22 +20,23 @@ public class NoiseNode extends Node {
     private FastNoise noise;
 
     // Valid inputs for noiseType:
-    // Value ValueFractal Perlin PerlinFractal Simplex SimplexFractal Cellular WhiteNoise WhiteNoiseInt Cubic CubicFractal
+    // Value ValueFractal Perlin PerlinFractal Simplex SimplexFractal Cellular
+    // WhiteNoise WhiteNoiseInt Cubic CubicFractal
     // Valid distances for cellular are: Euclid Manhattan Natural
-    
+
     // /fx br s 7 0.5 ? both bedrock ## cellular 2 140 4 natural set stone
-    
+
     public NoiseNode newNode() {
 	NoiseNode node = new NoiseNode();
 	node.noiseType = GlobalVars.operationParser.parseStringNode();
 	node.dimensions = GlobalVars.operationParser.parseNumberNode();
 	node.cutoff = GlobalVars.operationParser.parseNumberNode();
 	node.frequency = GlobalVars.operationParser.parseNumberNode();
-	
+
 	node.noise = new FastNoise();
 	node.noise.SetSeed(GlobalVars.noiseSeed);
 	node.noise.SetFrequency((float) (node.frequency.getValue() / 40.0));
-	
+
 	if (node.noiseType.getText().contains("Fractal") || node.noiseType.getText().contains("fractal")) {
 	    node.octaves = GlobalVars.operationParser.parseNumberNode();
 	    node.lacunarity = GlobalVars.operationParser.parseNumberNode();
@@ -55,7 +56,7 @@ public class NoiseNode extends Node {
 		node.noise.SetFractalType(FractalType.RigidMulti);
 	    }
 	}
-	
+
 	if (node.noiseType.getText().equalsIgnoreCase("cellular")) {
 	    node.distance = GlobalVars.operationParser.parseStringNode();
 	    if (node.distance.getText().equalsIgnoreCase("euclid")) {
@@ -68,10 +69,10 @@ public class NoiseNode extends Node {
 		node.noise.SetCellularDistanceFunction(CellularDistanceFunction.Natural);
 	    }
 	}
-	
+
 	return node;
     }
-    
+
     public boolean performNode() {
 	return scaleTo255(getNum()) <= cutoff.getValue();
     }
@@ -82,7 +83,7 @@ public class NoiseNode extends Node {
 	int z = Operator.currentBlock.getZ();
 	int w = (int) ((x + y + z) / 0.33333333);
 	int dim = (int) dimensions.getValue();
-	
+
 	if (noiseType.getText().equalsIgnoreCase("value")) {
 	    if (dim == 2) {
 		return noise.GetValue(x, z);
@@ -221,8 +222,8 @@ public class NoiseNode extends Node {
     public int getArgCount() {
 	return 3;
     }
-    
-    private float scaleTo255 (double val) {
+
+    private float scaleTo255(double val) {
 	val = val + 1;
 	val = val * 127.5;
 	return (float) val;

@@ -14,7 +14,7 @@ public class RegisterFunctions {
 	RegisterVariable();
 	RegisterMath();
     }
-    
+
     private static void RegisterPlayer() {
 	Function.commands.put("prtdbg", new PrintDebugCommand());
 	Function.commands.put("prterr", new PrintErrorCommand());
@@ -22,11 +22,11 @@ public class RegisterFunctions {
 	Function.commands.put("swap", new SwapCommand());
 	Function.commands.put("getpos", new GetPosCommand());
     }
-    
+
     private static void RegisterWorld() {
 	Function.commands.put("blk", new BlockCommand());
     }
-    
+
     private static void RegisterLogic() {
 	Function.commands.put("cmpvar", new CompareVariableCommand());
 	Function.commands.put("cmptext", new CompareTextCommand());
@@ -38,13 +38,13 @@ public class RegisterFunctions {
 	Function.commands.put("wait", new WaitCommand());
 	Function.commands.put("waittime", new WaitTimeCommand());
     }
-    
+
     private static void RegisterVariable() {
 	Function.commands.put("store", new StoreCommand());
 	Function.commands.put("get", new GetCommand());
 	Function.commands.put("remove", new RemoveCommand());
     }
-    
+
     private static void RegisterMath() {
 	Function.commands.put("setvar", new SetVarCommand());
 	Function.commands.put("rand", new RandCommand());
