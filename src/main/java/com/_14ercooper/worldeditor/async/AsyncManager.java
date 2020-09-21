@@ -179,6 +179,11 @@ public class AsyncManager {
 
     // Scheduled task to operate
     public void performOperation() {
+	// If in autoconfirm mode, do that
+	if (GlobalVars.autoConfirm) {
+	    confirmEdits(10);
+	}
+	
 	// If there isn't anything to do, return
 	if (operations.size() == 0)
 	    return;

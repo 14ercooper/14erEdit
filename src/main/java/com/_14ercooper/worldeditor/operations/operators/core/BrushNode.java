@@ -45,7 +45,7 @@ public class BrushNode extends Node {
 	Operator oper = new Operator(entry, Operator.currentPlayer);
 
 	// Eventually need to call this
-	GlobalVars.asyncManager.scheduleEdit(oper, Operator.currentPlayer, iter, true);
+	GlobalVars.asyncManager.scheduleEdit(oper, null, iter, true);
 	return false;
     }
 
