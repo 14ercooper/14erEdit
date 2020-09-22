@@ -71,9 +71,9 @@ public class CommandFx implements CommandExecutor {
 		    }
 		    else if (args[argOffset + 1].equalsIgnoreCase("load")) {
 			SchematicHandler.loadSchematic(args[argOffset + 2], (Player) sender,
-				args.length > argOffset + 4 ? args[argOffset + 3] : "",
-				args.length > argOffset + 5 ? Boolean.parseBoolean(args[argOffset + 4]) : false,
-				args.length > argOffset + 6 ? Integer.parseInt(args[argOffset + 5]) : 0);
+				args.length > argOffset + 3 ? args[argOffset + 3] : "",
+				args.length > argOffset + 4 ? Boolean.parseBoolean(args[argOffset + 4]) : false,
+				args.length > argOffset + 5 ? Integer.parseInt(args[argOffset + 5]) : 0);
 			return true;
 		    }
 		}
