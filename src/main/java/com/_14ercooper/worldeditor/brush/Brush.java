@@ -197,6 +197,7 @@ public class Brush {
 
 		// Save the brush
 		BrushListener.brushes.add(this);
+		player.sendMessage("§aNOTE: Multibrushes run in large edit mode, so no undo will be registered. Please be careful.");
 		player.sendMessage("§dBrush created and bound to item in hand.");
 		GlobalVars.errorLogged = false;
 	    }
