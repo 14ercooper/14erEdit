@@ -91,8 +91,10 @@ public class AsyncManager {
 	}
 	else if (b.getTotalBlocks() > GlobalVars.undoLimit) {
 	    largeOps.add(new AsyncOperation(o, p, b));
-	    p.sendMessage("§aThis is a large edit that cannot be undone, and may stall 14erEdit for a while.");
-	    p.sendMessage("§aPlease type §b/confirm §ato confirm or §b/cancel §a to cancel");
+	    if (!GlobalVars.autoConfirm) {
+		p.sendMessage("§aThis is a large edit that cannot be undone, and may stall 14erEdit for a while.");
+		p.sendMessage("§aPlease type §b/confirm §ato confirm or §b/cancel §a to cancel");
+	    }
 
 	}
 	else {
@@ -125,8 +127,10 @@ public class AsyncManager {
     public void scheduleEdit(List<BlockIterator> iterators, List<Operator> operations, Player p) {
 	AsyncOperation asyncOp = new AsyncOperation(iterators, operations, p);
 	largeOps.add(asyncOp);
-	p.sendMessage("§aMultibrushes can only be run in large edit mode without undos.");
-	p.sendMessage("§aPlease type §b/confirm §ato confirm or §b/cancel §a to cancel");
+	if (!GlobalVars.autoConfirm) {
+	    p.sendMessage("§aMultibrushes can only be run in large edit mode without undos.");
+	    p.sendMessage("§aPlease type §b/confirm §ato confirm or §b/cancel §a to cancel");
+	}
     }
 
     // Schedule a schematics operation
@@ -134,8 +138,10 @@ public class AsyncManager {
 	AsyncOperation asyncOp = new AsyncOperation(sl, saveSchem, origin, p);
 	if (asyncOp.blocks.getTotalBlocks() > GlobalVars.undoLimit) {
 	    largeOps.add(asyncOp);
-	    p.sendMessage("§aThis is a large edit that cannot be undone, and may stall 14erEdit for a while.");
-	    p.sendMessage("§aPlease type §b/confirm §ato confirm or §b/cancel §a to cancel");
+	    if (!GlobalVars.autoConfirm) {
+		p.sendMessage("§aThis is a large edit that cannot be undone, and may stall 14erEdit for a while.");
+		p.sendMessage("§aPlease type §b/confirm §ato confirm or §b/cancel §a to cancel");
+	    }
 	}
 	else {
 	    asyncOp.undo = UndoManager.getUndo(p);
@@ -148,8 +154,10 @@ public class AsyncManager {
 	AsyncOperation asyncOp = new AsyncOperation(b, offset, times, delOriginal, p);
 	if (asyncOp.blocks.getTotalBlocks() * times > GlobalVars.undoLimit) {
 	    largeOps.add(asyncOp);
-	    p.sendMessage("§aThis is a large edit that cannot be undone, and may stall 14erEdit for a while.");
-	    p.sendMessage("§aPlease type §b/confirm §ato confirm or §b/cancel §a to cancel");
+	    if (!GlobalVars.autoConfirm) {
+		p.sendMessage("§aThis is a large edit that cannot be undone, and may stall 14erEdit for a while.");
+		p.sendMessage("§aPlease type §b/confirm §ato confirm or §b/cancel §a to cancel");
+	    }
 	}
 	else {
 	    asyncOp.undo = UndoManager.getUndo(p);
@@ -183,7 +191,7 @@ public class AsyncManager {
 	if (GlobalVars.autoConfirm) {
 	    confirmEdits(10);
 	}
-	
+
 	// If there isn't anything to do, return
 	if (operations.size() == 0)
 	    return;

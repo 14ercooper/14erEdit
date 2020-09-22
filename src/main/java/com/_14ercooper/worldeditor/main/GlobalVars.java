@@ -33,7 +33,7 @@ public class GlobalVars {
 
     // For debugging
     public static boolean isDebug = false;
-    
+
     // This may be useful
     public static boolean autoConfirm = false;
 

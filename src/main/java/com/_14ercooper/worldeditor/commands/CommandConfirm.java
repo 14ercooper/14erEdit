@@ -13,7 +13,7 @@ public class CommandConfirm implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 	if (sender instanceof Player) {
 	    if (command.getName().equalsIgnoreCase("confirm")) {
-		if (args[1].equalsIgnoreCase("auto")) {
+		if (args.length > 0 && args[0].equalsIgnoreCase("auto")) {
 		    GlobalVars.autoConfirm = !GlobalVars.autoConfirm;
 		    return true;
 		}
