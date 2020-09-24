@@ -1,6 +1,7 @@
 package com._14ercooper.worldeditor.commands;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -45,7 +46,7 @@ public class CommandTemplate implements CommandExecutor {
 	// Grab the command
 	String command;
 	try {
-	    command = Files.readString(Paths.get(filename));
+	    command = readFile(filename);
 	}
 	catch (IOException e) {
 	    Main.logError("Error reading template file.", player);
@@ -70,6 +71,11 @@ public class CommandTemplate implements CommandExecutor {
 	    Main.logError("Could not run command in template.", player);
 	    return false;
 	}
+    }
+
+    static String readFile(String path) throws IOException {
+	byte[] encoded = Files.readAllBytes(Paths.get(path));
+	return new String(encoded, StandardCharsets.UTF_8);
     }
 
 }

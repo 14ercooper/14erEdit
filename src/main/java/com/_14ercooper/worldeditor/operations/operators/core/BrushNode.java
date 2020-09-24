@@ -27,7 +27,8 @@ public class BrushNode extends Node {
 		node.brushArgs.add(GlobalVars.operationParser.parseNumberNode().getValue());
 	    }
 	    node.op = GlobalVars.operationParser.parsePart();
-	    Operator.currentPlayer.sendMessage("§aNOTE: Nested brushes run in large edit mode, so no undo will be registered. Please be careful.");
+	    Operator.currentPlayer.sendMessage(
+		    "§aNOTE: Nested brushes run in large edit mode, so no undo will be registered. Please be careful.");
 	    return node;
 	}
 	catch (Exception e) {
