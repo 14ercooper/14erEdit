@@ -10,7 +10,7 @@ import org.bukkit.command.CommandSender;
 import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
 
-public class CommandLiquid implements CommandExecutor {
+public class CommandBrmask implements CommandExecutor {
 
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 	try {

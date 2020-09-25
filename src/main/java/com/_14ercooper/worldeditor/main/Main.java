@@ -52,7 +52,7 @@ public class Main extends JavaPlugin {
 	this.getCommand("debug").setExecutor(new CommandDebug());
 	this.getCommand("14erEdit").setExecutor(new CommandInfo());
 	this.getCommand("async").setExecutor(new CommandAsync());
-	this.getCommand("brmask").setExecutor(new CommandLiquid());
+	this.getCommand("brmask").setExecutor(new CommandBrmask());
 	this.getCommand("template").setExecutor(new CommandTemplate());
 	this.getCommand("funct").setExecutor(new CommandFunction());
 
@@ -60,6 +60,7 @@ public class Main extends JavaPlugin {
 	GlobalVars.brushMask = new HashSet<Material>();
 	GlobalVars.brushMask.add(Material.AIR);
 	GlobalVars.brushMask.add(Material.CAVE_AIR);
+	GlobalVars.brushMask.add(Material.VOID_AIR);
 
 	// Register listeners for brushes and wands
 	getServer().getPluginManager().registerEvents(new SelectionWandListener(), this);
