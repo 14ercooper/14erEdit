@@ -72,6 +72,7 @@ public class Main extends JavaPlugin {
 									  // for variance between worlds
 									  // but consistency in the same
 									  // world
+	GlobalVars.simplexNoise = new SimplexNoise(Bukkit.getWorlds().get(0).getSeed());
 	GlobalVars.plugin = this;
 
 	// Load config

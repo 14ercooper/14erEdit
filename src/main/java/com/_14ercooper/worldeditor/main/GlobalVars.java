@@ -16,6 +16,7 @@ public class GlobalVars {
 
     // Global variables
     public static int noiseSeed;
+    public static SimplexNoise simplexNoise;
     public static Plugin plugin;
 
     // Used to track undos
