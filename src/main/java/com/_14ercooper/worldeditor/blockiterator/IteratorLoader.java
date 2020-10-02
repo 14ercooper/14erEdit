@@ -1,9 +1,10 @@
-package com._14ercooper.worldeditor.main;
+package com._14ercooper.worldeditor.blockiterator;
 
 import com._14ercooper.worldeditor.blockiterator.iterators.*;
+import com._14ercooper.worldeditor.main.GlobalVars;
 
 public class IteratorLoader {
-    protected static void LoadIterators() {
+    public static void LoadIterators() {
 	GlobalVars.iteratorManager.addIterator("cube", new CubeIterator());
 	GlobalVars.iteratorManager.addIterator("sphere", new SphereIterator());
 	GlobalVars.iteratorManager.addIterator("cylinder", new CylinderIterator());

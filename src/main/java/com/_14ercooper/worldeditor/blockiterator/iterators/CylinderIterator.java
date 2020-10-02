@@ -35,8 +35,8 @@ public class CylinderIterator extends BlockIterator {
 	    iterator.x = -iterator.radMax - 1;
 	    iterator.y = -iterator.radMax;
 	    iterator.z = -iterator.radMax;
-	    while (y + yC < 0) {
-		y++;
+	    while (iterator.y + iterator.yC < 0) {
+		iterator.y++;
 	    }
 	    return iterator;
 	}

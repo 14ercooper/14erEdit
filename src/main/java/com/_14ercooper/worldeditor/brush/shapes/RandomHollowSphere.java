@@ -7,38 +7,59 @@ import java.util.Random;
 import com._14ercooper.worldeditor.blockiterator.BlockIterator;
 import com._14ercooper.worldeditor.brush.BrushShape;
 import com._14ercooper.worldeditor.main.*;
-import com._14ercooper.worldeditor.operations.Operator;
 
 public class RandomHollowSphere extends BrushShape {
 
+    int radiusMin, radiusMax, centerMin, centerMax;
+    String correction = "0.5";
+    int argsGot = 0;
+
     @Override
-    public BlockIterator GetBlocks(List<Double> args, double x, double y, double z) {
-	try {
-	    List<String> argList = new ArrayList<String>();
-	    Random rand = new Random();
-	    int radiusMin = (int) (double) args.get(0);
-	    int radiusMax = (int) (double) args.get(1);
-	    int centerMin = (int) (double) args.get(2);
-	    int centerMax = (int) (double) args.get(3);
-	    argList.add(Integer.toString((int) x));
-	    argList.add(Integer.toString((int) y));
-	    argList.add(Integer.toString((int) z));
-	    argList.add(Integer.toString(rand.nextInt(radiusMax - radiusMin) + radiusMin));
-	    argList.add(Integer.toString(rand.nextInt(centerMax - centerMin) + centerMin));
-	    argList.add(args.get(4).toString());
-	    return GlobalVars.iteratorManager.getIterator("sphere").newIterator(argList);
-	}
-	catch (Exception e) {
-	    Main.logError(
-		    "Could not parse random hollow sphere. Did you provide a radius min&max, thickness min&max, and correction?",
-		    Operator.currentPlayer);
-	    return null;
-	}
+    public BlockIterator GetBlocks(double x, double y, double z) {
+	List<String> argList = new ArrayList<String>();
+	Random rand = new Random();
+	argList.add(Integer.toString((int) x));
+	argList.add(Integer.toString((int) y));
+	argList.add(Integer.toString((int) z));
+	argList.add(Integer.toString(rand.nextInt(radiusMax - radiusMin) + radiusMin));
+	argList.add(Integer.toString(rand.nextInt(centerMax - centerMin) + centerMin));
+	argList.add(correction);
+	return GlobalVars.iteratorManager.getIterator("sphere").newIterator(argList);
     }
 
     @Override
-    public double GetArgCount() {
-	return 5;
+    public void addNewArgument(String argument) {
+	if (argsGot == 0) {
+	    radiusMin = Integer.parseInt(argument);
+	}
+	else if (argsGot == 1) {
+	    radiusMax = Integer.parseInt(argument);
+	}
+	else if (argsGot == 2) {
+	    centerMin = Integer.parseInt(argument);
+	}
+	else if (argsGot == 3) {
+	    centerMax = Integer.parseInt(argument);
+	}
+	else if (argsGot == 4) {
+	    try {
+		correction = argument;
+	    }
+	    catch (NumberFormatException e) {
+		argsGot++;
+	    }
+	}
+	argsGot++;
+    }
+
+    @Override
+    public boolean lastInputProcessed() {
+	return argsGot < 6;
+    }
+
+    @Override
+    public boolean gotEnoughArgs() {
+	return argsGot > 3;
     }
 
 }

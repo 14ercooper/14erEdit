@@ -6,13 +6,11 @@ import java.util.List;
 import com._14ercooper.worldeditor.blockiterator.BlockIterator;
 import com._14ercooper.worldeditor.brush.BrushShape;
 import com._14ercooper.worldeditor.main.*;
-import com._14ercooper.worldeditor.operations.Operator;
 
 public class Above extends BrushShape {
 
     @Override
-    public BlockIterator GetBlocks(List<Double> args, double x, double y, double z) {
-	try {
+    public BlockIterator GetBlocks(double x, double y, double z) {
 	    List<String> argList = new ArrayList<String>();
 	    argList.add(Integer.toString((int) x));
 	    argList.add(Integer.toString((int) y));
@@ -21,16 +19,21 @@ public class Above extends BrushShape {
 	    argList.add("255");
 	    argList.add(Integer.toString((int) z));
 	    return GlobalVars.iteratorManager.getIterator("cube").newIterator(argList);
-	}
-	catch (Exception e) {
-	    Main.logError("Could not parse column brush. This should never show up.", Operator.currentPlayer);
-	    return null;
-	}
     }
 
     @Override
-    public double GetArgCount() {
-	return 0;
+    public void addNewArgument(String argument) {
+	// Does nothing
+    }
+
+    @Override
+    public boolean lastInputProcessed() {
+	return false;
+    }
+
+    @Override
+    public boolean gotEnoughArgs() {
+	return true;
     }
 
 }

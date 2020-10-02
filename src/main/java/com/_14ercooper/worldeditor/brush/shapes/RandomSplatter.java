@@ -10,21 +10,15 @@ import com._14ercooper.worldeditor.blockiterator.BlockIterator;
 import com._14ercooper.worldeditor.blockiterator.iterators.MultiIterator;
 import com._14ercooper.worldeditor.brush.BrushShape;
 import com._14ercooper.worldeditor.main.GlobalVars;
-import com._14ercooper.worldeditor.main.Main;
-import com._14ercooper.worldeditor.operations.Operator;
 
 public class RandomSplatter extends BrushShape {
 
+    int splatterRadiusMin, splatterRadiusMax, sphereCountMin, sphereCountMax, sphereRadiusMin, sphereRadiusMax;
+    String correction = "0.5";
+    int gotArgs = 0;
+
     @Override
-    public BlockIterator GetBlocks(List<Double> args, double x, double y, double z) {
-	try {
-	    int splatterRadiusMin = (int) (double) args.get(0);
-	    int splatterRadiusMax = (int) (double) args.get(1);
-	    int sphereCountMin = (int) (double) args.get(2);
-	    int sphereCountMax = (int) (double) args.get(3);
-	    int sphereRadiusMin = (int) (double) args.get(4);
-	    int sphereRadiusMax = (int) (double) args.get(5);
-	    double radiusCorrection = args.get(6);
+    public BlockIterator GetBlocks(double x, double y, double z) {
 	    int spheresGenerated = 0;
 	    Set<BlockIterator> spheres = new HashSet<BlockIterator>();
 	    Random rand = new Random();
@@ -42,27 +36,54 @@ public class RandomSplatter extends BrushShape {
 		    argList.add(Integer.toString((int) (z + zOff)));
 		    argList.add(Integer.toString(sphereRadius));
 		    argList.add(Integer.toString(0));
-		    argList.add(Double.toString(radiusCorrection));
+		    argList.add(correction);
 		    spheres.add(GlobalVars.iteratorManager.getIterator("sphere").newIterator(argList));
 		    spheresGenerated++;
 		}
-
 	    }
 	    return ((MultiIterator) GlobalVars.iteratorManager.getIterator("multi")).newIterator(spheres);
-	}
-	catch (Exception e) {
-	    Main.logError(
-		    "Could not parse random splatter brush. Did you provide splatter radius min&max, sphere count min&max, sphere radius min&max, and radius correction?",
-		    Operator.currentPlayer);
-	    return null;
-	}
     }
 
     @Override
-    public double GetArgCount() {
-	// Splatter radius min & max, sphere count min & max, sphere radius min & max,
-	// radius correction
-	return 7;
+    public void addNewArgument(String argument) {
+	if (gotArgs == 0) {
+	    splatterRadiusMin = Integer.parseInt(argument);
+	}
+	else if (gotArgs == 1) {
+	    splatterRadiusMax = Integer.parseInt(argument);
+	}
+	else if (gotArgs == 2) {
+	    sphereCountMin = Integer.parseInt(argument);
+	}
+	else if (gotArgs == 3) {
+	    sphereCountMax = Integer.parseInt(argument);
+	}
+	else if (gotArgs == 4) {
+	    sphereRadiusMin = Integer.parseInt(argument);
+	}
+	else if (gotArgs == 5) {
+	    sphereRadiusMax = Integer.parseInt(argument);
+	}
+	else if (gotArgs == 6) {
+	    try {
+		Double.parseDouble(argument);
+		correction = argument;
+	    }
+	    catch (NumberFormatException e) {
+		gotArgs++;
+	    }
+	}
+	gotArgs++;
+    }
+
+    @Override
+    public boolean lastInputProcessed() {
+	return gotArgs < 8;
+    }
+
+    @Override
+    public boolean gotEnoughArgs() {
+	return gotArgs > 5;
     }
 
 }

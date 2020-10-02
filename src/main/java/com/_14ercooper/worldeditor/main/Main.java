@@ -11,13 +11,18 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com._14ercooper.worldeditor.async.AsyncManager;
+import com._14ercooper.worldeditor.blockiterator.IteratorLoader;
 import com._14ercooper.worldeditor.blockiterator.IteratorManager;
 import com._14ercooper.worldeditor.brush.BrushListener;
+import com._14ercooper.worldeditor.brush.BrushLoader;
 import com._14ercooper.worldeditor.commands.*;
 import com._14ercooper.worldeditor.functions.Function;
 import com._14ercooper.worldeditor.macros.MacroLauncher;
+import com._14ercooper.worldeditor.macros.MacroLoader;
 import com._14ercooper.worldeditor.make.MakeSetup;
+import com._14ercooper.worldeditor.operations.OperatorLoader;
 import com._14ercooper.worldeditor.operations.Parser;
+import com._14ercooper.worldeditor.scripts.CraftscriptLoader;
 import com._14ercooper.worldeditor.scripts.CraftscriptManager;
 import com._14ercooper.worldeditor.selection.SelectionWandListener;
 

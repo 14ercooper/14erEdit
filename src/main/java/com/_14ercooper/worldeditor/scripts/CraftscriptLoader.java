@@ -1,5 +1,6 @@
-package com._14ercooper.worldeditor.main;
+package com._14ercooper.worldeditor.scripts;
 
+import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.scripts.bundled.easyedit.*;
 import com._14ercooper.worldeditor.scripts.bundled.selection.*;
 

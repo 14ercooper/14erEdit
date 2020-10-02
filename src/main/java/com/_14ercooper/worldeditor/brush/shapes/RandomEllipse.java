@@ -7,22 +7,17 @@ import java.util.Random;
 import com._14ercooper.worldeditor.blockiterator.BlockIterator;
 import com._14ercooper.worldeditor.brush.BrushShape;
 import com._14ercooper.worldeditor.main.*;
-import com._14ercooper.worldeditor.operations.Operator;
 
 public class RandomEllipse extends BrushShape {
-    // rand.nextInt(Max - Min) + Min
+    
+    int xMin, xMax, yMin, yMax, zMin, zMax;
+    String correction;
+    int argsGot = 0;
+
     @Override
-    public BlockIterator GetBlocks(List<Double> args, double x, double y, double z) {
-	try {
+    public BlockIterator GetBlocks(double x, double y, double z) {
 	    // Generate the ellipse
 	    Random rand = new Random();
-	    int xMin = (int) (double) args.get(0);
-	    int xMax = (int) (double) args.get(1);
-	    int yMin = (int) (double) args.get(2);
-	    int yMax = (int) (double) args.get(3);
-	    int zMin = (int) (double) args.get(4);
-	    int zMax = (int) (double) args.get(5);
-	    double radiusCorrection = args.get(6);
 	    List<String> argList = new ArrayList<String>();
 	    argList.add(Integer.toString((int) x));
 	    argList.add(Integer.toString((int) y));
@@ -30,20 +25,44 @@ public class RandomEllipse extends BrushShape {
 	    argList.add(Integer.toString(rand.nextInt(xMax - xMin) + xMin));
 	    argList.add(Integer.toString(rand.nextInt(yMax - yMin) + yMin));
 	    argList.add(Integer.toString(rand.nextInt(zMax - zMin) + zMin));
-	    argList.add(Double.toString(radiusCorrection / 5.0));
+	    argList.add(correction);
 	    return GlobalVars.iteratorManager.getIterator("ellipse").newIterator(argList);
-	}
-	catch (Exception e) {
-	    Main.logError(
-		    "Could not parse random ellipse brush. Did you provide 3 dimensions with both a min and max and a correction?",
-		    Operator.currentPlayer);
-	    return null;
-	}
     }
 
     @Override
-    public double GetArgCount() {
-	return 7;
+    public void addNewArgument(String argument) {
+	if (argsGot == 0) {
+	    xMin = Integer.parseInt(argument);
+	}
+	else if (argsGot == 1) {
+	    xMax = Integer.parseInt(argument);
+	}
+	else if (argsGot == 2) {
+	    yMin = Integer.parseInt(argument);
+	}
+	else if (argsGot == 3) {
+	    yMax = Integer.parseInt(argument);
+	}
+	else if (argsGot == 4) {
+	    zMin = Integer.parseInt(argument);
+	}
+	else if (argsGot == 5) {
+	    zMax = Integer.parseInt(argument);
+	}
+	else if (argsGot == 6) {
+	    correction = argument;
+	}
+	argsGot++;
+    }
+
+    @Override
+    public boolean lastInputProcessed() {
+	return argsGot < 8;
+    }
+
+    @Override
+    public boolean gotEnoughArgs() {
+	return argsGot > 6;
     }
 
 }

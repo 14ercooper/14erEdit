@@ -6,33 +6,51 @@ import java.util.List;
 import com._14ercooper.worldeditor.blockiterator.BlockIterator;
 import com._14ercooper.worldeditor.brush.BrushShape;
 import com._14ercooper.worldeditor.main.*;
-import com._14ercooper.worldeditor.operations.Operator;
 
 public class Sphere extends BrushShape {
+    
+    String radius = "";
+    String correction = "0.5";
+    int numArgsProcessed = 0;
 
     @Override
-    public BlockIterator GetBlocks(List<Double> args, double x, double y, double z) {
-	try {
+    public BlockIterator GetBlocks(double x, double y, double z) {
 	    List<String> argList = new ArrayList<String>();
-	    int radius = (int) (double) args.get(0);
 	    argList.add(Integer.toString((int) x));
 	    argList.add(Integer.toString((int) y));
 	    argList.add(Integer.toString((int) z));
-	    argList.add(Integer.toString(radius));
+	    argList.add(radius);
 	    argList.add(Integer.toString(0));
-	    argList.add(args.get(1).toString());
+	    argList.add(correction);
 	    return GlobalVars.iteratorManager.getIterator("sphere").newIterator(argList);
-	}
-	catch (Exception e) {
-	    Main.logError("Could not parse sphere brush. Did you provide both a radius and correction?",
-		    Operator.currentPlayer);
-	    return null;
-	}
     }
 
     @Override
-    public double GetArgCount() {
-	return 2;
+    public void addNewArgument(String argument) {
+	if (numArgsProcessed == 0) {
+	    radius = argument;
+	}
+	else if (numArgsProcessed == 1) {
+	    try {
+		Double.parseDouble(argument);
+		correction = argument;
+	    }
+	    catch (NumberFormatException e) {
+		// This isn't a number, so start the operation parser
+		numArgsProcessed++;
+	    }
+	}
+	numArgsProcessed++;
+    }
+
+    @Override
+    public boolean lastInputProcessed() {
+	return numArgsProcessed < 2;
+    }
+
+    @Override
+    public boolean gotEnoughArgs() {
+	return numArgsProcessed > 0;
     }
 
 }

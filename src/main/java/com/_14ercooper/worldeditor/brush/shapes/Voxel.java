@@ -10,7 +10,7 @@ import com._14ercooper.worldeditor.main.GlobalVars;
 public class Voxel extends BrushShape {
 
     @Override
-    public BlockIterator GetBlocks(List<Double> args, double x, double y, double z) {
+    public BlockIterator GetBlocks(double x, double y, double z) {
 	List<String> argList = new ArrayList<String>();
 	argList.add(Integer.toString((int) x));
 	argList.add(Integer.toString((int) y));
@@ -22,8 +22,18 @@ public class Voxel extends BrushShape {
     }
 
     @Override
-    public double GetArgCount() {
-	return 0;
+    public void addNewArgument(String argument) {
+	// This does nothing - it's a voxel
+    }
+
+    @Override
+    public boolean lastInputProcessed() {
+	return false;
+    }
+
+    @Override
+    public boolean gotEnoughArgs() {
+	return true;
     }
 
 }

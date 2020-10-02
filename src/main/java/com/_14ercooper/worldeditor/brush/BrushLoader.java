@@ -1,6 +1,5 @@
-package com._14ercooper.worldeditor.main;
+package com._14ercooper.worldeditor.brush;
 
-import com._14ercooper.worldeditor.brush.Brush;
 import com._14ercooper.worldeditor.brush.shapes.*;
 
 public class BrushLoader {
@@ -43,8 +42,8 @@ public class BrushLoader {
 	Brush.AddBrushShape("v", voxel);
 	Brush.AddBrushShape("ss", scaledSphere);
 	Brush.AddBrushShape("scaledsphere", scaledSphere);
-	Brush.AddBrushShape("c", cylinder);
-	Brush.AddBrushShape("cylinder", cylinder);
+	Brush.AddBrushShape("oc", cylinder);
+	Brush.AddBrushShape("oldcylinder", cylinder);
 	Brush.AddBrushShape("splatter", splatter);
 	Brush.AddBrushShape("splat", splatter);
 	Brush.AddBrushShape("blob", splatter);
@@ -55,8 +54,8 @@ public class BrushLoader {
 	Brush.AddBrushShape("rb", randomSplatter);
 	Brush.AddBrushShape("randomellipse", randomEllipse);
 	Brush.AddBrushShape("re", randomEllipse);
-	Brush.AddBrushShape("randomcylinder", randomCylinder);
-	Brush.AddBrushShape("rc", randomCylinder);
+	Brush.AddBrushShape("randomoldcylinder", randomCylinder);
+	Brush.AddBrushShape("roc", randomCylinder);
 	Brush.AddBrushShape("randomhollowsphere", randomHollowSphere);
 	Brush.AddBrushShape("randomhsphere", randomHollowSphere);
 	Brush.AddBrushShape("rhs", randomHollowSphere);
