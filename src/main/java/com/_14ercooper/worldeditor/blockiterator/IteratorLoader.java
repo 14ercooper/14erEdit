@@ -12,8 +12,8 @@ public class IteratorLoader {
 	GlobalVars.iteratorManager.addIterator("diamond", new DiamondIterator());
 	GlobalVars.iteratorManager.addIterator("multi", new MultiIterator());
 	GlobalVars.iteratorManager.addIterator("schem", new SchemBrushIterator());
-	GlobalVars.iteratorManager.addIterator("newcylinder", new SchemBrushIterator());
-	GlobalVars.iteratorManager.addIterator("rotatedellipse", new SchemBrushIterator());
-	GlobalVars.iteratorManager.addIterator("spike", new SchemBrushIterator());
+	GlobalVars.iteratorManager.addIterator("newcylinder", new NewCylinderIterator());
+	GlobalVars.iteratorManager.addIterator("rotatedellipse", new RotatedEllipseIterator());
+	GlobalVars.iteratorManager.addIterator("spike", new SpikeIterator());
     }
 }

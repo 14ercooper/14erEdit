@@ -32,7 +32,7 @@ public class RotatedEllipseIterator extends BlockIterator {
 	    iterator.dX = Double.parseDouble(args.get(5)); // Direction from center to a focal point
 	    iterator.dY = Double.parseDouble(args.get(6));
 	    iterator.dZ = Double.parseDouble(args.get(7));
-	    iterator.maxDist = (int) (iterator.strL - 2 * iterator.hFD) + 1;
+	    iterator.maxDist = (int) (iterator.strL) + 1;
 	    iterator.totalBlocks = (2 * iterator.maxDist + 1) * (2 * iterator.maxDist + 1) * (2 * iterator.maxDist + 1);
 	    iterator.x = -iterator.maxDist - 1;
 	    iterator.y = -iterator.maxDist;
@@ -45,13 +45,13 @@ public class RotatedEllipseIterator extends BlockIterator {
 	    return iterator;
 	}
 	catch (Exception e) {
-	    Main.logError("Error creating sphere iterator. Please check your brush parameters.",
+	    Main.logError("Error creating rotated ellipse iterator. Please check your brush parameters.",
 		    Operator.currentPlayer);
 	    return null;
 	}
     }
     
-    Point3 focus1, focus2;
+    Point3 focus1, focus2, negCenter;
     
     private void setup() {
 	Point3 dir = new Point3(dX, dY, dZ);
@@ -60,6 +60,7 @@ public class RotatedEllipseIterator extends BlockIterator {
 	dir = dir.mult(hFD);
 	focus1 = center.add(dir);
 	focus2 = center.add(dir.mult(-1));
+	negCenter = center;
     }
 
     @Override
@@ -82,6 +83,7 @@ public class RotatedEllipseIterator extends BlockIterator {
 	    // Check that it's within the ellipse
 	    // Get what would be the needed string length
 	    Point3 blockPoint = new Point3(x, y, z);
+	    blockPoint = blockPoint.add(negCenter);
 	    double dist = blockPoint.distance(focus1) + blockPoint.distance(focus2);
 	    
 	    // Make sure it's small enough

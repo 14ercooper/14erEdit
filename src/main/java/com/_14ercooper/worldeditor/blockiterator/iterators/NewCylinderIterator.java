@@ -30,11 +30,12 @@ public class NewCylinderIterator extends BlockIterator {
 	    iterator.zC = Integer.parseInt(args.get(2));
 	    iterator.radMax = Integer.parseInt(args.get(3)); // Radius
 	    iterator.radCorr = Double.parseDouble(args.get(4));
-	    iterator.height = Integer.parseInt(args.get(5));
+	    iterator.height = Integer.parseInt(args.get(5)); // Height
 	    iterator.xS = Double.parseDouble(args.get(6)); // Scaling stuff
 	    iterator.yS = Double.parseDouble(args.get(7));
 	    iterator.zS = Double.parseDouble(args.get(8));
-	    iterator.dirMax = Math.max(height, radMax);
+	    iterator.dirMax = Math.max(iterator.height, iterator.radMax) + 2;
+	    System.out.println(iterator.dirMax);
 	    iterator.totalBlocks = (2 * iterator.dirMax + 1) * (2 * iterator.dirMax + 1) * (2 * iterator.dirMax + 1);
 	    iterator.x = -iterator.dirMax - 1;
 	    iterator.y = -iterator.dirMax;
@@ -45,7 +46,7 @@ public class NewCylinderIterator extends BlockIterator {
 	    return iterator;
 	}
 	catch (Exception e) {
-	    Main.logError("Error creating cylinder iterator. Please check your brush parameters.",
+	    Main.logError("Error creating new cylinder iterator. Please check your brush parameters.",
 		    Operator.currentPlayer);
 	    return null;
 	}

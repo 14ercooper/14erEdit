@@ -16,9 +16,9 @@ public class Spike extends BrushShape {
     @Override
     public BlockIterator GetBlocks(double x, double y, double z) {
 	List<String> args = new ArrayList<String>();
-	args.add(Double.toString(x));
-	args.add(Double.toString(y));
-	args.add(Double.toString(z));
+	args.add(Integer.toString((int) x));
+	args.add(Integer.toString((int) y));
+	args.add(Integer.toString((int) z));
 	args.add(baseSizeMax);
 	args.add(baseSizeMin);
 	args.add(height);
@@ -51,14 +51,12 @@ public class Spike extends BrushShape {
 
     @Override
     public boolean lastInputProcessed() {
-	// TODO Auto-generated method stub
-	return false;
+	return gotArgs < 4;
     }
 
     @Override
     public boolean gotEnoughArgs() {
-	// TODO Auto-generated method stub
-	return false;
+	return gotArgs > 1;
     }
 
 }

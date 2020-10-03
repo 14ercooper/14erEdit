@@ -17,9 +17,9 @@ public class RotatedEllipse extends BrushShape {
     public BlockIterator GetBlocks(double x, double y, double z) {
 	Random rand = new Random();
 	List<String> args = new ArrayList<String>();
-	args.add(Double.toString(x));
-	args.add(Double.toString(y));
-	args.add(Double.toString(z));
+	args.add(Integer.toString((int) x));
+	args.add(Integer.toString((int) y));
+	args.add(Integer.toString((int) z));
 	args.add(hFD);
 	args.add(strL);
 	if (dZ.isBlank()) {

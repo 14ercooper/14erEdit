@@ -15,9 +15,9 @@ public class NewCylinder extends BrushShape {
     @Override
     public BlockIterator GetBlocks(double x, double y, double z) {
 	List<String> args = new ArrayList<String>();
-	args.add(Double.toString(x));
-	args.add(Double.toString(y));
-	args.add(Double.toString(z));
+	args.add(Integer.toString((int) x));
+	args.add(Integer.toString((int) y));
+	args.add(Integer.toString((int) z));
 	args.add(radius);
 	args.add(correction);
 	args.add(height);

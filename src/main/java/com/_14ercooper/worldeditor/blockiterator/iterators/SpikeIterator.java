@@ -47,8 +47,9 @@ public class SpikeIterator extends BlockIterator {
 	    return iterator;
 	}
 	catch (Exception e) {
-	    Main.logError("Error creating sphere iterator. Please check your brush parameters.",
+	    Main.logError("Error creating spike iterator. Please check your brush parameters.",
 		    Operator.currentPlayer);
+	    e.printStackTrace();
 	    return null;
 	}
     }
@@ -82,14 +83,14 @@ public class SpikeIterator extends BlockIterator {
 	    // Is in spike logic
 	    // Figure out the block's distances
 	    Point3 blockPos = new Point3(x, y, z);
+	    blockPos = blockPos.add(basePos);
 	    double distToLine = spikeLine.distanceTo(blockPos);
 	    double h0 = spikeLine.distanceFromFirst(spikeLine.closestPoint(blockPos));
 	    double radMi = rMin - ((rMin * h0) / (h + 0.0001));
 	    double radMa = bSize - ((bSize * h0) / (h + 0.0001));
+	    Main.logDebug("dists " + distToLine + " " + h0 + " " + radMi + " " + radMa);
 	    
 	    // Check they are in compliance
-	    if (spikeLine.isTowardSecond(spikeLine.closestPoint(blockPos)))
-		continue;
 	    if (distToLine > radMa || (distToLine < radMi && radMi > 0.05))
 		continue;
 	    

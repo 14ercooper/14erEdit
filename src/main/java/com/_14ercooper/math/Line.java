@@ -26,10 +26,6 @@ public class Line {
     	    return pt1.distance(linePoint);
     	}
     	
-    	public boolean isTowardSecond(Point3 linePoint) {
-    	    return sameSign(dir.getX(), linePoint.getX()) && sameSign(dir.getY(), linePoint.getY()) && sameSign(dir.getZ(), linePoint.getZ());
-    	}
-    	
     	private boolean sameSign(double x, double y) {
     	    boolean xPos = x >= 0;
     	    boolean yPos = y >= 0;
