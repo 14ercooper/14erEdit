@@ -191,6 +191,8 @@ public class OperatorLoader {
 	GlobalVars.operationParser.AddOperator("gravity", GlobalVars.operationParser.GetOperator("grav"));
 	GlobalVars.operationParser.AddOperator("biome", new SetBiomeNode());
 	GlobalVars.operationParser.AddOperator("set_biome", GlobalVars.operationParser.GetOperator("biome"));
+	GlobalVars.operationParser.AddOperator("schem", new SchemBlockNode());
+	GlobalVars.operationParser.AddOperator("schematic", GlobalVars.operationParser.GetOperator("schem"));
     }
 
     private static void LoadFun() {

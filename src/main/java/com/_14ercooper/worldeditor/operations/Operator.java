@@ -15,7 +15,9 @@ public class Operator {
     public static Operator currentOperator;
     public static Block currentBlock;
     public static Player currentPlayer;
+    private static Player firstPlayer = null;
     public static boolean ignoringPhysics = false; // False to ignore physics, true to perform physics 'cause Minecraft
+    public static boolean inSetNode = false;
 						   // is screwy
     public static Map<String, BlockVar> blockVars = new HashMap<String, BlockVar>();
     public static Map<String, ItemVar> itemVars = new HashMap<String, ItemVar>();
@@ -32,6 +34,12 @@ public class Operator {
 	    currentOperator = this;
 	    currentBlock = block;
 	    currentPlayer = p;
+	    if (currentPlayer == null) {
+		if (firstPlayer == null) {
+		    firstPlayer = (Player) Bukkit.getOnlinePlayers().toArray()[0];
+		}
+		currentPlayer = firstPlayer;
+	    }
 
 	    // Perform the operation
 	    return entryNode.performNode();
@@ -49,6 +57,12 @@ public class Operator {
 	    currentOperator = this;
 	    currentBlock = block;
 	    currentPlayer = null;
+	    if (currentPlayer == null) {
+		if (firstPlayer == null) {
+		    firstPlayer = (Player) Bukkit.getOnlinePlayers().toArray()[0];
+		}
+		currentPlayer = firstPlayer;
+	    }
 
 	    // Perform the operation
 	    return entryNode.performNode();

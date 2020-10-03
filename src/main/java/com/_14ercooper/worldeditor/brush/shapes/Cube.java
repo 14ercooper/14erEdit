@@ -10,7 +10,7 @@ import com._14ercooper.worldeditor.main.*;
 public class Cube extends BrushShape {
 
     int cubeDiameter;
-    boolean gotArg = false;
+    int gotArgs = 0;
 
     @Override
     public BlockIterator GetBlocks(double x, double y, double z) {
@@ -27,20 +27,19 @@ public class Cube extends BrushShape {
 
     @Override
     public void addNewArgument(String argument) {
-	if (!gotArg) {
+	if (gotArgs == 0) {
 	    cubeDiameter = Integer.parseInt(argument);
-	    gotArg = true;
 	}
+	gotArgs++;
     }
 
     @Override
     public boolean lastInputProcessed() {
-	return !gotArg;
+	return gotArgs < 2;
     }
 
     @Override
     public boolean gotEnoughArgs() {
-	return gotArg;
+	return gotArgs > 0;
     }
-
 }

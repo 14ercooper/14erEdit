@@ -5,28 +5,29 @@ import java.util.List;
 
 import com._14ercooper.worldeditor.blockiterator.BlockIterator;
 import com._14ercooper.worldeditor.brush.BrushShape;
-import com._14ercooper.worldeditor.main.*;
+import com._14ercooper.worldeditor.main.GlobalVars;
+import com._14ercooper.worldeditor.main.Main;
 
-public class Diamond extends BrushShape {
+public class SchemShape extends BrushShape {
 
-    int radius;
+    String fileName;
     int gotArgs = 0;
-
+    
     @Override
     public BlockIterator GetBlocks(double x, double y, double z) {
-	// This uses the Manhattan distance
-	List<String> argList = new ArrayList<String>();
-	argList.add(Integer.toString((int) x));
-	argList.add(Integer.toString((int) y));
-	argList.add(Integer.toString((int) z));
-	argList.add(Integer.toString(radius));
-	return GlobalVars.iteratorManager.getIterator("diamond").newIterator(argList);
+	List<String> args = new ArrayList<String>();
+	args.add(Integer.toString((int) x));
+	args.add(Integer.toString((int) y));
+	args.add(Integer.toString((int) z));
+	Main.logDebug("Creating schematic iterator, file " + fileName);
+	args.add(fileName);
+	return GlobalVars.iteratorManager.getIterator("schem").newIterator(args);
     }
 
     @Override
     public void addNewArgument(String argument) {
 	if (gotArgs == 0) {
-	    radius = Integer.parseInt(argument);
+	    fileName = argument;
 	}
 	gotArgs++;
     }

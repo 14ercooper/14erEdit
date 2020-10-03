@@ -15,6 +15,7 @@ import org.bukkit.scheduler.BukkitScheduler;
 
 import com._14ercooper.schematics.SchemLite;
 import com._14ercooper.worldeditor.blockiterator.BlockIterator;
+import com._14ercooper.worldeditor.blockiterator.iterators.SchemBrushIterator;
 import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.main.NBTExtractor;
@@ -233,6 +234,9 @@ public class AsyncManager {
 			if (currentAsyncOp.undo != null) {
 			    currentAsyncOp.undo.finishUndo();
 			}
+			if (currentAsyncOp.blocks instanceof SchemBrushIterator) {
+			    ((SchemBrushIterator) currentAsyncOp.blocks).cleanup();
+			}
 			operations.remove(i);
 			i--;
 			opSize--;
@@ -257,6 +261,9 @@ public class AsyncManager {
 			if (currentAsyncOp.undo != null) {
 			    currentAsyncOp.undo.finishUndo();
 			}
+			if (currentAsyncOp.blocks instanceof SchemBrushIterator) {
+			    ((SchemBrushIterator) currentAsyncOp.blocks).cleanup();
+			}
 			operations.remove(i);
 			i--;
 			opSize--;
@@ -278,6 +285,9 @@ public class AsyncManager {
 			}
 			if (b == null && currentAsyncOp.iterators.size() > 1) {
 			    currentAsyncOp.iterators.remove(0);
+				if (currentAsyncOp.iterators.get(0) instanceof SchemBrushIterator) {
+				    ((SchemBrushIterator) currentAsyncOp.iterators.get(0)).cleanup();
+				}
 			    currentAsyncOp.operations.remove(0);
 			    if (currentAsyncOp.iterators.size() == 0 || currentAsyncOp.operations.size() == 0) {
 				doContinue = true;

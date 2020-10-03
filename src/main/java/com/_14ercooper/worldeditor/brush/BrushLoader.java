@@ -24,6 +24,7 @@ public class BrushLoader {
 	Column column = new Column();
 	Above above = new Above();
 	Below below = new Below();
+	SchemShape schem = new SchemShape();
 	Brush.AddBrushShape("cube", cube);
 	Brush.AddBrushShape("square", cube);
 	Brush.AddBrushShape("diamond", diamond);
@@ -71,5 +72,7 @@ public class BrushLoader {
 	Brush.AddBrushShape("up", above);
 	Brush.AddBrushShape("below", below);
 	Brush.AddBrushShape("down", below);
+	Brush.AddBrushShape("schem", schem);
+	Brush.AddBrushShape("schematic", schem);
     }
 }

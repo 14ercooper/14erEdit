@@ -20,7 +20,9 @@ public class SetNode extends Node {
     public SetNode newNode() {
 	SetNode node = new SetNode();
 	try {
+	    Operator.inSetNode = true;
 	    node.arg = (BlockNode) GlobalVars.operationParser.parsePart();
+	    Operator.inSetNode = false;
 	}
 	catch (Exception e) {
 	    Main.logError("Error parsing set block node. Please check your syntax.", Operator.currentPlayer);

@@ -143,7 +143,10 @@ public class SchemLite {
     // Get the next block in this schem lite
     public String[] readNext() throws IOException {
 	// Load the next three pieces of data into the array
-	String[] array = { reader.readLine(), reader.readLine(), reader.readLine().replaceAll("新しい線", "\n") };
+	String[] array = { reader.readLine(), reader.readLine(), reader.readLine() };
+	if (array[2] != null) {
+	    array[2] = array[2].replaceAll("新しい線", "\n");
+	}
 	return array;
     }
 
@@ -180,6 +183,17 @@ public class SchemLite {
 	xMirror = x;
 	yMirror = y;
 	zMirror = z;
+    }
+    
+    // Get dimensions
+    public int getXSize() {
+	return xSize;
+    }
+    public int getYSize() {
+	return ySize;
+    }
+    public int getZSize() {
+	return zSize;
     }
 
     // Is this marked as setting air?
