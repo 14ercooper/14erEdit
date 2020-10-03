@@ -25,6 +25,9 @@ public class BrushLoader {
 	Above above = new Above();
 	Below below = new Below();
 	SchemShape schem = new SchemShape();
+	NewCylinder cyl = new NewCylinder();
+	RotatedEllipse rotatedEllipse = new RotatedEllipse();
+	Spike spike = new Spike();
 	Brush.AddBrushShape("cube", cube);
 	Brush.AddBrushShape("square", cube);
 	Brush.AddBrushShape("diamond", diamond);
@@ -74,5 +77,11 @@ public class BrushLoader {
 	Brush.AddBrushShape("down", below);
 	Brush.AddBrushShape("schem", schem);
 	Brush.AddBrushShape("schematic", schem);
+	Brush.AddBrushShape("cylinder", cyl);
+	Brush.AddBrushShape("cyl", cyl);
+	Brush.AddBrushShape("rotatedellipse", rotatedEllipse);
+	Brush.AddBrushShape("rote", rotatedEllipse);
+	Brush.AddBrushShape("spike", spike);
+	Brush.AddBrushShape("sp", spike);
     }
 }

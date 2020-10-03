@@ -147,6 +147,8 @@ public class Brush {
     @SuppressWarnings("static-access")
     public boolean operate(double x, double y, double z) {
 	try {
+	    currentPlayer = owner;
+	    
 	    if (!(shapeGenerator instanceof Multi)) {
 		// Build an array of all blocks to operate on
 		BlockIterator blockArray = shapeGenerator.GetBlocks(x, y, z);
