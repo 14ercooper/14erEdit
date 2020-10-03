@@ -19,6 +19,13 @@ public class CommandFx implements CommandExecutor {
     private static int argOffset = 0;
 
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+	if (sender instanceof Player) {
+	    if (!((Player) sender).isOp()) {
+		sender.sendMessage("You must be opped to use 14erEdit");
+		return false;
+	    }
+	}
+	
 	try {
 	    if (args.length < argOffset + 1) {
 		Main.logError("fx requires at least one argument.", sender);

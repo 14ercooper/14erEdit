@@ -15,6 +15,13 @@ public class CommandMake implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender arg0, Command arg1, String arg2, String[] arg3) {
+	if (arg0 instanceof Player) {
+	    if (!((Player) arg0).isOp()) {
+		arg0.sendMessage("You must be opped to use 14erEdit");
+		return false;
+	    }
+	}
+	
 	if (!(arg0 instanceof Player)) {
 	    Main.logError("This must be run as a player.", arg0);
 	    return false;

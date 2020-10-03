@@ -6,6 +6,7 @@ import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
@@ -13,6 +14,13 @@ import com._14ercooper.worldeditor.main.Main;
 public class CommandBrmask implements CommandExecutor {
 
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+	if (sender instanceof Player) {
+	    if (!((Player) sender).isOp()) {
+		sender.sendMessage("You must be opped to use 14erEdit");
+		return false;
+	    }
+	}
+	
 	try {
 	    GlobalVars.brushMask = new HashSet<Material>();
 	    for (String s : args) {

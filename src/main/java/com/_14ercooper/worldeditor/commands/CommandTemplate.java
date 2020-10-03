@@ -9,6 +9,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import com._14ercooper.worldeditor.main.Main;
 
@@ -16,6 +17,13 @@ public class CommandTemplate implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender arg0, Command arg1, String arg2, String[] arg3) {
+	if (arg0 instanceof Player) {
+	    if (!((Player) arg0).isOp()) {
+		arg0.sendMessage("You must be opped to use 14erEdit");
+		return false;
+	    }
+	}
+	
 	CommandSender player = arg0;
 
 	// Grab the filename

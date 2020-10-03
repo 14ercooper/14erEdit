@@ -25,10 +25,4 @@ public class Line {
     	public double distanceFromFirst(Point3 linePoint) {
     	    return pt1.distance(linePoint);
     	}
-    	
-    	private boolean sameSign(double x, double y) {
-    	    boolean xPos = x >= 0;
-    	    boolean yPos = y >= 0;
-    	    return xPos && yPos;
-    	}
 }
