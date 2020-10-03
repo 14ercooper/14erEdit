@@ -15,16 +15,16 @@ public class RandomCube extends BrushShape {
 
     @Override
     public BlockIterator GetBlocks(double x, double y, double z) {
-	    List<String> argList = new ArrayList<String>();
-	    Random rand = new Random();
-	    int cubeRad = (int) (rand.nextInt(sideMax - sideMin) + sideMin / 2);
-	    argList.add(Integer.toString((int) x - cubeRad));
-	    argList.add(Integer.toString((int) y - cubeRad));
-	    argList.add(Integer.toString((int) z - cubeRad));
-	    argList.add(Integer.toString((int) x + cubeRad));
-	    argList.add(Integer.toString((int) y + cubeRad));
-	    argList.add(Integer.toString((int) z + cubeRad));
-	    return GlobalVars.iteratorManager.getIterator("cube").newIterator(argList);
+	List<String> argList = new ArrayList<String>();
+	Random rand = new Random();
+	int cubeRad = (int) (rand.nextInt(sideMax - sideMin) + sideMin / 2);
+	argList.add(Integer.toString((int) x - cubeRad));
+	argList.add(Integer.toString((int) y - cubeRad));
+	argList.add(Integer.toString((int) z - cubeRad));
+	argList.add(Integer.toString((int) x + cubeRad));
+	argList.add(Integer.toString((int) y + cubeRad));
+	argList.add(Integer.toString((int) z + cubeRad));
+	return GlobalVars.iteratorManager.getIterator("cube").newIterator(argList);
     }
 
     @Override

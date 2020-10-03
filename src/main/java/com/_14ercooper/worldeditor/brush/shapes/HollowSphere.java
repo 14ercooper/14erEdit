@@ -11,17 +11,17 @@ public class HollowSphere extends BrushShape {
 
     String radius, innerRadius, correction = "0.5";
     int argsSeen = 0;
-    
+
     @Override
     public BlockIterator GetBlocks(double x, double y, double z) {
-	    List<String> argList = new ArrayList<String>();
-	    argList.add(Integer.toString((int) x));
-	    argList.add(Integer.toString((int) y));
-	    argList.add(Integer.toString((int) z));
-	    argList.add(radius);
-	    argList.add(innerRadius);
-	    argList.add(correction);
-	    return GlobalVars.iteratorManager.getIterator("sphere").newIterator(argList);
+	List<String> argList = new ArrayList<String>();
+	argList.add(Integer.toString((int) x));
+	argList.add(Integer.toString((int) y));
+	argList.add(Integer.toString((int) z));
+	argList.add(radius);
+	argList.add(innerRadius);
+	argList.add(correction);
+	return GlobalVars.iteratorManager.getIterator("sphere").newIterator(argList);
     }
 
     @Override

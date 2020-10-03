@@ -15,14 +15,14 @@ public class RandomDiamond extends BrushShape {
 
     @Override
     public BlockIterator GetBlocks(double x, double y, double z) {
-	    // This uses the Manhattan distance
-	    List<String> argList = new ArrayList<String>();
-	    Random rand = new Random();
-	    argList.add(Integer.toString((int) x));
-	    argList.add(Integer.toString((int) y));
-	    argList.add(Integer.toString((int) z));
-	    argList.add(Integer.toString(rand.nextInt(radiusMax - radiusMin) + radiusMin));
-	    return GlobalVars.iteratorManager.getIterator("diamond").newIterator(argList);
+	// This uses the Manhattan distance
+	List<String> argList = new ArrayList<String>();
+	Random rand = new Random();
+	argList.add(Integer.toString((int) x));
+	argList.add(Integer.toString((int) y));
+	argList.add(Integer.toString((int) z));
+	argList.add(Integer.toString(rand.nextInt(radiusMax - radiusMin) + radiusMin));
+	return GlobalVars.iteratorManager.getIterator("diamond").newIterator(argList);
     }
 
     @Override

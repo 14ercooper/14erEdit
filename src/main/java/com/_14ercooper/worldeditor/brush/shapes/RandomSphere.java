@@ -16,16 +16,16 @@ public class RandomSphere extends BrushShape {
 
     @Override
     public BlockIterator GetBlocks(double x, double y, double z) {
-	    List<String> argList = new LinkedList<String>();
-	    Random rand = new Random();
-	    int radius = rand.nextInt(radiusMax - radiusMin) + radiusMin;
-	    argList.add(Integer.toString((int) x));
-	    argList.add(Integer.toString((int) y));
-	    argList.add(Integer.toString((int) z));
-	    argList.add(Integer.toString(radius));
-	    argList.add(Integer.toString(0));
-	    argList.add(correction);
-	    return GlobalVars.iteratorManager.getIterator("sphere").newIterator(argList);
+	List<String> argList = new LinkedList<String>();
+	Random rand = new Random();
+	int radius = rand.nextInt(radiusMax - radiusMin) + radiusMin;
+	argList.add(Integer.toString((int) x));
+	argList.add(Integer.toString((int) y));
+	argList.add(Integer.toString((int) z));
+	argList.add(Integer.toString(radius));
+	argList.add(Integer.toString(0));
+	argList.add(correction);
+	return GlobalVars.iteratorManager.getIterator("sphere").newIterator(argList);
     }
 
     @Override

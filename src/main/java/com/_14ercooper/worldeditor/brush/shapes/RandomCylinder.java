@@ -16,32 +16,32 @@ public class RandomCylinder extends BrushShape {
 
     @Override
     public BlockIterator GetBlocks(double x, double y, double z) {
-	    List<String> argList = new ArrayList<String>();
-	    Random rand = new Random();
-	    argList.add(Integer.toString((int) x));
-	    argList.add(Integer.toString((int) y));
-	    argList.add(Integer.toString((int) z));
-	    argList.add(Integer.toString(rand.nextInt(radiusMax - radiusMin) + radiusMin));
-	    argList.add(correction);
-	    // Axis X
-	    if (dimension.equalsIgnoreCase("x")) {
-		argList.add("0");
-		argList.add("1");
-		argList.add("1");
-	    }
-	    // Axis Y
-	    if (dimension.equalsIgnoreCase("y")) {
-		argList.add("1");
-		argList.add("0");
-		argList.add("1");
-	    }
-	    // Axis Z
-	    if (dimension.equalsIgnoreCase("z")) {
-		argList.add("1");
-		argList.add("1");
-		argList.add("0");
-	    }
-	    return GlobalVars.iteratorManager.getIterator("cylinder").newIterator(argList);
+	List<String> argList = new ArrayList<String>();
+	Random rand = new Random();
+	argList.add(Integer.toString((int) x));
+	argList.add(Integer.toString((int) y));
+	argList.add(Integer.toString((int) z));
+	argList.add(Integer.toString(rand.nextInt(radiusMax - radiusMin) + radiusMin));
+	argList.add(correction);
+	// Axis X
+	if (dimension.equalsIgnoreCase("x")) {
+	    argList.add("0");
+	    argList.add("1");
+	    argList.add("1");
+	}
+	// Axis Y
+	if (dimension.equalsIgnoreCase("y")) {
+	    argList.add("1");
+	    argList.add("0");
+	    argList.add("1");
+	}
+	// Axis Z
+	if (dimension.equalsIgnoreCase("z")) {
+	    argList.add("1");
+	    argList.add("1");
+	    argList.add("0");
+	}
+	return GlobalVars.iteratorManager.getIterator("cylinder").newIterator(argList);
     }
 
     @Override
@@ -58,7 +58,7 @@ public class RandomCylinder extends BrushShape {
 	else if (argsGot == 3) {
 	    dimension = argument;
 	}
-	
+
 	argsGot++;
     }
 

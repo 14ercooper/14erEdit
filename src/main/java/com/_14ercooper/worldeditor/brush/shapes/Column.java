@@ -11,20 +11,20 @@ public class Column extends BrushShape {
 
     @Override
     public BlockIterator GetBlocks(double x, double y, double z) {
-	    List<String> argList = new ArrayList<String>();
-	    argList.add(Integer.toString((int) x));
-	    argList.add("0");
-	    argList.add(Integer.toString((int) z));
-	    argList.add(Integer.toString((int) x));
-	    argList.add("255");
-	    argList.add(Integer.toString((int) z));
-	    return GlobalVars.iteratorManager.getIterator("cube").newIterator(argList);
+	List<String> argList = new ArrayList<String>();
+	argList.add(Integer.toString((int) x));
+	argList.add("0");
+	argList.add(Integer.toString((int) z));
+	argList.add(Integer.toString((int) x));
+	argList.add("255");
+	argList.add(Integer.toString((int) z));
+	return GlobalVars.iteratorManager.getIterator("cube").newIterator(argList);
     }
 
     @Override
     public void addNewArgument(String argument) {
 	// Zero argument brush, do nothing
-	
+
     }
 
     @Override

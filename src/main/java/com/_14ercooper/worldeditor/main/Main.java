@@ -112,11 +112,11 @@ public class Main extends JavaPlugin {
 	if (GlobalVars.isDebug)
 	    Bukkit.getServer().broadcastMessage("§c[DEBUG] " + message); // ----
 	try {
-        	if (GlobalVars.logDebugs) {
-        	    if (!Files.exists(Paths.get("plugins/14erEdit/debug.log")))
-        		Files.createFile(Paths.get("plugins/14erEdit/debug.log"));
-        	    Files.writeString(Paths.get("plugins/14erEdit/debug.log"), message + "\n", StandardOpenOption.APPEND);
-        	}
+	    if (GlobalVars.logDebugs) {
+		if (!Files.exists(Paths.get("plugins/14erEdit/debug.log")))
+		    Files.createFile(Paths.get("plugins/14erEdit/debug.log"));
+		Files.writeString(Paths.get("plugins/14erEdit/debug.log"), message + "\n", StandardOpenOption.APPEND);
+	    }
 	}
 	catch (Exception e) {
 	    // Do nothing, this isn't super important
@@ -124,21 +124,22 @@ public class Main extends JavaPlugin {
     }
 
     public static void logError(String message, CommandSender p) {
+	GlobalVars.errorLogged = true;
 	if (p == null)
 	    p = Bukkit.getConsoleSender();
 	p.sendMessage("§6[ERROR] " + message);
 	if (GlobalVars.logErrors) {
-        	try {
-        	    String errMessage = "";
-        	    errMessage += message + "\n";
-        	    
-        	    if (!Files.exists(Paths.get("plugins/14erEdit/error.log")))
-        		Files.createFile(Paths.get("plugins/14erEdit/error.log"));
-        	    Files.writeString(Paths.get("plugins/14erEdit/error.log"), errMessage, StandardOpenOption.APPEND);
-        	}
-        	catch (Exception e2) {
-        	    // Also not super important
-        	}
+	    try {
+		String errMessage = "";
+		errMessage += message + "\n";
+
+		if (!Files.exists(Paths.get("plugins/14erEdit/error.log")))
+		    Files.createFile(Paths.get("plugins/14erEdit/error.log"));
+		Files.writeString(Paths.get("plugins/14erEdit/error.log"), errMessage, StandardOpenOption.APPEND);
+	    }
+	    catch (Exception e2) {
+		// Also not super important
+	    }
 	}
     }
 
@@ -151,8 +152,9 @@ public class Main extends JavaPlugin {
 		Files.writeString(Paths.get("/plugins/14erEdit/config.yml"), configUpdate1, StandardOpenOption.APPEND);
 	    }
 	    catch (IOException e) {
-		System.out.println("Error updating configuration. Please manually delete the existing configuration (14erEdit/config.yml).\n"
-			+ "The server will now shut down.");
+		System.out.println(
+			"Error updating configuration. Please manually delete the existing configuration (14erEdit/config.yml).\n"
+				+ "The server will now shut down.");
 		try {
 		    Thread.sleep(15000);
 		    Bukkit.shutdown();
@@ -162,7 +164,7 @@ public class Main extends JavaPlugin {
 		}
 	    }
 	}
-	
+
 	GlobalVars.undoLimit = GlobalVars.plugin.getConfig().getLong("undoLimit");
 	GlobalVars.blocksPerAsync = GlobalVars.plugin.getConfig().getLong("blocksPerAsync");
 	GlobalVars.ticksPerAsync = GlobalVars.plugin.getConfig().getLong("ticksPerAsync");
@@ -173,16 +175,9 @@ public class Main extends JavaPlugin {
 	GlobalVars.autoConfirm = GlobalVars.plugin.getConfig().getBoolean("defaultAutoConfirm");
 	GlobalVars.isDebug = GlobalVars.plugin.getConfig().getBoolean("defaultDebug");
     }
-    
-    private static String configUpdate1 = "\n# Max execution lengths\n" + 
-    	"maxLoopLength: 5000\n" + 
-    	"maxFunctionIters: 100000\n" + 
-    	"\n" + 
-    	"# Should debugs/errors be logged to a file?\n" + 
-    	"logDebugs: false\n" + 
-    	"logErrors: true\n" + 
-    	"\n" + 
-    	"# Should debug/autoconfirm be on by default?\n" + 
-    	"defaultAutoConfirm: false\n" + 
-    	"defaultDebug: false\n";
+
+    private static String configUpdate1 = "\n# Max execution lengths\n" + "maxLoopLength: 5000\n"
+	    + "maxFunctionIters: 100000\n" + "\n" + "# Should debugs/errors be logged to a file?\n"
+	    + "logDebugs: false\n" + "logErrors: true\n" + "\n" + "# Should debug/autoconfirm be on by default?\n"
+	    + "defaultAutoConfirm: false\n" + "defaultDebug: false\n";
 }

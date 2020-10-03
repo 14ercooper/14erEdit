@@ -16,7 +16,7 @@ public class Splatter extends BrushShape {
     int splatterRadius, sphereCount, sphereRadius;
     String correction = "0.5";
     int argsSeen = 0;
-    
+
     @Override
     public BlockIterator GetBlocks(double x, double y, double z) {
 	int spheresGenerated = 0;

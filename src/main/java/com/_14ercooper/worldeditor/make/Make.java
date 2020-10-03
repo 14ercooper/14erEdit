@@ -8,9 +8,9 @@ import org.bukkit.entity.Player;
 import com._14ercooper.worldeditor.main.Main;
 
 public class Make {
-    
+
     static Map<String, MakeGenerator> generators = new HashMap<String, MakeGenerator>();
-    
+
     public static boolean make(Player player, String type, Map<String, String> tags) {
 	if (!generators.containsKey(type)) {
 	    Main.logError("Make generator not found: " + type, player);

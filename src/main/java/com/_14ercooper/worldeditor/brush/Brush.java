@@ -23,7 +23,7 @@ public class Brush {
     // Variables the brush needs
     BrushShape shapeGenerator;
     Operator operation;
-    
+
     // Static player
     public static Player currentPlayer = null;
 
@@ -71,7 +71,7 @@ public class Brush {
     public Brush(String brushShape, String brushRadius, String[] brushOperation, int brushOpOffset, Player player) {
 	try {
 	    currentPlayer = player;
-	    
+
 	    ItemStack brushItem = player.getInventory().getItemInMainHand();
 
 	    // Make sure this brush doesn't already exist. If it does, remove it
@@ -93,7 +93,8 @@ public class Brush {
 			break;
 		    }
 		    shapeGenerator.addNewArgument(brushOperation[brushOpOffset]);
-		    Main.logDebug("Passed arg \"" + brushOperation[brushOpOffset] + "\", processed=" + shapeGenerator.lastInputProcessed());
+		    Main.logDebug("Passed arg \"" + brushOperation[brushOpOffset] + "\", processed="
+			    + shapeGenerator.lastInputProcessed());
 		    brushOpOffset++;
 		}
 		while (shapeGenerator.lastInputProcessed());
@@ -112,24 +113,24 @@ public class Brush {
 	    }
 
 	    if (!(shapeGenerator instanceof Multi)) {
-        	    // Construct the operator
-        	    // Start by removing brush parameters
-        	    List<String> opArray = new LinkedList<String>(Arrays.asList(brushOperation));
-        	    while (brushOpOffset > 0) {
-        		opArray.remove(0);
-        		brushOpOffset--;
-        	    }
-        	    // Construct the string
-        	    String opStr = "";
-        	    for (String s : opArray) {
-        		opStr = opStr.concat(s).concat(" ");
-        	    }
-        	    // And then construct the operator
-        	    operation = new Operator(opStr, player);
-        
-        	    // Invalid operator?
-        	    if (operation == null)
-        		return;
+		// Construct the operator
+		// Start by removing brush parameters
+		List<String> opArray = new LinkedList<String>(Arrays.asList(brushOperation));
+		while (brushOpOffset > 0) {
+		    opArray.remove(0);
+		    brushOpOffset--;
+		}
+		// Construct the string
+		String opStr = "";
+		for (String s : opArray) {
+		    opStr = opStr.concat(s).concat(" ");
+		}
+		// And then construct the operator
+		operation = new Operator(opStr, player);
+
+		// Invalid operator?
+		if (operation == null)
+		    return;
 	    }
 
 	    // Store the brush and return success

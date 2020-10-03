@@ -46,7 +46,7 @@ public class GlobalVars {
     public static long maxFunctionIters = 100000;
     public static boolean logDebugs = false;
     public static boolean logErrors = true;
-    
+
     // No error spam
     public static boolean errorLogged = false;
 }

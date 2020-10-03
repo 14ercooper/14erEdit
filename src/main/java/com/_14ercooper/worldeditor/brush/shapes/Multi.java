@@ -20,7 +20,7 @@ public class Multi extends BrushShape {
     List<String> args = new ArrayList<String>();
     List<BlockIterator> iters = null;
     List<Operator> ops = null;
-    
+
     @Override
     public BlockIterator GetBlocks(double x, double y, double z) {
 	Main.logError("Multibrush used in a normal brush context. This is an error.", Operator.currentPlayer);
@@ -46,17 +46,17 @@ public class Multi extends BrushShape {
     public boolean gotEnoughArgs() {
 	return !file.isBlank();
     }
-    
+
     public List<BlockIterator> getIters(double x, double y, double z) {
 	genMultibrush(x, y, z);
 	return iters;
     }
-    
+
     public List<Operator> getOps(double x, double y, double z) {
 	genMultibrush(x, y, z);
 	return ops;
     }
-    
+
     @SuppressWarnings("unused")
     private void genMultibrush(double x, double y, double z) {
 	// Get the file name

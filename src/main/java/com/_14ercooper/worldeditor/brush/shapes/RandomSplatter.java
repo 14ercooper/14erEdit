@@ -19,29 +19,29 @@ public class RandomSplatter extends BrushShape {
 
     @Override
     public BlockIterator GetBlocks(double x, double y, double z) {
-	    int spheresGenerated = 0;
-	    Set<BlockIterator> spheres = new HashSet<BlockIterator>();
-	    Random rand = new Random();
-	    int sphereCount = rand.nextInt(sphereCountMax - sphereCountMin) + sphereCountMin;
-	    while (spheresGenerated < sphereCount) {
-		int splatterRadius = rand.nextInt(splatterRadiusMax - splatterRadiusMin) + splatterRadiusMin;
-		double xOff = rand.nextInt(splatterRadius) * (rand.nextInt(2) == 0 ? -1 : 1);
-		double yOff = rand.nextInt(splatterRadius) * (rand.nextInt(2) == 0 ? -1 : 1);
-		double zOff = rand.nextInt(splatterRadius) * (rand.nextInt(2) == 0 ? -1 : 1);
-		if (xOff * xOff + yOff * yOff + zOff * zOff < splatterRadius * splatterRadius + 0.5) {
-		    int sphereRadius = rand.nextInt(sphereRadiusMax - sphereRadiusMin) + sphereRadiusMin;
-		    List<String> argList = new ArrayList<String>();
-		    argList.add(Integer.toString((int) (x + xOff)));
-		    argList.add(Integer.toString((int) (y + yOff)));
-		    argList.add(Integer.toString((int) (z + zOff)));
-		    argList.add(Integer.toString(sphereRadius));
-		    argList.add(Integer.toString(0));
-		    argList.add(correction);
-		    spheres.add(GlobalVars.iteratorManager.getIterator("sphere").newIterator(argList));
-		    spheresGenerated++;
-		}
+	int spheresGenerated = 0;
+	Set<BlockIterator> spheres = new HashSet<BlockIterator>();
+	Random rand = new Random();
+	int sphereCount = rand.nextInt(sphereCountMax - sphereCountMin) + sphereCountMin;
+	while (spheresGenerated < sphereCount) {
+	    int splatterRadius = rand.nextInt(splatterRadiusMax - splatterRadiusMin) + splatterRadiusMin;
+	    double xOff = rand.nextInt(splatterRadius) * (rand.nextInt(2) == 0 ? -1 : 1);
+	    double yOff = rand.nextInt(splatterRadius) * (rand.nextInt(2) == 0 ? -1 : 1);
+	    double zOff = rand.nextInt(splatterRadius) * (rand.nextInt(2) == 0 ? -1 : 1);
+	    if (xOff * xOff + yOff * yOff + zOff * zOff < splatterRadius * splatterRadius + 0.5) {
+		int sphereRadius = rand.nextInt(sphereRadiusMax - sphereRadiusMin) + sphereRadiusMin;
+		List<String> argList = new ArrayList<String>();
+		argList.add(Integer.toString((int) (x + xOff)));
+		argList.add(Integer.toString((int) (y + yOff)));
+		argList.add(Integer.toString((int) (z + zOff)));
+		argList.add(Integer.toString(sphereRadius));
+		argList.add(Integer.toString(0));
+		argList.add(correction);
+		spheres.add(GlobalVars.iteratorManager.getIterator("sphere").newIterator(argList));
+		spheresGenerated++;
 	    }
-	    return ((MultiIterator) GlobalVars.iteratorManager.getIterator("multi")).newIterator(spheres);
+	}
+	return ((MultiIterator) GlobalVars.iteratorManager.getIterator("multi")).newIterator(spheres);
     }
 
     @Override

@@ -18,19 +18,19 @@ public class Ellipse extends BrushShape {
 	args.add("");
 	args.add("0.1");
     }
-    
+
     @Override
     public BlockIterator GetBlocks(double x, double y, double z) {
-	    // Generate the ellipse
-	    List<String> argList = new ArrayList<String>();
-	    argList.add(Integer.toString((int) x));
-	    argList.add(Integer.toString((int) y));
-	    argList.add(Integer.toString((int) z));
-	    argList.add(args.get(0));
-	    argList.add(args.get(1));
-	    argList.add(args.get(2));
-	    argList.add(args.get(3));
-	    return GlobalVars.iteratorManager.getIterator("ellipse").newIterator(argList);
+	// Generate the ellipse
+	List<String> argList = new ArrayList<String>();
+	argList.add(Integer.toString((int) x));
+	argList.add(Integer.toString((int) y));
+	argList.add(Integer.toString((int) z));
+	argList.add(args.get(0));
+	argList.add(args.get(1));
+	argList.add(args.get(2));
+	argList.add(args.get(3));
+	return GlobalVars.iteratorManager.getIterator("ellipse").newIterator(argList);
     }
 
     @Override

@@ -9,24 +9,24 @@ import com._14ercooper.worldeditor.brush.BrushShape;
 import com._14ercooper.worldeditor.main.*;
 
 public class RandomEllipse extends BrushShape {
-    
+
     int xMin, xMax, yMin, yMax, zMin, zMax;
     String correction;
     int argsGot = 0;
 
     @Override
     public BlockIterator GetBlocks(double x, double y, double z) {
-	    // Generate the ellipse
-	    Random rand = new Random();
-	    List<String> argList = new ArrayList<String>();
-	    argList.add(Integer.toString((int) x));
-	    argList.add(Integer.toString((int) y));
-	    argList.add(Integer.toString((int) z));
-	    argList.add(Integer.toString(rand.nextInt(xMax - xMin) + xMin));
-	    argList.add(Integer.toString(rand.nextInt(yMax - yMin) + yMin));
-	    argList.add(Integer.toString(rand.nextInt(zMax - zMin) + zMin));
-	    argList.add(correction);
-	    return GlobalVars.iteratorManager.getIterator("ellipse").newIterator(argList);
+	// Generate the ellipse
+	Random rand = new Random();
+	List<String> argList = new ArrayList<String>();
+	argList.add(Integer.toString((int) x));
+	argList.add(Integer.toString((int) y));
+	argList.add(Integer.toString((int) z));
+	argList.add(Integer.toString(rand.nextInt(xMax - xMin) + xMin));
+	argList.add(Integer.toString(rand.nextInt(yMax - yMin) + yMin));
+	argList.add(Integer.toString(rand.nextInt(zMax - zMin) + zMin));
+	argList.add(correction);
+	return GlobalVars.iteratorManager.getIterator("ellipse").newIterator(argList);
     }
 
     @Override

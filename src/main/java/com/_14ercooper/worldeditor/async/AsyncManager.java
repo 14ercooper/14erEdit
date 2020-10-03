@@ -203,13 +203,14 @@ public class AsyncManager {
 	    queueDropped = false;
 	}
 
+	GlobalVars.errorLogged = false;
+
 	// Loop until finished
 	while (doneOperations < GlobalVars.blocksPerAsync && operations.size() > 0) {
 	    if (queueDropped) {
 		queueDropped = false;
 		return;
 	    }
-	    GlobalVars.errorLogged = false;
 	    int opSize = operations.size();
 	    for (int i = 0; i < opSize; i++) {
 		if (queueDropped) {

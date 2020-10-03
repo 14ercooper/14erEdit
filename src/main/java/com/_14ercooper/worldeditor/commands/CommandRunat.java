@@ -1,6 +1,5 @@
 package com._14ercooper.worldeditor.commands;
 
-
 import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -59,16 +58,16 @@ public class CommandRunat implements CommandExecutor {
 	    else {
 		z = Double.parseDouble(args[2]);
 	    }
-	    
+
 	    try {
-		    BrushShape shape = new Voxel();
-		    String opStr = "";
-		    for (int i = 3; i < args.length; i++) {
-			opStr += args[i] + " ";
-		    }
-		    Operator op = new Operator(opStr, (Player) sender);
-		    GlobalVars.asyncManager.scheduleEdit(op, null, shape.GetBlocks(x, y, z));
-		    return true;
+		BrushShape shape = new Voxel();
+		String opStr = "";
+		for (int i = 3; i < args.length; i++) {
+		    opStr += args[i] + " ";
+		}
+		Operator op = new Operator(opStr, (Player) sender);
+		GlobalVars.asyncManager.scheduleEdit(op, null, shape.GetBlocks(x, y, z));
+		return true;
 	    }
 	    catch (Exception e) {
 		Main.logError("Error in runat. Please check your syntax.", sender);
