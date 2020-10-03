@@ -3,6 +3,7 @@ package com._14ercooper.worldeditor.main;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.HashSet;
 
 import org.bukkit.Bukkit;
@@ -110,19 +111,78 @@ public class Main extends JavaPlugin {
     public static void logDebug(String message) {
 	if (GlobalVars.isDebug)
 	    Bukkit.getServer().broadcastMessage("§c[DEBUG] " + message); // ----
+	try {
+        	if (GlobalVars.logDebugs) {
+        	    if (!Files.exists(Paths.get("plugins/14erEdit/debug.log")))
+        		Files.createFile(Paths.get("plugins/14erEdit/debug.log"));
+        	    Files.writeString(Paths.get("plugins/14erEdit/debug.log"), message + "\n", StandardOpenOption.APPEND);
+        	}
+	}
+	catch (Exception e) {
+	    // Do nothing, this isn't super important
+	}
     }
 
     public static void logError(String message, CommandSender p) {
 	if (p == null)
 	    p = Bukkit.getConsoleSender();
 	p.sendMessage("§6[ERROR] " + message);
+	if (GlobalVars.logErrors) {
+        	try {
+        	    String errMessage = "";
+        	    errMessage += message + "\n";
+        	    
+        	    if (!Files.exists(Paths.get("plugins/14erEdit/error.log")))
+        		Files.createFile(Paths.get("plugins/14erEdit/error.log"));
+        	    Files.writeString(Paths.get("plugins/14erEdit/error.log"), errMessage, StandardOpenOption.APPEND);
+        	}
+        	catch (Exception e2) {
+        	    // Also not super important
+        	}
+	}
     }
 
     private static void loadConfig() {
 	GlobalVars.plugin.saveDefaultConfig();
 
+	if (!GlobalVars.plugin.getConfig().isSet("maxLoopLength")) {
+	    System.out.println("Updating configuration file.");
+	    try {
+		Files.writeString(Paths.get("/plugins/14erEdit/config.yml"), configUpdate1, StandardOpenOption.APPEND);
+	    }
+	    catch (IOException e) {
+		System.out.println("Error updating configuration. Please manually delete the existing configuration (14erEdit/config.yml).\n"
+			+ "The server will now shut down.");
+		try {
+		    Thread.sleep(15000);
+		    Bukkit.shutdown();
+		}
+		catch (InterruptedException e1) {
+		    // Do nothing
+		}
+	    }
+	}
+	
 	GlobalVars.undoLimit = GlobalVars.plugin.getConfig().getLong("undoLimit");
 	GlobalVars.blocksPerAsync = GlobalVars.plugin.getConfig().getLong("blocksPerAsync");
 	GlobalVars.ticksPerAsync = GlobalVars.plugin.getConfig().getLong("ticksPerAsync");
+	GlobalVars.maxLoopLength = GlobalVars.plugin.getConfig().getLong("maxLoopLength");
+	GlobalVars.maxFunctionIters = GlobalVars.plugin.getConfig().getLong("maxFunctionIters");
+	GlobalVars.logDebugs = GlobalVars.plugin.getConfig().getBoolean("logDebugs");
+	GlobalVars.logErrors = GlobalVars.plugin.getConfig().getBoolean("logErrors");
+	GlobalVars.autoConfirm = GlobalVars.plugin.getConfig().getBoolean("defaultAutoConfirm");
+	GlobalVars.isDebug = GlobalVars.plugin.getConfig().getBoolean("defaultDebug");
     }
+    
+    private static String configUpdate1 = "\n# Max execution lengths\n" + 
+    	"maxLoopLength: 5000\n" + 
+    	"maxFunctionIters: 100000\n" + 
+    	"\n" + 
+    	"# Should debugs/errors be logged to a file?\n" + 
+    	"logDebugs: false\n" + 
+    	"logErrors: true\n" + 
+    	"\n" + 
+    	"# Should debug/autoconfirm be on by default?\n" + 
+    	"defaultAutoConfirm: false\n" + 
+    	"defaultDebug: false\n";
 }

@@ -45,7 +45,7 @@ public class Sphere extends BrushShape {
 
     @Override
     public boolean lastInputProcessed() {
-	return numArgsProcessed < 2;
+	return numArgsProcessed < 3;
     }
 
     @Override

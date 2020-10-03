@@ -85,6 +85,7 @@ public class Brush {
 
 	    // Get the shape generator, and store the args
 	    shapeGenerator = brushShapes.get(brushOperation[1]).getClass().getDeclaredConstructor().newInstance();
+	    Main.logDebug("Brush type: " + shapeGenerator.getClass().getSimpleName());
 	    try {
 		do {
 		    if (brushOperation[brushOpOffset].equalsIgnoreCase("end")) {
@@ -92,6 +93,7 @@ public class Brush {
 			break;
 		    }
 		    shapeGenerator.addNewArgument(brushOperation[brushOpOffset]);
+		    Main.logDebug("Passed arg \"" + brushOperation[brushOpOffset] + "\", processed=" + shapeGenerator.lastInputProcessed());
 		    brushOpOffset++;
 		}
 		while (shapeGenerator.lastInputProcessed());

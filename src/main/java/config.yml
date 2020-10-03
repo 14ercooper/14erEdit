@@ -6,3 +6,15 @@ blocksPerAsync: 10000
 
 # Number of real ticks between async ticks
 ticksPerAsync: 4
+
+# Max execution lengths
+maxLoopLength: 5000
+maxFunctionIters: 100000
+
+# Should debugs/errors be logged to a file?
+logDebugs: false
+logErrors: true
+
+# Should debug/autoconfirm be on by default?
+defaultAutoConfirm: false
+defaultDebug: false

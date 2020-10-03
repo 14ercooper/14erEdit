@@ -14,7 +14,6 @@ import com._14ercooper.worldeditor.operations.operators.Node;
 public class BrushNode extends Node {
 
     public BrushShape shape = null;
-    public List<Double> brushArgs = null;
     public Node op = null;
 
     @Override

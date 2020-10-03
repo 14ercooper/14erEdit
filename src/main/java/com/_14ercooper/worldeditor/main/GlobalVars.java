@@ -42,9 +42,11 @@ public class GlobalVars {
     public static long undoLimit = 250000;
     public static long blocksPerAsync = 10000;
     public static long ticksPerAsync = 4;
-    public static int maxLoopLength = 5000;
+    public static long maxLoopLength = 5000;
     public static long maxFunctionIters = 100000;
-
+    public static boolean logDebugs = false;
+    public static boolean logErrors = true;
+    
     // No error spam
     public static boolean errorLogged = false;
 }
