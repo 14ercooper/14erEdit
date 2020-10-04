@@ -88,7 +88,7 @@ public class Brush {
 	    Main.logDebug("Brush type: " + shapeGenerator.getClass().getSimpleName());
 	    try {
 		do {
-		    if (brushOperation[brushOpOffset].equalsIgnoreCase("end")) {
+		    if (brushOpOffset >= brushOperation.length || brushOperation[brushOpOffset].equalsIgnoreCase("end")) {
 			brushOpOffset += 2;
 			break;
 		    }
@@ -174,6 +174,7 @@ public class Brush {
 	    }
 	}
 	catch (Exception e) {
+	    e.printStackTrace();
 	    Main.logError("Error operating with brush. Please check your syntax.", owner);
 	    return false;
 	}

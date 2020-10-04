@@ -53,12 +53,15 @@ public class Multi extends BrushShape {
     }
 
     public List<Operator> getOps(double x, double y, double z) {
-	genMultibrush(x, y, z);
 	return ops;
     }
 
     @SuppressWarnings("unused")
     private void genMultibrush(double x, double y, double z) {
+	// Create the lists
+	iters = new ArrayList<BlockIterator>();
+	ops = new ArrayList<Operator>();
+	
 	// Get the file name
 	String filename = "plugins/14erEdit/multibrushes/" + file;
 	if (Files.exists(Paths.get(filename))) {
