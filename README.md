@@ -20,7 +20,6 @@ Directly access the operations system for maximum power and customizability, or 
 ### Top Tier Supporters
 
  - CooleyBrekka
- - Princerbang
 
 Thanks for helping keep these projects running!
 
