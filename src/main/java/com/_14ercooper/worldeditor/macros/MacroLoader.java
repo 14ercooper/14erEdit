@@ -1,7 +1,8 @@
-package com._14ercooper.worldeditor.main;
+package com._14ercooper.worldeditor.macros;
 
 import com._14ercooper.worldeditor.macros.macros.nature.*;
 import com._14ercooper.worldeditor.macros.macros.technical.*;
+import com._14ercooper.worldeditor.main.GlobalVars;
 
 public class MacroLoader {
 

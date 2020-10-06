@@ -15,6 +15,7 @@ import org.bukkit.scheduler.BukkitScheduler;
 
 import com._14ercooper.schematics.SchemLite;
 import com._14ercooper.worldeditor.blockiterator.BlockIterator;
+import com._14ercooper.worldeditor.blockiterator.iterators.SchemBrushIterator;
 import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.main.NBTExtractor;
@@ -91,8 +92,10 @@ public class AsyncManager {
 	}
 	else if (b.getTotalBlocks() > GlobalVars.undoLimit) {
 	    largeOps.add(new AsyncOperation(o, p, b));
-	    p.sendMessage("§aThis is a large edit that cannot be undone, and may stall 14erEdit for a while.");
-	    p.sendMessage("§aPlease type §b/confirm §ato confirm or §b/cancel §a to cancel");
+	    if (!GlobalVars.autoConfirm) {
+		p.sendMessage("§aThis is a large edit that cannot be undone, and may stall 14erEdit for a while.");
+		p.sendMessage("§aPlease type §b/confirm §ato confirm or §b/cancel §a to cancel");
+	    }
 
 	}
 	else {
@@ -125,8 +128,10 @@ public class AsyncManager {
     public void scheduleEdit(List<BlockIterator> iterators, List<Operator> operations, Player p) {
 	AsyncOperation asyncOp = new AsyncOperation(iterators, operations, p);
 	largeOps.add(asyncOp);
-	p.sendMessage("§aMultibrushes can only be run in large edit mode without undos.");
-	p.sendMessage("§aPlease type §b/confirm §ato confirm or §b/cancel §a to cancel");
+	if (!GlobalVars.autoConfirm) {
+	    p.sendMessage("§aMultibrushes can only be run in large edit mode without undos.");
+	    p.sendMessage("§aPlease type §b/confirm §ato confirm or §b/cancel §a to cancel");
+	}
     }
 
     // Schedule a schematics operation
@@ -134,8 +139,10 @@ public class AsyncManager {
 	AsyncOperation asyncOp = new AsyncOperation(sl, saveSchem, origin, p);
 	if (asyncOp.blocks.getTotalBlocks() > GlobalVars.undoLimit) {
 	    largeOps.add(asyncOp);
-	    p.sendMessage("§aThis is a large edit that cannot be undone, and may stall 14erEdit for a while.");
-	    p.sendMessage("§aPlease type §b/confirm §ato confirm or §b/cancel §a to cancel");
+	    if (!GlobalVars.autoConfirm) {
+		p.sendMessage("§aThis is a large edit that cannot be undone, and may stall 14erEdit for a while.");
+		p.sendMessage("§aPlease type §b/confirm §ato confirm or §b/cancel §a to cancel");
+	    }
 	}
 	else {
 	    asyncOp.undo = UndoManager.getUndo(p);
@@ -148,8 +155,10 @@ public class AsyncManager {
 	AsyncOperation asyncOp = new AsyncOperation(b, offset, times, delOriginal, p);
 	if (asyncOp.blocks.getTotalBlocks() * times > GlobalVars.undoLimit) {
 	    largeOps.add(asyncOp);
-	    p.sendMessage("§aThis is a large edit that cannot be undone, and may stall 14erEdit for a while.");
-	    p.sendMessage("§aPlease type §b/confirm §ato confirm or §b/cancel §a to cancel");
+	    if (!GlobalVars.autoConfirm) {
+		p.sendMessage("§aThis is a large edit that cannot be undone, and may stall 14erEdit for a while.");
+		p.sendMessage("§aPlease type §b/confirm §ato confirm or §b/cancel §a to cancel");
+	    }
 	}
 	else {
 	    asyncOp.undo = UndoManager.getUndo(p);
@@ -179,6 +188,11 @@ public class AsyncManager {
 
     // Scheduled task to operate
     public void performOperation() {
+	// If in autoconfirm mode, do that
+	if (GlobalVars.autoConfirm) {
+	    confirmEdits(10);
+	}
+
 	// If there isn't anything to do, return
 	if (operations.size() == 0)
 	    return;
@@ -190,13 +204,14 @@ public class AsyncManager {
 	    queueDropped = false;
 	}
 
+	GlobalVars.errorLogged = false;
+
 	// Loop until finished
 	while (doneOperations < GlobalVars.blocksPerAsync && operations.size() > 0) {
 	    if (queueDropped) {
 		queueDropped = false;
 		return;
 	    }
-	    GlobalVars.errorLogged = false;
 	    int opSize = operations.size();
 	    for (int i = 0; i < opSize; i++) {
 		if (queueDropped) {
@@ -218,6 +233,9 @@ public class AsyncManager {
 		    if (b == null) {
 			if (currentAsyncOp.undo != null) {
 			    currentAsyncOp.undo.finishUndo();
+			}
+			if (currentAsyncOp.blocks instanceof SchemBrushIterator) {
+			    ((SchemBrushIterator) currentAsyncOp.blocks).cleanup();
 			}
 			operations.remove(i);
 			i--;
@@ -243,6 +261,9 @@ public class AsyncManager {
 			if (currentAsyncOp.undo != null) {
 			    currentAsyncOp.undo.finishUndo();
 			}
+			if (currentAsyncOp.blocks instanceof SchemBrushIterator) {
+			    ((SchemBrushIterator) currentAsyncOp.blocks).cleanup();
+			}
 			operations.remove(i);
 			i--;
 			opSize--;
@@ -264,6 +285,9 @@ public class AsyncManager {
 			}
 			if (b == null && currentAsyncOp.iterators.size() > 1) {
 			    currentAsyncOp.iterators.remove(0);
+				if (currentAsyncOp.iterators.get(0) instanceof SchemBrushIterator) {
+				    ((SchemBrushIterator) currentAsyncOp.iterators.get(0)).cleanup();
+				}
 			    currentAsyncOp.operations.remove(0);
 			    if (currentAsyncOp.iterators.size() == 0 || currentAsyncOp.operations.size() == 0) {
 				doContinue = true;

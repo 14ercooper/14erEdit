@@ -10,52 +10,69 @@ import com._14ercooper.worldeditor.blockiterator.BlockIterator;
 import com._14ercooper.worldeditor.blockiterator.iterators.MultiIterator;
 import com._14ercooper.worldeditor.brush.BrushShape;
 import com._14ercooper.worldeditor.main.GlobalVars;
-import com._14ercooper.worldeditor.main.Main;
-import com._14ercooper.worldeditor.operations.Operator;
 
 public class Splatter extends BrushShape {
 
-    @Override
-    public BlockIterator GetBlocks(List<Double> args, double x, double y, double z) {
-	try {
-	    int splatterRadius = (int) (double) args.get(0);
-	    int sphereCount = (int) (double) args.get(1);
-	    int sphereRadius = (int) (double) args.get(2);
-	    double radiusCorrection = args.get(3);
-	    int spheresGenerated = 0;
-	    Set<BlockIterator> spheres = new HashSet<BlockIterator>();
-	    Random rand = new Random();
-	    while (spheresGenerated < sphereCount) {
-		double xOff = rand.nextInt((2 * splatterRadius) + 1) - splatterRadius;
-		double yOff = rand.nextInt((2 * splatterRadius) + 1) - splatterRadius;
-		double zOff = rand.nextInt((2 * splatterRadius) + 1) - splatterRadius;
-		if (xOff * xOff + yOff * yOff + zOff * zOff < splatterRadius * splatterRadius + 0.5) {
-		    List<String> argList = new ArrayList<String>();
-		    argList.add(Integer.toString((int) (x + xOff)));
-		    argList.add(Integer.toString((int) (y + yOff)));
-		    argList.add(Integer.toString((int) (z + zOff)));
-		    argList.add(Integer.toString(sphereRadius));
-		    argList.add(Integer.toString(0));
-		    argList.add(Double.toString(radiusCorrection));
-		    spheres.add(GlobalVars.iteratorManager.getIterator("sphere").newIterator(argList));
-		    spheresGenerated++;
-		}
+    int splatterRadius, sphereCount, sphereRadius;
+    String correction = "0.5";
+    int argsSeen = 0;
 
+    @Override
+    public BlockIterator GetBlocks(double x, double y, double z) {
+	int spheresGenerated = 0;
+	Set<BlockIterator> spheres = new HashSet<BlockIterator>();
+	Random rand = new Random();
+	while (spheresGenerated < sphereCount) {
+	    double xOff = rand.nextInt((2 * splatterRadius) + 1) - splatterRadius;
+	    double yOff = rand.nextInt((2 * splatterRadius) + 1) - splatterRadius;
+	    double zOff = rand.nextInt((2 * splatterRadius) + 1) - splatterRadius;
+	    if (xOff * xOff + yOff * yOff + zOff * zOff < splatterRadius * splatterRadius + 0.5) {
+		List<String> argList = new ArrayList<String>();
+		argList.add(Integer.toString((int) (x + xOff)));
+		argList.add(Integer.toString((int) (y + yOff)));
+		argList.add(Integer.toString((int) (z + zOff)));
+		argList.add(Integer.toString(sphereRadius));
+		argList.add(Integer.toString(0));
+		argList.add(correction);
+		spheres.add(GlobalVars.iteratorManager.getIterator("sphere").newIterator(argList));
+		spheresGenerated++;
 	    }
-	    return ((MultiIterator) GlobalVars.iteratorManager.getIterator("multi")).newIterator(spheres);
+
 	}
-	catch (Exception e) {
-	    Main.logError(
-		    "Could not parse splatter brush. Did you provide splatter radius, sphere count, sphere radius, and radius correction?",
-		    Operator.currentPlayer);
-	    return null;
-	}
+	return ((MultiIterator) GlobalVars.iteratorManager.getIterator("multi")).newIterator(spheres);
     }
 
     @Override
-    public double GetArgCount() {
-	// Splatter radius, sphere count, sphere radius, radius correction
-	return 4;
+    public void addNewArgument(String argument) {
+	if (argsSeen == 0) {
+	    splatterRadius = Integer.parseInt(argument);
+	}
+	if (argsSeen == 1) {
+	    sphereCount = Integer.parseInt(argument);
+	}
+	if (argsSeen == 2) {
+	    sphereRadius = Integer.parseInt(argument);
+	}
+	if (argsSeen == 3) {
+	    try {
+		Double.parseDouble(argument);
+		correction = argument;
+	    }
+	    catch (NumberFormatException e) {
+		argsSeen++;
+	    }
+	}
+	argsSeen++;
+    }
+
+    @Override
+    public boolean lastInputProcessed() {
+	return argsSeen < 5;
+    }
+
+    @Override
+    public boolean gotEnoughArgs() {
+	return argsSeen > 2;
     }
 
 }

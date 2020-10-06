@@ -1,6 +1,7 @@
-package com._14ercooper.worldeditor.operations.operators.fun;
+package com._14ercooper.worldeditor.operations.operators.core;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -54,7 +55,7 @@ public class TemplateNode extends Node {
 	// Grab the command
 	String command;
 	try {
-	    command = Files.readString(Paths.get(filename));
+	    command = readFile(filename);
 	}
 	catch (IOException e) {
 	    Main.logError("Error reading template file.", player);
@@ -83,6 +84,11 @@ public class TemplateNode extends Node {
 	    Main.logError("Could not run command in template.", player);
 	    return false;
 	}
+    }
+
+    static String readFile(String path) throws IOException {
+	byte[] encoded = Files.readAllBytes(Paths.get(path));
+	return new String(encoded, StandardCharsets.UTF_8);
     }
 
     @Override

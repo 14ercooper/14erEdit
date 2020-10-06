@@ -1,6 +1,5 @@
-package com._14ercooper.worldeditor.main;
+package com._14ercooper.worldeditor.brush;
 
-import com._14ercooper.worldeditor.brush.Brush;
 import com._14ercooper.worldeditor.brush.shapes.*;
 
 public class BrushLoader {
@@ -25,6 +24,11 @@ public class BrushLoader {
 	Column column = new Column();
 	Above above = new Above();
 	Below below = new Below();
+	SchemShape schem = new SchemShape();
+	NewCylinder cyl = new NewCylinder();
+	RotatedEllipse rotatedEllipse = new RotatedEllipse();
+	Spike spike = new Spike();
+	Multi multi = new Multi();
 	Brush.AddBrushShape("cube", cube);
 	Brush.AddBrushShape("square", cube);
 	Brush.AddBrushShape("diamond", diamond);
@@ -43,8 +47,8 @@ public class BrushLoader {
 	Brush.AddBrushShape("v", voxel);
 	Brush.AddBrushShape("ss", scaledSphere);
 	Brush.AddBrushShape("scaledsphere", scaledSphere);
-	Brush.AddBrushShape("c", cylinder);
-	Brush.AddBrushShape("cylinder", cylinder);
+	Brush.AddBrushShape("oc", cylinder);
+	Brush.AddBrushShape("oldcylinder", cylinder);
 	Brush.AddBrushShape("splatter", splatter);
 	Brush.AddBrushShape("splat", splatter);
 	Brush.AddBrushShape("blob", splatter);
@@ -55,8 +59,8 @@ public class BrushLoader {
 	Brush.AddBrushShape("rb", randomSplatter);
 	Brush.AddBrushShape("randomellipse", randomEllipse);
 	Brush.AddBrushShape("re", randomEllipse);
-	Brush.AddBrushShape("randomcylinder", randomCylinder);
-	Brush.AddBrushShape("rc", randomCylinder);
+	Brush.AddBrushShape("randomoldcylinder", randomCylinder);
+	Brush.AddBrushShape("roc", randomCylinder);
 	Brush.AddBrushShape("randomhollowsphere", randomHollowSphere);
 	Brush.AddBrushShape("randomhsphere", randomHollowSphere);
 	Brush.AddBrushShape("rhs", randomHollowSphere);
@@ -72,5 +76,14 @@ public class BrushLoader {
 	Brush.AddBrushShape("up", above);
 	Brush.AddBrushShape("below", below);
 	Brush.AddBrushShape("down", below);
+	Brush.AddBrushShape("schem", schem);
+	Brush.AddBrushShape("schematic", schem);
+	Brush.AddBrushShape("cylinder", cyl);
+	Brush.AddBrushShape("cyl", cyl);
+	Brush.AddBrushShape("rotatedellipse", rotatedEllipse);
+	Brush.AddBrushShape("rote", rotatedEllipse);
+	Brush.AddBrushShape("spike", spike);
+	Brush.AddBrushShape("sp", spike);
+	Brush.AddBrushShape("multi", multi);
     }
 }

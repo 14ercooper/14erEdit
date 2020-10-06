@@ -6,36 +6,43 @@ import java.util.List;
 import com._14ercooper.worldeditor.blockiterator.BlockIterator;
 import com._14ercooper.worldeditor.brush.BrushShape;
 import com._14ercooper.worldeditor.main.*;
-import com._14ercooper.worldeditor.operations.Operator;
 
 public class ScaledSphere extends BrushShape {
 
+    List<String> args = new ArrayList<String>();
+    boolean lastProcessed = true;
+
     @Override
-    public BlockIterator GetBlocks(List<Double> args, double x, double y, double z) {
-	try {
-	    List<String> argList = new ArrayList<String>();
-	    int radius = (int) (double) args.get(0);
-	    argList.add(Integer.toString((int) x));
-	    argList.add(Integer.toString((int) y));
-	    argList.add(Integer.toString((int) z));
-	    argList.add(Integer.toString(radius));
-	    argList.add(args.get(1).toString());
-	    argList.add(args.get(2).toString());
-	    argList.add(args.get(3).toString());
-	    argList.add(args.get(4).toString());
-	    return GlobalVars.iteratorManager.getIterator("cylinder").newIterator(argList);
-	}
-	catch (Exception e) {
-	    Main.logError(
-		    "Could not parse scaled sphere brush. Did you provide all of radius, correction, and three scale factors?",
-		    Operator.currentPlayer);
-	    return null;
+    public BlockIterator GetBlocks(double x, double y, double z) {
+	List<String> argList = new ArrayList<String>();
+	argList.add(Integer.toString((int) x));
+	argList.add(Integer.toString((int) y));
+	argList.add(Integer.toString((int) z));
+	argList.add(args.get(0));
+	argList.add(args.get(1));
+	argList.add(args.get(2));
+	argList.add(args.get(3));
+	argList.add(args.get(4));
+	return GlobalVars.iteratorManager.getIterator("cylinder").newIterator(argList);
+    }
+
+    @Override
+    public void addNewArgument(String argument) {
+	lastProcessed = false;
+	if (args.size() < 5) {
+	    args.add(argument);
+	    lastProcessed = true;
 	}
     }
 
     @Override
-    public double GetArgCount() {
-	return 5;
+    public boolean lastInputProcessed() {
+	return lastProcessed;
+    }
+
+    @Override
+    public boolean gotEnoughArgs() {
+	return args.size() > 4;
     }
 
 }

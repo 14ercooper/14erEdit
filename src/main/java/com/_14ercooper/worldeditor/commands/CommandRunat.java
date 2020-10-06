@@ -1,17 +1,14 @@
 package com._14ercooper.worldeditor.commands;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 
-import com._14ercooper.worldeditor.blockiterator.BlockIterator;
-import com._14ercooper.worldeditor.brush.Brush;
 import com._14ercooper.worldeditor.brush.BrushShape;
+import com._14ercooper.worldeditor.brush.shapes.Voxel;
 import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.Operator;
@@ -20,17 +17,14 @@ public class CommandRunat implements CommandExecutor {
 
     @SuppressWarnings("static-access")
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-	try {
-	    // Parse brushshape
-	    BrushShape brSh = Brush.GetBrushShape(args[3]);
-	    if (brSh == null) {
+	if (sender instanceof Player) {
+	    if (!((Player) sender).isOp()) {
+		sender.sendMessage("You must be opped to use 14erEdit");
 		return false;
 	    }
-	    int numArgs = (int) brSh.GetArgCount();
-	    List<Double> argList = new LinkedList<Double>();
-	    for (int i = 4; i <= numArgs + 3; i++) {
-		argList.add(Double.parseDouble(args[i]));
-	    }
+	}
+	
+	try {
 	    double x = 0, y = 0, z = 0;
 	    // X with relative
 	    if (args[0].contains("~")) {
@@ -72,18 +66,20 @@ public class CommandRunat implements CommandExecutor {
 		z = Double.parseDouble(args[2]);
 	    }
 
-	    BlockIterator blocks = brSh.GetBlocks(argList, x, y, z);
-
-	    // Parse the operator
-	    String opStr = "";
-	    for (int i = numArgs + 4; i < args.length; i++) {
-		opStr = opStr.concat(args[i]).concat(" ");
+	    try {
+		BrushShape shape = new Voxel();
+		String opStr = "";
+		for (int i = 3; i < args.length; i++) {
+		    opStr += args[i] + " ";
+		}
+		Operator op = new Operator(opStr, (Player) sender);
+		GlobalVars.asyncManager.scheduleEdit(op, null, shape.GetBlocks(x, y, z));
+		return true;
 	    }
-	    Operator op = new Operator(opStr, null);
-
-	    GlobalVars.asyncManager.scheduleEdit(op, null, blocks);
-
-	    return true;
+	    catch (Exception e) {
+		Main.logError("Error in runat. Please check your syntax.", sender);
+		return false;
+	    }
 	}
 	catch (Exception e) {
 	    Main.logError("Could not parse runat command. Please check your syntax.", sender);

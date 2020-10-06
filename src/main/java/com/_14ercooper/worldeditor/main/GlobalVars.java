@@ -16,6 +16,7 @@ public class GlobalVars {
 
     // Global variables
     public static int noiseSeed;
+    public static SimplexNoise simplexNoise;
     public static Plugin plugin;
 
     // Used to track undos
@@ -34,12 +35,17 @@ public class GlobalVars {
     // For debugging
     public static boolean isDebug = false;
 
+    // This may be useful
+    public static boolean autoConfirm = false;
+
     // Configs
     public static long undoLimit = 250000;
     public static long blocksPerAsync = 10000;
     public static long ticksPerAsync = 4;
-    public static int maxLoopLength = 5000;
+    public static long maxLoopLength = 5000;
     public static long maxFunctionIters = 100000;
+    public static boolean logDebugs = false;
+    public static boolean logErrors = true;
 
     // No error spam
     public static boolean errorLogged = false;

@@ -12,6 +12,13 @@ public class CommandUndo implements CommandExecutor {
 
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 	if (sender instanceof Player) {
+	    if (!((Player) sender).isOp()) {
+		sender.sendMessage("You must be opped to use 14erEdit");
+		return false;
+	    }
+	}
+	
+	if (sender instanceof Player) {
 	    if (command.getName().equalsIgnoreCase("un")) {
 		int numToUndo = 1;
 		try {

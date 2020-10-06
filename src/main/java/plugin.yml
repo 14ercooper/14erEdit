@@ -49,6 +49,9 @@ commands:
     async:
         description: Used to manage the async system
         usage: "Usage: /async <drop|status>"
+    make:
+        description: Make different things using 14erEdit
+        usage: "Usage: /make <type> [tags ...]"
     brmask:
         description: Change the brush mask
         usage: "Usage: /brmask [blocks ...]"

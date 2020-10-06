@@ -38,8 +38,10 @@ public class Function {
     public static void CheckWaitingFunctions() {
 	for (int i = 0; i < waitingFunctions.size(); i++) {
 	    boolean didStart = waitingFunctions.get(i).checkCallback(i);
-	    if (didStart)
+	    if (didStart) {
+		Main.logDebug("Resuming paused function.");
 		i--;
+	    }
 	}
     }
 
@@ -75,6 +77,9 @@ public class Function {
 	else if (Files.exists(Paths.get(filename + ".fx"))) {
 	    filename += ".fx";
 	}
+	else if (Files.exists(Paths.get(filename + ".14fdl"))) {
+	    filename += ".14fdl";
+	}
 	else if (Files.exists(Paths.get(filename + ".txt"))) {
 	    filename += ".txt";
 	}
@@ -100,6 +105,9 @@ public class Function {
 		labelsMap.put(s.substring(1), i);
 	    }
 	}
+
+	Main.logDebug("Function loaded from " + filename);
+	Main.logDebug("Number of labels: " + labelsMap.size());
     }
 
     public void run() {
@@ -112,6 +120,7 @@ public class Function {
 
 		// Exit if ran off function
 		if (currentLine >= dataSegment.size()) {
+		    Main.logDebug("Ran off end of function. Exiting.");
 		    exit = true;
 		    continue;
 		}
@@ -137,11 +146,13 @@ public class Function {
 
 		// If blank line
 		if (lineContents.get(0).isEmpty()) {
+		    Main.logDebug("Empty line processed.");
 		    continue;
 		}
 
 		// If comment or label
 		if (lineContents.get(0).charAt(0) == '#' || lineContents.get(0).charAt(0) == ':') {
+		    Main.logDebug("Comment or label processed.");
 		    continue;
 		}
 
@@ -149,11 +160,13 @@ public class Function {
 		if (commands.containsKey(lineContents.get(0).replaceFirst("!", ""))) {
 		    String functName = lineContents.get(0).replaceFirst("!", "");
 		    lineContents.remove(0);
+		    Main.logDebug("Running interpreter command: " + functName);
 		    commands.get(functName).run(lineContents, this);
 		    continue;
 		}
 
 		// Else (Minecraft command)
+		Main.logDebug("Running as normal command.");
 		boolean didRun = Bukkit.dispatchCommand(player, line);
 		if (!didRun) {
 		    Main.logError("Invalid command detected. Line " + currentLine, player);

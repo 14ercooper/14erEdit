@@ -12,7 +12,18 @@ public class CommandConfirm implements CommandExecutor {
 
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 	if (sender instanceof Player) {
+	    if (!((Player) sender).isOp()) {
+		sender.sendMessage("You must be opped to use 14erEdit");
+		return false;
+	    }
+	}
+	
+	if (sender instanceof Player) {
 	    if (command.getName().equalsIgnoreCase("confirm")) {
+		if (args.length > 0 && args[0].equalsIgnoreCase("auto")) {
+		    GlobalVars.autoConfirm = !GlobalVars.autoConfirm;
+		    return true;
+		}
 		int numToConfirm = 1;
 		try {
 		    numToConfirm = Integer.parseInt(args[0]);
@@ -21,7 +32,6 @@ public class CommandConfirm implements CommandExecutor {
 		    numToConfirm = 1;
 		}
 		GlobalVars.asyncManager.confirmEdits(numToConfirm);
-		;
 		return true;
 	    }
 	    else if (command.getName().equalsIgnoreCase("cancel")) {
