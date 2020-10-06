@@ -17,7 +17,9 @@ public class Make {
 	    return false;
 	}
 	try {
-	    return generators.get(type).make(player, tags);
+	    boolean returnVal = generators.get(type).make(player, tags, player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getZ());
+	    
+	    return returnVal;
 	}
 	catch (Exception e) {
 	    Main.logError("Error performing make. Please check your syntax.", player);
