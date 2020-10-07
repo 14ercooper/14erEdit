@@ -135,7 +135,8 @@ public class Main extends JavaPlugin {
 
 		if (!Files.exists(Paths.get("plugins/14erEdit/error.log")))
 		    Files.createFile(Paths.get("plugins/14erEdit/error.log"));
-		Files.writeString(Paths.get("plugins/14erEdit/error.log"), errMessage, StandardOpenOption.APPEND);
+		Files.write(Paths.get("plugins/14erEdit/error.log"), errMessage.getBytes(), StandardOpenOption.APPEND);
+		
 	    }
 	    catch (Exception e2) {
 		// Also not super important
@@ -149,7 +150,7 @@ public class Main extends JavaPlugin {
 	if (!GlobalVars.plugin.getConfig().isSet("maxLoopLength")) {
 	    System.out.println("Updating configuration file.");
 	    try {
-		Files.writeString(Paths.get("/plugins/14erEdit/config.yml"), configUpdate1, StandardOpenOption.APPEND);
+		Files.write(Paths.get("/plugins/14erEdit/config.yml"), configUpdate1.getBytes(), StandardOpenOption.APPEND);
 	    }
 	    catch (IOException e) {
 		System.out.println(
