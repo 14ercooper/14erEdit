@@ -29,7 +29,7 @@ public class Multi extends BrushShape {
 
     @Override
     public void addNewArgument(String argument) {
-	if (file.isBlank()) {
+	if (file.isEmpty()) {
 	    file = argument;
 	}
 	else {
@@ -44,7 +44,7 @@ public class Multi extends BrushShape {
 
     @Override
     public boolean gotEnoughArgs() {
-	return !file.isBlank();
+	return !file.isEmpty();
     }
 
     public List<BlockIterator> getIters(double x, double y, double z) {

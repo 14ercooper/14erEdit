@@ -22,7 +22,7 @@ public class RotatedEllipse extends BrushShape {
 	args.add(Integer.toString((int) z));
 	args.add(hFD);
 	args.add(strL);
-	if (dZ.isBlank()) {
+	if (dZ.isEmpty()) {
 	    args.add(Double.toString((rand.nextDouble() * 2) - 1));
 	    args.add(Double.toString((rand.nextDouble() * 2) - 1));
 	    args.add(Double.toString((rand.nextDouble() * 2) - 1));
