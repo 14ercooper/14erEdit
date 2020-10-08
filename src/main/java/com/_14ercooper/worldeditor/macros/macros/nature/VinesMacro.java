@@ -87,6 +87,9 @@ public class VinesMacro extends Macro {
 
 	// OPERATE
 	Random rand = new Random();
+	List<Material> nonsolidBlocks = new ArrayList<Material>();
+	nonsolidBlocks.add(Material.AIR);
+	nonsolidBlocks.add(Material.VINE);
 	for (BlockState bs : snapshotArray) {
 	    Block b = Operator.currentPlayer.getWorld().getBlockAt(bs.getLocation());
 	    // Make sure this block is air
@@ -105,7 +108,7 @@ public class VinesMacro extends Macro {
 		boolean firstState = true;
 		List<String> dirs = new ArrayList<String>();
 		// And next to a solid block
-		if (b.getRelative(BlockFace.NORTH).getType() != Material.AIR) {
+		if (!nonsolidBlocks.contains(b.getRelative(BlockFace.NORTH).getType())) {
 		    if (firstState) {
 			firstState = false;
 		    }
@@ -115,7 +118,7 @@ public class VinesMacro extends Macro {
 		    blockStateTop = blockStateTop.concat("north=true");
 		    dirs.add("[north=true]");
 		}
-		if (b.getRelative(BlockFace.EAST).getType() != Material.AIR) {
+		if (!nonsolidBlocks.contains(b.getRelative(BlockFace.EAST).getType())) {
 		    if (firstState) {
 			firstState = false;
 		    }
@@ -125,7 +128,7 @@ public class VinesMacro extends Macro {
 		    blockStateTop = blockStateTop.concat("east=true");
 		    dirs.add("[east=true]");
 		}
-		if (b.getRelative(BlockFace.SOUTH).getType() != Material.AIR) {
+		if (!nonsolidBlocks.contains(b.getRelative(BlockFace.SOUTH).getType())) {
 		    if (firstState) {
 			firstState = false;
 		    }
@@ -135,7 +138,7 @@ public class VinesMacro extends Macro {
 		    blockStateTop = blockStateTop.concat("south=true");
 		    dirs.add("[south=true]");
 		}
-		if (b.getRelative(BlockFace.WEST).getType() != Material.AIR) {
+		if (!nonsolidBlocks.contains(b.getRelative(BlockFace.WEST).getType())) {
 		    if (firstState) {
 			firstState = false;
 		    }
@@ -148,7 +151,7 @@ public class VinesMacro extends Macro {
 
 		// Is this also a top vine?
 		if (!blockStateTop.equals("[")) {
-		    if (b.getRelative(BlockFace.UP).getType() != Material.AIR) {
+		    if (!nonsolidBlocks.contains(b.getRelative(BlockFace.UP).getType())) {
 			blockStateTop = blockStateTop.concat(",up=true");
 		    }
 		}
