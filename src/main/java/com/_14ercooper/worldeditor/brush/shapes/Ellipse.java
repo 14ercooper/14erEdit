@@ -57,7 +57,7 @@ public class Ellipse extends BrushShape {
 
     @Override
     public boolean gotEnoughArgs() {
-	return !args.get(2).isBlank();
+	return !args.get(2).isEmpty();
     }
 
 }

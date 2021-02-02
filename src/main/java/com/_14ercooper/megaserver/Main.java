@@ -2,7 +2,6 @@ package com._14ercooper.megaserver;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.management.ManagementFactory;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -183,9 +182,7 @@ public class Main {
 	    // Change RAM
 	    if (input == 4) {
 		System.out.println("How much RAM should the server use (MB)?");
-		long memorySize = ((com.sun.management.OperatingSystemMXBean) ManagementFactory
-			.getOperatingSystemMXBean()).getTotalPhysicalMemorySize();
-		int max = (int) (memorySize / 1048576);
+		int max = 8192;
 		RAM = String.valueOf(UserInput.numberRange(512, max));
 	    }
 	    // Delete backups
