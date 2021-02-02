@@ -27,6 +27,10 @@ public class CommandAsync implements CommandExecutor {
 		GlobalVars.asyncManager.asyncProgress(sender);
 		return true;
 	    }
+	    else if (args[0].equalsIgnoreCase("dump")) {
+		GlobalVars.asyncManager.asyncDump(sender);
+		return true;
+	    }
 
 	    Main.logError("Async command not provided. Please provide either drop or status.", sender);
 	    return false;

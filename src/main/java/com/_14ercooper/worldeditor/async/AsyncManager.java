@@ -84,6 +84,20 @@ public class AsyncManager {
 	p.sendMessage("§aThere are " + remBlocks
 		+ " blocks in the async queue, for an estimated remaining time of less than " + remTime + " seconds.");
     }
+    
+    // Dump some data about what's in the async queue
+    public void asyncDump(CommandSender p) {
+	p.sendMessage("§aThere are currently " + operations.size() + " operations in the async queue for " + getRemainingBlocks() +
+		" blocks.");
+	p.sendMessage("§aThe large edits confirm queue has " + largeOps.size() + " pending operations.");
+	p.sendMessage("§aPer Operation Stats:");
+	for (AsyncOperation a : operations) {
+		p.sendMessage("§a[Running] " + a.blocks.getRemainingBlocks() + " blocks remaining out of " + a.blocks.getTotalBlocks() + " total blocks. Undo? " + a.undoRunning + " " + a.blocks.toString());
+	}
+	for (AsyncOperation a : largeOps) {
+		p.sendMessage("§a[Large Queue] " + a.blocks.getTotalBlocks() + " total blocks. " + a.blocks.toString());
+	}
+    }
 
     // Schedule a block iterator task
     public void scheduleEdit(Operator o, Player p, BlockIterator b) {
@@ -169,8 +183,9 @@ public class AsyncManager {
     // Confirm large edits
     public void confirmEdits(int number) {
 	number = number < 1 ? 1 : number > largeOps.size() ? largeOps.size() : number;
-	if (number < largeOps.size())
-	    return;
+	Main.logDebug("Confirming " + number + " large edits.");
+//	if (number < largeOps.size())
+//	    return;
 	while (number-- > 0) {
 	    operations.add(largeOps.remove());
 	}
@@ -179,8 +194,9 @@ public class AsyncManager {
     // Cancel large edits
     public void cancelEdits(int number) {
 	number = number < 1 ? 1 : number > largeOps.size() ? largeOps.size() : number;
-	if (number < largeOps.size())
-	    return;
+	Main.logDebug("Cancelling " + number + " large edits.");
+//	if (number < largeOps.size())
+//	    return;
 	while (number-- > 0) {
 	    largeOps.remove();
 	}
@@ -219,6 +235,19 @@ public class AsyncManager {
 		    return;
 		}
 		AsyncOperation currentAsyncOp = operations.get(i);
+		
+		if (currentAsyncOp.blocks.getRemainingBlocks() == 0) {
+			if (currentAsyncOp.undo != null) {
+			    currentAsyncOp.undo.finishUndo();
+			}
+			if (currentAsyncOp.blocks instanceof SchemBrushIterator) {
+			    ((SchemBrushIterator) currentAsyncOp.blocks).cleanup();
+			}
+			operations.remove(i);
+			i--;
+			opSize--;
+			continue;
+		}
 
 		// Iterator edit
 		if (currentAsyncOp.key.equalsIgnoreCase("iteredit")) {
