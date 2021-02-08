@@ -43,6 +43,15 @@ public class SchematicMacro extends Macro {
 	String[] schemNames = path.split("\\|");
 	Random rand = new Random();
 	String useSchem = schemNames[rand.nextInt(schemNames.length)];
+	if (mirrorOpts.contains("r")) {
+	    mirrorOpts = "t";
+	    if (rand.nextBoolean()) {
+		mirrorOpts = mirrorOpts + "x";
+	    }
+	    if (rand.nextBoolean()) {
+		mirrorOpts = mirrorOpts + "z";
+	    }
+	}
 	return SchematicHandler.loadSchematic(useSchem, origin, mirrorOpts, setAir, Operator.currentPlayer, executionOrder);
     }
 }
