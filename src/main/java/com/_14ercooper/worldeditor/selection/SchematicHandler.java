@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import com._14ercooper.schematics.SchemLite;
@@ -95,10 +96,62 @@ public class SchematicHandler {
 	catch (IOException e) {
 	    Main.logError("Could not load schematic. File " + file + " not found.", p);
 	}
+//	if (bigValue(origin[0])) {
+//	    Main.logDebug("Schematic center x not number. Using autocenter.");
+//	    origin[0] = -1 * (schem.getXSize() / 2);
+//	}
+//	if (bigValue(origin[1])) {
+//	    Main.logDebug("Schematic center y not number. Using autocenter.");
+//	    origin[0] = -1 * (schem.getYSize() / 2);
+//	}
+//	if (bigValue(origin[2])) {
+//	    Main.logDebug("Schematic center z not number. Using autocenter.");
+//	    origin[0] = -1 * (schem.getZSize() / 2);
+//	}
 	if (!mirror.isEmpty()) {
 	    schem.mirror(mirror.contains("x"), mirror.contains("y"), mirror.contains("z"));
 	}
 	GlobalVars.asyncManager.scheduleEdit(schem, false, p, origin);
 	return true;
+    }
+
+    // Load a schematic into the world at position
+    public static boolean loadSchematic(String file, int[] origin, String mirror, boolean setAir, Player p,
+	    int executionOrder, Location loc) {
+	Main.logDebug("Loading schematic from " + file);
+	Operator.currentPlayer = p;
+	String path = file;
+	SchemLite schem = new SchemLite(path, setAir, executionOrder);
+	Main.logDebug("Execution order " + executionOrder);
+	try {
+	    schem.openRead();
+	}
+	catch (IOException e) {
+	    Main.logError("Could not load schematic. File " + file + " not found.", p);
+	}
+	if (bigValue(origin[0])) {
+	    Main.logDebug("Schematic center x not number. Using autocenter.");
+	    origin[0] = -1 * (schem.getXSize() / 2);
+	    origin[0] += loc.getBlockX();
+	}
+	if (bigValue(origin[1])) {
+	    Main.logDebug("Schematic center y not number. Using autocenter.");
+	    origin[1] = -1 * (schem.getYSize() / 2);
+	    origin[1] += loc.getBlockY();
+	}
+	if (bigValue(origin[2])) {
+	    Main.logDebug("Schematic center z not number. Using autocenter.");
+	    origin[2] = -1 * (schem.getZSize() / 2);
+	    origin[2] += loc.getBlockZ();
+	}
+	if (!mirror.isEmpty()) {
+	    schem.mirror(mirror.contains("x"), mirror.contains("y"), mirror.contains("z"));
+	}
+	GlobalVars.asyncManager.scheduleEdit(schem, false, p, origin);
+	return true;
+    }
+    
+    public static boolean bigValue(int num) {
+	return Math.abs(num) > Integer.MAX_VALUE / 2;
     }
 }
