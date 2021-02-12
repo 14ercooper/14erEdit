@@ -62,7 +62,7 @@ public class CommandTemplate implements CommandExecutor {
 	}
 
 	// Clean up newlines
-	command = command.replaceAll("[\\n\\r]+", " ");
+	command = command.replaceAll("[\\n\\r\\t ]+", " ");
 
 	// Fill in template
 	for (int i = arg3.length - 1; i >= 1; i--) {

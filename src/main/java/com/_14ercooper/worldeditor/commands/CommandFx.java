@@ -1,5 +1,12 @@
 package com._14ercooper.worldeditor.commands;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -81,6 +88,28 @@ public class CommandFx implements CommandExecutor {
 				args.length > argOffset + 3 ? args[argOffset + 3] : "",
 				args.length > argOffset + 4 ? Boolean.parseBoolean(args[argOffset + 4]) : false,
 				args.length > argOffset + 5 ? Integer.parseInt(args[argOffset + 5]) : 0);
+			return true;
+		    }
+		    else if (args[argOffset + 1].equalsIgnoreCase("list")) {
+			Stream<Path> files = Files.list(Paths.get("plugins/14erEdit/schematics"));
+			String regex = ".+";
+			if (args.length > argOffset + 2)
+			    regex = args[argOffset + 2];
+			final String finalRegex = regex;
+			Set<String> filePaths = files.filter(file -> !Files.isDirectory(file)).map(Path::getFileName).map(Path::toString).filter(file -> file.matches(finalRegex)).collect(Collectors.toSet());
+			long schemNum = filePaths.size();
+			String filesString = "";
+			for (String s : filePaths) {
+			    filesString += " " + s;
+			}
+			sender.sendMessage("§aFound " + schemNum + " schematics:" + filesString);
+			files.close();
+			return true;
+		    }
+		    else if (args[argOffset + 1].equalsIgnoreCase("delete")) {
+			Main.logDebug("Deleting schematic " + args[argOffset + 2]);
+			Files.deleteIfExists(Paths.get("plugins/14erEdit/schematics/" + args[argOffset + 2]));
+			sender.sendMessage("§aDeleted schematic " + args[argOffset + 2]);
 			return true;
 		    }
 		}
