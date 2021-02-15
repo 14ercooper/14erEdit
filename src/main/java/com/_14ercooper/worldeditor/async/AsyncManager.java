@@ -236,7 +236,7 @@ public class AsyncManager {
 		}
 		AsyncOperation currentAsyncOp = operations.get(i);
 		
-		if (currentAsyncOp.blocks.getRemainingBlocks() == 0) {
+		if (currentAsyncOp.blocks != null && currentAsyncOp.blocks.getRemainingBlocks() == 0) {
 			if (currentAsyncOp.undo != null) {
 			    currentAsyncOp.undo.finishUndo();
 			}
