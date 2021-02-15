@@ -32,9 +32,9 @@ public class SphereIterator extends BlockIterator {
 	    iterator.x = -iterator.radMax - 1;
 	    iterator.y = -iterator.radMax;
 	    iterator.z = -iterator.radMax;
-	    while (y + yC < 0) {
-		y++;
-	    }
+//	    while (y + yC < 0) {
+//		y++;
+//	    }
 	    return iterator;
 	}
 	catch (Exception e) {

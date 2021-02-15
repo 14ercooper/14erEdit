@@ -23,18 +23,26 @@ public abstract class BlockIterator {
     public int x, y, z;
     public long doneBlocks = 0;
     public boolean incrXYZ(int radX, int radY, int radZ, int xOff, int yOff, int zOff) {
+	// Y capping
+	int yMin = 0;
+	int yMax = 255;
+	
 	x++;
 	doneBlocks++;
 	if (x > radX) {
-	    z++;
+	    y++;
 	    x = -radX;
 	}
-	if (z > radZ) {
-	    y++;
-	    z = -radZ;
+	if (y > radY || y + yOff > yMax) {
+	    z++;
+	    y = -radY;
+	    while (y + yOff < yMin) {
+		y++;
+		doneBlocks++;
+	    }
 	}
 	
-	if (y > radY || y + yOff > 255) {
+	if (z > radZ) {
 		return true;
 	}
 	

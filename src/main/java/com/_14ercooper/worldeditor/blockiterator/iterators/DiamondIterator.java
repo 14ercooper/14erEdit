@@ -12,8 +12,8 @@ import com._14ercooper.worldeditor.operations.Operator;
 public class DiamondIterator extends BlockIterator {
 
     long totalBlocks;
-    long doneBlocks = 0;
-    int x, y, z;
+//    long doneBlocks = 0;
+//    int x, y, z;
     int xC, yC, zC;
     int radius;
 
@@ -41,18 +41,21 @@ public class DiamondIterator extends BlockIterator {
     @Override
     public Block getNext() {
 	while (true) {
-	    x++;
-	    doneBlocks++;
-	    if (x > radius) {
-		z++;
-		x = -radius;
-	    }
-	    if (z > radius) {
-		y++;
-		z = -radius;
-	    }
-	    if (y > radius) {
-		return null;
+//	    x++;
+//	    doneBlocks++;
+//	    if (x > radius) {
+//		z++;
+//		x = -radius;
+//	    }
+//	    if (z > radius) {
+//		y++;
+//		z = -radius;
+//	    }
+//	    if (y > radius) {
+//		return null;
+//	    }
+	    if (incrXYZ(radius, radius, radius, xC, yC, zC)) {
+		    return null;
 	    }
 
 	    // Distance check

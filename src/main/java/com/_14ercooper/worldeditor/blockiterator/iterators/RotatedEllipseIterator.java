@@ -13,8 +13,8 @@ import com._14ercooper.worldeditor.operations.Operator;
 public class RotatedEllipseIterator extends BlockIterator {
 
     long totalBlocks;
-    long doneBlocks = 0;
-    int x, y, z;
+//    long doneBlocks = 0;
+//    int x, y, z;
     int xC, yC, zC;
     double hFD, strL, dX, dY, dZ;
     int radMax;
@@ -66,18 +66,21 @@ public class RotatedEllipseIterator extends BlockIterator {
     @Override
     public Block getNext() {
 	while (true) {
-	    x++;
-	    doneBlocks++;
-	    if (x > radMax) {
-		z++;
-		x = -radMax;
-	    }
-	    if (z > radMax) {
-		y++;
-		z = -radMax;
-	    }
-	    if (y > radMax || y > 255) {
-		return null;
+//	    x++;
+//	    doneBlocks++;
+//	    if (x > radMax) {
+//		z++;
+//		x = -radMax;
+//	    }
+//	    if (z > radMax) {
+//		y++;
+//		z = -radMax;
+//	    }
+//	    if (y > radMax || y > 255) {
+//		return null;
+//	    }
+	    if (incrXYZ(radMax, radMax, radMax, xC, yC, zC)) {
+		    return null;
 	    }
 
 	    // Check that it's within the ellipse

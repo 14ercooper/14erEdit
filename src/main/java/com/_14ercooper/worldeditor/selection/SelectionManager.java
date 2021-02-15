@@ -194,6 +194,7 @@ public class SelectionManager {
 	args.add(Integer.toString((int) pos2[0]));
 	args.add(Integer.toString((int) pos2[1]));
 	args.add(Integer.toString((int) pos2[2]));
+	args.add("1");
 	BlockIterator iter = GlobalVars.iteratorManager.getIterator("cube").newIterator(args);
 	return iter;
     }
