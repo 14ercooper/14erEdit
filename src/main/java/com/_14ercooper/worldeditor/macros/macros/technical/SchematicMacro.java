@@ -1,10 +1,9 @@
 package com._14ercooper.worldeditor.macros.macros.technical;
 
-import java.util.Random;
-
 import org.bukkit.Location;
 
 import com._14ercooper.worldeditor.macros.macros.Macro;
+import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.selection.SchematicHandler;
 
@@ -54,14 +53,13 @@ public class SchematicMacro extends Macro {
 	SetupMacro(args, loc);
 	int[] origin = { xPos, yPos, zPos };
 	String[] schemNames = path.split("\\|");
-	Random rand = new Random();
-	String useSchem = schemNames[rand.nextInt(schemNames.length)];
+	String useSchem = schemNames[GlobalVars.rand.nextInt(schemNames.length)];
 	if (mirrorOpts.contains("r")) {
 	    mirrorOpts = "t";
-	    if (rand.nextBoolean()) {
+	    if (GlobalVars.rand.nextBoolean()) {
 		mirrorOpts = mirrorOpts + "x";
 	    }
-	    if (rand.nextBoolean()) {
+	    if (GlobalVars.rand.nextBoolean()) {
 		mirrorOpts = mirrorOpts + "z";
 	    }
 	}

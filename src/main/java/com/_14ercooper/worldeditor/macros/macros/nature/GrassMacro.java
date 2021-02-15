@@ -3,7 +3,6 @@ package com._14ercooper.worldeditor.macros.macros.nature;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -82,7 +81,6 @@ public class GrassMacro extends Macro {
 
 	// Operate on the sphere
 	List<BlockState> operatedBlocks = new ArrayList<BlockState>();
-	Random rand = new Random();
 	for (BlockState bs : snapshotArray) {
 	    // Check if this block is air
 	    if (bs.getType() != Material.AIR) {
@@ -97,7 +95,7 @@ public class GrassMacro extends Macro {
 	    }
 
 	    // Check density
-	    if (rand.nextDouble() >= density) {
+	    if (GlobalVars.rand.nextDouble() >= density) {
 		Main.logDebug("Skip block, density not met");
 		continue;
 	    }
@@ -116,7 +114,7 @@ public class GrassMacro extends Macro {
 
 	    // Figure out which block to place
 	    Main.logDebug("Placing grass block");
-	    double randNum = rand.nextDouble() * 100.0;
+	    double randNum = GlobalVars.rand.nextDouble() * 100.0;
 	    double oddsChance = 0.0;
 	    int i = -1;
 	    do {

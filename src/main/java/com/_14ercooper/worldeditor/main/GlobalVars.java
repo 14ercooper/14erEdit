@@ -1,5 +1,6 @@
 package com._14ercooper.worldeditor.main;
 
+import java.util.Random;
 import java.util.Set;
 
 import org.bukkit.Material;
@@ -18,6 +19,7 @@ public class GlobalVars {
     public static int noiseSeed;
     public static SimplexNoise simplexNoise;
     public static Plugin plugin;
+    public static Random rand = new Random();
 
     // Used to track undos
     public static Undo currentUndo = null;

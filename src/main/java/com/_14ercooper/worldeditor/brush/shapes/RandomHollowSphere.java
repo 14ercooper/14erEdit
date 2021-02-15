@@ -2,7 +2,6 @@ package com._14ercooper.worldeditor.brush.shapes;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import com._14ercooper.worldeditor.blockiterator.BlockIterator;
 import com._14ercooper.worldeditor.brush.BrushShape;
@@ -17,12 +16,13 @@ public class RandomHollowSphere extends BrushShape {
     @Override
     public BlockIterator GetBlocks(double x, double y, double z) {
 	List<String> argList = new ArrayList<String>();
-	Random rand = new Random();
 	argList.add(Integer.toString((int) x));
 	argList.add(Integer.toString((int) y));
 	argList.add(Integer.toString((int) z));
-	argList.add(Integer.toString(rand.nextInt(radiusMax - radiusMin) + radiusMin));
-	argList.add(Integer.toString(rand.nextInt(centerMax - centerMin) + centerMin));
+//	argList.add(Integer.toString(rand.nextInt(radiusMax - radiusMin) + radiusMin));
+//	argList.add(Integer.toString(rand.nextInt(centerMax - centerMin) + centerMin));
+	argList.add(Integer.toString(Main.randRange(radiusMin, radiusMax)));
+	argList.add(Integer.toString(Main.randRange(centerMin, centerMax)));
 	argList.add(correction);
 	return GlobalVars.iteratorManager.getIterator("sphere").newIterator(argList);
     }

@@ -2,7 +2,6 @@ package com._14ercooper.worldeditor.macros.macros.nature;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -123,7 +122,6 @@ public class ErodeMacro extends Macro {
 	Main.logDebug("Starting blend erode"); // ----
 	// Iterate through each block
 	List<BlockState> snapshotCopy = new ArrayList<BlockState>();
-	Random rand = new Random();
 	for (BlockState b : snapshotArray) {
 	    // If air, make sure we're editing air
 	    if (b.getType() == Material.AIR && !targetAir) {
@@ -132,7 +130,7 @@ public class ErodeMacro extends Macro {
 	    }
 
 	    // Make sure the chance is met
-	    if (rand.nextInt(100) >= erodeSubtype) {
+	    if (GlobalVars.rand.nextInt(100) >= erodeSubtype) {
 		snapshotCopy.add(b);
 		continue;
 	    }
@@ -148,7 +146,7 @@ public class ErodeMacro extends Macro {
 	    adjBlocks.add(current.getRelative(BlockFace.WEST));
 
 	    // Pick a random one and update
-	    BlockState setMat = adjBlocks.get(rand.nextInt(adjBlocks.size())).getState();
+	    BlockState setMat = adjBlocks.get(GlobalVars.rand.nextInt(adjBlocks.size())).getState();
 	    b.setType(setMat.getType());
 	    b.setBlockData(setMat.getBlockData());
 	    snapshotCopy.add(b);

@@ -5,7 +5,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
+
+import com._14ercooper.worldeditor.main.GlobalVars;
 
 public class ItemVar implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -75,7 +76,6 @@ public class ItemVar implements Serializable {
 	}
 	// Attributes
 	if (attributes.size() > 0) {
-	    Random rand = new Random();
 	    s += ",AttributeModifiers:[";
 	    for (Map.Entry<String, String> entry : attributes.entrySet()) {
 		String[] mods = entry.getValue().split(",");
@@ -83,7 +83,7 @@ public class ItemVar implements Serializable {
 		s += "Name:\"" + entry.getKey() + "\",";
 		s += "Amount:" + mods[2] + ",";
 		s += "Operation:" + mods[0] + ",";
-		s += "UUIDLeast:" + (rand.nextInt() % 1000000 + 1) + ",UUIDMost:" + (rand.nextInt() % 1000000 + 1)
+		s += "UUIDLeast:" + (GlobalVars.rand.nextInt() % 1000000 + 1) + ",UUIDMost:" + (GlobalVars.rand.nextInt() % 1000000 + 1)
 			+ ",";
 		s += "Slot:\"" + mods[1] + "\"";
 		s += "},";

@@ -3,7 +3,6 @@ package com._14ercooper.worldeditor.brush.shapes;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Random;
 import java.util.Set;
 
 import com._14ercooper.worldeditor.blockiterator.BlockIterator;
@@ -21,11 +20,10 @@ public class Splatter extends BrushShape {
     public BlockIterator GetBlocks(double x, double y, double z) {
 	int spheresGenerated = 0;
 	Set<BlockIterator> spheres = new HashSet<BlockIterator>();
-	Random rand = new Random();
 	while (spheresGenerated < sphereCount) {
-	    double xOff = rand.nextInt((2 * splatterRadius) + 1) - splatterRadius;
-	    double yOff = rand.nextInt((2 * splatterRadius) + 1) - splatterRadius;
-	    double zOff = rand.nextInt((2 * splatterRadius) + 1) - splatterRadius;
+	    double xOff = GlobalVars.rand.nextInt((2 * splatterRadius) + 1) - splatterRadius;
+	    double yOff = GlobalVars.rand.nextInt((2 * splatterRadius) + 1) - splatterRadius;
+	    double zOff = GlobalVars.rand.nextInt((2 * splatterRadius) + 1) - splatterRadius;
 	    if (xOff * xOff + yOff * yOff + zOff * zOff < splatterRadius * splatterRadius + 0.5) {
 		List<String> argList = new ArrayList<String>();
 		argList.add(Integer.toString((int) (x + xOff)));

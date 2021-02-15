@@ -43,7 +43,7 @@ public class LoadFromFileNode extends Node {
 	    }
 	    List<String> newOperators = new ArrayList<String>();
 	    for (String s : lines) {
-		String[] strArr = s.split("\\s+");
+		String[] strArr = s.split("[\\n\\r\\t ]+");
 		for (String str : strArr) {
 		    newOperators.add(str);
 		}
@@ -53,6 +53,7 @@ public class LoadFromFileNode extends Node {
 	    for (String s : newOperators) {
 		toParse += s + " ";
 	    }
+	    toParse = toParse.replaceAll("\\s+", " ");
 	    Operator o = new Operator(toParse, Operator.currentPlayer);
 	    Operator.fileLoads.put(path.contents, o);
 	}

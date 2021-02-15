@@ -82,6 +82,7 @@ public class Main extends JavaPlugin {
 									  // world
 	GlobalVars.simplexNoise = new SimplexNoise(Bukkit.getWorlds().get(0).getSeed());
 	GlobalVars.plugin = this;
+	GlobalVars.rand.nextDouble(); // Toss out a value from the LCG
 
 	// Load config
 	loadConfig();
@@ -106,6 +107,13 @@ public class Main extends JavaPlugin {
     @Override
     public void onDisable() {
 	// We don't need to do anything on disable
+    }
+    
+    public static int randRange(int min, int max) {
+	if (min == max) {
+	    return min;
+	}
+	return min + GlobalVars.rand.nextInt(max - min + 1);
     }
 
     public static void logDebug(String message) {

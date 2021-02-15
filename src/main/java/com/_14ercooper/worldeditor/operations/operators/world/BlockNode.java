@@ -2,7 +2,6 @@ package com._14ercooper.worldeditor.operations.operators.world;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -217,8 +216,7 @@ public class BlockNode extends Node {
 	    for (BlockInstance bi : list) {
 		totalWeight += bi.weight;
 	    }
-	    Random rand = new Random();
-	    int randNum = rand.nextInt(totalWeight + 1);
+	    int randNum = GlobalVars.rand.nextInt(totalWeight + 1);
 	    for (BlockInstance bi : list) {
 		randNum -= bi.weight;
 		if (randNum <= 0)
