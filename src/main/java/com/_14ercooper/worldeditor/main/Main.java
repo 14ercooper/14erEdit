@@ -20,7 +20,6 @@ import com._14ercooper.worldeditor.commands.*;
 import com._14ercooper.worldeditor.functions.Function;
 import com._14ercooper.worldeditor.macros.MacroLauncher;
 import com._14ercooper.worldeditor.macros.MacroLoader;
-import com._14ercooper.worldeditor.make.MakeSetup;
 import com._14ercooper.worldeditor.operations.OperatorLoader;
 import com._14ercooper.worldeditor.operations.Parser;
 import com._14ercooper.worldeditor.scripts.CraftscriptLoader;
@@ -62,7 +61,6 @@ public class Main extends JavaPlugin {
 	this.getCommand("brmask").setExecutor(new CommandBrmask());
 	this.getCommand("template").setExecutor(new CommandTemplate());
 	this.getCommand("funct").setExecutor(new CommandFunction());
-	this.getCommand("make").setExecutor(new CommandMake());
 
 	// Set up brush mask
 	GlobalVars.brushMask = new HashSet<Material>();
@@ -101,7 +99,6 @@ public class Main extends JavaPlugin {
 	OperatorLoader.LoadOperators();
 	IteratorLoader.LoadIterators();
 	Function.SetupFunctions();
-	MakeSetup.registerMakes();
     }
 
     @Override
