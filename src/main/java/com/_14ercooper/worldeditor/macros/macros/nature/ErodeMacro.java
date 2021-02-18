@@ -1,6 +1,7 @@
 package com._14ercooper.worldeditor.macros.macros.nature;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.Location;
@@ -42,6 +43,9 @@ public class ErodeMacro extends Macro {
 	    }
 	    else if (args[1].equalsIgnoreCase("mix")) {
 		erodeType = 2;
+	    }
+	    else if (args[1].equalsIgnoreCase("blockblend")) {
+		erodeType = 3;
 	    }
 
 	    // Cut or raise melt?
@@ -112,10 +116,34 @@ public class ErodeMacro extends Macro {
 	if (erodeType == 2) {
 	    snapshotArray = mixErosion(snapshotArray, x, y, z);
 	}
+	
+	// Blockblend erosion
+	if (erodeType == 3) {
+	    snapshotArray = blendBlockErode(snapshotArray);
+	}
 
 	// Apply the snapshot to the world, thus completing the erosion
 	applyToWorld(snapshotArray);
 	return true;
+    }
+    
+    private List<BlockState> blendBlockErode(List<BlockState> snapshotArray) {
+	Main.logDebug("Starting blend block erode");
+	List<Material> blockMaterials = new ArrayList<Material>();
+	for (BlockState bs : snapshotArray) {
+	    if (bs.getType() != Material.AIR) {
+		blockMaterials.add(bs.getType());
+	    }
+	}
+	Collections.shuffle(blockMaterials);
+	int j = 0;
+	for (int i = 0; i < snapshotArray.size(); i++) {
+	    if (snapshotArray.get(i).getType() != Material.AIR) {
+		snapshotArray.get(i).setType(blockMaterials.get(j));
+		j++;
+	    }
+	}
+	return snapshotArray;
     }
 
     private List<BlockState> blendErode(List<BlockState> snapshotArray) {
