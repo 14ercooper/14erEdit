@@ -7,31 +7,24 @@ import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.main.NBTExtractor;
 import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.operations.operators.Node;
-import com._14ercooper.worldeditor.operations.operators.core.StringNode;
+import com._14ercooper.worldeditor.operations.operators.core.NumberNode;
 import com._14ercooper.worldeditor.operations.operators.world.BlockNode;
 
 public class BlockAtNode extends BlockNode {
 
-    StringNode x, y, z;
-    int xV, yV, zV;
+    NumberNode x, y, z;
     boolean xA = false, yA = false, zA = false;
     Node node;
 
     public BlockAtNode newNode() {
 	BlockAtNode baNode = new BlockAtNode();
 	try {
-	    baNode.x = GlobalVars.operationParser.parseStringNode();
-	    baNode.y = GlobalVars.operationParser.parseStringNode();
-	    baNode.z = GlobalVars.operationParser.parseStringNode();
-	    if (baNode.x.contents.contains("a"))
-		baNode.xA = true;
-	    if (baNode.y.contents.contains("a"))
-		baNode.yA = true;
-	    if (baNode.z.contents.contains("a"))
-		baNode.zA = true;
-	    baNode.xV = Integer.parseInt(baNode.x.contents.replaceAll("[a-zA-Z]", ""));
-	    baNode.yV = Integer.parseInt(baNode.y.contents.replaceAll("[a-zA-Z]", ""));
-	    baNode.zV = Integer.parseInt(baNode.z.contents.replaceAll("[a-zA-Z]", ""));
+	    baNode.x = GlobalVars.operationParser.parseNumberNode();
+	    baNode.y = GlobalVars.operationParser.parseNumberNode();
+	    baNode.z = GlobalVars.operationParser.parseNumberNode();
+	    baNode.xA = baNode.x.isAbsolute;
+	    baNode.yA = baNode.y.isAbsolute;
+	    baNode.zA = baNode.z.isAbsolute;
 	    try {
 		baNode.node = GlobalVars.operationParser.parsePart();
 	    }
@@ -54,8 +47,11 @@ public class BlockAtNode extends BlockNode {
     public boolean performNode() {
 	try {
 	    Block currBlock = Operator.currentBlock;
-	    Operator.currentBlock = Operator.currentPlayer.getWorld().getBlockAt(xV + (xA ? 0 : currBlock.getX()),
-		    yV + (yA ? 0 : currBlock.getY()), zV + (zA ? 0 : currBlock.getZ()));
+	    xA = x.isAbsolute;
+	    yA = y.isAbsolute;
+	    zA = z.isAbsolute;
+	    Operator.currentBlock = Operator.currentPlayer.getWorld().getBlockAt(x.getInt() + (xA ? 0 : currBlock.getX()),
+		    y.getInt() + (yA ? 0 : currBlock.getY()), z.getInt() + (zA ? 0 : currBlock.getZ()));
 	    boolean matches = node.performNode();
 	    Operator.currentBlock = currBlock;
 	    return matches;
@@ -67,7 +63,14 @@ public class BlockAtNode extends BlockNode {
     }
 
     // Return the material this node references
+    int xV, yV, zV;
     public String getBlock() {
+	xV = x.getInt();
+	yV = y.getInt();
+	zV = z.getInt();
+	    xA = x.isAbsolute;
+	    yA = y.isAbsolute;
+	    zA = z.isAbsolute;
 	return Operator.currentPlayer
 		.getWorld().getBlockAt(xV + (xA ? 0 : Operator.currentBlock.getX()),
 			yV + (yA ? 0 : Operator.currentBlock.getY()), zV + (zA ? 0 : Operator.currentBlock.getZ()))
