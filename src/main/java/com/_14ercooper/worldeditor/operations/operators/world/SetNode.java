@@ -59,6 +59,10 @@ public class SetNode extends Node {
 	    String storedData = Operator.currentBlock.getBlockData().getAsString();
 	    String setMaterial = arg.getBlock();
 	    String setData = arg.getData();
+	    // Case same
+	    if (setMaterial.equalsIgnoreCase("same")) {
+		return true;
+	    }
 	    // Case only data to set, do the data merge
 	    if (setMaterial.equalsIgnoreCase("dataonly")) {
 		// Step 1, convert the old data into a map
