@@ -23,7 +23,7 @@ public class CommandAsync implements CommandExecutor {
 		GlobalVars.asyncManager.dropAsync();
 		return true;
 	    }
-	    else if (args[0].equalsIgnoreCase("status")) {
+	    else if (args[0].equalsIgnoreCase("status") || args[0].equalsIgnoreCase("queue")) {
 		GlobalVars.asyncManager.asyncProgress(sender);
 		return true;
 	    }
