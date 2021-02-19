@@ -54,9 +54,9 @@ public class GlobalVars {
 
     // Caps for edits
     public static long minEditX = Long.MIN_VALUE;
-    public static long minEditY = Long.MIN_VALUE;
+    public static long minEditY = 0;
     public static long minEditZ = Long.MIN_VALUE;
     public static long maxEditX = Long.MAX_VALUE;
-    public static long maxEditY = Long.MAX_VALUE;
+    public static long maxEditY = 255;
     public static long maxEditZ = Long.MAX_VALUE;
 }
