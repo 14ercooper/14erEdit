@@ -22,6 +22,7 @@ public class CommandAsync implements CommandExecutor {
 	try {
 	    if (args[0].equalsIgnoreCase("drop")) {
 		GlobalVars.asyncManager.dropAsync();
+		sender.sendMessage("§aAsync queue dropped.");
 		return true;
 	    }
 	    else if (args[0].equalsIgnoreCase("status") || args[0].equalsIgnoreCase("queue")) {

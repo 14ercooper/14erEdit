@@ -31,25 +31,31 @@ public class CommandLimit implements CommandExecutor {
 
 	if (arg3[0].equalsIgnoreCase("px")) {
 	    GlobalVars.maxEditX = val;
+	    arg0.sendMessage("§aPositive X edit box changed to " + val);
 	    return true;
 	}
 	else if (arg3[0].equalsIgnoreCase("py")) {
+	    arg0.sendMessage("§aPositive Y edit box changed to " + val);
 	    GlobalVars.maxEditY = val;
 	    return true;
 	}
 	else if (arg3[0].equalsIgnoreCase("pz")) {
+	    arg0.sendMessage("§aPositive Z edit box changed to " + val);
 	    GlobalVars.maxEditZ = val;
 	    return true;
 	}
 	else if (arg3[0].equalsIgnoreCase("nx")) {
+	    arg0.sendMessage("§aPositive X edit box changed to " + val);
 	    GlobalVars.minEditX = val;
 	    return true;
 	}
 	else if (arg3[0].equalsIgnoreCase("ny")) {
+	    arg0.sendMessage("§aNegative Y edit box changed to " + val);
 	    GlobalVars.minEditY = val;
 	    return true;
 	}
 	else if (arg3[0].equalsIgnoreCase("nz")) {
+	    arg0.sendMessage("§aNegative Z edit box changed to " + val);
 	    GlobalVars.minEditZ = val;
 	    return true;
 	}
