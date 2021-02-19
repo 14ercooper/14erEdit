@@ -10,6 +10,7 @@ import com._14ercooper.worldeditor.main.Main;
 
 public class CommandAsync implements CommandExecutor {
 
+    @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 	if (sender instanceof Player) {
 	    if (!((Player) sender).isOp()) {
@@ -17,7 +18,7 @@ public class CommandAsync implements CommandExecutor {
 		return false;
 	    }
 	}
-	
+
 	try {
 	    if (args[0].equalsIgnoreCase("drop")) {
 		GlobalVars.asyncManager.dropAsync();

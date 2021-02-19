@@ -4,7 +4,8 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 
-import com._14ercooper.worldeditor.main.*;
+import com._14ercooper.worldeditor.main.GlobalVars;
+import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.operations.operators.Node;
 import com._14ercooper.worldeditor.operations.operators.core.NumberNode;
@@ -13,6 +14,7 @@ public class FacesExposedNode extends Node {
 
     public NumberNode arg;
 
+    @Override
     public FacesExposedNode newNode() {
 	FacesExposedNode node = new FacesExposedNode();
 	try {
@@ -29,6 +31,7 @@ public class FacesExposedNode extends Node {
 	return node;
     }
 
+    @Override
     public boolean performNode() {
 
 	// Count the number of faces
@@ -58,6 +61,7 @@ public class FacesExposedNode extends Node {
 	return (faceCount >= arg.getValue() - 0.1);
     }
 
+    @Override
     public int getArgCount() {
 	return 1;
     }

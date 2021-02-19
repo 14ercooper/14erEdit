@@ -1,12 +1,14 @@
 package com._14ercooper.worldeditor.operations.operators.logical;
 
-import com._14ercooper.worldeditor.main.*;
+import com._14ercooper.worldeditor.main.GlobalVars;
+import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.operations.operators.Node;
 
 public class NotNode extends Node {
     public Node arg;
 
+    @Override
     public NotNode newNode() {
 	NotNode node = new NotNode();
 	try {
@@ -23,6 +25,7 @@ public class NotNode extends Node {
 	return node;
     }
 
+    @Override
     public boolean performNode() {
 	try {
 	    return !(arg.performNode());
@@ -33,6 +36,7 @@ public class NotNode extends Node {
 	}
     }
 
+    @Override
     public int getArgCount() {
 	return 1;
     }

@@ -21,7 +21,7 @@ public class CommandFunction implements CommandExecutor {
 		return false;
 	    }
 	}
-	
+
 	if (!(arg0 instanceof Player)) {
 	    Main.logError("This command must be run as a player.", arg0);
 	    return false;

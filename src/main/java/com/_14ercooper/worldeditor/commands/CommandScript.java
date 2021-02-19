@@ -12,6 +12,7 @@ import com._14ercooper.worldeditor.main.GlobalVars;
 
 public class CommandScript implements CommandExecutor {
 
+    @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 	if (sender instanceof Player) {
 	    if (!((Player) sender).isOp()) {
@@ -19,7 +20,7 @@ public class CommandScript implements CommandExecutor {
 		return false;
 	    }
 	}
-	
+
 	if (sender instanceof Player) {
 	    LinkedList<String> argsToPass = new LinkedList<String>(Arrays.asList(args));
 	    argsToPass.removeFirst();

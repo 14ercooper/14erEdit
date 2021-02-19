@@ -150,7 +150,7 @@ public class SchematicHandler {
 	GlobalVars.asyncManager.scheduleEdit(schem, false, p, origin);
 	return true;
     }
-    
+
     public static boolean bigValue(int num) {
 	return Math.abs(num) > Integer.MAX_VALUE / 2;
     }

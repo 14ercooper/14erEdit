@@ -55,7 +55,7 @@ public class DiamondIterator extends BlockIterator {
 //		return null;
 //	    }
 	    if (incrXYZ(radius, radius, radius, xC, yC, zC)) {
-		    return null;
+		return null;
 	    }
 
 	    // Distance check

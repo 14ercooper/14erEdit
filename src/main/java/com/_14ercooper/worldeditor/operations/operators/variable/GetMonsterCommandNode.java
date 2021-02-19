@@ -5,7 +5,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import com._14ercooper.worldeditor.main.*;
+import com._14ercooper.worldeditor.main.GlobalVars;
+import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.operations.operators.Node;
 import com._14ercooper.worldeditor.operations.type.MonsterVar;
@@ -15,6 +16,7 @@ public class GetMonsterCommandNode extends Node {
     String name;
     String path;
 
+    @Override
     public GetMonsterCommandNode newNode() {
 	GetMonsterCommandNode node = new GetMonsterCommandNode();
 	node.name = GlobalVars.operationParser.parseStringNode().contents;
@@ -22,6 +24,7 @@ public class GetMonsterCommandNode extends Node {
 	return node;
     }
 
+    @Override
     public boolean performNode() {
 	if (!Operator.monsterVars.containsKey(name)) {
 	    Main.logError(
@@ -55,6 +58,7 @@ public class GetMonsterCommandNode extends Node {
 	return true;
     }
 
+    @Override
     public int getArgCount() {
 	return 2;
     }

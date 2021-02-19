@@ -1,10 +1,35 @@
 package com._14ercooper.worldeditor.functions;
 
-import com._14ercooper.worldeditor.functions.commands.world.*;
-import com._14ercooper.worldeditor.functions.commands.logic.*;
-import com._14ercooper.worldeditor.functions.commands.math.*;
-import com._14ercooper.worldeditor.functions.commands.player.*;
-import com._14ercooper.worldeditor.functions.commands.variable.*;
+import com._14ercooper.worldeditor.functions.commands.logic.CompareSlotCommand;
+import com._14ercooper.worldeditor.functions.commands.logic.CompareTextCommand;
+import com._14ercooper.worldeditor.functions.commands.logic.CompareVariableCommand;
+import com._14ercooper.worldeditor.functions.commands.logic.ExitCommand;
+import com._14ercooper.worldeditor.functions.commands.logic.GoIfCommand;
+import com._14ercooper.worldeditor.functions.commands.logic.GoIfNotCommand;
+import com._14ercooper.worldeditor.functions.commands.logic.ReturnCommand;
+import com._14ercooper.worldeditor.functions.commands.logic.WaitCommand;
+import com._14ercooper.worldeditor.functions.commands.logic.WaitTimeCommand;
+import com._14ercooper.worldeditor.functions.commands.math.AddCommand;
+import com._14ercooper.worldeditor.functions.commands.math.CosineCommand;
+import com._14ercooper.worldeditor.functions.commands.math.DecrementCommand;
+import com._14ercooper.worldeditor.functions.commands.math.DivideCommand;
+import com._14ercooper.worldeditor.functions.commands.math.IncrementCommand;
+import com._14ercooper.worldeditor.functions.commands.math.ModCommand;
+import com._14ercooper.worldeditor.functions.commands.math.MultiplyCommand;
+import com._14ercooper.worldeditor.functions.commands.math.PowerCommand;
+import com._14ercooper.worldeditor.functions.commands.math.RandCommand;
+import com._14ercooper.worldeditor.functions.commands.math.SetVarCommand;
+import com._14ercooper.worldeditor.functions.commands.math.SineCommand;
+import com._14ercooper.worldeditor.functions.commands.math.SubtractCommand;
+import com._14ercooper.worldeditor.functions.commands.player.GetPosCommand;
+import com._14ercooper.worldeditor.functions.commands.player.PrintDebugCommand;
+import com._14ercooper.worldeditor.functions.commands.player.PrintErrorCommand;
+import com._14ercooper.worldeditor.functions.commands.player.SetSlotCommand;
+import com._14ercooper.worldeditor.functions.commands.player.SwapCommand;
+import com._14ercooper.worldeditor.functions.commands.variable.GetCommand;
+import com._14ercooper.worldeditor.functions.commands.variable.RemoveCommand;
+import com._14ercooper.worldeditor.functions.commands.variable.StoreCommand;
+import com._14ercooper.worldeditor.functions.commands.world.BlockCommand;
 
 public class RegisterFunctions {
     public static void RegisterAll() {

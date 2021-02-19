@@ -23,7 +23,8 @@ public class SetBlock {
 	    }
 	}
 	catch (Exception e) {
-	    Main.logError("Invalid block ID " + mat.toString() + " provided. The async queue has been dropped.", Operator.currentPlayer);
+	    Main.logError("Invalid block ID " + mat.toString() + " provided. The async queue has been dropped.",
+		    Operator.currentPlayer);
 	    GlobalVars.asyncManager.dropAsync();
 	    return;
 	}
@@ -44,7 +45,8 @@ public class SetBlock {
 	    }
 	}
 	catch (Exception e) {
-	    Main.logError("Invalid block ID " + mat.toString() + " provided. The async queue has been dropped.", Operator.currentPlayer);
+	    Main.logError("Invalid block ID " + mat.toString() + " provided. The async queue has been dropped.",
+		    Operator.currentPlayer);
 	    GlobalVars.asyncManager.dropAsync();
 	    return;
 	}
@@ -65,7 +67,8 @@ public class SetBlock {
 	    }
 	}
 	catch (Exception e) {
-	    Main.logError("Invalid block ID " + mat.toString() + " provided. The async queue has been dropped.", Operator.currentPlayer);
+	    Main.logError("Invalid block ID " + mat.toString() + " provided. The async queue has been dropped.",
+		    Operator.currentPlayer);
 	    GlobalVars.asyncManager.dropAsync();
 	    return;
 	}

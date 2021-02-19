@@ -6,10 +6,12 @@ import com._14ercooper.worldeditor.operations.operators.Node;
 
 public class GetBlockDataNode extends Node {
 
+    @Override
     public GetBlockDataNode newNode() {
 	return new GetBlockDataNode();
     }
 
+    @Override
     public boolean performNode() {
 	try {
 	    String s = Operator.currentBlock.getBlockData().getAsString(true);
@@ -24,6 +26,7 @@ public class GetBlockDataNode extends Node {
 	}
     }
 
+    @Override
     public int getArgCount() {
 	return 0;
     }

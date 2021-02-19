@@ -15,6 +15,7 @@ public class AngleNode extends Node {
     RangeNode angleForTrue = null;
     NumberNode distance = null;
 
+    @Override
     public Node newNode() {
 	try {
 	    AngleNode node = new AngleNode();
@@ -33,6 +34,7 @@ public class AngleNode extends Node {
 	}
     }
 
+    @Override
     public boolean performNode() {
 	// Get angle from each block pair
 	int dist = (int) distance.getValue();
@@ -54,6 +56,7 @@ public class AngleNode extends Node {
 	return angleForTrue.getMin() <= maxAngle && angleForTrue.getMax() >= maxAngle;
     }
 
+    @Override
     public int getArgCount() {
 	return 2;
     }

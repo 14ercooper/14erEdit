@@ -14,6 +14,6 @@ public class RandCommand extends InterpreterCommand {
 	int max = (int) function.parseVariable(args.get(2));
 //	function.setVariable(args.get(0), rand.nextInt(max - min) + min);
 	function.setVariable(args.get(0), Main.randRange(min, max));
-	
+
     }
 }

@@ -8,7 +8,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
 
-import com._14ercooper.worldeditor.main.*;
+import com._14ercooper.worldeditor.main.GlobalVars;
+import com._14ercooper.worldeditor.main.Main;
+import com._14ercooper.worldeditor.main.SetBlock;
 import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.operations.operators.Node;
 import com._14ercooper.worldeditor.operations.operators.query.BlockAtNode;
@@ -17,6 +19,7 @@ public class SetNode extends Node {
 
     public BlockNode arg;
 
+    @Override
     public SetNode newNode() {
 	SetNode node = new SetNode();
 	try {
@@ -35,6 +38,7 @@ public class SetNode extends Node {
 	return node;
     }
 
+    @Override
     public boolean performNode() {
 	try {
 	    // Block at nodes are handled specially
@@ -139,6 +143,7 @@ public class SetNode extends Node {
 	}
     }
 
+    @Override
     public int getArgCount() {
 	return 1;
     }

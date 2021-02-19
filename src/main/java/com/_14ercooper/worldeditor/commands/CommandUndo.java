@@ -10,6 +10,7 @@ import com._14ercooper.worldeditor.undo.UndoManager;
 // These are dedicated versions of the undo and redo commands
 public class CommandUndo implements CommandExecutor {
 
+    @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 	if (sender instanceof Player) {
 	    if (!((Player) sender).isOp()) {
@@ -17,7 +18,7 @@ public class CommandUndo implements CommandExecutor {
 		return false;
 	    }
 	}
-	
+
 	if (sender instanceof Player) {
 	    if (command.getName().equalsIgnoreCase("un")) {
 		int numToUndo = 1;

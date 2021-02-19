@@ -83,8 +83,8 @@ public class ItemVar implements Serializable {
 		s += "Name:\"" + entry.getKey() + "\",";
 		s += "Amount:" + mods[2] + ",";
 		s += "Operation:" + mods[0] + ",";
-		s += "UUIDLeast:" + (GlobalVars.rand.nextInt() % 1000000 + 1) + ",UUIDMost:" + (GlobalVars.rand.nextInt() % 1000000 + 1)
-			+ ",";
+		s += "UUIDLeast:" + (GlobalVars.rand.nextInt() % 1000000 + 1) + ",UUIDMost:"
+			+ (GlobalVars.rand.nextInt() % 1000000 + 1) + ",";
 		s += "Slot:\"" + mods[1] + "\"";
 		s += "},";
 	    }

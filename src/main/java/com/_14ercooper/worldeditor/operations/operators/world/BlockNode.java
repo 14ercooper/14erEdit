@@ -20,6 +20,7 @@ public class BlockNode extends Node {
     public BlockInstance nextBlock;
 
     // Creates a new node
+    @Override
     public BlockNode newNode() {
 	BlockNode node = new BlockNode();
 	try {
@@ -104,6 +105,7 @@ public class BlockNode extends Node {
     }
 
     // Check if it's the correct block
+    @Override
     public boolean performNode() {
 	try {
 	    return (new BlockInstance()).Contains(blockList, textMasks, Operator.currentBlock);
@@ -115,6 +117,7 @@ public class BlockNode extends Node {
     }
 
     // Returns how many arguments this node takes
+    @Override
     public int getArgCount() {
 	return 1;
     }

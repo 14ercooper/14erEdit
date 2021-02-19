@@ -18,15 +18,16 @@ public abstract class BlockIterator {
 
     // Gets the number of remaining blocks in this iterator
     public abstract long getRemainingBlocks();
-    
+
     // Increment cubic XYZ. Returns true when time to end
     public int x, y, z;
     public long doneBlocks = 0;
+
     public boolean incrXYZ(int radX, int radY, int radZ, int xOff, int yOff, int zOff) {
 	// Y capping
 	int yMin = 0;
 	int yMax = 255;
-	
+
 	x++;
 	doneBlocks++;
 	if (x > radX) {
@@ -41,11 +42,11 @@ public abstract class BlockIterator {
 		doneBlocks++;
 	    }
 	}
-	
+
 	if (z > radZ) {
-		return true;
+	    return true;
 	}
-	
+
 	return false;
     }
 }

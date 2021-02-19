@@ -1,6 +1,7 @@
 package com._14ercooper.worldeditor.operations.operators.variable;
 
-import com._14ercooper.worldeditor.main.*;
+import com._14ercooper.worldeditor.main.GlobalVars;
+import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.operations.operators.Node;
 import com._14ercooper.worldeditor.operations.type.SpawnerVar;
@@ -9,12 +10,14 @@ public class GetSpawnerItemNode extends Node {
 
     String name;
 
+    @Override
     public GetSpawnerItemNode newNode() {
 	GetSpawnerItemNode node = new GetSpawnerItemNode();
 	node.name = GlobalVars.operationParser.parseStringNode().contents;
 	return node;
     }
 
+    @Override
     public boolean performNode() {
 	if (!Operator.spawnerVars.containsKey(name)) {
 	    Main.logError(
@@ -31,6 +34,7 @@ public class GetSpawnerItemNode extends Node {
 	return true;
     }
 
+    @Override
     public int getArgCount() {
 	return 1;
     }

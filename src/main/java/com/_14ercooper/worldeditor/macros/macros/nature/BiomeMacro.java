@@ -10,7 +10,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 
 import com._14ercooper.worldeditor.macros.macros.Macro;
-import com._14ercooper.worldeditor.main.*;
+import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.Operator;
 
 public class BiomeMacro extends Macro {
@@ -37,6 +37,7 @@ public class BiomeMacro extends Macro {
     }
 
     // Run this macro
+    @Override
     public boolean performMacro(String[] args, Location loc) {
 	SetupMacro(args, loc);
 

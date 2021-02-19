@@ -5,7 +5,7 @@ import java.util.List;
 
 import com._14ercooper.worldeditor.blockiterator.BlockIterator;
 import com._14ercooper.worldeditor.brush.BrushShape;
-import com._14ercooper.worldeditor.main.*;
+import com._14ercooper.worldeditor.main.GlobalVars;
 
 public class Cube extends BrushShape {
 
@@ -15,7 +15,7 @@ public class Cube extends BrushShape {
     @Override
     public BlockIterator GetBlocks(double x, double y, double z) {
 	List<String> argList = new ArrayList<String>();
-	int cubeRad = (int) (cubeDiameter / 2);
+	int cubeRad = cubeDiameter / 2;
 	argList.add(Integer.toString((int) x - cubeRad));
 	argList.add(Integer.toString((int) y - cubeRad));
 	argList.add(Integer.toString((int) z - cubeRad));

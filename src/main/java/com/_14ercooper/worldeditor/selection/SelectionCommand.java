@@ -7,7 +7,8 @@ import java.util.List;
 import org.bukkit.entity.Player;
 
 import com._14ercooper.worldeditor.blockiterator.BlockIterator;
-import com._14ercooper.worldeditor.main.*;
+import com._14ercooper.worldeditor.main.GlobalVars;
+import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.Operator;
 
 public class SelectionCommand {

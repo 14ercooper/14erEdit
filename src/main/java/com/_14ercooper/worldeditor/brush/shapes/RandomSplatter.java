@@ -25,7 +25,7 @@ public class RandomSplatter extends BrushShape {
 	int sphereCount = Main.randRange(sphereCountMin, sphereCountMax);
 	while (spheresGenerated < sphereCount) {
 //	    int splatterRadius = rand.nextInt(splatterRadiusMax - splatterRadiusMin) + splatterRadiusMin;
-	    int splatterRadius = Main.randRange(splatterRadiusMin,  splatterRadiusMax);
+	    int splatterRadius = Main.randRange(splatterRadiusMin, splatterRadiusMax);
 	    double xOff = GlobalVars.rand.nextInt(splatterRadius) * (GlobalVars.rand.nextInt(2) == 0 ? -1 : 1);
 	    double yOff = GlobalVars.rand.nextInt(splatterRadius) * (GlobalVars.rand.nextInt(2) == 0 ? -1 : 1);
 	    double zOff = GlobalVars.rand.nextInt(splatterRadius) * (GlobalVars.rand.nextInt(2) == 0 ? -1 : 1);

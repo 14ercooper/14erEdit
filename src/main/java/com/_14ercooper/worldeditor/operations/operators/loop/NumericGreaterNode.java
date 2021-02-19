@@ -1,6 +1,7 @@
 package com._14ercooper.worldeditor.operations.operators.loop;
 
-import com._14ercooper.worldeditor.main.*;
+import com._14ercooper.worldeditor.main.GlobalVars;
+import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.operations.operators.Node;
 import com._14ercooper.worldeditor.operations.operators.core.NumberNode;
@@ -10,6 +11,7 @@ public class NumericGreaterNode extends Node {
     public String name;
     public NumberNode val;
 
+    @Override
     public NumericGreaterNode newNode() {
 	NumericGreaterNode node = new NumericGreaterNode();
 	try {
@@ -28,6 +30,7 @@ public class NumericGreaterNode extends Node {
 	return node;
     }
 
+    @Override
     public boolean performNode() {
 	try {
 	    return (Operator.numericVars.get(name).getValue() > val.getValue());
@@ -40,6 +43,7 @@ public class NumericGreaterNode extends Node {
 	}
     }
 
+    @Override
     public int getArgCount() {
 	return 2;
     }

@@ -7,9 +7,14 @@ import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
-import com._14ercooper.worldeditor.main.*;
+import com._14ercooper.worldeditor.main.GlobalVars;
+import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.operators.core.EntryNode;
-import com._14ercooper.worldeditor.operations.type.*;
+import com._14ercooper.worldeditor.operations.type.BlockVar;
+import com._14ercooper.worldeditor.operations.type.ItemVar;
+import com._14ercooper.worldeditor.operations.type.MonsterVar;
+import com._14ercooper.worldeditor.operations.type.NumericVar;
+import com._14ercooper.worldeditor.operations.type.SpawnerVar;
 
 public class Operator {
     public static Operator currentOperator;
@@ -18,7 +23,7 @@ public class Operator {
     private static Player firstPlayer = null;
     public static boolean ignoringPhysics = false; // False to ignore physics, true to perform physics 'cause Minecraft
     public static boolean inSetNode = false;
-						   // is screwy
+    // is screwy
     public static Map<String, BlockVar> blockVars = new HashMap<String, BlockVar>();
     public static Map<String, ItemVar> itemVars = new HashMap<String, ItemVar>();
     public static Map<String, NumericVar> numericVars = new HashMap<String, NumericVar>();

@@ -1,6 +1,15 @@
 package com._14ercooper.worldeditor.blockiterator;
 
-import com._14ercooper.worldeditor.blockiterator.iterators.*;
+import com._14ercooper.worldeditor.blockiterator.iterators.CubeIterator;
+import com._14ercooper.worldeditor.blockiterator.iterators.CylinderIterator;
+import com._14ercooper.worldeditor.blockiterator.iterators.DiamondIterator;
+import com._14ercooper.worldeditor.blockiterator.iterators.EllipseIterator;
+import com._14ercooper.worldeditor.blockiterator.iterators.MultiIterator;
+import com._14ercooper.worldeditor.blockiterator.iterators.NewCylinderIterator;
+import com._14ercooper.worldeditor.blockiterator.iterators.RotatedEllipseIterator;
+import com._14ercooper.worldeditor.blockiterator.iterators.SchemBrushIterator;
+import com._14ercooper.worldeditor.blockiterator.iterators.SphereIterator;
+import com._14ercooper.worldeditor.blockiterator.iterators.SpikeIterator;
 import com._14ercooper.worldeditor.main.GlobalVars;
 
 public class IteratorLoader {

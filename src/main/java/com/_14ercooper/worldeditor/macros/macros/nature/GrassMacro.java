@@ -12,7 +12,9 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 
 import com._14ercooper.worldeditor.macros.macros.Macro;
-import com._14ercooper.worldeditor.main.*;
+import com._14ercooper.worldeditor.main.GlobalVars;
+import com._14ercooper.worldeditor.main.Main;
+import com._14ercooper.worldeditor.main.SetBlock;
 import com._14ercooper.worldeditor.operations.Operator;
 
 public class GrassMacro extends Macro {
@@ -38,6 +40,7 @@ public class GrassMacro extends Macro {
     }
 
     // Run this macro
+    @Override
     public boolean performMacro(String[] args, Location loc) {
 	SetupMacro(args, loc);
 

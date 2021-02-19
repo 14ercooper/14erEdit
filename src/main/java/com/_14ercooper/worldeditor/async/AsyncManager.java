@@ -80,22 +80,23 @@ public class AsyncManager {
     // About how big is the async queue?
     public void asyncProgress(CommandSender p) {
 	long remBlocks = getRemainingBlocks();
-	int remTime = (int) (((double) remBlocks) / (GlobalVars.blocksPerAsync * (20.0 / GlobalVars.ticksPerAsync)));
+	int remTime = (int) ((remBlocks) / (GlobalVars.blocksPerAsync * (20.0 / GlobalVars.ticksPerAsync)));
 	p.sendMessage("§aThere are " + remBlocks
 		+ " blocks in the async queue, for an estimated remaining time of less than " + remTime + " seconds.");
     }
-    
+
     // Dump some data about what's in the async queue
     public void asyncDump(CommandSender p) {
-	p.sendMessage("§aThere are currently " + operations.size() + " operations in the async queue for " + getRemainingBlocks() +
-		" blocks.");
+	p.sendMessage("§aThere are currently " + operations.size() + " operations in the async queue for "
+		+ getRemainingBlocks() + " blocks.");
 	p.sendMessage("§aThe large edits confirm queue has " + largeOps.size() + " pending operations.");
 	p.sendMessage("§aPer Operation Stats:");
 	for (AsyncOperation a : operations) {
-		p.sendMessage("§a[Running] " + a.blocks.getRemainingBlocks() + " blocks remaining out of " + a.blocks.getTotalBlocks() + " total blocks. Undo? " + a.undoRunning + " " + a.blocks.toString());
+	    p.sendMessage("§a[Running] " + a.blocks.getRemainingBlocks() + " blocks remaining out of "
+		    + a.blocks.getTotalBlocks() + " total blocks. Undo? " + a.undoRunning + " " + a.blocks.toString());
 	}
 	for (AsyncOperation a : largeOps) {
-		p.sendMessage("§a[Large Queue] " + a.blocks.getTotalBlocks() + " total blocks. " + a.blocks.toString());
+	    p.sendMessage("§a[Large Queue] " + a.blocks.getTotalBlocks() + " total blocks. " + a.blocks.toString());
 	}
     }
 
@@ -235,18 +236,18 @@ public class AsyncManager {
 		    return;
 		}
 		AsyncOperation currentAsyncOp = operations.get(i);
-		
+
 		if (currentAsyncOp.blocks != null && currentAsyncOp.blocks.getRemainingBlocks() == 0) {
-			if (currentAsyncOp.undo != null) {
-			    currentAsyncOp.undo.finishUndo();
-			}
-			if (currentAsyncOp.blocks instanceof SchemBrushIterator) {
-			    ((SchemBrushIterator) currentAsyncOp.blocks).cleanup();
-			}
-			operations.remove(i);
-			i--;
-			opSize--;
-			continue;
+		    if (currentAsyncOp.undo != null) {
+			currentAsyncOp.undo.finishUndo();
+		    }
+		    if (currentAsyncOp.blocks instanceof SchemBrushIterator) {
+			((SchemBrushIterator) currentAsyncOp.blocks).cleanup();
+		    }
+		    operations.remove(i);
+		    i--;
+		    opSize--;
+		    continue;
 		}
 
 		// Iterator edit
@@ -314,9 +315,9 @@ public class AsyncManager {
 			}
 			if (b == null && currentAsyncOp.iterators.size() > 1) {
 			    currentAsyncOp.iterators.remove(0);
-				if (currentAsyncOp.iterators.get(0) instanceof SchemBrushIterator) {
-				    ((SchemBrushIterator) currentAsyncOp.iterators.get(0)).cleanup();
-				}
+			    if (currentAsyncOp.iterators.get(0) instanceof SchemBrushIterator) {
+				((SchemBrushIterator) currentAsyncOp.iterators.get(0)).cleanup();
+			    }
 			    currentAsyncOp.operations.remove(0);
 			    if (currentAsyncOp.iterators.size() == 0 || currentAsyncOp.operations.size() == 0) {
 				doContinue = true;

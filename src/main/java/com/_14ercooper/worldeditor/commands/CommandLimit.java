@@ -24,11 +24,11 @@ public class CommandLimit implements CommandExecutor {
 		val = Long.MIN_VALUE;
 	    }
 	    else {
-        	Main.logError("Could not parse value for limiter, " + arg3[1] + "is not a number", arg0);
-        	return false;
+		Main.logError("Could not parse value for limiter, " + arg3[1] + "is not a number", arg0);
+		return false;
 	    }
 	}
-	
+
 	if (arg3[0].equalsIgnoreCase("px")) {
 	    GlobalVars.maxEditX = val;
 	    return true;

@@ -20,7 +20,7 @@ public class NewCylinderIterator extends BlockIterator {
     double radCorr;
     int height;
     int dirMax;
-    
+
     @Override
     public NewCylinderIterator newIterator(List<String> args) {
 	try {
@@ -69,7 +69,7 @@ public class NewCylinderIterator extends BlockIterator {
 //		return null;
 //	    }
 	    if (incrXYZ(dirMax, dirMax, dirMax, xC, yC, zC)) {
-		    return null;
+		return null;
 	    }
 
 	    // Max radius check

@@ -1,16 +1,14 @@
 package com._14ercooper.worldeditor.scripts.bundled.selection;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
 import org.bukkit.entity.Player;
 
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.scripts.Craftscript;
-
-import java.util.LinkedList;
-import java.util.List;
-import java.util.ArrayList;
-import java.lang.Math;
-import java.lang.Double;
 
 public class ScriptGrass extends Craftscript {
     @Override

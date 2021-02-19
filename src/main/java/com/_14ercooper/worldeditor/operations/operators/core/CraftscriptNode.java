@@ -3,7 +3,8 @@ package com._14ercooper.worldeditor.operations.operators.core;
 import java.util.Arrays;
 import java.util.LinkedList;
 
-import com._14ercooper.worldeditor.main.*;
+import com._14ercooper.worldeditor.main.GlobalVars;
+import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.operations.operators.Node;
 
@@ -11,6 +12,7 @@ public class CraftscriptNode extends Node {
 
     public StringNode arg;
 
+    @Override
     public CraftscriptNode newNode() {
 	try {
 	    CraftscriptNode node = new CraftscriptNode();
@@ -24,6 +26,7 @@ public class CraftscriptNode extends Node {
 	}
     }
 
+    @Override
     public boolean performNode() {
 	try {
 	    String label = arg.contents.split("{")[0];
@@ -39,6 +42,7 @@ public class CraftscriptNode extends Node {
 	}
     }
 
+    @Override
     public int getArgCount() {
 	return 1;
     }

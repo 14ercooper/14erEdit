@@ -5,7 +5,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import com._14ercooper.worldeditor.main.*;
+import com._14ercooper.worldeditor.main.GlobalVars;
+import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.operations.operators.Node;
 import com._14ercooper.worldeditor.operations.type.ItemVar;
@@ -15,6 +16,7 @@ public class GetItemCommandNode extends Node {
     String name;
     String path;
 
+    @Override
     public GetItemCommandNode newNode() {
 	GetItemCommandNode node = new GetItemCommandNode();
 	node.name = GlobalVars.operationParser.parseStringNode().contents;
@@ -22,6 +24,7 @@ public class GetItemCommandNode extends Node {
 	return node;
     }
 
+    @Override
     public boolean performNode() {
 	if (!Operator.itemVars.containsKey(name)) {
 	    Main.logError(
@@ -56,6 +59,7 @@ public class GetItemCommandNode extends Node {
 	return true;
     }
 
+    @Override
     public int getArgCount() {
 	return 2;
     }

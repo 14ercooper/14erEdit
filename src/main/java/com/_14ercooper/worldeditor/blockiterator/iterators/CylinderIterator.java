@@ -64,7 +64,7 @@ public class CylinderIterator extends BlockIterator {
 //		return null;
 //	    }
 	    if (incrXYZ(radMax, radMax, radMax, xC, yC, zC)) {
-		    return null;
+		return null;
 	    }
 
 	    // Max radius check

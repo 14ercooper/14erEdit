@@ -16,6 +16,7 @@ public class BlockAtNode extends BlockNode {
     boolean xA = false, yA = false, zA = false;
     Node node;
 
+    @Override
     public BlockAtNode newNode() {
 	BlockAtNode baNode = new BlockAtNode();
 	try {
@@ -44,14 +45,16 @@ public class BlockAtNode extends BlockNode {
 	return baNode;
     }
 
+    @Override
     public boolean performNode() {
 	try {
 	    Block currBlock = Operator.currentBlock;
 	    xA = x.isAbsolute;
 	    yA = y.isAbsolute;
 	    zA = z.isAbsolute;
-	    Operator.currentBlock = Operator.currentPlayer.getWorld().getBlockAt(x.getInt() + (xA ? 0 : currBlock.getX()),
-		    y.getInt() + (yA ? 0 : currBlock.getY()), z.getInt() + (zA ? 0 : currBlock.getZ()));
+	    Operator.currentBlock = Operator.currentPlayer.getWorld().getBlockAt(
+		    x.getInt() + (xA ? 0 : currBlock.getX()), y.getInt() + (yA ? 0 : currBlock.getY()),
+		    z.getInt() + (zA ? 0 : currBlock.getZ()));
 	    boolean matches = node.performNode();
 	    Operator.currentBlock = currBlock;
 	    return matches;
@@ -64,13 +67,15 @@ public class BlockAtNode extends BlockNode {
 
     // Return the material this node references
     int xV, yV, zV;
+
+    @Override
     public String getBlock() {
 	xV = x.getInt();
 	yV = y.getInt();
 	zV = z.getInt();
-	    xA = x.isAbsolute;
-	    yA = y.isAbsolute;
-	    zA = z.isAbsolute;
+	xA = x.isAbsolute;
+	yA = y.isAbsolute;
+	zA = z.isAbsolute;
 	return Operator.currentPlayer
 		.getWorld().getBlockAt(xV + (xA ? 0 : Operator.currentBlock.getX()),
 			yV + (yA ? 0 : Operator.currentBlock.getY()), zV + (zA ? 0 : Operator.currentBlock.getZ()))
@@ -78,6 +83,7 @@ public class BlockAtNode extends BlockNode {
     }
 
     // Get the data of this block
+    @Override
     public String getData() {
 	return Operator.currentPlayer
 		.getWorld().getBlockAt(xV + (xA ? 0 : Operator.currentBlock.getX()),
@@ -86,12 +92,14 @@ public class BlockAtNode extends BlockNode {
     }
 
     // Get the NBT of this block
+    @Override
     public String getNBT() {
 	NBTExtractor nbt = new NBTExtractor();
 	return nbt.getNBT(Operator.currentPlayer.getWorld().getBlockAt(xV + (xA ? 0 : Operator.currentBlock.getX()),
 		yV + (yA ? 0 : Operator.currentBlock.getY()), zV + (zA ? 0 : Operator.currentBlock.getZ())));
     }
 
+    @Override
     public int getArgCount() {
 	return 4;
     }

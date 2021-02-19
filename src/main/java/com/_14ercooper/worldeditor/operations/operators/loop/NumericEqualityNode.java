@@ -1,6 +1,7 @@
 package com._14ercooper.worldeditor.operations.operators.loop;
 
-import com._14ercooper.worldeditor.main.*;
+import com._14ercooper.worldeditor.main.GlobalVars;
+import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.operations.operators.Node;
 import com._14ercooper.worldeditor.operations.operators.core.NumberNode;
@@ -10,6 +11,7 @@ public class NumericEqualityNode extends Node {
     public String name;
     public NumberNode val;
 
+    @Override
     public NumericEqualityNode newNode() {
 	NumericEqualityNode node = new NumericEqualityNode();
 	try {
@@ -27,6 +29,7 @@ public class NumericEqualityNode extends Node {
 	return node;
     }
 
+    @Override
     public boolean performNode() {
 	try {
 	    return (Math.abs(Operator.numericVars.get(name).getValue() - val.getValue()) < 0.01);
@@ -39,6 +42,7 @@ public class NumericEqualityNode extends Node {
 	}
     }
 
+    @Override
     public int getArgCount() {
 	return 2;
     }

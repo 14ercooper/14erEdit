@@ -3,7 +3,8 @@ package com._14ercooper.worldeditor.operations.operators.variable;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 
-import com._14ercooper.worldeditor.main.*;
+import com._14ercooper.worldeditor.main.GlobalVars;
+import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.operations.operators.Node;
 import com._14ercooper.worldeditor.operations.type.BlockVar;
@@ -12,12 +13,14 @@ public class SetBlockVarNode extends Node {
 
     public String name;
 
+    @Override
     public SetBlockVarNode newNode() {
 	SetBlockVarNode node = new SetBlockVarNode();
 	node.name = GlobalVars.operationParser.parseStringNode().contents;
 	return node;
     }
 
+    @Override
     public boolean performNode() {
 	if (!Operator.blockVars.containsKey(name)) {
 	    Main.logError("Error performing set block var node. Please check your syntax (does the variable exist?).",
@@ -40,6 +43,7 @@ public class SetBlockVarNode extends Node {
 	return true;
     }
 
+    @Override
     public int getArgCount() {
 	return 1;
     }

@@ -1,9 +1,9 @@
 package com._14ercooper.worldeditor.operations.operators.function;
 
 import com._14ercooper.worldeditor.main.FastNoise;
-import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.FastNoise.CellularDistanceFunction;
 import com._14ercooper.worldeditor.main.FastNoise.FractalType;
+import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.operations.operators.Node;
 import com._14ercooper.worldeditor.operations.operators.core.NumberNode;
@@ -26,6 +26,7 @@ public class NoiseNode extends Node {
 
     // /fx br s 7 0.5 ? both bedrock ## cellular 2 140 4 natural set stone
 
+    @Override
     public NoiseNode newNode() {
 	NoiseNode node = new NoiseNode();
 	node.noiseType = GlobalVars.operationParser.parseStringNode();
@@ -73,6 +74,7 @@ public class NoiseNode extends Node {
 	return node;
     }
 
+    @Override
     public boolean performNode() {
 	return scaleTo255(getNum()) <= cutoff.getValue();
     }
@@ -219,6 +221,7 @@ public class NoiseNode extends Node {
 	}
     }
 
+    @Override
     public int getArgCount() {
 	return 3;
     }

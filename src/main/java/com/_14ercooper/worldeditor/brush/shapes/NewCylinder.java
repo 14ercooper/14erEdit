@@ -11,7 +11,7 @@ public class NewCylinder extends BrushShape {
 
     String radius, height, dimension, correction = "0.5";
     int gotArgs = 0;
-    
+
     @Override
     public BlockIterator GetBlocks(double x, double y, double z) {
 	List<String> args = new ArrayList<String>();

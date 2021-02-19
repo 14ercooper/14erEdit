@@ -10,7 +10,9 @@ import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.operations.operators.Node;
-import com._14ercooper.worldeditor.operations.type.*;
+import com._14ercooper.worldeditor.operations.type.ItemVar;
+import com._14ercooper.worldeditor.operations.type.MonsterVar;
+import com._14ercooper.worldeditor.operations.type.SpawnerVar;
 
 public class SaveVariableNode extends Node {
 

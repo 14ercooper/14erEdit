@@ -18,6 +18,7 @@ public class FacingNode extends BlockNode {
 
     BlockNode arg;
 
+    @Override
     public FacingNode newNode() {
 	FacingNode node = new FacingNode();
 	try {
@@ -34,6 +35,7 @@ public class FacingNode extends BlockNode {
 	return node;
     }
 
+    @Override
     public String getData() {
 	try {
 	    BlockData dat = Bukkit.getServer().createBlockData(arg.getData());
@@ -75,6 +77,7 @@ public class FacingNode extends BlockNode {
 	}
     }
 
+    @Override
     public int getArgCount() {
 	return 1;
     }

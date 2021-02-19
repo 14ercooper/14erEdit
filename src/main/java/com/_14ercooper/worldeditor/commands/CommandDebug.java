@@ -11,6 +11,7 @@ import com._14ercooper.worldeditor.main.GlobalVars;
 // These are dedicated versions of the undo and redo commands
 public class CommandDebug implements CommandExecutor {
 
+    @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 	if (sender instanceof Player) {
 	    if (!((Player) sender).isOp()) {
@@ -18,7 +19,7 @@ public class CommandDebug implements CommandExecutor {
 		return false;
 	    }
 	}
-	
+
 	GlobalVars.isDebug = !GlobalVars.isDebug;
 	Bukkit.broadcastMessage("§dDebug toggled to " + GlobalVars.isDebug);
 	return true;

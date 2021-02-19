@@ -19,7 +19,7 @@ public class RotatedEllipseIterator extends BlockIterator {
     double hFD, strL, dX, dY, dZ;
     int radMax;
     int maxDist;
-    
+
     @Override
     public RotatedEllipseIterator newIterator(List<String> args) {
 	try {
@@ -50,9 +50,9 @@ public class RotatedEllipseIterator extends BlockIterator {
 	    return null;
 	}
     }
-    
+
     Point3 focus1, focus2, negCenter;
-    
+
     private void setup() {
 	Point3 dir = new Point3(dX, dY, dZ);
 	Point3 center = new Point3(xC, yC, zC);
@@ -80,7 +80,7 @@ public class RotatedEllipseIterator extends BlockIterator {
 //		return null;
 //	    }
 	    if (incrXYZ(radMax, radMax, radMax, xC, yC, zC)) {
-		    return null;
+		return null;
 	    }
 
 	    // Check that it's within the ellipse
@@ -88,7 +88,7 @@ public class RotatedEllipseIterator extends BlockIterator {
 	    Point3 blockPoint = new Point3(x, y, z);
 	    blockPoint = blockPoint.add(negCenter);
 	    double dist = blockPoint.distance(focus1) + blockPoint.distance(focus2);
-	    
+
 	    // Make sure it's small enough
 	    if (dist > strL)
 		continue;

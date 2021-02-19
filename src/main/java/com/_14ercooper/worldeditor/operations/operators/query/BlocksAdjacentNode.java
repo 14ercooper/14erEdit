@@ -3,7 +3,8 @@ package com._14ercooper.worldeditor.operations.operators.query;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 
-import com._14ercooper.worldeditor.main.*;
+import com._14ercooper.worldeditor.main.GlobalVars;
+import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.operations.operators.Node;
 import com._14ercooper.worldeditor.operations.operators.function.RangeNode;
@@ -13,6 +14,7 @@ public class BlocksAdjacentNode extends Node {
     public Node arg1;
     public RangeNode arg2;
 
+    @Override
     public BlocksAdjacentNode newNode() {
 	BlocksAdjacentNode node = new BlocksAdjacentNode();
 	try {
@@ -30,6 +32,7 @@ public class BlocksAdjacentNode extends Node {
 	return node;
     }
 
+    @Override
     public boolean performNode() {
 	Main.logDebug("Performing faces exposed node"); // -----
 
@@ -70,6 +73,7 @@ public class BlocksAdjacentNode extends Node {
 	return (numAdjacentBlocks >= arg2.getMin() - 0.1 && numAdjacentBlocks <= arg2.getMax() + 0.1);
     }
 
+    @Override
     public int getArgCount() {
 	return 2;
     }

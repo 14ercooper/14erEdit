@@ -25,6 +25,7 @@ public class CommandFx implements CommandExecutor {
 
     private static int argOffset = 0;
 
+    @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 	if (sender instanceof Player) {
 	    if (!((Player) sender).isOp()) {
@@ -32,7 +33,7 @@ public class CommandFx implements CommandExecutor {
 		return false;
 	    }
 	}
-	
+
 	try {
 	    if (args.length < argOffset + 1) {
 		Main.logError("fx requires at least one argument.", sender);
@@ -96,7 +97,9 @@ public class CommandFx implements CommandExecutor {
 			if (args.length > argOffset + 2)
 			    regex = args[argOffset + 2];
 			final String finalRegex = regex;
-			Set<String> filePaths = files.filter(file -> !Files.isDirectory(file)).map(Path::getFileName).map(Path::toString).filter(file -> file.matches(finalRegex)).collect(Collectors.toSet());
+			Set<String> filePaths = files.filter(file -> !Files.isDirectory(file)).map(Path::getFileName)
+				.map(Path::toString).filter(file -> file.matches(finalRegex))
+				.collect(Collectors.toSet());
 			long schemNum = filePaths.size();
 			String filesString = "";
 			for (String s : filePaths) {

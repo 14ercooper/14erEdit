@@ -11,7 +11,9 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 
 import com._14ercooper.worldeditor.macros.macros.Macro;
-import com._14ercooper.worldeditor.main.*;
+import com._14ercooper.worldeditor.main.GlobalVars;
+import com._14ercooper.worldeditor.main.Main;
+import com._14ercooper.worldeditor.main.SetBlock;
 import com._14ercooper.worldeditor.operations.Operator;
 
 public class ErodeMacro extends Macro {
@@ -72,6 +74,7 @@ public class ErodeMacro extends Macro {
 	}
     }
 
+    @Override
     public boolean performMacro(String[] args, Location loc) {
 	SetupMacro(args, loc);
 
@@ -116,7 +119,7 @@ public class ErodeMacro extends Macro {
 	if (erodeType == 2) {
 	    snapshotArray = mixErosion(snapshotArray, x, y, z);
 	}
-	
+
 	// Blockblend erosion
 	if (erodeType == 3) {
 	    snapshotArray = blendBlockErode(snapshotArray);
@@ -126,7 +129,7 @@ public class ErodeMacro extends Macro {
 	applyToWorld(snapshotArray);
 	return true;
     }
-    
+
     private List<BlockState> blendBlockErode(List<BlockState> snapshotArray) {
 	Main.logDebug("Starting blend block erode");
 	List<Material> blockMaterials = new ArrayList<Material>();

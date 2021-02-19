@@ -58,9 +58,9 @@ public class SphereIterator extends BlockIterator {
 //		z = -radMax;
 //	    }
 	    if (incrXYZ(radMax, radMax, radMax, xC, yC, zC)) {
-		    return null;
+		return null;
 	    }
-	    
+
 //	    if (y > radMax || y + yC > 255) {
 //		return null;
 //	    }

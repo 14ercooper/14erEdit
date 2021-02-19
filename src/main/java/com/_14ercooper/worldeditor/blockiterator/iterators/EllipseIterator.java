@@ -60,11 +60,12 @@ public class EllipseIterator extends BlockIterator {
 //		return null;
 //	    }
 	    if (incrXYZ((int) rx, (int) ry, (int) rz, xC, yC, zC)) {
-		    return null;
+		return null;
 	    }
 
 	    // Radius check
-	    if (((double) (x * x) / (double) (rx * rx)) + ((double) (y * y) / (double) (ry * ry)) + ((double) (z * z) / (double) (rz * rz)) > (double) (1 + radCorr)) {
+	    if ((x * x / (rx * rx)) + (y * y / (ry * ry))
+		    + (z * z / (rz * rz)) > 1 + radCorr) {
 		continue;
 	    }
 
@@ -72,10 +73,10 @@ public class EllipseIterator extends BlockIterator {
 	}
 
 	try {
-	    return Operator.currentPlayer.getWorld().getBlockAt((int) x + xC, (int) y + yC, (int) z + zC);
+	    return Operator.currentPlayer.getWorld().getBlockAt(x + xC, y + yC, z + zC);
 	}
 	catch (NullPointerException e) {
-	    return Bukkit.getWorlds().get(0).getBlockAt((int) x + xC, (int) y + yC, (int) z + zC);
+	    return Bukkit.getWorlds().get(0).getBlockAt(x + xC, y + yC, z + zC);
 	}
     }
 

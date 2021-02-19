@@ -9,7 +9,9 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 
 import com._14ercooper.worldeditor.macros.macros.Macro;
-import com._14ercooper.worldeditor.main.*;
+import com._14ercooper.worldeditor.main.GlobalVars;
+import com._14ercooper.worldeditor.main.Main;
+import com._14ercooper.worldeditor.main.SetBlock;
 import com._14ercooper.worldeditor.operations.Operator;
 
 public class BasicTreeMacro extends Macro {
@@ -74,6 +76,7 @@ public class BasicTreeMacro extends Macro {
 	}
     }
 
+    @Override
     public boolean performMacro(String[] args, Location loc) {
 	SetupMacro(args, loc);
 
@@ -950,8 +953,9 @@ public class BasicTreeMacro extends Macro {
 			}
 
 			// Update the current block
-			if (GlobalVars.rand.nextDouble() <= 0.2) { // 20% chance to move a block to the side by 1 in a random
-							// direction
+			if (GlobalVars.rand.nextDouble() <= 0.2) { // 20% chance to move a block to the side by 1 in a
+								   // random
+			    // direction
 			    double randNum = GlobalVars.rand.nextDouble();
 			    if (randNum <= 0.125) {
 				currentBlock = currentBlock.getRelative(BlockFace.UP).getRelative(BlockFace.NORTH);

@@ -23,17 +23,20 @@ public class SchematicMacro extends Macro {
 	int xOff = 1, yOff = 1, zOff = 1;
 	try {
 	    xOff = Integer.parseInt(args[1]);
-	} catch (NumberFormatException e) {
+	}
+	catch (NumberFormatException e) {
 	    xOff = Integer.MAX_VALUE;
 	}
 	try {
 	    yOff = Integer.parseInt(args[2]);
-	} catch (NumberFormatException e) {
+	}
+	catch (NumberFormatException e) {
 	    yOff = Integer.MAX_VALUE;
 	}
 	try {
 	    zOff = Integer.parseInt(args[3]);
-	} catch (NumberFormatException e) {
+	}
+	catch (NumberFormatException e) {
 	    zOff = Integer.MAX_VALUE;
 	}
 	xPos = loc.getBlockX() + xOff;
@@ -49,6 +52,7 @@ public class SchematicMacro extends Macro {
     } // /fx br v macro schem{jungle_1;c;0;c;false;r}
 
     // Run this macro
+    @Override
     public boolean performMacro(String[] args, Location loc) {
 	SetupMacro(args, loc);
 	int[] origin = { xPos, yPos, zPos };
@@ -63,6 +67,7 @@ public class SchematicMacro extends Macro {
 		mirrorOpts = mirrorOpts + "z";
 	    }
 	}
-	return SchematicHandler.loadSchematic(useSchem, origin, mirrorOpts, setAir, Operator.currentPlayer, executionOrder, loc);
+	return SchematicHandler.loadSchematic(useSchem, origin, mirrorOpts, setAir, Operator.currentPlayer,
+		executionOrder, loc);
     }
 }

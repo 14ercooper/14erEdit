@@ -51,7 +51,7 @@ public class GlobalVars {
 
     // No error spam
     public static boolean errorLogged = false;
-    
+
     // Caps for edits
     public static long minEditX = Long.MIN_VALUE;
     public static long minEditY = Long.MIN_VALUE;

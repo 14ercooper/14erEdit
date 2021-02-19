@@ -1902,9 +1902,9 @@ public class FastNoise {
 	int y3 = y1 + 2;
 	int z3 = z1 + 2;
 
-	float xs = x - (float) x1;
-	float ys = y - (float) y1;
-	float zs = z - (float) z1;
+	float xs = x - x1;
+	float ys = y - y1;
+	float zs = z - z1;
 
 	return CubicLerp(
 		CubicLerp(
@@ -2037,8 +2037,8 @@ public class FastNoise {
 	int x3 = x1 + 2;
 	int y3 = y1 + 2;
 
-	float xs = x - (float) x1;
-	float ys = y - (float) y1;
+	float xs = x - x1;
+	float ys = y - y1;
 
 	return CubicLerp(
 		CubicLerp(ValCoord2D(seed, x0, y0), ValCoord2D(seed, x1, y0), ValCoord2D(seed, x2, y0),

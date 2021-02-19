@@ -23,7 +23,7 @@ public class CommandTemplate implements CommandExecutor {
 		return false;
 	    }
 	}
-	
+
 	CommandSender player = arg0;
 
 	// Grab the filename

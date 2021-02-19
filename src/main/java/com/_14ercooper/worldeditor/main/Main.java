@@ -16,7 +16,19 @@ import com._14ercooper.worldeditor.blockiterator.IteratorLoader;
 import com._14ercooper.worldeditor.blockiterator.IteratorManager;
 import com._14ercooper.worldeditor.brush.BrushListener;
 import com._14ercooper.worldeditor.brush.BrushLoader;
-import com._14ercooper.worldeditor.commands.*;
+import com._14ercooper.worldeditor.commands.CommandAsync;
+import com._14ercooper.worldeditor.commands.CommandBrmask;
+import com._14ercooper.worldeditor.commands.CommandConfirm;
+import com._14ercooper.worldeditor.commands.CommandDebug;
+import com._14ercooper.worldeditor.commands.CommandFunction;
+import com._14ercooper.worldeditor.commands.CommandFx;
+import com._14ercooper.worldeditor.commands.CommandInfo;
+import com._14ercooper.worldeditor.commands.CommandLimit;
+import com._14ercooper.worldeditor.commands.CommandRun;
+import com._14ercooper.worldeditor.commands.CommandRunat;
+import com._14ercooper.worldeditor.commands.CommandScript;
+import com._14ercooper.worldeditor.commands.CommandTemplate;
+import com._14ercooper.worldeditor.commands.CommandUndo;
 import com._14ercooper.worldeditor.functions.Function;
 import com._14ercooper.worldeditor.macros.MacroLauncher;
 import com._14ercooper.worldeditor.macros.MacroLoader;
@@ -106,7 +118,7 @@ public class Main extends JavaPlugin {
     public void onDisable() {
 	// We don't need to do anything on disable
     }
-    
+
     public static int randRange(int min, int max) {
 	if (min == max) {
 	    return min;
@@ -142,7 +154,7 @@ public class Main extends JavaPlugin {
 		if (!Files.exists(Paths.get("plugins/14erEdit/error.log")))
 		    Files.createFile(Paths.get("plugins/14erEdit/error.log"));
 		Files.write(Paths.get("plugins/14erEdit/error.log"), errMessage.getBytes(), StandardOpenOption.APPEND);
-		
+
 	    }
 	    catch (Exception e2) {
 		// Also not super important
@@ -156,7 +168,8 @@ public class Main extends JavaPlugin {
 	if (!GlobalVars.plugin.getConfig().isSet("maxLoopLength")) {
 	    System.out.println("Updating configuration file.");
 	    try {
-		Files.write(Paths.get("/plugins/14erEdit/config.yml"), configUpdate1.getBytes(), StandardOpenOption.APPEND);
+		Files.write(Paths.get("/plugins/14erEdit/config.yml"), configUpdate1.getBytes(),
+			StandardOpenOption.APPEND);
 	    }
 	    catch (IOException e) {
 		System.out.println(
@@ -187,8 +200,8 @@ public class Main extends JavaPlugin {
 	    + "maxFunctionIters: 100000\n" + "\n" + "# Should debugs/errors be logged to a file?\n"
 	    + "logDebugs: false\n" + "logErrors: true\n" + "\n" + "# Should debug/autoconfirm be on by default?\n"
 	    + "defaultAutoConfirm: false\n" + "defaultDebug: false\n";
-    
-    public static boolean inEditRegion (long x, long y, long z) {
+
+    public static boolean inEditRegion(long x, long y, long z) {
 	return (x > GlobalVars.minEditX && y > GlobalVars.minEditY && z > GlobalVars.minEditZ)
 		&& (x < GlobalVars.maxEditX && y < GlobalVars.maxEditY && z < GlobalVars.maxEditZ);
     }

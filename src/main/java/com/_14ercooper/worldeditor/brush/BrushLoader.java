@@ -1,6 +1,30 @@
 package com._14ercooper.worldeditor.brush;
 
-import com._14ercooper.worldeditor.brush.shapes.*;
+import com._14ercooper.worldeditor.brush.shapes.Above;
+import com._14ercooper.worldeditor.brush.shapes.Below;
+import com._14ercooper.worldeditor.brush.shapes.Column;
+import com._14ercooper.worldeditor.brush.shapes.Cube;
+import com._14ercooper.worldeditor.brush.shapes.Cylinder;
+import com._14ercooper.worldeditor.brush.shapes.Diamond;
+import com._14ercooper.worldeditor.brush.shapes.Ellipse;
+import com._14ercooper.worldeditor.brush.shapes.HollowSphere;
+import com._14ercooper.worldeditor.brush.shapes.Multi;
+import com._14ercooper.worldeditor.brush.shapes.NewCylinder;
+import com._14ercooper.worldeditor.brush.shapes.RadiusSphere;
+import com._14ercooper.worldeditor.brush.shapes.RandomCube;
+import com._14ercooper.worldeditor.brush.shapes.RandomCylinder;
+import com._14ercooper.worldeditor.brush.shapes.RandomDiamond;
+import com._14ercooper.worldeditor.brush.shapes.RandomEllipse;
+import com._14ercooper.worldeditor.brush.shapes.RandomHollowSphere;
+import com._14ercooper.worldeditor.brush.shapes.RandomSphere;
+import com._14ercooper.worldeditor.brush.shapes.RandomSplatter;
+import com._14ercooper.worldeditor.brush.shapes.RotatedEllipse;
+import com._14ercooper.worldeditor.brush.shapes.ScaledSphere;
+import com._14ercooper.worldeditor.brush.shapes.SchemShape;
+import com._14ercooper.worldeditor.brush.shapes.Sphere;
+import com._14ercooper.worldeditor.brush.shapes.Spike;
+import com._14ercooper.worldeditor.brush.shapes.Splatter;
+import com._14ercooper.worldeditor.brush.shapes.Voxel;
 
 public class BrushLoader {
     public static void LoadBrushes() {

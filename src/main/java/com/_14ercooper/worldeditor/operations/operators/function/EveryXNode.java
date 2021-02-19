@@ -1,6 +1,7 @@
 package com._14ercooper.worldeditor.operations.operators.function;
 
-import com._14ercooper.worldeditor.main.*;
+import com._14ercooper.worldeditor.main.GlobalVars;
+import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.operations.operators.Node;
 import com._14ercooper.worldeditor.operations.operators.core.NumberNode;
@@ -10,6 +11,7 @@ public class EveryXNode extends Node {
     public int arg1 = -1;
     public NumberNode arg2;
 
+    @Override
     public EveryXNode newNode() {
 	EveryXNode node = new EveryXNode();
 	try {
@@ -36,6 +38,7 @@ public class EveryXNode extends Node {
 	return node;
     }
 
+    @Override
     public boolean performNode() {
 	int base = (int) arg2.getValue();
 	if (arg1 == 0) {
@@ -54,6 +57,7 @@ public class EveryXNode extends Node {
 	return false;
     }
 
+    @Override
     public int getArgCount() {
 	return 2;
     }
