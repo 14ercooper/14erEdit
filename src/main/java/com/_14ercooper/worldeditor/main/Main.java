@@ -61,6 +61,7 @@ public class Main extends JavaPlugin {
 	this.getCommand("brmask").setExecutor(new CommandBrmask());
 	this.getCommand("template").setExecutor(new CommandTemplate());
 	this.getCommand("funct").setExecutor(new CommandFunction());
+	this.getCommand("limit").setExecutor(new CommandLimit());
 
 	// Set up brush mask
 	GlobalVars.brushMask = new HashSet<Material>();
@@ -186,4 +187,9 @@ public class Main extends JavaPlugin {
 	    + "maxFunctionIters: 100000\n" + "\n" + "# Should debugs/errors be logged to a file?\n"
 	    + "logDebugs: false\n" + "logErrors: true\n" + "\n" + "# Should debug/autoconfirm be on by default?\n"
 	    + "defaultAutoConfirm: false\n" + "defaultDebug: false\n";
+    
+    public static boolean inEditRegion (long x, long y, long z) {
+	return (x > GlobalVars.minEditX && y > GlobalVars.minEditY && z > GlobalVars.minEditZ)
+		&& (x < GlobalVars.maxEditX && y < GlobalVars.maxEditY && z < GlobalVars.maxEditZ);
+    }
 }

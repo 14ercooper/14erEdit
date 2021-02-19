@@ -55,3 +55,6 @@ commands:
     brmask:
         description: Change the brush mask
         usage: "Usage: /brmask [blocks ...]"
+    limit:
+        description: Change the XYZ limits on operations
+        usage: "Usage: /limit <axis> <limit>"
