@@ -226,7 +226,7 @@ public class NoiseNode extends Node {
 	return 3;
     }
 
-    private float scaleTo255(double val) {
+    public static float scaleTo255(double val) {
 	val = val + 1;
 	val = val * 127.5;
 	return (float) val;

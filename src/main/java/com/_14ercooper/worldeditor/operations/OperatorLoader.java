@@ -13,6 +13,7 @@ import com._14ercooper.worldeditor.operations.operators.core.ZNode;
 import com._14ercooper.worldeditor.operations.operators.fun.SmallRuinNode;
 import com._14ercooper.worldeditor.operations.operators.function.EveryXNode;
 import com._14ercooper.worldeditor.operations.operators.function.FunctionNode;
+import com._14ercooper.worldeditor.operations.operators.function.MultiNoiseNode;
 import com._14ercooper.worldeditor.operations.operators.function.NoiseNode;
 import com._14ercooper.worldeditor.operations.operators.function.OddsNode;
 import com._14ercooper.worldeditor.operations.operators.function.RangeNode;
@@ -125,6 +126,8 @@ public class OperatorLoader {
 	GlobalVars.operationParser.AddOperator("noiseat", GlobalVars.operationParser.GetOperator("#a"));
 	GlobalVars.operationParser.AddOperator("fx", new FunctionNode());
 	GlobalVars.operationParser.AddOperator("function", GlobalVars.operationParser.GetOperator("fx"));
+	GlobalVars.operationParser.AddOperator("m#", new MultiNoiseNode());
+	GlobalVars.operationParser.AddOperator("multinoise", GlobalVars.operationParser.GetOperator("m#"));
     }
 
     private static void LoadLogical() {

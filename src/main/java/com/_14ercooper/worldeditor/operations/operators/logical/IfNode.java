@@ -15,7 +15,12 @@ public class IfNode extends Node {
 	try {
 	    node.arg1 = GlobalVars.operationParser.parsePart();
 	    node.arg2 = GlobalVars.operationParser.parsePart();
+	    int iter = GlobalVars.operationParser.index;
 	    node.arg3 = GlobalVars.operationParser.parsePart();
+	    if (!(arg3 instanceof ElseNode)) {
+		node.arg3 = null;
+		GlobalVars.operationParser.index = iter;
+	    }
 	}
 	catch (Exception e) {
 	    Main.logError("Error creating if node. Please check your syntax.", Operator.currentPlayer);
@@ -43,9 +48,9 @@ public class IfNode extends Node {
 	    if (arg3 instanceof ElseNode && !isTrue) {
 		toReturn = arg3.performNode();
 	    }
-	    if (!(arg3 instanceof ElseNode)) {
-		toReturn = arg3.performNode() && toReturn;
-	    }
+//	    if (!(arg3 instanceof ElseNode)) {
+//		toReturn = arg3.performNode() && toReturn;
+//	    }
 	    return toReturn;
 	}
 	catch (Exception e) {

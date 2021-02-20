@@ -97,6 +97,15 @@ public class NumberNode extends Node {
     public int getInt(int center) {
 	return (int) getValue(center);
     }
+    
+    public int getMaxInt() {
+	if (isRange || isNoise) {
+	    return (int) rangeMax.getValue();
+	}
+	else {
+	    return (int) arg;
+	}
+    }
 
     // Get how many arguments this type of node takes
     @Override
