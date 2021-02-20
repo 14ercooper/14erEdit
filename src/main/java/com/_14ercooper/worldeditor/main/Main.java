@@ -29,6 +29,7 @@ import com._14ercooper.worldeditor.commands.CommandRunat;
 import com._14ercooper.worldeditor.commands.CommandScript;
 import com._14ercooper.worldeditor.commands.CommandTemplate;
 import com._14ercooper.worldeditor.commands.CommandUndo;
+import com._14ercooper.worldeditor.compat.WorldEditCompat;
 import com._14ercooper.worldeditor.functions.Function;
 import com._14ercooper.worldeditor.macros.MacroLauncher;
 import com._14ercooper.worldeditor.macros.MacroLoader;
@@ -112,6 +113,9 @@ public class Main extends JavaPlugin {
 	OperatorLoader.LoadOperators();
 	IteratorLoader.LoadIterators();
 	Function.SetupFunctions();
+	
+	// Initialize the WE syntax compat layer
+	WorldEditCompat.init();
     }
 
     @Override

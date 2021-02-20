@@ -68,6 +68,18 @@ public class ErodeMacro extends Macro {
 		    erodeSubtype = 4;
 		}
 	    }
+	    
+	    if (erodeType == 2) {
+		if (args[2].equalsIgnoreCase("add")) {
+		    erodeSubtype = 0;
+		}
+		else if (args[2].equalsIgnoreCase("subtract")) {
+		    erodeSubtype = 1;
+		}
+		else if (args[2].equalsIgnoreCase("blend")) {
+		    erodeSubtype = 2;
+		}
+	    }
 	}
 	catch (Exception e) {
 	    Main.logError("Could not parse erode macro. Did you provide a valid mode?", Operator.currentPlayer);
@@ -116,8 +128,16 @@ public class ErodeMacro extends Macro {
 	}
 
 	// Mix erosion
-	if (erodeType == 2) {
-	    snapshotArray = mixErosion(snapshotArray, x, y, z);
+	if (erodeType == 2 && erodeSubtype == 0) {
+	    snapshotArray = mixErosionAdd(snapshotArray, x, y, z);
+	}
+	
+	if (erodeType == 2 && erodeSubtype == 1) {
+	    snapshotArray = mixErosionSubtract(snapshotArray, x, y, z);
+	}
+	
+	if (erodeType == 2 && erodeSubtype == 2) {
+	    snapshotArray = mixErosionBlend(snapshotArray, x, y, z);
 	}
 
 	// Blockblend erosion
@@ -210,17 +230,51 @@ public class ErodeMacro extends Macro {
 	return snapshotArray;
     }
 
-    private List<BlockState> mixErosion(List<BlockState> snapshotArray, double x, double y, double z) {
-	snapshotArray = meltRaiseErosion(snapshotArray);
+    private List<BlockState> mixErosionSubtract(List<BlockState> snapshotArray, double x, double y, double z) {
+	snapshotArray = meltCarveErosion(snapshotArray);
 	applyToWorld(snapshotArray);
 	snapshotArray = generateSnapshotArray(x, y, z);
-	snapshotArray = meltCutErosion(snapshotArray);
-	applyToWorld(snapshotArray);
-	snapshotArray = generateSnapshotArray(x, y, z);
-	snapshotArray = meltCutErosion(snapshotArray);
+	snapshotArray = meltCarveErosion(snapshotArray);
 	applyToWorld(snapshotArray);
 	snapshotArray = generateSnapshotArray(x, y, z);
 	snapshotArray = meltRaiseErosion(snapshotArray);
+	applyToWorld(snapshotArray);
+	snapshotArray = generateSnapshotArray(x, y, z);
+	snapshotArray = meltRaiseErosion(snapshotArray);
+	applyToWorld(snapshotArray);
+	snapshotArray = generateSnapshotArray(x, y, z);
+	snapshotArray = meltSmoothErosion(snapshotArray);
+	applyToWorld(snapshotArray);
+	snapshotArray = generateSnapshotArray(x, y, z);
+	snapshotArray = meltSmoothErosion(snapshotArray);
+	return snapshotArray;
+    }
+    
+    private List<BlockState> mixErosionBlend(List<BlockState> snapshotArray, double x, double y, double z) {
+	snapshotArray = meltCarveErosion(snapshotArray);
+	applyToWorld(snapshotArray);
+	snapshotArray = generateSnapshotArray(x, y, z);
+	snapshotArray = meltRaiseErosion(snapshotArray);
+	applyToWorld(snapshotArray);
+	snapshotArray = generateSnapshotArray(x, y, z);
+	snapshotArray = meltRaiseErosion(snapshotArray);
+	applyToWorld(snapshotArray);
+	snapshotArray = generateSnapshotArray(x, y, z);
+	snapshotArray = meltSmoothErosion(snapshotArray);
+	applyToWorld(snapshotArray);
+	snapshotArray = generateSnapshotArray(x, y, z);
+	snapshotArray = meltSmoothErosion(snapshotArray);
+	return snapshotArray;
+    }
+    
+    private List<BlockState> mixErosionAdd(List<BlockState> snapshotArray, double x, double y, double z) {
+	snapshotArray = meltRaiseErosion(snapshotArray);
+	applyToWorld(snapshotArray);
+	snapshotArray = generateSnapshotArray(x, y, z);
+	snapshotArray = meltRaiseErosion(snapshotArray);
+	applyToWorld(snapshotArray);
+	snapshotArray = generateSnapshotArray(x, y, z);
+	snapshotArray = meltSmoothErosion(snapshotArray);
 	applyToWorld(snapshotArray);
 	snapshotArray = generateSnapshotArray(x, y, z);
 	snapshotArray = meltSmoothErosion(snapshotArray);
