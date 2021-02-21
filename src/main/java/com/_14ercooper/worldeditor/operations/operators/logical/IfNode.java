@@ -15,9 +15,11 @@ public class IfNode extends Node {
 	try {
 	    node.arg1 = GlobalVars.operationParser.parsePart();
 	    node.arg2 = GlobalVars.operationParser.parsePart();
+	    
 	    int iter = GlobalVars.operationParser.index;
 	    node.arg3 = GlobalVars.operationParser.parsePart();
-	    if (!(arg3 instanceof ElseNode)) {
+	    if (!(node.arg3 instanceof ElseNode)) {
+		Main.logDebug("Did not find an instance of an else node.");
 		node.arg3 = null;
 		GlobalVars.operationParser.index = iter;
 	    }
@@ -34,18 +36,22 @@ public class IfNode extends Node {
 	return node;
     }
 
+    // /fx br v if bedrock if both simplex 3 130 4 not simplex 3 110 4 set polished_andesite else if simplex 3 110 4 set 70%andesite;10%gravel;10%stone;10%cobblestone
     @Override
     public boolean performNode() {
 	try {
 	    boolean isTrue = arg1.performNode();
 	    boolean toReturn = false;
 	    if (isTrue) {
+		Main.logDebug("condition true");
 		toReturn = arg2.performNode();
 	    }
-	    if (arg3 == null) {
+	    else if (arg3 == null) {
+		Main.logDebug("no else");
 		return toReturn;
 	    }
-	    if (arg3 instanceof ElseNode && !isTrue) {
+	    else if (arg3 instanceof ElseNode && !isTrue) {
+		Main.logDebug("else");
 		toReturn = arg3.performNode();
 	    }
 //	    if (!(arg3 instanceof ElseNode)) {

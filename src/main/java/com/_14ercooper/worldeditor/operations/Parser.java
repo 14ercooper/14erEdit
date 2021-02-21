@@ -89,8 +89,9 @@ public class Parser {
 			Operator.currentPlayer);
 	    }
 	    if (operators.containsKey(parts.get(index))) {
-		Main.logDebug(parts.get(index) + " node created");
-		return operators.get(parts.get(index)).newNode();
+		Node n = operators.get(parts.get(index)).newNode();
+		Main.logDebug(parts.get(index) + " node created: + " + n.toString());
+		return n;
 	    }
 	    else {
 		index--;

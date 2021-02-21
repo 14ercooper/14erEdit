@@ -41,6 +41,7 @@ biome
 mask (incl. ! and comma-separated lists)
 mat
 size
+heightmap
 
 Patterns:
 #simplex
