@@ -43,15 +43,15 @@ public class IfNode extends Node {
 	    boolean isTrue = arg1.performNode();
 	    boolean toReturn = false;
 	    if (isTrue) {
-		Main.logDebug("condition true");
+//		Main.logDebug("condition true");
 		toReturn = arg2.performNode();
 	    }
 	    else if (arg3 == null) {
-		Main.logDebug("no else");
+//		Main.logDebug("no else");
 		return toReturn;
 	    }
 	    else if (arg3 instanceof ElseNode && !isTrue) {
-		Main.logDebug("else");
+//		Main.logDebug("else");
 		toReturn = arg3.performNode();
 	    }
 //	    if (!(arg3 instanceof ElseNode)) {
