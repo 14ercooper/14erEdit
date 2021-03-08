@@ -43,8 +43,10 @@ public class Parser {
 	// Here there be parsing magic
 	// A massive recursive nightmare
 	index = -1;
-	parts = Arrays.asList(Arrays.asList(op.split(" ")).stream().map(s -> s.replaceAll("[\\(\\)\\[\\]]+", ""))
+	parts = Arrays.asList(Arrays.asList(op.split(" ")).stream()
+		.map(s -> s.matches(".*\\[.+=.+\\].*") ? s.replaceAll("[\\(\\)]+", "") : s.replaceAll("[\\(\\)\\[\\]]+", ""))
 		.toArray(size -> new String[size]));
+	
 	Node rootNode = parsePart();
 
 	// This is an error if this is true
@@ -90,7 +92,7 @@ public class Parser {
 	    }
 	    if (operators.containsKey(parts.get(index))) {
 		Node n = operators.get(parts.get(index)).newNode();
-		Main.logDebug(parts.get(index) + " node created: + " + n.toString());
+		Main.logDebug(parts.get(index) + " node created: " + n.toString());
 		return n;
 	    }
 	    else {
@@ -98,11 +100,11 @@ public class Parser {
 		StringNode strNode = parseStringNode();
 		BlockNode bn = new BlockNode().newNode(strNode.getText());
 		if (bn != null) {
-		    Main.logDebug("Block node created");
+		    Main.logDebug("Block node created: " + bn.toString());
 		    return bn;
 		}
 		else {
-		    Main.logDebug("String node created"); // -----
+		    Main.logDebug("String node created: " + strNode.toString()); // -----
 		    return strNode;
 		}
 	    }
