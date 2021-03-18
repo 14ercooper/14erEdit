@@ -19,7 +19,6 @@ import com._14ercooper.worldeditor.brush.shapes.RandomHollowSphere;
 import com._14ercooper.worldeditor.brush.shapes.RandomSphere;
 import com._14ercooper.worldeditor.brush.shapes.RandomSplatter;
 import com._14ercooper.worldeditor.brush.shapes.RotatedEllipse;
-import com._14ercooper.worldeditor.brush.shapes.ScaledSphere;
 import com._14ercooper.worldeditor.brush.shapes.SchemShape;
 import com._14ercooper.worldeditor.brush.shapes.Sphere;
 import com._14ercooper.worldeditor.brush.shapes.Spike;
@@ -35,7 +34,7 @@ public class BrushLoader {
 	RadiusSphere radiusSphere = new RadiusSphere();
 	RandomSphere randomSphere = new RandomSphere();
 	Sphere sphere = new Sphere();
-	ScaledSphere scaledSphere = new ScaledSphere();
+//	ScaledSphere scaledSphere = new ScaledSphere();
 	Cylinder cylinder = new Cylinder();
 	Voxel voxel = new Voxel();
 	Splatter splatter = new Splatter();
@@ -69,8 +68,8 @@ public class BrushLoader {
 	Brush.AddBrushShape("s", sphere);
 	Brush.AddBrushShape("voxel", voxel);
 	Brush.AddBrushShape("v", voxel);
-	Brush.AddBrushShape("ss", scaledSphere);
-	Brush.AddBrushShape("scaledsphere", scaledSphere);
+//	Brush.AddBrushShape("ss", scaledSphere);
+//	Brush.AddBrushShape("scaledsphere", scaledSphere);
 	Brush.AddBrushShape("oc", cylinder);
 	Brush.AddBrushShape("oldcylinder", cylinder);
 	Brush.AddBrushShape("splatter", splatter);
