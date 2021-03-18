@@ -241,6 +241,9 @@ public class AsyncManager {
 		    if (currentAsyncOp.undo != null) {
 			currentAsyncOp.undo.finishUndo();
 		    }
+		    if (currentAsyncOp.key.equalsIgnoreCase("saveschem")) {
+			currentAsyncOp.player.sendMessage("§aSelection saved");
+		    }
 		    if (currentAsyncOp.blocks instanceof SchemBrushIterator) {
 			((SchemBrushIterator) currentAsyncOp.blocks).cleanup();
 		    }
