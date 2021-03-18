@@ -1,8 +1,7 @@
 package com._14ercooper.worldeditor.operations.operators.function;
 
-import java.util.Random;
-
-import com._14ercooper.worldeditor.main.*;
+import com._14ercooper.worldeditor.main.GlobalVars;
+import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.operations.operators.Node;
 import com._14ercooper.worldeditor.operations.operators.core.NumberNode;
@@ -11,6 +10,7 @@ public class OddsNode extends Node {
 
     public NumberNode arg;
 
+    @Override
     public OddsNode newNode() {
 	OddsNode node = new OddsNode();
 	try {
@@ -27,12 +27,13 @@ public class OddsNode extends Node {
 	return node;
     }
 
+    @Override
     public boolean performNode() {
-	Random rand = new Random();
-	double chance = rand.nextDouble() * 100.0;
+	double chance = GlobalVars.rand.nextDouble() * 100.0;
 	return (chance < arg.getValue());
     }
 
+    @Override
     public int getArgCount() {
 	return 1;
     }

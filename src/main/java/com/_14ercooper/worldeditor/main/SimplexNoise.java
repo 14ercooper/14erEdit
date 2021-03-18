@@ -1,7 +1,5 @@
 package com._14ercooper.worldeditor.main;
 
-import java.util.Random;
-
 // Treat this code like a black box, it can generate 2D, 3D, 4D simplex noise
 // Original code by Stefan Gustavson, 2012. Public domain.
 // Modifications created by Logan Cooper, 2018.
@@ -51,18 +49,14 @@ public class SimplexNoise { // Simplex noise in 2D, 3D and 4D
 	p = p_supply.clone();
 
 	if (seed == RANDOMSEED) {
-	    Random rand = new Random();
-	    seed = rand.nextInt();
+	    seed = GlobalVars.rand.nextInt();
 	}
-
-	// the random for the swaps
-	Random rand = new Random(seed);
 
 	// the seed determines the swaps that occur between the default order and the
 	// order we're actually going to use
 	for (int i = 0; i < NUMBEROFSWAPS; i++) {
-	    int swapFrom = rand.nextInt(p.length);
-	    int swapTo = rand.nextInt(p.length);
+	    int swapFrom = GlobalVars.rand.nextInt(p.length);
+	    int swapTo = GlobalVars.rand.nextInt(p.length);
 
 	    short temp = p[swapFrom];
 	    p[swapFrom] = p[swapTo];
@@ -80,18 +74,18 @@ public class SimplexNoise { // Simplex noise in 2D, 3D and 4D
 	p = p_supply.clone();
 
 	if (seed == RANDOMSEED) {
-	    Random rand = new Random();
-	    seed = rand.nextLong();
+//	    seed = rand.nextLong();
+	    seed = GlobalVars.rand.nextLong();
 	}
 
 	// the random for the swaps
-	Random rand = new Random(seed);
+//	rand = GlobalVars.rand;
 
 	// the seed determines the swaps that occur between the default order and the
 	// order we're actually going to use
 	for (int i = 0; i < NUMBEROFSWAPS; i++) {
-	    int swapFrom = rand.nextInt(p.length);
-	    int swapTo = rand.nextInt(p.length);
+	    int swapFrom = GlobalVars.rand.nextInt(p.length);
+	    int swapTo = GlobalVars.rand.nextInt(p.length);
 
 	    short temp = p[swapFrom];
 	    p[swapFrom] = p[swapTo];

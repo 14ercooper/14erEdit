@@ -13,6 +13,7 @@ import com._14ercooper.worldeditor.main.Main;
 
 public class CommandBrmask implements CommandExecutor {
 
+    @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 	if (sender instanceof Player) {
 	    if (!((Player) sender).isOp()) {
@@ -20,7 +21,7 @@ public class CommandBrmask implements CommandExecutor {
 		return false;
 	    }
 	}
-	
+
 	try {
 	    GlobalVars.brushMask = new HashSet<Material>();
 	    for (String s : args) {

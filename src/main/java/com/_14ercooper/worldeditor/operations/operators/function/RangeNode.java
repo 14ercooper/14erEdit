@@ -1,6 +1,7 @@
 package com._14ercooper.worldeditor.operations.operators.function;
 
-import com._14ercooper.worldeditor.main.*;
+import com._14ercooper.worldeditor.main.GlobalVars;
+import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.operations.operators.Node;
 import com._14ercooper.worldeditor.operations.operators.core.NumberNode;
@@ -9,6 +10,7 @@ public class RangeNode extends Node {
 
     public NumberNode arg1, arg2;
 
+    @Override
     public RangeNode newNode() {
 	RangeNode node = new RangeNode();
 	try {
@@ -28,6 +30,7 @@ public class RangeNode extends Node {
 	return node;
     }
 
+    @Override
     public boolean performNode() {
 	return false;
     }
@@ -40,6 +43,7 @@ public class RangeNode extends Node {
 	return arg2.getValue();
     }
 
+    @Override
     public int getArgCount() {
 	return 2;
     }

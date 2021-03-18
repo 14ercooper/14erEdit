@@ -12,15 +12,15 @@ import com._14ercooper.worldeditor.operations.Operator;
 public class NewCylinderIterator extends BlockIterator {
 
     long totalBlocks;
-    long doneBlocks = 0;
-    int x, y, z;
+//    long doneBlocks = 0;
+//    int x, y, z;
     int xC, yC, zC;
     double xS, yS, zS;
     int radMax;
     double radCorr;
     int height;
-    int dirMax;
-    
+    int dirMaxX, dirMaxY, dirMaxZ;
+
     @Override
     public NewCylinderIterator newIterator(List<String> args) {
 	try {
@@ -34,12 +34,14 @@ public class NewCylinderIterator extends BlockIterator {
 	    iterator.xS = Double.parseDouble(args.get(6)); // Scaling stuff
 	    iterator.yS = Double.parseDouble(args.get(7));
 	    iterator.zS = Double.parseDouble(args.get(8));
-	    iterator.dirMax = Math.max(iterator.height, iterator.radMax) + 2;
-	    System.out.println(iterator.dirMax);
-	    iterator.totalBlocks = (2 * iterator.dirMax + 1) * (2 * iterator.dirMax + 1) * (2 * iterator.dirMax + 1);
-	    iterator.x = -iterator.dirMax - 1;
-	    iterator.y = -iterator.dirMax;
-	    iterator.z = -iterator.dirMax;
+//	    iterator.dirMax = Math.max(iterator.height, iterator.radMax) + 2;
+	    iterator.dirMaxX = iterator.xS == 0 ? iterator.height : iterator.radMax;
+	    iterator.dirMaxY = iterator.yS == 0 ? iterator.height : iterator.radMax;
+	    iterator.dirMaxZ = iterator.zS == 0 ? iterator.height : iterator.radMax;
+	    iterator.totalBlocks = (2 * iterator.dirMaxX + 1) * (2 * iterator.dirMaxY + 1) * (2 * iterator.dirMaxZ + 1);
+	    iterator.x = -iterator.dirMaxX - 1;
+	    iterator.y = -iterator.dirMaxY;
+	    iterator.z = -iterator.dirMaxZ;
 	    while (iterator.y + iterator.yC < 0) {
 		iterator.y++;
 	    }
@@ -55,17 +57,20 @@ public class NewCylinderIterator extends BlockIterator {
     @Override
     public Block getNext() {
 	while (true) {
-	    x++;
-	    doneBlocks++;
-	    if (x > dirMax) {
-		z++;
-		x = -dirMax;
-	    }
-	    if (z > dirMax) {
-		y++;
-		z = -dirMax;
-	    }
-	    if (y > dirMax || y + yC > 255) {
+//	    x++;
+//	    doneBlocks++;
+//	    if (x > dirMax) {
+//		z++;
+//		x = -dirMax;
+//	    }
+//	    if (z > dirMax) {
+//		y++;
+//		z = -dirMax;
+//	    }
+//	    if (y > dirMax || y + yC > 255) {
+//		return null;
+//	    }
+	    if (incrXYZ(dirMaxX, dirMaxY, dirMaxZ, xC, yC, zC)) {
 		return null;
 	    }
 
@@ -73,6 +78,8 @@ public class NewCylinderIterator extends BlockIterator {
 	    if ((x * x) * xS + (y * y) * yS + (z * z) * zS >= (radMax + radCorr) * (radMax + radCorr)) {
 		continue;
 	    }
+
+	    // Height check
 
 	    break;
 	}

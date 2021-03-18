@@ -1,8 +1,18 @@
 package com._14ercooper.worldeditor.scripts;
 
 import com._14ercooper.worldeditor.main.GlobalVars;
-import com._14ercooper.worldeditor.scripts.bundled.easyedit.*;
-import com._14ercooper.worldeditor.scripts.bundled.selection.*;
+import com._14ercooper.worldeditor.scripts.bundled.easyedit.ScriptBiome;
+import com._14ercooper.worldeditor.scripts.bundled.easyedit.ScriptCaternary;
+import com._14ercooper.worldeditor.scripts.bundled.easyedit.ScriptErode;
+import com._14ercooper.worldeditor.scripts.bundled.easyedit.ScriptFlatten;
+import com._14ercooper.worldeditor.scripts.bundled.easyedit.ScriptGrassBrush;
+import com._14ercooper.worldeditor.scripts.bundled.easyedit.ScriptLine;
+import com._14ercooper.worldeditor.scripts.bundled.easyedit.ScriptOverlay;
+import com._14ercooper.worldeditor.scripts.bundled.easyedit.ScriptTree;
+import com._14ercooper.worldeditor.scripts.bundled.easyedit.ScriptVines;
+import com._14ercooper.worldeditor.scripts.bundled.selection.ScriptClone;
+import com._14ercooper.worldeditor.scripts.bundled.selection.ScriptGrass;
+import com._14ercooper.worldeditor.scripts.bundled.selection.ScriptMegaoperate;
 
 public class CraftscriptLoader {
 

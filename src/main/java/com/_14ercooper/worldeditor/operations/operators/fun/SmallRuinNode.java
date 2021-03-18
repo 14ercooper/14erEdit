@@ -1,12 +1,11 @@
 package com._14ercooper.worldeditor.operations.operators.fun;
 
-import java.util.Random;
-
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 
 import com._14ercooper.worldeditor.main.GlobalVars;
+import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.operations.operators.Node;
 import com._14ercooper.worldeditor.operations.operators.function.RangeNode;
@@ -29,16 +28,16 @@ public class SmallRuinNode extends Node {
 
     @Override
     public boolean performNode() {
-	Random rand = new Random();
-	rand.nextInt();
-	int xSize = (int) (rand.nextInt((int) (xMax.getMax() - xMax.getMin())) + xMax.getMin());
-	int zSize = (int) (rand.nextInt((int) (zMax.getMax() - zMax.getMin())) + zMax.getMin());
+//	int xSize = (int) (rand.nextInt((int) (xMax.getMax() - xMax.getMin())) + xMax.getMin());
+//	int zSize = (int) (rand.nextInt((int) (zMax.getMax() - zMax.getMin())) + zMax.getMin());
+	int xSize = Main.randRange((int) xMax.getMin(), (int) xMax.getMax());
+	int zSize = Main.randRange((int) zMax.getMin(), (int) zMax.getMax());
 
-	int stackCount = 1;
-	if (stackSize.getMax() == stackSize.getMin())
-	    stackCount = (int) stackSize.getMax();
-	else
-	    stackCount = (int) (rand.nextInt((int) (stackSize.getMax() - stackSize.getMin())) + stackSize.getMin());
+	int stackCount = Main.randRange((int) stackSize.getMin(), (int) stackSize.getMax());
+//	if (stackSize.getMax() == stackSize.getMin())
+//	    stackCount = (int) stackSize.getMax();
+//	else
+//	    stackCount = (int) (rand.nextInt((int) (stackSize.getMax() - stackSize.getMin())) + stackSize.getMin());
 
 	Block savedBlock = Operator.currentBlock;
 
@@ -55,7 +54,7 @@ public class SmallRuinNode extends Node {
 			block.performNode();
 		    }
 		    else {
-			if (rand.nextInt(2) == 1) {
+			if (GlobalVars.rand.nextBoolean()) {
 			    Operator.currentBlock = currBlockOffset;
 			    block.performNode();
 			}
@@ -78,7 +77,7 @@ public class SmallRuinNode extends Node {
 		for (int zO = -zSize; zO <= zSize; zO++) {
 		    if (xO == -xSize || xO == xSize || zO == -zSize || zO == zSize) {
 			for (int i = 0; i < 5; i++) {
-			    if (rand.nextInt(5) == 0)
+			    if (GlobalVars.rand.nextInt(5) == 0)
 				break;
 			    Operator.currentBlock = currBlock.getRelative(xO, i, zO);
 			    block.performNode();

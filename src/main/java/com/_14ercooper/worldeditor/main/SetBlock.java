@@ -9,6 +9,9 @@ import com._14ercooper.worldeditor.operations.Operator;
 
 public class SetBlock {
     public static void setMaterial(Block b, Material mat) {
+	if (!Main.inEditRegion(b.getX(), b.getY(), b.getZ())) {
+	    return;
+	}
 	try {
 	    if (GlobalVars.currentUndo != null)
 		GlobalVars.currentUndo.storeBlock(b);
@@ -20,13 +23,17 @@ public class SetBlock {
 	    }
 	}
 	catch (Exception e) {
-	    Main.logError("Invalid block ID provided. The async queue has been dropped.", Operator.currentPlayer);
+	    Main.logError("Invalid block ID " + mat.toString() + " provided. The async queue has been dropped.",
+		    Operator.currentPlayer);
 	    GlobalVars.asyncManager.dropAsync();
 	    return;
 	}
     }
 
     public static void setMaterial(Block b, Material mat, boolean physics) {
+	if (!Main.inEditRegion(b.getX(), b.getY(), b.getZ())) {
+	    return;
+	}
 	try {
 	    if (GlobalVars.currentUndo != null)
 		GlobalVars.currentUndo.storeBlock(b);
@@ -38,13 +45,17 @@ public class SetBlock {
 	    }
 	}
 	catch (Exception e) {
-	    Main.logError("Invalid block ID provided. The async queue has been dropped.", Operator.currentPlayer);
+	    Main.logError("Invalid block ID " + mat.toString() + " provided. The async queue has been dropped.",
+		    Operator.currentPlayer);
 	    GlobalVars.asyncManager.dropAsync();
 	    return;
 	}
     }
 
     public static void setMaterial(BlockState b, Material mat) {
+	if (!Main.inEditRegion(b.getX(), b.getY(), b.getZ())) {
+	    return;
+	}
 	try {
 	    if (GlobalVars.currentUndo != null)
 		GlobalVars.currentUndo.storeBlock(b.getBlock());
@@ -56,7 +67,8 @@ public class SetBlock {
 	    }
 	}
 	catch (Exception e) {
-	    Main.logError("Invalid block ID provided. The async queue has been dropped.", Operator.currentPlayer);
+	    Main.logError("Invalid block ID " + mat.toString() + " provided. The async queue has been dropped.",
+		    Operator.currentPlayer);
 	    GlobalVars.asyncManager.dropAsync();
 	    return;
 	}

@@ -6,7 +6,8 @@ import java.util.Map;
 
 import org.bukkit.entity.Player;
 
-import com._14ercooper.worldeditor.main.*;
+import com._14ercooper.worldeditor.main.GlobalVars;
+import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.undo.UndoManager;
 
 public class CraftscriptManager {

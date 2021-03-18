@@ -12,7 +12,7 @@ public class SchemShape extends BrushShape {
 
     String fileName;
     int gotArgs = 0;
-    
+
     @Override
     public BlockIterator GetBlocks(double x, double y, double z) {
 	List<String> args = new ArrayList<String>();

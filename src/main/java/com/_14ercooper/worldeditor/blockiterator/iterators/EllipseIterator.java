@@ -12,8 +12,8 @@ import com._14ercooper.worldeditor.operations.Operator;
 public class EllipseIterator extends BlockIterator {
 
     long totalBlocks;
-    long doneBlocks = 0;
-    double x, y, z;
+//    long doneBlocks = 0;
+//    double x, y, z;
     int xC, yC, zC;
     double rx, ry, rz;
     double radCorr;
@@ -31,9 +31,9 @@ public class EllipseIterator extends BlockIterator {
 	    iterator.radCorr = Double.parseDouble(args.get(6));
 	    iterator.totalBlocks = (2 * (int) iterator.rx + 1) * (2 * (int) iterator.ry + 1)
 		    * (2 * (int) iterator.rz + 1);
-	    iterator.x = -iterator.rx - 1;
-	    iterator.y = -iterator.ry;
-	    iterator.z = -iterator.rz;
+	    iterator.x = (int) (-iterator.rx - 1);
+	    iterator.y = (int) -iterator.ry;
+	    iterator.z = (int) -iterator.rz;
 	    return iterator;
 	}
 	catch (Exception e) {
@@ -46,22 +46,25 @@ public class EllipseIterator extends BlockIterator {
     @Override
     public Block getNext() {
 	while (true) {
-	    x++;
-	    doneBlocks++;
-	    if (x > rx) {
-		z++;
-		x = -rx;
-	    }
-	    if (z > rz) {
-		y++;
-		z = -rz;
-	    }
-	    if (y > ry) {
+//	    x++;
+//	    doneBlocks++;
+//	    if (x > rx) {
+//		z++;
+//		x = -rx;
+//	    }
+//	    if (z > rz) {
+//		y++;
+//		z = -rz;
+//	    }
+//	    if (y > ry) {
+//		return null;
+//	    }
+	    if (incrXYZ((int) rx, (int) ry, (int) rz, xC, yC, zC)) {
 		return null;
 	    }
 
 	    // Radius check
-	    if (((x * x) / (rx * rx)) + ((y * y) / (ry * ry)) + ((z * z) / (rz * rz)) > (1 + radCorr)) {
+	    if ((x * x / (rx * rx)) + (y * y / (ry * ry)) + (z * z / (rz * rz)) > 1 + radCorr) {
 		continue;
 	    }
 
@@ -69,10 +72,10 @@ public class EllipseIterator extends BlockIterator {
 	}
 
 	try {
-	    return Operator.currentPlayer.getWorld().getBlockAt((int) x + xC, (int) y + yC, (int) z + zC);
+	    return Operator.currentPlayer.getWorld().getBlockAt(x + xC, y + yC, z + zC);
 	}
 	catch (NullPointerException e) {
-	    return Bukkit.getWorlds().get(0).getBlockAt((int) x + xC, (int) y + yC, (int) z + zC);
+	    return Bukkit.getWorlds().get(0).getBlockAt(x + xC, y + yC, z + zC);
 	}
     }
 

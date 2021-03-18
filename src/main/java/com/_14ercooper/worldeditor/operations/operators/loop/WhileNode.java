@@ -1,6 +1,7 @@
 package com._14ercooper.worldeditor.operations.operators.loop;
 
-import com._14ercooper.worldeditor.main.*;
+import com._14ercooper.worldeditor.main.GlobalVars;
+import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.operations.operators.Node;
 
@@ -8,6 +9,7 @@ public class WhileNode extends Node {
 
     Node cond, op;
 
+    @Override
     public WhileNode newNode() {
 	WhileNode node = new WhileNode();
 	try {
@@ -25,6 +27,7 @@ public class WhileNode extends Node {
 	return node;
     }
 
+    @Override
     public boolean performNode() {
 	try {
 	    boolean result = true;
@@ -47,6 +50,7 @@ public class WhileNode extends Node {
 	}
     }
 
+    @Override
     public int getArgCount() {
 	return 2;
     }

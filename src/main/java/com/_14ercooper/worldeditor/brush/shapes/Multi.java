@@ -61,7 +61,7 @@ public class Multi extends BrushShape {
 	// Create the lists
 	iters = new ArrayList<BlockIterator>();
 	ops = new ArrayList<Operator>();
-	
+
 	// Get the file name
 	String filename = "plugins/14erEdit/multibrushes/" + file;
 	if (Files.exists(Paths.get(filename))) {

@@ -2,7 +2,8 @@ package com._14ercooper.worldeditor.operations.operators.world;
 
 import org.bukkit.Bukkit;
 
-import com._14ercooper.worldeditor.main.*;
+import com._14ercooper.worldeditor.main.GlobalVars;
+import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.operations.operators.Node;
 
@@ -10,6 +11,7 @@ public class SetNBTNode extends Node {
 
     String nbt;
 
+    @Override
     public SetNBTNode newNode() {
 	SetNBTNode node = new SetNBTNode();
 	try {
@@ -25,6 +27,7 @@ public class SetNBTNode extends Node {
 	return node;
     }
 
+    @Override
     public boolean performNode() {
 	try {
 	    String command = "data merge block ";
@@ -41,6 +44,7 @@ public class SetNBTNode extends Node {
 	}
     }
 
+    @Override
     public int getArgCount() {
 	return 1;
     }

@@ -5,7 +5,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import com._14ercooper.worldeditor.main.*;
+import com._14ercooper.worldeditor.main.GlobalVars;
+import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.operations.operators.Node;
 import com._14ercooper.worldeditor.operations.type.SpawnerVar;
@@ -15,6 +16,7 @@ public class GetSpawnerCommandNode extends Node {
     String name;
     String path;
 
+    @Override
     public GetSpawnerCommandNode newNode() {
 	GetSpawnerCommandNode node = new GetSpawnerCommandNode();
 	node.name = GlobalVars.operationParser.parseStringNode().contents;
@@ -22,6 +24,7 @@ public class GetSpawnerCommandNode extends Node {
 	return node;
     }
 
+    @Override
     public boolean performNode() {
 	if (!Operator.spawnerVars.containsKey(name)) {
 	    Main.logError(
@@ -58,6 +61,7 @@ public class GetSpawnerCommandNode extends Node {
 	return true;
     }
 
+    @Override
     public int getArgCount() {
 	return 2;
     }

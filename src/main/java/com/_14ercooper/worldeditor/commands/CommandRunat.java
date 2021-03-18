@@ -15,6 +15,7 @@ import com._14ercooper.worldeditor.operations.Operator;
 
 public class CommandRunat implements CommandExecutor {
 
+    @Override
     @SuppressWarnings("static-access")
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 	if (sender instanceof Player) {
@@ -23,7 +24,7 @@ public class CommandRunat implements CommandExecutor {
 		return false;
 	    }
 	}
-	
+
 	try {
 	    double x = 0, y = 0, z = 0;
 	    // X with relative

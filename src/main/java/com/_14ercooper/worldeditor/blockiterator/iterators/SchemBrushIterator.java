@@ -14,30 +14,31 @@ public class SchemBrushIterator extends BlockIterator {
 
     SchemLite schem;
     BlockIterator schemIter;
-    
+
     // Statics
     public static String blockType = "";
     public static String blockData = "";
     public static String nbt = "";
-    
+
     @Override
     public BlockIterator newIterator(List<String> args) {
 	try {
-        	SchemBrushIterator iter = new SchemBrushIterator();
-        	int x = Integer.parseInt(args.get(0));
-        	int y = Integer.parseInt(args.get(1));
-        	int z = Integer.parseInt(args.get(2));
-        	iter.schem = new SchemLite(args.get(3), true, 0);
-        	iter.schem.openRead();
-        	iter.schemIter = iter.schem.getIterator(x - (iter.schem.getXSize() / 2), y - (iter.schem.getYSize() / 2), z - (iter.schem.getZSize() / 2));
-        	return iter;
+	    SchemBrushIterator iter = new SchemBrushIterator();
+	    int x = Integer.parseInt(args.get(0));
+	    int y = Integer.parseInt(args.get(1));
+	    int z = Integer.parseInt(args.get(2));
+	    iter.schem = new SchemLite(args.get(3), true, 0);
+	    iter.schem.openRead();
+	    iter.schemIter = iter.schem.getIterator(x - (iter.schem.getXSize() / 2), y - (iter.schem.getYSize() / 2),
+		    z - (iter.schem.getZSize() / 2));
+	    return iter;
 	}
 	catch (Exception e) {
 	    Main.logError("Could not create schem brush iterator", Operator.currentPlayer);
 	    return null;
 	}
     }
-    
+
     public void cleanup() {
 	try {
 	    schem.closeRead();
@@ -60,7 +61,7 @@ public class SchemBrushIterator extends BlockIterator {
 	    Main.logError("Could not read next block from schematic.", Operator.currentPlayer);
 	    blockType = blockData = nbt = "";
 	}
-	
+
 	// Return the next world block
 	return schemIter.getNext();
     }

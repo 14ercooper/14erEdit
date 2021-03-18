@@ -7,7 +7,8 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-import com._14ercooper.worldeditor.main.*;
+import com._14ercooper.worldeditor.main.GlobalVars;
+import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.operations.operators.Node;
 
@@ -15,6 +16,7 @@ public class LoadFromFileNode extends Node {
 
     StringNode path = new StringNode();
 
+    @Override
     public LoadFromFileNode newNode() {
 	LoadFromFileNode node = new LoadFromFileNode();
 	try {
@@ -27,6 +29,7 @@ public class LoadFromFileNode extends Node {
 	}
     }
 
+    @Override
     public boolean performNode() {
 	if (!Operator.fileLoads.containsKey(path.contents)) {
 	    List<String> lines = new ArrayList<String>();
@@ -43,7 +46,7 @@ public class LoadFromFileNode extends Node {
 	    }
 	    List<String> newOperators = new ArrayList<String>();
 	    for (String s : lines) {
-		String[] strArr = s.split("\\s+");
+		String[] strArr = s.split("[\\n\\r\\t ]+");
 		for (String str : strArr) {
 		    newOperators.add(str);
 		}
@@ -53,6 +56,7 @@ public class LoadFromFileNode extends Node {
 	    for (String s : newOperators) {
 		toParse += s + " ";
 	    }
+	    toParse = toParse.replaceAll("\\s+", " ");
 	    Operator o = new Operator(toParse, Operator.currentPlayer);
 	    Operator.fileLoads.put(path.contents, o);
 	}
@@ -60,6 +64,7 @@ public class LoadFromFileNode extends Node {
 	return o.messyOperate();
     }
 
+    @Override
     public int getArgCount() {
 	return 1;
     }

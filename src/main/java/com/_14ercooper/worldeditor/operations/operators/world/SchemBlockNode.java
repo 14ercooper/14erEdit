@@ -28,7 +28,7 @@ public class SchemBlockNode extends BlockNode {
 	}
 	return node;
     }
-    
+
     // This should never be run
     @Override
     public BlockNode newNode(String text) {
@@ -63,9 +63,9 @@ public class SchemBlockNode extends BlockNode {
 	    boolean retVal = false;
 	    try {
 		Operator.currentBlock = Operator.currentPlayer.getWorld().getBlockAt(14, 0, 14);
-	    	Operator.currentBlock.setType(Material.matchMaterial(SchemBrushIterator.blockType));
-	    	Operator.currentBlock.setBlockData(Bukkit.getServer().createBlockData(SchemBrushIterator.blockData));
-	    	retVal = arg.performNode();
+		Operator.currentBlock.setType(Material.matchMaterial(SchemBrushIterator.blockType));
+		Operator.currentBlock.setBlockData(Bukkit.getServer().createBlockData(SchemBrushIterator.blockData));
+		retVal = arg.performNode();
 	    }
 	    catch (Exception e) {
 		Main.logError("Could not perform schem block node", Operator.currentPlayer);
@@ -83,6 +83,7 @@ public class SchemBlockNode extends BlockNode {
     }
 
     // Returns how many arguments this node takes
+    @Override
     public int getArgCount() {
 	return 1;
     }

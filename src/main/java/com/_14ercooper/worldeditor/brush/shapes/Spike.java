@@ -12,7 +12,7 @@ public class Spike extends BrushShape {
 
     String height, baseSizeMax, baseSizeMin = "0";
     int gotArgs = 0;
-    
+
     @Override
     public BlockIterator GetBlocks(double x, double y, double z) {
 	List<String> args = new ArrayList<String>();

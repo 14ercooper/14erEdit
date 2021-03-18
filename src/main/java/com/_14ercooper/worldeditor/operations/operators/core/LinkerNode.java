@@ -1,6 +1,7 @@
 package com._14ercooper.worldeditor.operations.operators.core;
 
-import com._14ercooper.worldeditor.main.*;
+import com._14ercooper.worldeditor.main.GlobalVars;
+import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.operations.operators.Node;
 
@@ -8,6 +9,7 @@ public class LinkerNode extends Node {
 
     public Node arg1, arg2;
 
+    @Override
     public LinkerNode newNode() {
 	LinkerNode node = new LinkerNode();
 	try {
@@ -25,6 +27,7 @@ public class LinkerNode extends Node {
 	return node;
     }
 
+    @Override
     public boolean performNode() {
 	try {
 	    boolean a1 = arg1.performNode();
@@ -37,6 +40,7 @@ public class LinkerNode extends Node {
 	}
     }
 
+    @Override
     public int getArgCount() {
 	return 2;
     }

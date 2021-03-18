@@ -5,10 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com._14ercooper.worldeditor.main.*;
+import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.operators.Node;
-import com._14ercooper.worldeditor.operations.operators.core.*;
-import com._14ercooper.worldeditor.operations.operators.function.*;
+import com._14ercooper.worldeditor.operations.operators.core.EntryNode;
+import com._14ercooper.worldeditor.operations.operators.core.NumberNode;
+import com._14ercooper.worldeditor.operations.operators.core.StringNode;
+import com._14ercooper.worldeditor.operations.operators.function.RangeNode;
 import com._14ercooper.worldeditor.operations.operators.world.BlockNode;
 
 public class Parser {
@@ -41,7 +43,10 @@ public class Parser {
 	// Here there be parsing magic
 	// A massive recursive nightmare
 	index = -1;
-	parts = Arrays.asList(op.split(" "));
+	parts = Arrays.asList(Arrays.asList(op.split(" ")).stream().map(
+		s -> s.matches(".*\\[.+=.+\\].*") ? s.replaceAll("[\\(\\)]+", "") : s.replaceAll("[\\(\\)\\[\\]]+", ""))
+		.toArray(size -> new String[size]));
+
 	Node rootNode = parsePart();
 
 	// This is an error if this is true
@@ -62,25 +67,44 @@ public class Parser {
 	index++;
 
 	try {
+	    // Comments
+	    int commentTicker = -1;
+	    if (parts.get(index).equalsIgnoreCase("/*")) {
+		while (commentTicker > 0 || commentTicker == -1) {
+		    if (commentTicker == -1) {
+			commentTicker++;
+		    }
+		    if (parts.get(index).equalsIgnoreCase("/*")) {
+			commentTicker++;
+		    }
+		    else if (parts.get(index).equalsIgnoreCase("*/")) {
+			commentTicker--;
+		    }
+		    Main.logDebug("Skipped " + parts.get(index) + " with comment ticker " + commentTicker);
+		    index++;
+		}
+	    }
+
 	    if (index == 0 && !operators.containsKey(parts.get(index))) {
 		Main.logError(
 			"First node parsed was a string node. This is likely a mistake. Please check that you used a valid operator.",
 			Operator.currentPlayer);
 	    }
 	    if (operators.containsKey(parts.get(index))) {
-		Main.logDebug(parts.get(index) + " node created");
-		return operators.get(parts.get(index)).newNode();
+		Node n = operators.get(parts.get(index)).newNode();
+		Main.logDebug(parts.get(index) + " node created: " + n.toString());
+		return n;
 	    }
 	    else {
 		index--;
 		StringNode strNode = parseStringNode();
 		BlockNode bn = new BlockNode().newNode(strNode.getText());
 		if (bn != null) {
-		    Main.logDebug("Block node created");
+		    Main.logDebug("Block node created: " + bn.toString());
 		    return bn;
 		}
 		else {
-		    Main.logDebug("String node created"); // -----
+		    Main.logDebug("String node created: " + strNode.toString()); // -----
 		    return strNode;
 		}
 	    }

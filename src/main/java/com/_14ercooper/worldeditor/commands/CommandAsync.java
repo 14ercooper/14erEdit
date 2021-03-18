@@ -10,6 +10,7 @@ import com._14ercooper.worldeditor.main.Main;
 
 public class CommandAsync implements CommandExecutor {
 
+    @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 	if (sender instanceof Player) {
 	    if (!((Player) sender).isOp()) {
@@ -17,13 +18,14 @@ public class CommandAsync implements CommandExecutor {
 		return false;
 	    }
 	}
-	
+
 	try {
 	    if (args[0].equalsIgnoreCase("drop")) {
 		GlobalVars.asyncManager.dropAsync();
+		sender.sendMessage("§aAsync queue dropped.");
 		return true;
 	    }
-	    else if (args[0].equalsIgnoreCase("status")) {
+	    else if (args[0].equalsIgnoreCase("status") || args[0].equalsIgnoreCase("queue")) {
 		GlobalVars.asyncManager.asyncProgress(sender);
 		return true;
 	    }

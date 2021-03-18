@@ -1,5 +1,6 @@
 package com._14ercooper.worldeditor.main;
 
+import java.util.Random;
 import java.util.Set;
 
 import org.bukkit.Material;
@@ -18,6 +19,7 @@ public class GlobalVars {
     public static int noiseSeed;
     public static SimplexNoise simplexNoise;
     public static Plugin plugin;
+    public static Random rand = new Random();
 
     // Used to track undos
     public static Undo currentUndo = null;
@@ -49,4 +51,12 @@ public class GlobalVars {
 
     // No error spam
     public static boolean errorLogged = false;
+
+    // Caps for edits
+    public static long minEditX = Long.MIN_VALUE;
+    public static long minEditY = -1;
+    public static long minEditZ = Long.MIN_VALUE;
+    public static long maxEditX = Long.MAX_VALUE;
+    public static long maxEditY = 255;
+    public static long maxEditZ = Long.MAX_VALUE;
 }

@@ -12,6 +12,7 @@ import com._14ercooper.worldeditor.operations.Operator;
 // These are dedicated versions of the undo and redo commands
 public class CommandRun implements CommandExecutor {
 
+    @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 	if (sender instanceof Player) {
 	    if (!((Player) sender).isOp()) {
@@ -19,7 +20,7 @@ public class CommandRun implements CommandExecutor {
 		return false;
 	    }
 	}
-	
+
 	try {
 	    if (sender instanceof Player) {
 		String opStr = "";

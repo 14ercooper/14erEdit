@@ -1,6 +1,7 @@
 package com._14ercooper.worldeditor.operations.operators.variable;
 
-import com._14ercooper.worldeditor.main.*;
+import com._14ercooper.worldeditor.main.GlobalVars;
+import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.operations.operators.Node;
 
@@ -8,6 +9,7 @@ public class DeallocNode extends Node {
 
     String type, name;
 
+    @Override
     public DeallocNode newNode() {
 	DeallocNode node = new DeallocNode();
 	node.type = GlobalVars.operationParser.parseStringNode().contents;
@@ -15,6 +17,7 @@ public class DeallocNode extends Node {
 	return node;
     }
 
+    @Override
     public boolean performNode() {
 	if (type.equalsIgnoreCase("num")) {
 	    Operator.numericVars.remove(name);
@@ -44,6 +47,7 @@ public class DeallocNode extends Node {
 	return false;
     }
 
+    @Override
     public int getArgCount() {
 	return 2;
     }

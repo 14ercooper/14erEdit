@@ -1,6 +1,7 @@
 package com._14ercooper.worldeditor.operations.operators.world;
 
-import com._14ercooper.worldeditor.main.*;
+import com._14ercooper.worldeditor.main.GlobalVars;
+import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.operations.operators.Node;
 
@@ -8,6 +9,7 @@ public class IgnorePhysicsNode extends Node {
 
     public Node arg;
 
+    @Override
     public IgnorePhysicsNode newNode() {
 	IgnorePhysicsNode node = new IgnorePhysicsNode();
 	try {
@@ -24,6 +26,7 @@ public class IgnorePhysicsNode extends Node {
 	return node;
     }
 
+    @Override
     public boolean performNode() {
 	try {
 	    Operator.ignoringPhysics = !Operator.ignoringPhysics;
@@ -37,6 +40,7 @@ public class IgnorePhysicsNode extends Node {
 	}
     }
 
+    @Override
     public int getArgCount() {
 	return 1;
     }

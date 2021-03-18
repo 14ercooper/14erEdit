@@ -12,8 +12,8 @@ import com._14ercooper.worldeditor.operations.Operator;
 public class CylinderIterator extends BlockIterator {
 
     long totalBlocks;
-    long doneBlocks = 0;
-    int x, y, z;
+//    long doneBlocks = 0;
+//    int x, y, z;
     int xC, yC, zC;
     double xS, yS, zS;
     int radMin, radMax;
@@ -50,17 +50,20 @@ public class CylinderIterator extends BlockIterator {
     @Override
     public Block getNext() {
 	while (true) {
-	    x++;
-	    doneBlocks++;
-	    if (x > radMax) {
-		z++;
-		x = -radMax;
-	    }
-	    if (z > radMax) {
-		y++;
-		z = -radMax;
-	    }
-	    if (y > radMax || y + yC > 255) {
+//	    x++;
+//	    doneBlocks++;
+//	    if (x > radMax) {
+//		z++;
+//		x = -radMax;
+//	    }
+//	    if (z > radMax) {
+//		y++;
+//		z = -radMax;
+//	    }
+//	    if (y > radMax || y + yC > 255) {
+//		return null;
+//	    }
+	    if (incrXYZ(radMax, radMax, radMax, xC, yC, zC)) {
 		return null;
 	    }
 

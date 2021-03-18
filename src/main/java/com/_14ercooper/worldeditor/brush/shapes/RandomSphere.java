@@ -2,11 +2,11 @@ package com._14ercooper.worldeditor.brush.shapes;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
 
 import com._14ercooper.worldeditor.blockiterator.BlockIterator;
 import com._14ercooper.worldeditor.brush.BrushShape;
 import com._14ercooper.worldeditor.main.GlobalVars;
+import com._14ercooper.worldeditor.main.Main;
 
 public class RandomSphere extends BrushShape {
 
@@ -17,8 +17,8 @@ public class RandomSphere extends BrushShape {
     @Override
     public BlockIterator GetBlocks(double x, double y, double z) {
 	List<String> argList = new LinkedList<String>();
-	Random rand = new Random();
-	int radius = rand.nextInt(radiusMax - radiusMin) + radiusMin;
+//	int radius = rand.nextInt(radiusMax - radiusMin) + radiusMin;
+	int radius = Main.randRange(radiusMin, radiusMax);
 	argList.add(Integer.toString((int) x));
 	argList.add(Integer.toString((int) y));
 	argList.add(Integer.toString((int) z));

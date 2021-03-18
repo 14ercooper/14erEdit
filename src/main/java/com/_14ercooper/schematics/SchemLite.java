@@ -184,14 +184,16 @@ public class SchemLite {
 	yMirror = y;
 	zMirror = z;
     }
-    
+
     // Get dimensions
     public int getXSize() {
 	return xSize;
     }
+
     public int getYSize() {
 	return ySize;
     }
+
     public int getZSize() {
 	return zSize;
     }

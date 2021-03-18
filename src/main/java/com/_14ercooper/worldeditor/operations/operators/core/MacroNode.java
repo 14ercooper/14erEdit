@@ -1,6 +1,7 @@
 package com._14ercooper.worldeditor.operations.operators.core;
 
-import com._14ercooper.worldeditor.main.*;
+import com._14ercooper.worldeditor.main.GlobalVars;
+import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.operations.operators.Node;
 
@@ -8,6 +9,7 @@ public class MacroNode extends Node {
 
     StringNode arg;
 
+    @Override
     public MacroNode newNode() {
 	MacroNode node = new MacroNode();
 	try {
@@ -21,11 +23,13 @@ public class MacroNode extends Node {
 	}
     }
 
+    @Override
     public boolean performNode() {
 	Main.logDebug("Performing macro node"); // ----
 	return GlobalVars.macroLauncher.launchMacro(arg.contents, Operator.currentBlock.getLocation());
     }
 
+    @Override
     public int getArgCount() {
 	return 1;
     }

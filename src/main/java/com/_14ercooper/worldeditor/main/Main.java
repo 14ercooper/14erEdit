@@ -16,11 +16,23 @@ import com._14ercooper.worldeditor.blockiterator.IteratorLoader;
 import com._14ercooper.worldeditor.blockiterator.IteratorManager;
 import com._14ercooper.worldeditor.brush.BrushListener;
 import com._14ercooper.worldeditor.brush.BrushLoader;
-import com._14ercooper.worldeditor.commands.*;
+import com._14ercooper.worldeditor.commands.CommandAsync;
+import com._14ercooper.worldeditor.commands.CommandBrmask;
+import com._14ercooper.worldeditor.commands.CommandConfirm;
+import com._14ercooper.worldeditor.commands.CommandDebug;
+import com._14ercooper.worldeditor.commands.CommandFunction;
+import com._14ercooper.worldeditor.commands.CommandFx;
+import com._14ercooper.worldeditor.commands.CommandInfo;
+import com._14ercooper.worldeditor.commands.CommandLimit;
+import com._14ercooper.worldeditor.commands.CommandRun;
+import com._14ercooper.worldeditor.commands.CommandRunat;
+import com._14ercooper.worldeditor.commands.CommandScript;
+import com._14ercooper.worldeditor.commands.CommandTemplate;
+import com._14ercooper.worldeditor.commands.CommandUndo;
+import com._14ercooper.worldeditor.compat.WorldEditCompat;
 import com._14ercooper.worldeditor.functions.Function;
 import com._14ercooper.worldeditor.macros.MacroLauncher;
 import com._14ercooper.worldeditor.macros.MacroLoader;
-import com._14ercooper.worldeditor.make.MakeSetup;
 import com._14ercooper.worldeditor.operations.OperatorLoader;
 import com._14ercooper.worldeditor.operations.Parser;
 import com._14ercooper.worldeditor.scripts.CraftscriptLoader;
@@ -31,6 +43,22 @@ public class Main extends JavaPlugin {
 
     @Override
     public void onEnable() {
+	// Check Java 11 (ensure that the user didn't somehow bypass the earlier class
+	// version check)
+	float javaVersion = Float.parseFloat(System.getProperty("java.class.version"));
+	if (javaVersion < 55) {
+	    System.out.println(
+		    "Java 11 or never is required to run this server. https://adoptopenjdk.net is a good place to find Java 11.\n"
+			    + "The server will now shut down.");
+	    try {
+		Thread.sleep(15000);
+		Bukkit.shutdown();
+	    }
+	    catch (InterruptedException e1) {
+		// Do nothing
+	    }
+	}
+
 	// Create folders as needed
 	try {
 	    Files.createDirectories(Paths.get("plugins/14erEdit/schematics"));
@@ -62,7 +90,7 @@ public class Main extends JavaPlugin {
 	this.getCommand("brmask").setExecutor(new CommandBrmask());
 	this.getCommand("template").setExecutor(new CommandTemplate());
 	this.getCommand("funct").setExecutor(new CommandFunction());
-	this.getCommand("make").setExecutor(new CommandMake());
+	this.getCommand("limit").setExecutor(new CommandLimit());
 
 	// Set up brush mask
 	GlobalVars.brushMask = new HashSet<Material>();
@@ -82,6 +110,7 @@ public class Main extends JavaPlugin {
 									  // world
 	GlobalVars.simplexNoise = new SimplexNoise(Bukkit.getWorlds().get(0).getSeed());
 	GlobalVars.plugin = this;
+	GlobalVars.rand.nextDouble(); // Toss out a value from the LCG
 
 	// Load config
 	loadConfig();
@@ -100,12 +129,21 @@ public class Main extends JavaPlugin {
 	OperatorLoader.LoadOperators();
 	IteratorLoader.LoadIterators();
 	Function.SetupFunctions();
-	MakeSetup.registerMakes();
+
+	// Initialize the WE syntax compat layer
+	WorldEditCompat.init();
     }
 
     @Override
     public void onDisable() {
 	// We don't need to do anything on disable
+    }
+
+    public static int randRange(int min, int max) {
+	if (min == max) {
+	    return min;
+	}
+	return min + GlobalVars.rand.nextInt(max - min + 1);
     }
 
     public static void logDebug(String message) {
@@ -136,7 +174,7 @@ public class Main extends JavaPlugin {
 		if (!Files.exists(Paths.get("plugins/14erEdit/error.log")))
 		    Files.createFile(Paths.get("plugins/14erEdit/error.log"));
 		Files.write(Paths.get("plugins/14erEdit/error.log"), errMessage.getBytes(), StandardOpenOption.APPEND);
-		
+
 	    }
 	    catch (Exception e2) {
 		// Also not super important
@@ -150,7 +188,8 @@ public class Main extends JavaPlugin {
 	if (!GlobalVars.plugin.getConfig().isSet("maxLoopLength")) {
 	    System.out.println("Updating configuration file.");
 	    try {
-		Files.write(Paths.get("/plugins/14erEdit/config.yml"), configUpdate1.getBytes(), StandardOpenOption.APPEND);
+		Files.write(Paths.get("/plugins/14erEdit/config.yml"), configUpdate1.getBytes(),
+			StandardOpenOption.APPEND);
 	    }
 	    catch (IOException e) {
 		System.out.println(
@@ -181,4 +220,9 @@ public class Main extends JavaPlugin {
 	    + "maxFunctionIters: 100000\n" + "\n" + "# Should debugs/errors be logged to a file?\n"
 	    + "logDebugs: false\n" + "logErrors: true\n" + "\n" + "# Should debug/autoconfirm be on by default?\n"
 	    + "defaultAutoConfirm: false\n" + "defaultDebug: false\n";
+
+    public static boolean inEditRegion(long x, long y, long z) {
+	return (x > GlobalVars.minEditX && y > GlobalVars.minEditY && z > GlobalVars.minEditZ)
+		&& (x < GlobalVars.maxEditX && y < GlobalVars.maxEditY && z < GlobalVars.maxEditZ);
+    }
 }

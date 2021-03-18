@@ -3,13 +3,13 @@ package com._14ercooper.worldeditor.brush.shapes;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Random;
 import java.util.Set;
 
 import com._14ercooper.worldeditor.blockiterator.BlockIterator;
 import com._14ercooper.worldeditor.blockiterator.iterators.MultiIterator;
 import com._14ercooper.worldeditor.brush.BrushShape;
 import com._14ercooper.worldeditor.main.GlobalVars;
+import com._14ercooper.worldeditor.main.Main;
 
 public class RandomSplatter extends BrushShape {
 
@@ -21,15 +21,17 @@ public class RandomSplatter extends BrushShape {
     public BlockIterator GetBlocks(double x, double y, double z) {
 	int spheresGenerated = 0;
 	Set<BlockIterator> spheres = new HashSet<BlockIterator>();
-	Random rand = new Random();
-	int sphereCount = rand.nextInt(sphereCountMax - sphereCountMin) + sphereCountMin;
+//	int sphereCount = rand.nextInt(sphereCountMax - sphereCountMin) + sphereCountMin;
+	int sphereCount = Main.randRange(sphereCountMin, sphereCountMax);
 	while (spheresGenerated < sphereCount) {
-	    int splatterRadius = rand.nextInt(splatterRadiusMax - splatterRadiusMin) + splatterRadiusMin;
-	    double xOff = rand.nextInt(splatterRadius) * (rand.nextInt(2) == 0 ? -1 : 1);
-	    double yOff = rand.nextInt(splatterRadius) * (rand.nextInt(2) == 0 ? -1 : 1);
-	    double zOff = rand.nextInt(splatterRadius) * (rand.nextInt(2) == 0 ? -1 : 1);
+//	    int splatterRadius = rand.nextInt(splatterRadiusMax - splatterRadiusMin) + splatterRadiusMin;
+	    int splatterRadius = Main.randRange(splatterRadiusMin, splatterRadiusMax);
+	    double xOff = GlobalVars.rand.nextInt(splatterRadius) * (GlobalVars.rand.nextInt(2) == 0 ? -1 : 1);
+	    double yOff = GlobalVars.rand.nextInt(splatterRadius) * (GlobalVars.rand.nextInt(2) == 0 ? -1 : 1);
+	    double zOff = GlobalVars.rand.nextInt(splatterRadius) * (GlobalVars.rand.nextInt(2) == 0 ? -1 : 1);
 	    if (xOff * xOff + yOff * yOff + zOff * zOff < splatterRadius * splatterRadius + 0.5) {
-		int sphereRadius = rand.nextInt(sphereRadiusMax - sphereRadiusMin) + sphereRadiusMin;
+//		int sphereRadius = rand.nextInt(sphereRadiusMax - sphereRadiusMin) + sphereRadiusMin;
+		int sphereRadius = Main.randRange(sphereRadiusMin, sphereRadiusMax);
 		List<String> argList = new ArrayList<String>();
 		argList.add(Integer.toString((int) (x + xOff)));
 		argList.add(Integer.toString((int) (y + yOff)));

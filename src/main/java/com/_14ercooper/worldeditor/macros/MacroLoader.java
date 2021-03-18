@@ -1,7 +1,16 @@
 package com._14ercooper.worldeditor.macros;
 
-import com._14ercooper.worldeditor.macros.macros.nature.*;
-import com._14ercooper.worldeditor.macros.macros.technical.*;
+import com._14ercooper.worldeditor.macros.macros.nature.AdvancedErodeMacro;
+import com._14ercooper.worldeditor.macros.macros.nature.BasicTreeMacro;
+import com._14ercooper.worldeditor.macros.macros.nature.BiomeMacro;
+import com._14ercooper.worldeditor.macros.macros.nature.ErodeMacro;
+import com._14ercooper.worldeditor.macros.macros.nature.GrassMacro;
+import com._14ercooper.worldeditor.macros.macros.nature.VinesMacro;
+import com._14ercooper.worldeditor.macros.macros.technical.CatenaryMacro;
+import com._14ercooper.worldeditor.macros.macros.technical.FlattenMacro;
+import com._14ercooper.worldeditor.macros.macros.technical.LineBrushMacro;
+import com._14ercooper.worldeditor.macros.macros.technical.LineMacro;
+import com._14ercooper.worldeditor.macros.macros.technical.SchematicMacro;
 import com._14ercooper.worldeditor.main.GlobalVars;
 
 public class MacroLoader {

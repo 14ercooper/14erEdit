@@ -2,7 +2,6 @@ package com._14ercooper.worldeditor.macros.macros.nature;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -10,7 +9,9 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 
 import com._14ercooper.worldeditor.macros.macros.Macro;
-import com._14ercooper.worldeditor.main.*;
+import com._14ercooper.worldeditor.main.GlobalVars;
+import com._14ercooper.worldeditor.main.Main;
+import com._14ercooper.worldeditor.main.SetBlock;
 import com._14ercooper.worldeditor.operations.Operator;
 
 public class BasicTreeMacro extends Macro {
@@ -75,6 +76,7 @@ public class BasicTreeMacro extends Macro {
 	}
     }
 
+    @Override
     public boolean performMacro(String[] args, Location loc) {
 	SetupMacro(args, loc);
 
@@ -138,8 +140,7 @@ public class BasicTreeMacro extends Macro {
 
     private void jungleTreeGenerator() {
 	// Calculate the size of the tree
-	Random rand = new Random();
-	double actVariance = ((rand.nextDouble() * 2.0) - 1.0) * variance;
+	double actVariance = ((GlobalVars.rand.nextDouble() * 2.0) - 1.0) * variance;
 	double treeSize = size + actVariance;
 	double eTopX = treeSize * 0.9;
 	double eTopZ = eTopX, eTopY = eTopX * 0.5;
@@ -172,7 +173,7 @@ public class BasicTreeMacro extends Macro {
 	    trunkBlocks.add(currentBlock.getRelative(BlockFace.NORTH_EAST));
 
 	    // Add a new branch if needed
-	    if (rand.nextDouble() <= branchFrequency && i >= branchStartHeight && i <= treeSize) {
+	    if (GlobalVars.rand.nextDouble() <= branchFrequency && i >= branchStartHeight && i <= treeSize) {
 		branchStarts.add(currentBlock);
 	    }
 	}
@@ -183,7 +184,7 @@ public class BasicTreeMacro extends Macro {
 	    currentBlock = b;
 	    boolean firstBlock = true;
 	    BlockFace branchDir;
-	    double randNum = rand.nextDouble();
+	    double randNum = GlobalVars.rand.nextDouble();
 	    if (randNum <= 0.25) {
 		branchDir = BlockFace.NORTH;
 		currentBlock = currentBlock.getRelative(BlockFace.NORTH, 2);
@@ -201,14 +202,14 @@ public class BasicTreeMacro extends Macro {
 		currentBlock = currentBlock.getRelative(BlockFace.WEST);
 	    }
 
-	    double branchLength = branchSize + (((rand.nextDouble() * 2.0) - 1.0) * branchVariance);
+	    double branchLength = branchSize + (((GlobalVars.rand.nextDouble() * 2.0) - 1.0) * branchVariance);
 	    for (int i = 1; i <= branchLength; i++) {
 		// Maybe curve the branch?
 		if (!firstBlock) {
 		    currentBlock = currentBlock.getRelative(branchDir);
-		    if (rand.nextDouble() <= 0.33) {
+		    if (GlobalVars.rand.nextDouble() <= 0.33) {
 			if (branchDir == BlockFace.NORTH || branchDir == BlockFace.SOUTH) {
-			    if (rand.nextBoolean()) {
+			    if (GlobalVars.rand.nextBoolean()) {
 				currentBlock = currentBlock.getRelative(BlockFace.EAST);
 			    }
 			    else {
@@ -216,7 +217,7 @@ public class BasicTreeMacro extends Macro {
 			    }
 			}
 			if (branchDir == BlockFace.EAST || branchDir == BlockFace.WEST) {
-			    if (rand.nextBoolean()) {
+			    if (GlobalVars.rand.nextBoolean()) {
 				currentBlock = currentBlock.getRelative(BlockFace.NORTH);
 			    }
 			    else {
@@ -224,7 +225,7 @@ public class BasicTreeMacro extends Macro {
 			    }
 			}
 		    }
-		    if (rand.nextDouble() <= 0.15) {
+		    if (GlobalVars.rand.nextDouble() <= 0.15) {
 			currentBlock = currentBlock.getRelative(BlockFace.UP);
 		    }
 		}
@@ -287,8 +288,7 @@ public class BasicTreeMacro extends Macro {
 
     private void brownMushroomTreeGenerator() {
 	// Determine the size of the mushroom
-	Random rand = new Random();
-	double actVariance = ((rand.nextDouble() * 2.0) - 1.0) * variance;
+	double actVariance = ((GlobalVars.rand.nextDouble() * 2.0) - 1.0) * variance;
 	double treeSize = size + actVariance;
 	Main.logDebug("Generating mushroom of size " + Double.toString(treeSize)); // -----
 
@@ -338,11 +338,11 @@ public class BasicTreeMacro extends Macro {
 	BlockFace currentDirection = BlockFace.DOWN;
 	for (int i = 1; i <= treeSize; i++) {
 	    // Update the current block
-	    double randNum = rand.nextDouble();
+	    double randNum = GlobalVars.rand.nextDouble();
 	    if (randNum <= 0.333) {
-		randNum = rand.nextDouble();
+		randNum = GlobalVars.rand.nextDouble();
 		if (randNum <= 0.125 || currentDirection == BlockFace.DOWN) {
-		    randNum = rand.nextDouble();
+		    randNum = GlobalVars.rand.nextDouble();
 		    if (randNum <= 0.125) {
 			currentDirection = BlockFace.NORTH;
 		    }
@@ -460,18 +460,17 @@ public class BasicTreeMacro extends Macro {
 
     private void redMushroomTreeGenerator() {
 	// Create the stem (with a slight curve)
-	Random rand = new Random();
-	double actVariance = ((rand.nextDouble() * 2.0) - 1.0) * variance;
+	double actVariance = ((GlobalVars.rand.nextDouble() * 2.0) - 1.0) * variance;
 	double treeSize = size + actVariance;
 	Block currentBlock = Operator.currentPlayer.getWorld().getBlockAt(plantOn);
 	BlockFace currentDirection = BlockFace.DOWN;
 	for (int i = 1; i <= treeSize; i++) {
 	    // Update the current block
-	    double randNum = rand.nextDouble();
+	    double randNum = GlobalVars.rand.nextDouble();
 	    if (randNum <= 0.25) {
-		randNum = rand.nextDouble();
+		randNum = GlobalVars.rand.nextDouble();
 		if (randNum <= 0.25 || currentDirection == BlockFace.DOWN) {
-		    randNum = rand.nextDouble();
+		    randNum = GlobalVars.rand.nextDouble();
 		    if (randNum <= 0.125) {
 			currentDirection = BlockFace.NORTH;
 		    }
@@ -567,13 +566,12 @@ public class BasicTreeMacro extends Macro {
 	// placing a shaft with blocks also the the N/E/NE)
 	// Make the trunk 3-wide for particularly large trees, with 6-7 curves to the
 	// side
-	Random rand = new Random();
-	double actVariance = ((rand.nextDouble() * 2.0) - 1.0) * variance;
+	double actVariance = ((GlobalVars.rand.nextDouble() * 2.0) - 1.0) * variance;
 	double treeSize = size + actVariance;
 	Block currentBlock = Operator.currentPlayer.getWorld().getBlockAt(plantOn);
 	BlockFace curveDirection;
 	// Determine the curve direction
-	double randNum = rand.nextDouble();
+	double randNum = GlobalVars.rand.nextDouble();
 	if (randNum <= 0.125) {
 	    curveDirection = BlockFace.NORTH;
 	}
@@ -687,8 +685,7 @@ public class BasicTreeMacro extends Macro {
 
     private void birchTreeGenerator() {
 	// Create the vertical log
-	Random rand = new Random();
-	double actVariance = ((rand.nextDouble() * 2.0) - 1.0) * variance;
+	double actVariance = ((GlobalVars.rand.nextDouble() * 2.0) - 1.0) * variance;
 	double treeSize = size + actVariance;
 	Block currentBlock = Operator.currentPlayer.getWorld().getBlockAt(plantOn);
 	for (int i = 1; i <= treeSize; i++) {
@@ -784,31 +781,31 @@ public class BasicTreeMacro extends Macro {
 	leafList.add(currentBlock.getRelative(BlockFace.DOWN).getRelative(BlockFace.SOUTH, 2));
 	leafList.add(currentBlock.getRelative(BlockFace.DOWN).getRelative(BlockFace.WEST, 2));
 	// The eight corner leaves are 50/50
-	if (rand.nextBoolean()) {
+	if (GlobalVars.rand.nextBoolean()) {
 	    leafList.add(currentBlock.getRelative(BlockFace.NORTH).getRelative(BlockFace.EAST));
 	}
-	if (rand.nextBoolean()) {
+	if (GlobalVars.rand.nextBoolean()) {
 	    leafList.add(currentBlock.getRelative(BlockFace.NORTH).getRelative(BlockFace.WEST));
 	}
-	if (rand.nextBoolean()) {
+	if (GlobalVars.rand.nextBoolean()) {
 	    leafList.add(currentBlock.getRelative(BlockFace.SOUTH).getRelative(BlockFace.EAST));
 	}
-	if (rand.nextBoolean()) {
+	if (GlobalVars.rand.nextBoolean()) {
 	    leafList.add(currentBlock.getRelative(BlockFace.SOUTH).getRelative(BlockFace.WEST));
 	}
-	if (rand.nextBoolean()) {
+	if (GlobalVars.rand.nextBoolean()) {
 	    leafList.add(currentBlock.getRelative(BlockFace.DOWN, 2).getRelative(BlockFace.NORTH, 2)
 		    .getRelative(BlockFace.EAST, 2));
 	}
-	if (rand.nextBoolean()) {
+	if (GlobalVars.rand.nextBoolean()) {
 	    leafList.add(currentBlock.getRelative(BlockFace.DOWN, 2).getRelative(BlockFace.NORTH, 2)
 		    .getRelative(BlockFace.WEST, 2));
 	}
-	if (rand.nextBoolean()) {
+	if (GlobalVars.rand.nextBoolean()) {
 	    leafList.add(currentBlock.getRelative(BlockFace.DOWN, 2).getRelative(BlockFace.SOUTH, 2)
 		    .getRelative(BlockFace.EAST, 2));
 	}
-	if (rand.nextBoolean()) {
+	if (GlobalVars.rand.nextBoolean()) {
 	    leafList.add(currentBlock.getRelative(BlockFace.DOWN, 2).getRelative(BlockFace.SOUTH, 2)
 		    .getRelative(BlockFace.WEST, 2));
 	}
@@ -829,8 +826,7 @@ public class BasicTreeMacro extends Macro {
 	}
 
 	// Generate the ellipsoid of leaves
-	Random rand = new Random();
-	double actVariance = ((rand.nextDouble() * 2.0) - 1.0) * variance;
+	double actVariance = ((GlobalVars.rand.nextDouble() * 2.0) - 1.0) * variance;
 	double bushSize = size + actVariance;
 	double eX = bushSize * 0.55;
 	double eY = eX * 0.333;
@@ -845,7 +841,7 @@ public class BasicTreeMacro extends Macro {
 			Block toPlace = Operator.currentPlayer.getWorld().getBlockAt((int) (x + rx), (int) (y + ry),
 				(int) (z + rz));
 			// Further leaves are less likely to get placed
-			if (1.0 - (ellipsoidValue * 0.869565217) < (rand.nextDouble() * 0.5)) {
+			if (1.0 - (ellipsoidValue * 0.869565217) < (GlobalVars.rand.nextDouble() * 0.5)) {
 			    continue;
 			}
 			if (toPlace.getType() == Material.AIR) {
@@ -859,8 +855,7 @@ public class BasicTreeMacro extends Macro {
 
     private void bigTreeGenerator() {
 	// Calculate the dimensions of the tree, other needed variables
-	Random rand = new Random();
-	double actVariance = ((rand.nextDouble() * 2.0) - 1.0) * variance;
+	double actVariance = ((GlobalVars.rand.nextDouble() * 2.0) - 1.0) * variance;
 	double treeHeight = size + actVariance;
 	int numSplits, baseSize;
 	// Splits should be at 1/2; 3/4; 7/8; 15/16; and 31/32 of the tree
@@ -958,9 +953,10 @@ public class BasicTreeMacro extends Macro {
 			}
 
 			// Update the current block
-			if (rand.nextDouble() <= 0.2) { // 20% chance to move a block to the side by 1 in a random
-							// direction
-			    double randNum = rand.nextDouble();
+			if (GlobalVars.rand.nextDouble() <= 0.2) { // 20% chance to move a block to the side by 1 in a
+								   // random
+			    // direction
+			    double randNum = GlobalVars.rand.nextDouble();
 			    if (randNum <= 0.125) {
 				currentBlock = currentBlock.getRelative(BlockFace.UP).getRelative(BlockFace.NORTH);
 			    }
@@ -1002,7 +998,7 @@ public class BasicTreeMacro extends Macro {
 		Main.logDebug("Even branch growing, number of locations " + Integer.toString(theseBranches.size())); // -----
 		for (Location startLoc : theseBranches) {
 		    // Case N/S
-		    if (rand.nextBoolean()) {
+		    if (GlobalVars.rand.nextBoolean()) {
 			// North branch
 			Block currentBlock = Operator.currentPlayer.getWorld().getBlockAt(startLoc);
 			for (int j = 1; j <= branchHeight; j++) {
@@ -1029,8 +1025,8 @@ public class BasicTreeMacro extends Macro {
 			    }
 
 			    // Update the current block
-			    if (rand.nextDouble() <= 0.2) { // 20% chance to shift to the side
-				if (rand.nextBoolean()) {
+			    if (GlobalVars.rand.nextDouble() <= 0.2) { // 20% chance to shift to the side
+				if (GlobalVars.rand.nextBoolean()) {
 				    currentBlock = currentBlock.getRelative(BlockFace.NORTH).getRelative(BlockFace.UP)
 					    .getRelative(BlockFace.EAST);
 				}
@@ -1073,8 +1069,8 @@ public class BasicTreeMacro extends Macro {
 			    }
 
 			    // Update the current block
-			    if (rand.nextDouble() <= 0.2) { // 20% chance to shift to the side
-				if (rand.nextBoolean()) {
+			    if (GlobalVars.rand.nextDouble() <= 0.2) { // 20% chance to shift to the side
+				if (GlobalVars.rand.nextBoolean()) {
 				    currentBlock = currentBlock.getRelative(BlockFace.SOUTH).getRelative(BlockFace.UP)
 					    .getRelative(BlockFace.EAST);
 				}
@@ -1119,8 +1115,8 @@ public class BasicTreeMacro extends Macro {
 			    }
 
 			    // Update the current block
-			    if (rand.nextDouble() <= 0.2) { // 20% chance to shift to the side
-				if (rand.nextBoolean()) {
+			    if (GlobalVars.rand.nextDouble() <= 0.2) { // 20% chance to shift to the side
+				if (GlobalVars.rand.nextBoolean()) {
 				    currentBlock = currentBlock.getRelative(BlockFace.EAST).getRelative(BlockFace.UP)
 					    .getRelative(BlockFace.NORTH);
 				}
@@ -1163,8 +1159,8 @@ public class BasicTreeMacro extends Macro {
 			    }
 
 			    // Update the current block
-			    if (rand.nextDouble() <= 0.2) { // 20% chance to shift to the side
-				if (rand.nextBoolean()) {
+			    if (GlobalVars.rand.nextDouble() <= 0.2) { // 20% chance to shift to the side
+				if (GlobalVars.rand.nextBoolean()) {
 				    currentBlock = currentBlock.getRelative(BlockFace.WEST).getRelative(BlockFace.UP)
 					    .getRelative(BlockFace.NORTH);
 				}
@@ -1188,9 +1184,9 @@ public class BasicTreeMacro extends Macro {
 	    else if (i % 2 == 0) {
 		Main.logDebug("Odd branch growing, number of locations " + Integer.toString(theseBranches.size())); // -----
 		for (Location startLoc : theseBranches) {
-		    if (rand.nextBoolean()) {
+		    if (GlobalVars.rand.nextBoolean()) {
 			// Case N
-			if (rand.nextBoolean()) {
+			if (GlobalVars.rand.nextBoolean()) {
 			    // North branch
 			    Block currentBlock = Operator.currentPlayer.getWorld().getBlockAt(startLoc);
 			    for (int j = 1; j <= branchHeight; j++) {
@@ -1217,8 +1213,8 @@ public class BasicTreeMacro extends Macro {
 				}
 
 				// Update the current block
-				if (rand.nextDouble() <= 0.2) { // 20% chance to shift to the side
-				    if (rand.nextBoolean()) {
+				if (GlobalVars.rand.nextDouble() <= 0.2) { // 20% chance to shift to the side
+				    if (GlobalVars.rand.nextBoolean()) {
 					currentBlock = currentBlock.getRelative(BlockFace.NORTH)
 						.getRelative(BlockFace.UP).getRelative(BlockFace.EAST);
 				    }
@@ -1261,8 +1257,8 @@ public class BasicTreeMacro extends Macro {
 				}
 
 				// Update the current block
-				if (rand.nextDouble() <= 0.2) { // 20% chance to shift to the side
-				    if (rand.nextBoolean()) {
+				if (GlobalVars.rand.nextDouble() <= 0.2) { // 20% chance to shift to the side
+				    if (GlobalVars.rand.nextBoolean()) {
 					currentBlock = currentBlock.getRelative(BlockFace.SOUTH_EAST)
 						.getRelative(BlockFace.UP).getRelative(BlockFace.NORTH_EAST);
 				    }
@@ -1306,8 +1302,8 @@ public class BasicTreeMacro extends Macro {
 				}
 
 				// Update the current block
-				if (rand.nextDouble() <= 0.2) { // 20% chance to shift to the side
-				    if (rand.nextBoolean()) {
+				if (GlobalVars.rand.nextDouble() <= 0.2) { // 20% chance to shift to the side
+				    if (GlobalVars.rand.nextBoolean()) {
 					currentBlock = currentBlock.getRelative(BlockFace.SOUTH_WEST)
 						.getRelative(BlockFace.UP).getRelative(BlockFace.SOUTH_EAST);
 				    }
@@ -1353,8 +1349,8 @@ public class BasicTreeMacro extends Macro {
 				}
 
 				// Update the current block
-				if (rand.nextDouble() <= 0.2) { // 20% chance to shift to the side
-				    if (rand.nextBoolean()) {
+				if (GlobalVars.rand.nextDouble() <= 0.2) { // 20% chance to shift to the side
+				    if (GlobalVars.rand.nextBoolean()) {
 					currentBlock = currentBlock.getRelative(BlockFace.SOUTH)
 						.getRelative(BlockFace.UP).getRelative(BlockFace.EAST);
 				    }
@@ -1397,8 +1393,8 @@ public class BasicTreeMacro extends Macro {
 				}
 
 				// Update the current block
-				if (rand.nextDouble() <= 0.2) { // 20% chance to shift to the side
-				    if (rand.nextBoolean()) {
+				if (GlobalVars.rand.nextDouble() <= 0.2) { // 20% chance to shift to the side
+				    if (GlobalVars.rand.nextBoolean()) {
 					currentBlock = currentBlock.getRelative(BlockFace.NORTH_EAST)
 						.getRelative(BlockFace.UP).getRelative(BlockFace.SOUTH_EAST);
 				    }
@@ -1442,8 +1438,8 @@ public class BasicTreeMacro extends Macro {
 				}
 
 				// Update the current block
-				if (rand.nextDouble() <= 0.2) { // 20% chance to shift to the side
-				    if (rand.nextBoolean()) {
+				if (GlobalVars.rand.nextDouble() <= 0.2) { // 20% chance to shift to the side
+				    if (GlobalVars.rand.nextBoolean()) {
 					currentBlock = currentBlock.getRelative(BlockFace.NORTH_WEST)
 						.getRelative(BlockFace.UP).getRelative(BlockFace.NORTH_EAST);
 				    }
@@ -1463,7 +1459,7 @@ public class BasicTreeMacro extends Macro {
 		    }
 		    else {
 			// Case E
-			if (rand.nextBoolean()) {
+			if (GlobalVars.rand.nextBoolean()) {
 			    // East branch
 			    Block currentBlock = Operator.currentPlayer.getWorld().getBlockAt(startLoc);
 			    for (int j = 1; j <= branchHeight; j++) {
@@ -1490,8 +1486,8 @@ public class BasicTreeMacro extends Macro {
 				}
 
 				// Update the current block
-				if (rand.nextDouble() <= 0.2) { // 20% chance to shift to the side
-				    if (rand.nextBoolean()) {
+				if (GlobalVars.rand.nextDouble() <= 0.2) { // 20% chance to shift to the side
+				    if (GlobalVars.rand.nextBoolean()) {
 					currentBlock = currentBlock.getRelative(BlockFace.EAST)
 						.getRelative(BlockFace.UP).getRelative(BlockFace.NORTH);
 				    }
@@ -1534,8 +1530,8 @@ public class BasicTreeMacro extends Macro {
 				}
 
 				// Update the current block
-				if (rand.nextDouble() <= 0.2) { // 20% chance to shift to the side
-				    if (rand.nextBoolean()) {
+				if (GlobalVars.rand.nextDouble() <= 0.2) { // 20% chance to shift to the side
+				    if (GlobalVars.rand.nextBoolean()) {
 					currentBlock = currentBlock.getRelative(BlockFace.NORTH_WEST)
 						.getRelative(BlockFace.UP).getRelative(BlockFace.NORTH_EAST);
 				    }
@@ -1579,8 +1575,8 @@ public class BasicTreeMacro extends Macro {
 				}
 
 				// Update the current block
-				if (rand.nextDouble() <= 0.2) { // 20% chance to shift to the side
-				    if (rand.nextBoolean()) {
+				if (GlobalVars.rand.nextDouble() <= 0.2) { // 20% chance to shift to the side
+				    if (GlobalVars.rand.nextBoolean()) {
 					currentBlock = currentBlock.getRelative(BlockFace.SOUTH_WEST)
 						.getRelative(BlockFace.UP).getRelative(BlockFace.SOUTH_EAST);
 				    }
@@ -1626,8 +1622,8 @@ public class BasicTreeMacro extends Macro {
 				}
 
 				// Update the current block
-				if (rand.nextDouble() <= 0.2) { // 20% chance to shift to the side
-				    if (rand.nextBoolean()) {
+				if (GlobalVars.rand.nextDouble() <= 0.2) { // 20% chance to shift to the side
+				    if (GlobalVars.rand.nextBoolean()) {
 					currentBlock = currentBlock.getRelative(BlockFace.WEST)
 						.getRelative(BlockFace.UP).getRelative(BlockFace.NORTH);
 				    }
@@ -1670,8 +1666,8 @@ public class BasicTreeMacro extends Macro {
 				}
 
 				// Update the current block
-				if (rand.nextDouble() <= 0.2) { // 20% chance to shift to the side
-				    if (rand.nextBoolean()) {
+				if (GlobalVars.rand.nextDouble() <= 0.2) { // 20% chance to shift to the side
+				    if (GlobalVars.rand.nextBoolean()) {
 					currentBlock = currentBlock.getRelative(BlockFace.NORTH_EAST)
 						.getRelative(BlockFace.UP).getRelative(BlockFace.SOUTH_EAST);
 				    }
@@ -1715,8 +1711,8 @@ public class BasicTreeMacro extends Macro {
 				}
 
 				// Update the current block
-				if (rand.nextDouble() <= 0.2) { // 20% chance to shift to the side
-				    if (rand.nextBoolean()) {
+				if (GlobalVars.rand.nextDouble() <= 0.2) { // 20% chance to shift to the side
+				    if (GlobalVars.rand.nextBoolean()) {
 					currentBlock = currentBlock.getRelative(BlockFace.SOUTH_EAST)
 						.getRelative(BlockFace.UP).getRelative(BlockFace.NORTH_EAST);
 				    }
@@ -1762,7 +1758,7 @@ public class BasicTreeMacro extends Macro {
 			    // Okay, all blocks in here are in the sphere
 			    // Randomness based on distance from center
 			    // Further leaves have a lower chance of being placed
-			    if (1.0 - (distFromCenter * invLeafBallSize) < (rand.nextDouble() * 0.333)) {
+			    if (1.0 - (distFromCenter * invLeafBallSize) < (GlobalVars.rand.nextDouble() * 0.333)) {
 				continue;
 			    }
 			    // Set leaves
@@ -1779,13 +1775,12 @@ public class BasicTreeMacro extends Macro {
 
     private void branchTreeGenerator() {
 	// Figure out the size of the tree (use 3 levels of branches)
-	Random rand = new Random();
-	double actVariance = ((rand.nextDouble() * 2.0) - 1.0) * variance;
+	double actVariance = ((GlobalVars.rand.nextDouble() * 2.0) - 1.0) * variance;
 	double branchSize1 = size + actVariance; // This acts like the trunk
 	double leafSize1 = (branchSize1 * 0.461235) + 1.35425;
-	double branchSize2 = branchSize1 * (0.8 * rand.nextDouble());
+	double branchSize2 = branchSize1 * (0.8 * GlobalVars.rand.nextDouble());
 	double leafSize2 = (branchSize2 * 0.411235) + 1.35425;
-	double branchSize3 = branchSize2 * (0.8 * rand.nextDouble());
+	double branchSize3 = branchSize2 * (0.8 * GlobalVars.rand.nextDouble());
 	double leafSize3 = (branchSize3 * 0.361235) + 1.35425;
 
 	// These determine the density of branches
@@ -1807,7 +1802,7 @@ public class BasicTreeMacro extends Macro {
 	Block currentBlock = Operator.currentPlayer.getWorld().getBlockAt(plantOn);
 	for (int i = 1; i < branchSize1; i++) {
 	    currentBlock = currentBlock.getRelative(BlockFace.UP);
-	    if (i >= branch2StartOffset && rand.nextDouble() <= branch2StartDensity) {
+	    if (i >= branch2StartOffset && GlobalVars.rand.nextDouble() <= branch2StartDensity) {
 		branch2Starts.add(currentBlock.getLocation());
 	    }
 	    if (currentBlock.getType() == Material.AIR) {
@@ -1820,7 +1815,7 @@ public class BasicTreeMacro extends Macro {
 	for (Location l : branch2Starts) {
 	    currentBlock = Operator.currentPlayer.getWorld().getBlockAt(l);
 	    // Pick an initial direction
-	    double randNum = rand.nextDouble();
+	    double randNum = GlobalVars.rand.nextDouble();
 	    BlockFace dir;
 	    if (randNum <= 0.25) {
 		dir = BlockFace.NORTH;
@@ -1837,8 +1832,8 @@ public class BasicTreeMacro extends Macro {
 
 	    for (int i = 1; i < branchSize2; i++) {
 		// Pick a direction to grow, 20% of the time
-		if (rand.nextDouble() <= 0.2) {
-		    randNum = rand.nextDouble();
+		if (GlobalVars.rand.nextDouble() <= 0.2) {
+		    randNum = GlobalVars.rand.nextDouble();
 		    if (randNum <= 0.1666) {
 			dir = BlockFace.NORTH;
 		    }
@@ -1860,7 +1855,7 @@ public class BasicTreeMacro extends Macro {
 		}
 		// Grow there
 		currentBlock = currentBlock.getRelative(dir);
-		if (i >= branch3StartOffset && rand.nextDouble() <= branch3StartDensity) {
+		if (i >= branch3StartOffset && GlobalVars.rand.nextDouble() <= branch3StartDensity) {
 		    branch3Starts.add(currentBlock.getLocation());
 		}
 		if (currentBlock.getType() == Material.AIR) {
@@ -1874,7 +1869,7 @@ public class BasicTreeMacro extends Macro {
 	for (Location l : branch3Starts) {
 	    currentBlock = Operator.currentPlayer.getWorld().getBlockAt(l);
 	    // Pick an initial direction
-	    double randNum = rand.nextDouble();
+	    double randNum = GlobalVars.rand.nextDouble();
 	    BlockFace dir;
 	    if (randNum <= 0.25) {
 		dir = BlockFace.NORTH;
@@ -1891,8 +1886,8 @@ public class BasicTreeMacro extends Macro {
 
 	    for (int i = 1; i < branchSize3; i++) {
 		// Pick a direction to grow, 20% of the time
-		if (rand.nextDouble() <= 0.2) {
-		    randNum = rand.nextDouble();
+		if (GlobalVars.rand.nextDouble() <= 0.2) {
+		    randNum = GlobalVars.rand.nextDouble();
 		    if (randNum <= 0.1666) {
 			dir = BlockFace.NORTH;
 		    }
@@ -1938,7 +1933,7 @@ public class BasicTreeMacro extends Macro {
 			    // Okay, all blocks in here are in the sphere
 			    // Randomness based on distance from center
 			    // Further leaves have a lower chance of being placed
-			    if (1.0 - (distFromCenter * invLeafBallSize) < (rand.nextDouble() * 0.333)) {
+			    if (1.0 - (distFromCenter * invLeafBallSize) < (GlobalVars.rand.nextDouble() * 0.333)) {
 				continue;
 			    }
 			    // Set leaves
@@ -1969,7 +1964,7 @@ public class BasicTreeMacro extends Macro {
 			    // Okay, all blocks in here are in the sphere
 			    // Randomness based on distance from center
 			    // Further leaves have a lower chance of being placed
-			    if (1.0 - (distFromCenter * invLeafBallSize) < (rand.nextDouble() * 0.333)) {
+			    if (1.0 - (distFromCenter * invLeafBallSize) < (GlobalVars.rand.nextDouble() * 0.333)) {
 				continue;
 			    }
 			    // Set leaves
@@ -2000,7 +1995,7 @@ public class BasicTreeMacro extends Macro {
 			    // Okay, all blocks in here are in the sphere
 			    // Randomness based on distance from center
 			    // Further leaves have a lower chance of being placed
-			    if (1.0 - (distFromCenter * invLeafBallSize) < (rand.nextDouble() * 0.333)) {
+			    if (1.0 - (distFromCenter * invLeafBallSize) < (GlobalVars.rand.nextDouble() * 0.333)) {
 				continue;
 			    }
 			    // Set leaves
@@ -2017,8 +2012,7 @@ public class BasicTreeMacro extends Macro {
 
     private void oakTreeGenerator() {
 	// Figure out the size of the tree
-	Random rand = new Random();
-	double actVariance = ((rand.nextDouble() * 2.0) - 1.0) * variance;
+	double actVariance = ((GlobalVars.rand.nextDouble() * 2.0) - 1.0) * variance;
 	double treeHeight = size + actVariance;
 	double leafBallSize = (treeHeight * 0.461235) + 1.35425; // First number is what portion of the tree's height
 								 // should be leaves (magic)
@@ -2050,7 +2044,7 @@ public class BasicTreeMacro extends Macro {
 			// Okay, all blocks in here are in the sphere
 			// Randomness based on distance from center
 			// Further leaves have a lower chance of being placed
-			if (1.0 - (distFromCenter * invLeafBallSize) < (rand.nextDouble() * 0.333)) {
+			if (1.0 - (distFromCenter * invLeafBallSize) < (GlobalVars.rand.nextDouble() * 0.333)) {
 			    continue;
 			}
 			// Set leaves

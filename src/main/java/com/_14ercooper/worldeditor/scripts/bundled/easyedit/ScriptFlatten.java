@@ -6,7 +6,8 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
-import com._14ercooper.worldeditor.main.*;
+import com._14ercooper.worldeditor.main.Main;
+import com._14ercooper.worldeditor.main.SetBlock;
 import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.scripts.Craftscript;
 import com._14ercooper.worldeditor.selection.SelectionManager;

@@ -3,7 +3,6 @@ package com._14ercooper.worldeditor.operations.operators.world;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Random;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -19,6 +18,7 @@ public class FacingNode extends BlockNode {
 
     BlockNode arg;
 
+    @Override
     public FacingNode newNode() {
 	FacingNode node = new FacingNode();
 	try {
@@ -35,10 +35,10 @@ public class FacingNode extends BlockNode {
 	return node;
     }
 
+    @Override
     public String getData() {
 	try {
 	    BlockData dat = Bukkit.getServer().createBlockData(arg.getData());
-	    Random rand = new Random();
 
 	    List<String> dirs = new ArrayList<String>();
 	    Block b = Operator.currentBlock;
@@ -64,7 +64,7 @@ public class FacingNode extends BlockNode {
 
 	    if (dirs.size() > 0) {
 		String newData = arg.getBlock().toString().toLowerCase(Locale.ROOT);
-		newData += dirs.get(rand.nextInt(dirs.size()));
+		newData += dirs.get(GlobalVars.rand.nextInt(dirs.size()));
 		BlockData newDat = Bukkit.getServer().createBlockData(newData);
 		dat = dat.merge(newDat);
 	    }
@@ -77,6 +77,7 @@ public class FacingNode extends BlockNode {
 	}
     }
 
+    @Override
     public int getArgCount() {
 	return 1;
     }

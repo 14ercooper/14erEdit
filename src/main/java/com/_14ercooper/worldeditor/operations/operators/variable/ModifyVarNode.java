@@ -4,7 +4,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import com._14ercooper.worldeditor.main.*;
+import com._14ercooper.worldeditor.main.GlobalVars;
+import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.operations.operators.Node;
 import com._14ercooper.worldeditor.operations.type.BlockVar;
@@ -19,6 +20,7 @@ public class ModifyVarNode extends Node {
     String type, name;
     List<String> mod;
 
+    @Override
     public ModifyVarNode newNode() {
 	ModifyVarNode node = new ModifyVarNode();
 	node.type = GlobalVars.operationParser.parseStringNode().contents;
@@ -27,6 +29,7 @@ public class ModifyVarNode extends Node {
 	return node;
     }
 
+    @Override
     public boolean performNode() {
 	try {
 	    // Modify a numeric
@@ -412,6 +415,7 @@ public class ModifyVarNode extends Node {
 	}
     }
 
+    @Override
     public int getArgCount() {
 	return 3;
     }

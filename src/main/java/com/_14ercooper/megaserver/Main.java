@@ -11,6 +11,8 @@ import java.util.Set;
 
 public class Main {
 
+    static String javaPath = "java";
+
     public static void main(String[] args) {
 
 	boolean updateArtifacts = false;
@@ -24,6 +26,9 @@ public class Main {
 		    }
 		    if (s.equalsIgnoreCase("--update")) {
 			updateArtifacts = true;
+		    }
+		    if (s.contains("--javaPath")) {
+			javaPath = s.split("=")[1];
 		    }
 		}
 
@@ -128,8 +133,8 @@ public class Main {
 		// Start server
 		String quarterRam = String.valueOf(Integer.parseInt(RAM) / 4);
 		String eighthRam = String.valueOf(Integer.parseInt(RAM) / 8);
-		String command = "java -jar -DIReallyKnowWhatIAmDoingISwear=true -Xmx" + RAM + "M -Xms" + RAM + "M -Xss"
-			+ eighthRam + "M -Xmn" + quarterRam + "M -XX:+UseParallelGC server.jar nogui";
+		String command = javaPath + " -jar -DIReallyKnowWhatIAmDoingISwear=true -Xmx" + RAM + "M -Xms" + RAM
+			+ "M -Xss" + eighthRam + "M -Xmn" + quarterRam + "M -XX:+UseParallelGC server.jar nogui";
 		Process p = runProcess(command, "profiles/" + profile);
 		while (p.isAlive()) {
 		    Thread.sleep(5000);

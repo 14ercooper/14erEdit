@@ -3,7 +3,6 @@ package com._14ercooper.worldeditor.macros.macros.nature;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -13,7 +12,9 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 
 import com._14ercooper.worldeditor.macros.macros.Macro;
-import com._14ercooper.worldeditor.main.*;
+import com._14ercooper.worldeditor.main.GlobalVars;
+import com._14ercooper.worldeditor.main.Main;
+import com._14ercooper.worldeditor.main.SetBlock;
 import com._14ercooper.worldeditor.operations.Operator;
 
 public class VinesMacro extends Macro {
@@ -53,6 +54,7 @@ public class VinesMacro extends Macro {
     }
 
     // Run this macro
+    @Override
     public boolean performMacro(String[] args, Location loc) {
 	SetupMacro(args, loc);
 
@@ -86,7 +88,6 @@ public class VinesMacro extends Macro {
 	LinkedList<BlockState> operatedBlocks = new LinkedList<BlockState>();
 
 	// OPERATE
-	Random rand = new Random();
 	List<Material> nonsolidBlocks = new ArrayList<Material>();
 	nonsolidBlocks.add(Material.AIR);
 	nonsolidBlocks.add(Material.VINE);
@@ -98,7 +99,7 @@ public class VinesMacro extends Macro {
 	    }
 
 	    // Check density
-	    if (rand.nextDouble() >= density) {
+	    if (GlobalVars.rand.nextDouble() >= density) {
 		continue;
 	    }
 
@@ -161,7 +162,7 @@ public class VinesMacro extends Macro {
 
 		// Pick the side for the vines that will be below this one
 		if (dirs.size() > 1) {
-		    blockState = dirs.get(rand.nextInt(dirs.size() - 1));
+		    blockState = dirs.get(GlobalVars.rand.nextInt(dirs.size() - 1));
 		}
 		else {
 		    blockState = dirs.get(0);
@@ -174,7 +175,7 @@ public class VinesMacro extends Macro {
 	    }
 
 	    // Determine the length of this vine
-	    double actVariance = ((rand.nextDouble() * 2.0) - 1.0) * variance;
+	    double actVariance = ((GlobalVars.rand.nextDouble() * 2.0) - 1.0) * variance;
 	    int vineLength = (int) Math.round(length + actVariance);
 
 	    // Grow the vine (checking to make sure only air gets replaced and registering

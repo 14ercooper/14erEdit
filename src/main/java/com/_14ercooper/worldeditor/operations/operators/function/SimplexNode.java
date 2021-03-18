@@ -2,7 +2,8 @@ package com._14ercooper.worldeditor.operations.operators.function;
 
 import org.bukkit.Location;
 
-import com._14ercooper.worldeditor.main.*;
+import com._14ercooper.worldeditor.main.GlobalVars;
+import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.operations.operators.Node;
 import com._14ercooper.worldeditor.operations.operators.core.NumberNode;
@@ -13,6 +14,7 @@ public class SimplexNode extends Node {
 
     public NumberNode arg1, arg2, scaleFactor;
 
+    @Override
     public SimplexNode newNode() {
 	SimplexNode node = new SimplexNode();
 	try {
@@ -31,6 +33,7 @@ public class SimplexNode extends Node {
 	return node;
     }
 
+    @Override
     public boolean performNode() {
 	try {
 	    // The range on all of these are useful for double inaccuracy
@@ -59,6 +62,7 @@ public class SimplexNode extends Node {
 	}
     }
 
+    @Override
     public int getArgCount() {
 	return 2;
     }
