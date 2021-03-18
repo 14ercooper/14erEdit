@@ -43,6 +43,21 @@ public class Main extends JavaPlugin {
 
     @Override
     public void onEnable() {
+	// Check Java 11 (ensure that the user didn't somehow bypass the earlier class version check)
+	float javaVersion = Float.parseFloat(System.getProperty("java.class.version"));
+	if (javaVersion < 55) {
+		System.out.println(
+			"Java 11 or never is required to run this server. https://adoptopenjdk.net is a good place to find Java 11.\n"
+				+ "The server will now shut down.");
+		try {
+		    Thread.sleep(15000);
+		    Bukkit.shutdown();
+		}
+		catch (InterruptedException e1) {
+		    // Do nothing
+		}
+	}
+	
 	// Create folders as needed
 	try {
 	    Files.createDirectories(Paths.get("plugins/14erEdit/schematics"));

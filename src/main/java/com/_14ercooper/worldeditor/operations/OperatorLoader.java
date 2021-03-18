@@ -21,6 +21,7 @@ import com._14ercooper.worldeditor.operations.operators.function.RemainderNode;
 import com._14ercooper.worldeditor.operations.operators.function.SimplexNode;
 import com._14ercooper.worldeditor.operations.operators.function.StringContainsNode;
 import com._14ercooper.worldeditor.operations.operators.logical.AndNode;
+import com._14ercooper.worldeditor.operations.operators.logical.AnyOfNode;
 import com._14ercooper.worldeditor.operations.operators.logical.ElseNode;
 import com._14ercooper.worldeditor.operations.operators.logical.FalseNode;
 import com._14ercooper.worldeditor.operations.operators.logical.IfNode;
@@ -148,6 +149,8 @@ public class OperatorLoader {
 	GlobalVars.operationParser.AddOperator("<", new XorNode());
 	GlobalVars.operationParser.AddOperator("xor", GlobalVars.operationParser.GetOperator("<"));
 	GlobalVars.operationParser.AddOperator("one_of", GlobalVars.operationParser.GetOperator("<"));
+	GlobalVars.operationParser.AddOperator("anyof", new AnyOfNode());
+	GlobalVars.operationParser.AddOperator("any_of", GlobalVars.operationParser.GetOperator("anyof"));
     }
 
     private static void LoadLoop() {
