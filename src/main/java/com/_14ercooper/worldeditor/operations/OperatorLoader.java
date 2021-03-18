@@ -39,7 +39,9 @@ import com._14ercooper.worldeditor.operations.operators.query.AngleNode;
 import com._14ercooper.worldeditor.operations.operators.query.BlockAtNode;
 import com._14ercooper.worldeditor.operations.operators.query.BlocklightNode;
 import com._14ercooper.worldeditor.operations.operators.query.BlocksAboveNode;
+import com._14ercooper.worldeditor.operations.operators.query.BlocksAdjacentHorizontalNode;
 import com._14ercooper.worldeditor.operations.operators.query.BlocksAdjacentNode;
+import com._14ercooper.worldeditor.operations.operators.query.BlocksAdjacentVerticalNode;
 import com._14ercooper.worldeditor.operations.operators.query.BlocksBelowNode;
 import com._14ercooper.worldeditor.operations.operators.query.CheckBiomeNode;
 import com._14ercooper.worldeditor.operations.operators.query.FacesExposedNode;
@@ -193,6 +195,12 @@ public class OperatorLoader {
 	GlobalVars.operationParser.AddOperator("@@", new NearbyNode());
 	GlobalVars.operationParser.AddOperator("near", GlobalVars.operationParser.GetOperator("@@"));
 	GlobalVars.operationParser.AddOperator("nearby", GlobalVars.operationParser.GetOperator("@@"));
+	GlobalVars.operationParser.AddOperator("@v", new BlocksAdjacentVerticalNode());
+	GlobalVars.operationParser.AddOperator("adjv", GlobalVars.operationParser.GetOperator("@v"));
+	GlobalVars.operationParser.AddOperator("adjacent_vertical", GlobalVars.operationParser.GetOperator("@v"));
+	GlobalVars.operationParser.AddOperator("@h", new BlocksAdjacentHorizontalNode());
+	GlobalVars.operationParser.AddOperator("adjh", GlobalVars.operationParser.GetOperator("@h"));
+	GlobalVars.operationParser.AddOperator("adjacent_horizontal", GlobalVars.operationParser.GetOperator("@h"));
     }
 
     private static void LoadVariable() {
