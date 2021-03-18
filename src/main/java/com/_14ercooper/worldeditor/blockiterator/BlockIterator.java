@@ -32,18 +32,18 @@ public abstract class BlockIterator {
 	if (x > radX || x + xOff > GlobalVars.maxEditX) {
 	    y++;
 	    x = -radX;
-	    
+
 	    if (x + xOff < GlobalVars.minEditX) {
 		x = (int) GlobalVars.minEditX - xOff;
 	    }
 	}
 	if (y > radY || y + yOff > GlobalVars.maxEditY) {
 	    z++;
-	    
+
 	    if (z + zOff < GlobalVars.minEditZ) {
 		z = (int) GlobalVars.minEditZ - zOff;
 	    }
-	    
+
 	    y = -radY;
 	    while (y + yOff < GlobalVars.minEditY) {
 		y++;

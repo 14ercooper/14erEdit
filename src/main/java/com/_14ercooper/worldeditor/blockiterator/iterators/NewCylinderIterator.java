@@ -78,7 +78,7 @@ public class NewCylinderIterator extends BlockIterator {
 	    if ((x * x) * xS + (y * y) * yS + (z * z) * zS >= (radMax + radCorr) * (radMax + radCorr)) {
 		continue;
 	    }
-	    
+
 	    // Height check
 
 	    break;

@@ -14,20 +14,21 @@ public class MultiNoiseNode extends Node {
     NumberNode noiseCount;
     NoiseNode noiseFunction;
     List<Node> noises = new ArrayList<Node>();
-    
+
     @Override
     public MultiNoiseNode newNode() {
 	try {
 	    MultiNoiseNode node = new MultiNoiseNode();
-	    
+
 	    try {
 		node.noiseCount = GlobalVars.operationParser.parseNumberNode();
 	    }
 	    catch (Exception e) {
-		Main.logError("Multinoise node expected first argument to be a number, but it was not.", Operator.currentPlayer);
+		Main.logError("Multinoise node expected first argument to be a number, but it was not.",
+			Operator.currentPlayer);
 		return null;
 	    }
-	    
+
 	    try {
 		node.noiseFunction = (NoiseNode) GlobalVars.operationParser.parsePart();
 	    }
@@ -35,7 +36,7 @@ public class MultiNoiseNode extends Node {
 		Main.logError("Multinoise node requires a noise node, but none was found.", Operator.currentPlayer);
 		return null;
 	    }
-	    
+
 	    try {
 		for (int i = 0; i < node.noiseCount.getMaxInt(); i++) {
 		    node.noises.add(GlobalVars.operationParser.parsePart());
@@ -45,7 +46,7 @@ public class MultiNoiseNode extends Node {
 		Main.logError("Error parsing nodes for multinoise, likely ran out of nodes.", Operator.currentPlayer);
 		return null;
 	    }
-	    
+
 	    return node;
 	}
 	catch (Exception e) {
@@ -60,21 +61,21 @@ public class MultiNoiseNode extends Node {
 	int c = noiseCount.getInt() + 1;
 	float n = NoiseNode.scaleTo255(noiseFunction.getNum());
 	n = n * sigmoid(n / 127.5f);
-	
+
 	// Collapse to [0,c-1] range
 	float cInv = (float) c / 255.0f;
 	float nColl = n * cInv;
 	int nodeToRun = (int) (nColl);
-	
+
 	if (nodeToRun >= noises.size()) {
 	    nodeToRun = noises.size() - 1;
 	}
-	
+
 	// Perform correct node
 	return noises.get(nodeToRun).performNode();
     }
-    
-    private float sigmoid (float val) {
+
+    private float sigmoid(float val) {
 	return (float) (1.0f / (1 + Math.exp(-2.0f * (val - 1.0f))));
     }
 

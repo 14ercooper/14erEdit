@@ -15,7 +15,7 @@ public class IfNode extends Node {
 	try {
 	    node.arg1 = GlobalVars.operationParser.parsePart();
 	    node.arg2 = GlobalVars.operationParser.parsePart();
-	    
+
 	    int iter = GlobalVars.operationParser.index;
 	    node.arg3 = GlobalVars.operationParser.parsePart();
 	    if (!(node.arg3 instanceof ElseNode)) {
@@ -36,7 +36,9 @@ public class IfNode extends Node {
 	return node;
     }
 
-    // /fx br v if bedrock if both simplex 3 130 4 not simplex 3 110 4 set polished_andesite else if simplex 3 110 4 set 70%andesite;10%gravel;10%stone;10%cobblestone
+    // /fx br v if bedrock if both simplex 3 130 4 not simplex 3 110 4 set
+    // polished_andesite else if simplex 3 110 4 set
+    // 70%andesite;10%gravel;10%stone;10%cobblestone
     @Override
     public boolean performNode() {
 	try {

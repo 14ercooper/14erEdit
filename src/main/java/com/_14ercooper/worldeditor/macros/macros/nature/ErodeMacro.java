@@ -68,7 +68,7 @@ public class ErodeMacro extends Macro {
 		    erodeSubtype = 4;
 		}
 	    }
-	    
+
 	    if (erodeType == 2) {
 		if (args[2].equalsIgnoreCase("add")) {
 		    erodeSubtype = 0;
@@ -131,11 +131,11 @@ public class ErodeMacro extends Macro {
 	if (erodeType == 2 && erodeSubtype == 0) {
 	    snapshotArray = mixErosionAdd(snapshotArray, x, y, z);
 	}
-	
+
 	if (erodeType == 2 && erodeSubtype == 1) {
 	    snapshotArray = mixErosionSubtract(snapshotArray, x, y, z);
 	}
-	
+
 	if (erodeType == 2 && erodeSubtype == 2) {
 	    snapshotArray = mixErosionBlend(snapshotArray, x, y, z);
 	}
@@ -249,7 +249,7 @@ public class ErodeMacro extends Macro {
 	snapshotArray = meltSmoothErosion(snapshotArray);
 	return snapshotArray;
     }
-    
+
     private List<BlockState> mixErosionBlend(List<BlockState> snapshotArray, double x, double y, double z) {
 	snapshotArray = meltCarveErosion(snapshotArray);
 	applyToWorld(snapshotArray);
@@ -266,7 +266,7 @@ public class ErodeMacro extends Macro {
 	snapshotArray = meltSmoothErosion(snapshotArray);
 	return snapshotArray;
     }
-    
+
     private List<BlockState> mixErosionAdd(List<BlockState> snapshotArray, double x, double y, double z) {
 	snapshotArray = meltRaiseErosion(snapshotArray);
 	applyToWorld(snapshotArray);

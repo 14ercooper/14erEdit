@@ -64,8 +64,7 @@ public class EllipseIterator extends BlockIterator {
 	    }
 
 	    // Radius check
-	    if ((x * x / (rx * rx)) + (y * y / (ry * ry))
-		    + (z * z / (rz * rz)) > 1 + radCorr) {
+	    if ((x * x / (rx * rx)) + (y * y / (ry * ry)) + (z * z / (rz * rz)) > 1 + radCorr) {
 		continue;
 	    }
 

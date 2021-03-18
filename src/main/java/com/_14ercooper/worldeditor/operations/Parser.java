@@ -43,10 +43,10 @@ public class Parser {
 	// Here there be parsing magic
 	// A massive recursive nightmare
 	index = -1;
-	parts = Arrays.asList(Arrays.asList(op.split(" ")).stream()
-		.map(s -> s.matches(".*\\[.+=.+\\].*") ? s.replaceAll("[\\(\\)]+", "") : s.replaceAll("[\\(\\)\\[\\]]+", ""))
+	parts = Arrays.asList(Arrays.asList(op.split(" ")).stream().map(
+		s -> s.matches(".*\\[.+=.+\\].*") ? s.replaceAll("[\\(\\)]+", "") : s.replaceAll("[\\(\\)\\[\\]]+", ""))
 		.toArray(size -> new String[size]));
-	
+
 	Node rootNode = parsePart();
 
 	// This is an error if this is true
