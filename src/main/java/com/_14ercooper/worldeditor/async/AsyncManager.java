@@ -207,6 +207,9 @@ public class AsyncManager {
 
     // Scheduled task to operate
     public void performOperation() {
+	// Output building up debug
+	Main.outputDebug();
+	
 	// If in autoconfirm mode, do that
 	if (GlobalVars.autoConfirm) {
 	    confirmEdits(10);

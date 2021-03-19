@@ -145,10 +145,12 @@ public class Main extends JavaPlugin {
 	}
 	return min + GlobalVars.rand.nextInt(max - min + 1);
     }
+    
+    static String debugText = "";
 
     public static void logDebug(String message) {
 	if (GlobalVars.isDebug)
-	    Bukkit.getServer().broadcastMessage("§c[DEBUG] " + message); // ----
+	    debugText += "§c[DEBUG] " + message + "\n"; // ----
 	try {
 	    if (GlobalVars.logDebugs) {
 		if (!Files.exists(Paths.get("plugins/14erEdit/debug.log")))
@@ -158,6 +160,13 @@ public class Main extends JavaPlugin {
 	}
 	catch (Exception e) {
 	    // Do nothing, this isn't super important
+	}
+    }
+    
+    public static void outputDebug() {
+	if (GlobalVars.isDebug && !debugText.isBlank()) {
+	    Bukkit.getServer().broadcastMessage(debugText);
+	    debugText = "";
 	}
     }
 
