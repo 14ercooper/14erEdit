@@ -131,9 +131,14 @@ public class Main {
 		}
 		FileIO.copyFile("14erEdit", "profiles/" + profile + "/plugins/14erEdit", true);
 		// Start server
+		String jvmArgs = "";
+		float javaVersion = Float.parseFloat(System.getProperty("java.class.version"));
+		if (javaVersion >= 59) {
+		    jvmArgs = " -XX:+UseZGC ";
+		}
 		String quarterRam = String.valueOf(Integer.parseInt(RAM) / 4);
 		String eighthRam = String.valueOf(Integer.parseInt(RAM) / 8);
-		String command = javaPath + " -jar -DIReallyKnowWhatIAmDoingISwear=true -Xmx" + RAM + "M -Xms" + RAM
+		String command = javaPath + " -jar " + jvmArgs + "-DIReallyKnowWhatIAmDoingISwear=true -Xmx" + RAM + "M -Xms" + RAM
 			+ "M -Xss" + eighthRam + "M -Xmn" + quarterRam + "M -XX:+UseParallelGC server.jar nogui";
 		Process p = runProcess(command, "profiles/" + profile);
 		while (p.isAlive()) {

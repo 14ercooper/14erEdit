@@ -90,7 +90,7 @@ public class SpikeIterator extends BlockIterator {
 	    double h0 = spikeLine.distanceFromFirst(spikeLine.closestPoint(blockPos));
 	    double radMi = rMin - ((rMin * h0) / (h + 0.0001));
 	    double radMa = bSize - ((bSize * h0) / (h + 0.0001));
-	    Main.logDebug("dists " + distToLine + " " + h0 + " " + radMi + " " + radMa);
+//	    Main.logDebug("dists " + distToLine + " " + h0 + " " + radMi + " " + radMa);
 
 	    // Check they are in compliance
 	    if (distToLine > radMa || (distToLine < radMi && radMi > 0.05))

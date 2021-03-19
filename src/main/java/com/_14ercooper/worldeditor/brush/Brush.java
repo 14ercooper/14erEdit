@@ -155,7 +155,7 @@ public class Brush {
 		// Build an array of all blocks to operate on
 		BlockIterator blockArray = shapeGenerator.GetBlocks(x, y, z);
 
-		if (blockArray.getTotalBlocks() == 0) {
+		if (blockArray == null || blockArray.getTotalBlocks() == 0) {
 		    return false;
 		}
 		Main.logDebug("Block array size is " + Long.toString(blockArray.getTotalBlocks())); // -----
