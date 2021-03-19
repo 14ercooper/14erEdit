@@ -202,6 +202,8 @@ public class AsyncManager {
 	    largeOps.remove();
 	}
     }
+    
+    public static long doneOperations = 0;
 
     // Scheduled task to operate
     public void performOperation() {
@@ -215,7 +217,7 @@ public class AsyncManager {
 	    return;
 
 	// Limit operations per run
-	long doneOperations = 0;
+	doneOperations = 0;
 
 	if (queueDropped) {
 	    queueDropped = false;

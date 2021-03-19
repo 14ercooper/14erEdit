@@ -1,5 +1,6 @@
 package com._14ercooper.worldeditor.operations.operators.core;
 
+import com._14ercooper.worldeditor.async.AsyncManager;
 import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.Operator;
@@ -26,6 +27,7 @@ public class MacroNode extends Node {
     @Override
     public boolean performNode() {
 	Main.logDebug("Performing macro node"); // ----
+	AsyncManager.doneOperations += (GlobalVars.blocksPerAsync * 0.5) + 1;
 	return GlobalVars.macroLauncher.launchMacro(arg.contents, Operator.currentBlock.getLocation());
     }
 
