@@ -57,6 +57,6 @@ public class GlobalVars {
     public static long minEditY = -1;
     public static long minEditZ = Long.MIN_VALUE;
     public static long maxEditX = Long.MAX_VALUE;
-    public static long maxEditY = 255;
+    public static long maxEditY = 256;
     public static long maxEditZ = Long.MAX_VALUE;
 }
