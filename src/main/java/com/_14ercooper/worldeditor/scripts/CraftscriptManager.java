@@ -31,7 +31,7 @@ public class CraftscriptManager {
 	Main.logDebug("Calling Craftsript: " + label);
 
 	GlobalVars.currentUndo = UndoManager.getUndo(player);
-	GlobalVars.currentUndo.startUndo();
+	GlobalVars.currentUndo.startUndo(GlobalVars.undoLimit);
 
 	try {
 	    registeredScripts.get(label).perform(args, player, label);

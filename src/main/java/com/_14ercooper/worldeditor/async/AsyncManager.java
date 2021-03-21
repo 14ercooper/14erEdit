@@ -33,6 +33,7 @@ public class AsyncManager {
 
     // Store operations
     private ArrayList<AsyncOperation> operations = new ArrayList<AsyncOperation>();
+    private ArrayList<AsyncOperation> queuedOperations = new ArrayList<AsyncOperation>();
 
     // Store large operations
     private Queue<AsyncOperation> largeOps = new ArrayDeque<AsyncOperation>();
@@ -56,6 +57,7 @@ public class AsyncManager {
 		asyncOp.undo.finishUndo();
 	}
 	operations = new ArrayList<AsyncOperation>();
+	queuedOperations = new ArrayList<AsyncOperation>();
 	largeOps = new ArrayDeque<AsyncOperation>();
 	queueDropped = true;
     }
@@ -64,6 +66,17 @@ public class AsyncManager {
     public long getRemainingBlocks() {
 	long remBlocks = 0;
 	for (AsyncOperation a : operations) {
+	    if (a.blocks != null) {
+		remBlocks += a.blocks.getRemainingBlocks();
+	    }
+	    else if (a.toOperate != null) {
+		remBlocks += a.toOperate.size();
+	    }
+	    else {
+		remBlocks += 100;
+	    }
+	}
+	for (AsyncOperation a : queuedOperations) {
 	    if (a.blocks != null) {
 		remBlocks += a.blocks.getRemainingBlocks();
 	    }
@@ -87,10 +100,14 @@ public class AsyncManager {
 
     // Dump some data about what's in the async queue
     public void asyncDump(CommandSender p) {
-	p.sendMessage("§aThere are currently " + operations.size() + " operations in the async queue for "
+	p.sendMessage("§aThere are currently " + (operations.size() + queuedOperations.size()) + " operations in the async queue for "
 		+ getRemainingBlocks() + " blocks.");
 	p.sendMessage("§aThe large edits confirm queue has " + largeOps.size() + " pending operations.");
 	p.sendMessage("§aPer Operation Stats:");
+	for (AsyncOperation a : queuedOperations) {
+	    p.sendMessage("§a[Queued] " + a.blocks.getRemainingBlocks() + " blocks remaining out of "
+		    + a.blocks.getTotalBlocks() + " total blocks. Undo? " + a.undoRunning + " " + a.blocks.toString());
+	}
 	for (AsyncOperation a : operations) {
 	    p.sendMessage("§a[Running] " + a.blocks.getRemainingBlocks() + " blocks remaining out of "
 		    + a.blocks.getTotalBlocks() + " total blocks. Undo? " + a.undoRunning + " " + a.blocks.toString());
@@ -103,7 +120,7 @@ public class AsyncManager {
     // Schedule a block iterator task
     public void scheduleEdit(Operator o, Player p, BlockIterator b) {
 	if (p == null) {
-	    operations.add(new AsyncOperation(o, b));
+	    queuedOperations.add(new AsyncOperation(o, b));
 	}
 	else if (b.getTotalBlocks() > GlobalVars.undoLimit) {
 	    largeOps.add(new AsyncOperation(o, p, b));
@@ -116,27 +133,27 @@ public class AsyncManager {
 	else {
 	    AsyncOperation asyncOp = new AsyncOperation(o, p, b);
 	    asyncOp.undo = UndoManager.getUndo(p);
-	    operations.add(asyncOp);
+	    queuedOperations.add(asyncOp);
 	}
     }
 
     // Schedule a nested block iterator task
     public void scheduleEdit(Operator o, Player p, BlockIterator b, boolean force) {
 	if (p == null)
-	    operations.add(new AsyncOperation(o, b));
+	    queuedOperations.add(new AsyncOperation(o, b));
 	else if (b.getTotalBlocks() > GlobalVars.undoLimit) {
 	    AsyncOperation asyncOp = new AsyncOperation(o, p, b);
-	    operations.add(asyncOp);
+	    queuedOperations.add(asyncOp);
 	}
 	else {
 	    AsyncOperation asyncOp = new AsyncOperation(o, p, b);
 	    asyncOp.undo = UndoManager.getUndo(p);
-	    operations.add(asyncOp);
+	    queuedOperations.add(asyncOp);
 	}
     }
 
     public void scheduleEdit(Operator o, BlockIterator b) {
-	operations.add(new AsyncOperation(o, b));
+	queuedOperations.add(new AsyncOperation(o, b));
     }
 
     // Schedule a multibrush operation
@@ -161,7 +178,7 @@ public class AsyncManager {
 	}
 	else {
 	    asyncOp.undo = UndoManager.getUndo(p);
-	    operations.add(asyncOp);
+	    queuedOperations.add(asyncOp);
 	}
     }
 
@@ -177,7 +194,7 @@ public class AsyncManager {
 	}
 	else {
 	    asyncOp.undo = UndoManager.getUndo(p);
-	    operations.add(asyncOp);
+	    queuedOperations.add(asyncOp);
 	}
     }
 
@@ -188,7 +205,7 @@ public class AsyncManager {
 //	if (number < largeOps.size())
 //	    return;
 	while (number-- > 0) {
-	    operations.add(largeOps.remove());
+	    queuedOperations.add(largeOps.remove());
 	}
     }
 
@@ -213,6 +230,24 @@ public class AsyncManager {
 	// If in autoconfirm mode, do that
 	if (GlobalVars.autoConfirm) {
 	    confirmEdits(10);
+	}
+	
+	// Dispatch async edits
+	if (operations.size() < 10) {
+	    for (int i = 0; i < queuedOperations.size(); i++) {
+		if (queuedOperations.get(i).undo == null || queuedOperations.get(i).undo.canStartUndo(queuedOperations.get(i).blocks.getTotalBlocks())) {
+		    if (queuedOperations.get(i).undo != null) {
+			queuedOperations.get(i).undo.startTrackingUndo(queuedOperations.get(i).blocks.getTotalBlocks());
+		    }
+		    operations.add(queuedOperations.get(i));
+		    queuedOperations.remove(i);
+		    i--;
+		}
+		
+		if (operations.size() >= 10) {
+		    break;
+		}
+	    }
 	}
 
 	// If there isn't anything to do, return
@@ -264,7 +299,7 @@ public class AsyncManager {
 		    b = currentAsyncOp.blocks.getNext();
 		    if (currentAsyncOp.undo != null) {
 			if (!currentAsyncOp.undoRunning)
-			    currentAsyncOp.undo.startUndo();
+			    currentAsyncOp.undo.startUndo(currentAsyncOp.blocks.getTotalBlocks());
 			GlobalVars.currentUndo = currentAsyncOp.undo;
 			currentAsyncOp.undoRunning = true;
 		    }
@@ -291,7 +326,7 @@ public class AsyncManager {
 		    b = currentAsyncOp.blocks.getNext();
 		    if (currentAsyncOp.undo != null) {
 			if (!currentAsyncOp.undoRunning)
-			    currentAsyncOp.undo.startUndo();
+			    currentAsyncOp.undo.startUndo(currentAsyncOp.blocks.getTotalBlocks());
 			GlobalVars.currentUndo = currentAsyncOp.undo;
 			currentAsyncOp.undoRunning = true;
 		    }
@@ -361,7 +396,7 @@ public class AsyncManager {
 		    b = currentAsyncOp.blocks.getNext();
 		    if (currentAsyncOp.undo != null) {
 			if (!currentAsyncOp.undoRunning) {
-			    currentAsyncOp.undo.startUndo();
+			    currentAsyncOp.undo.startUndo(currentAsyncOp.blocks.getTotalBlocks());
 			    try {
 				currentAsyncOp.schem.resetWrite();
 			    }
@@ -402,7 +437,7 @@ public class AsyncManager {
 		    b = currentAsyncOp.blocks.getNext();
 		    if (currentAsyncOp.undo != null) {
 			if (!currentAsyncOp.undoRunning) {
-			    currentAsyncOp.undo.startUndo();
+			    currentAsyncOp.undo.startUndo(currentAsyncOp.blocks.getTotalBlocks());
 			}
 			GlobalVars.currentUndo = currentAsyncOp.undo;
 			currentAsyncOp.undoRunning = true;
@@ -451,7 +486,7 @@ public class AsyncManager {
 		    Operator.currentPlayer = tempPlayer;
 		    if (currentAsyncOp.undo != null) {
 			if (!currentAsyncOp.undoRunning) {
-			    currentAsyncOp.undo.startUndo();
+			    currentAsyncOp.undo.startUndo(currentAsyncOp.blocks.getTotalBlocks());
 			}
 			GlobalVars.currentUndo = currentAsyncOp.undo;
 			currentAsyncOp.undoRunning = true;

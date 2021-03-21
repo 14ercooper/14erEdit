@@ -22,6 +22,8 @@ public class Undo {
     private ArrayDeque<Integer> redoSizes = new ArrayDeque<Integer>();
 
     private int nestedUndos = 0;
+    
+    private long runningUndoSize = 0;
 
     // For consolidating undos
     private HashSet<String> positions = new HashSet<String>();
@@ -29,14 +31,27 @@ public class Undo {
     Undo(Player player) {
 	owner = player;
     }
+    
+    // Can we start an undo with this size?
+    public boolean canStartUndo(long size) {
+//	System.out.println(runningUndoSize + size <= GlobalVars.undoLimit);
+	return runningUndoSize + size <= GlobalVars.undoLimit;
+    }
+    
+    public void startTrackingUndo(long size) {
+	runningUndoSize += size;
+    }
 
     // Start an undo
-    public void startUndo() {
+    public void startUndo(long size) {
 	Main.logDebug("Starting undo for " + owner.getName());
 	if (nestedUndos == 0) {
 	    positions = new HashSet<String>();
 	}
 	nestedUndos++;
+//	runningUndoSize += size;
+	
+//	System.out.println(runningUndoSize / GlobalVars.undoLimit);
     }
 
     // End an undo
@@ -45,6 +60,7 @@ public class Undo {
 	nestedUndos--;
 	if (nestedUndos == 0) {
 	    Main.logDebug(positions.size() + " block changes stored");
+	    runningUndoSize = 0;
 	    if (positions.size() <= 0) {
 		return 0;
 	    }
