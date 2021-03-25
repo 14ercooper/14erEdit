@@ -144,9 +144,9 @@ public class SchematicHandler {
 	    origin[2] = -1 * (schem.getZSize() / 2);
 	    origin[2] += loc.getBlockZ();
 	}
-	if (!mirror.isEmpty()) {
-	    schem.mirror(mirror.contains("x"), mirror.contains("y"), mirror.contains("z"));
-	}
+	if (mirror.isEmpty())
+	    mirror = "";
+	schem.mirror(mirror.contains("x"), mirror.contains("y"), mirror.contains("z"));
 	GlobalVars.asyncManager.scheduleEdit(schem, false, p, origin);
 	return true;
     }

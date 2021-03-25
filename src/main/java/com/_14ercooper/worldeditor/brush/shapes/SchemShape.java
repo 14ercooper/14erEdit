@@ -3,6 +3,8 @@ package com._14ercooper.worldeditor.brush.shapes;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.World;
+
 import com._14ercooper.worldeditor.blockiterator.BlockIterator;
 import com._14ercooper.worldeditor.brush.BrushShape;
 import com._14ercooper.worldeditor.main.GlobalVars;
@@ -14,14 +16,14 @@ public class SchemShape extends BrushShape {
     int gotArgs = 0;
 
     @Override
-    public BlockIterator GetBlocks(double x, double y, double z) {
+    public BlockIterator GetBlocks(double x, double y, double z, World world) {
 	List<String> args = new ArrayList<String>();
 	args.add(Integer.toString((int) x));
 	args.add(Integer.toString((int) y));
 	args.add(Integer.toString((int) z));
 	Main.logDebug("Creating schematic iterator, file " + fileName);
 	args.add(fileName);
-	return GlobalVars.iteratorManager.getIterator("schem").newIterator(args);
+	return GlobalVars.iteratorManager.getIterator("schem").newIterator(args, world);
     }
 
     @Override

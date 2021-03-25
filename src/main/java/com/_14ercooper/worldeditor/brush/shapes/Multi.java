@@ -8,6 +8,8 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.bukkit.World;
+
 import com._14ercooper.worldeditor.blockiterator.BlockIterator;
 import com._14ercooper.worldeditor.brush.Brush;
 import com._14ercooper.worldeditor.brush.BrushShape;
@@ -22,7 +24,7 @@ public class Multi extends BrushShape {
     List<Operator> ops = null;
 
     @Override
-    public BlockIterator GetBlocks(double x, double y, double z) {
+    public BlockIterator GetBlocks(double x, double y, double z, World world) {
 	Main.logError("Multibrush used in a normal brush context. This is an error.", Operator.currentPlayer);
 	return null;
     }
@@ -47,8 +49,8 @@ public class Multi extends BrushShape {
 	return !file.isEmpty();
     }
 
-    public List<BlockIterator> getIters(double x, double y, double z) {
-	genMultibrush(x, y, z);
+    public List<BlockIterator> getIters(double x, double y, double z, World world) {
+	genMultibrush(x, y, z, world);
 	return iters;
     }
 
@@ -57,7 +59,7 @@ public class Multi extends BrushShape {
     }
 
     @SuppressWarnings("unused")
-    private void genMultibrush(double x, double y, double z) {
+    private void genMultibrush(double x, double y, double z, World world) {
 	// Create the lists
 	iters = new ArrayList<BlockIterator>();
 	ops = new ArrayList<Operator>();
@@ -145,7 +147,7 @@ public class Multi extends BrushShape {
 		continue;
 
 	    // Add to the lists
-	    iters.add(shapeGenerator.GetBlocks(x, y, z));
+	    iters.add(shapeGenerator.GetBlocks(x, y, z, world));
 	    ops.add(operation);
 	}
     }

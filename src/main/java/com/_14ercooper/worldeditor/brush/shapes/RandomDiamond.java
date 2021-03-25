@@ -3,6 +3,8 @@ package com._14ercooper.worldeditor.brush.shapes;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.World;
+
 import com._14ercooper.worldeditor.blockiterator.BlockIterator;
 import com._14ercooper.worldeditor.brush.BrushShape;
 import com._14ercooper.worldeditor.main.GlobalVars;
@@ -14,7 +16,7 @@ public class RandomDiamond extends BrushShape {
     int gotArgs = 0;
 
     @Override
-    public BlockIterator GetBlocks(double x, double y, double z) {
+    public BlockIterator GetBlocks(double x, double y, double z, World world) {
 	// This uses the Manhattan distance
 	List<String> argList = new ArrayList<String>();
 	argList.add(Integer.toString((int) x));
@@ -22,7 +24,7 @@ public class RandomDiamond extends BrushShape {
 	argList.add(Integer.toString((int) z));
 //	argList.add(Integer.toString(rand.nextInt(radiusMax - radiusMin) + radiusMin));
 	argList.add(Integer.toString(Main.randRange(radiusMin, radiusMax)));
-	return GlobalVars.iteratorManager.getIterator("diamond").newIterator(argList);
+	return GlobalVars.iteratorManager.getIterator("diamond").newIterator(argList, world);
     }
 
     @Override

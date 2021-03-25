@@ -165,7 +165,7 @@ public class SelectionCommand {
 	    // Clone selection
 	    else if (args[1].equalsIgnoreCase("clone")) {
 		try {
-		    BlockIterator b = manager.getBlocks();
+		    BlockIterator b = manager.getBlocks(player.getWorld());
 		    int[] offset = { 0, 0, 0 };
 		    offset[0] = Integer.parseInt(args[2]);
 		    offset[1] = Integer.parseInt(args[3]);
@@ -265,7 +265,7 @@ public class SelectionCommand {
     @SuppressWarnings("static-access")
     private static boolean operate(SelectionManager manager, SelectionWand wand, String[] brushOperation) {
 	// Build an array of blocks within this selection
-	BlockIterator blockArray = manager.getBlocks();
+	BlockIterator blockArray = manager.getBlocks(wand.owner.getWorld());
 	Main.logDebug("Block array size is " + Long.toString(blockArray.getTotalBlocks())); // -----
 
 	// Construct the operation

@@ -3,6 +3,7 @@ package com._14ercooper.worldeditor.selection;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import com._14ercooper.worldeditor.blockiterator.BlockIterator;
@@ -184,7 +185,7 @@ public class SelectionManager {
     }
 
     // Get a list of blocks contained by this selection
-    public BlockIterator getBlocks() {
+    public BlockIterator getBlocks(World world) {
 	double[] pos1 = mostNegativeCorner;
 	double[] pos2 = mostPositiveCorner;
 	List<String> args = new ArrayList<String>();
@@ -195,7 +196,7 @@ public class SelectionManager {
 	args.add(Integer.toString((int) pos2[1]));
 	args.add(Integer.toString((int) pos2[2]));
 	args.add("1");
-	BlockIterator iter = GlobalVars.iteratorManager.getIterator("cube").newIterator(args);
+	BlockIterator iter = GlobalVars.iteratorManager.getIterator("cube").newIterator(args, world);
 	return iter;
     }
 }

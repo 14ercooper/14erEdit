@@ -11,6 +11,8 @@ import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.World;
+
 import com._14ercooper.worldeditor.blockiterator.BlockIterator;
 import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
@@ -55,7 +57,7 @@ public class SchemLite {
     }
 
     // Get a block iterator corresponding with this schem lite
-    public BlockIterator getIterator(int xStart, int yStart, int zStart) {
+    public BlockIterator getIterator(int xStart, int yStart, int zStart, World world) {
 	// Create a block iterator for the cube
 	int xS = xStart;
 	int yS = yStart;
@@ -86,7 +88,7 @@ public class SchemLite {
 	iterArgs.add(Integer.toString(yE));
 	iterArgs.add(Integer.toString(zE));
 	iterArgs.add(Integer.toString(executionOrder));
-	return GlobalVars.iteratorManager.getIterator("cube").newIterator(iterArgs);
+	return GlobalVars.iteratorManager.getIterator("cube").newIterator(iterArgs, world);
     }
 
     // Reset the write position of the schem lite object
@@ -131,6 +133,10 @@ public class SchemLite {
     public void openRead() throws IOException {
 	// Reload the file buffer
 	reader = Files.newBufferedReader(Paths.get(outPath));
+	if (reader == null) {
+	    Main.logDebug("Schematic not found");
+	    return;
+	}
 	// Refresh the metadata
 	xSize = Integer.parseInt(reader.readLine());
 	ySize = Integer.parseInt(reader.readLine());
@@ -180,6 +186,7 @@ public class SchemLite {
 
     // Mirror the schem lite
     public void mirror(boolean x, boolean y, boolean z) {
+//	System.out.println(x + " " + y + " " + z);
 	xMirror = x;
 	yMirror = y;
 	zMirror = z;

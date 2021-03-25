@@ -47,6 +47,9 @@ public class SchematicMacro extends Macro {
 	// Parse the mirrorString
 	if (args.length > 5)
 	    mirrorOpts = args[5];
+	else {
+	    mirrorOpts = "";
+	}
 	if (args.length > 6)
 	    executionOrder = Integer.parseInt(args[6]);
     } // /fx br v macro schem{jungle_1;c;0;c;false;r}

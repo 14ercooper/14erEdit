@@ -2,7 +2,7 @@ package com._14ercooper.worldeditor.blockiterator.iterators;
 
 import java.util.List;
 
-import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 
 import com._14ercooper.worldeditor.blockiterator.BlockIterator;
@@ -18,9 +18,10 @@ public class DiamondIterator extends BlockIterator {
     int radius;
 
     @Override
-    public DiamondIterator newIterator(List<String> args) {
+    public DiamondIterator newIterator(List<String> args, World world) {
 	try {
 	    DiamondIterator iterator = new DiamondIterator();
+	    iterator.iterWorld = world;
 	    iterator.xC = Integer.parseInt(args.get(0));
 	    iterator.yC = Integer.parseInt(args.get(1));
 	    iterator.zC = Integer.parseInt(args.get(2));
@@ -66,12 +67,13 @@ public class DiamondIterator extends BlockIterator {
 	    break;
 	}
 
-	try {
-	    return Operator.currentPlayer.getWorld().getBlockAt(x + xC, y + yC, z + zC);
-	}
-	catch (NullPointerException e) {
-	    return Bukkit.getWorlds().get(0).getBlockAt(x + xC, y + yC, z + zC);
-	}
+	return iterWorld.getBlockAt(x + xC, y + yC, z + zC);
+//	try {
+//	    return Operator.currentPlayer.getWorld().getBlockAt(x + xC, y + yC, z + zC);
+//	}
+//	catch (NullPointerException e) {
+//	    return Bukkit.getWorlds().get(0).getBlockAt(x + xC, y + yC, z + zC);
+//	}
     }
 
     @Override

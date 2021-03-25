@@ -1,5 +1,6 @@
 package com._14ercooper.worldeditor.commands;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -74,7 +75,7 @@ public class CommandRunat implements CommandExecutor {
 		    opStr += args[i] + " ";
 		}
 		Operator op = new Operator(opStr, (Player) sender);
-		GlobalVars.asyncManager.scheduleEdit(op, null, shape.GetBlocks(x, y, z));
+		GlobalVars.asyncManager.scheduleEdit(op, null, shape.GetBlocks(x, y, z, sender instanceof Player ? ((Player) sender).getWorld() : Bukkit.getWorlds().get(0)));
 		return true;
 	    }
 	    catch (Exception e) {

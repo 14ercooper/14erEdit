@@ -56,7 +56,7 @@ public class BrushNode extends Node {
 	int z = Operator.currentBlock.getZ();
 	if (!(shape instanceof Multi)) {
 	    // Build an array of all blocks to operate on
-	    BlockIterator blockArray = shape.GetBlocks(x, y, z);
+	    BlockIterator blockArray = shape.GetBlocks(x, y, z, Operator.currentBlock.getWorld());
 
 	    if (blockArray.getTotalBlocks() == 0) {
 		return false;
@@ -73,7 +73,7 @@ public class BrushNode extends Node {
 	else {
 	    // It's a multi-operator
 	    Multi multiShape = (Multi) shape;
-	    List<BlockIterator> iters = multiShape.getIters(x, y, z);
+	    List<BlockIterator> iters = multiShape.getIters(x, y, z, Operator.currentBlock.getWorld());
 	    List<Operator> ops = multiShape.getOps(x, y, z);
 
 	    GlobalVars.asyncManager.scheduleEdit(iters, ops, Operator.currentPlayer);

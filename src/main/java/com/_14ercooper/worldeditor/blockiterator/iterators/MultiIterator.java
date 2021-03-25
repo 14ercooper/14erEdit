@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import org.bukkit.World;
 import org.bukkit.block.Block;
 
 import com._14ercooper.worldeditor.blockiterator.BlockIterator;
@@ -15,7 +16,7 @@ public class MultiIterator extends BlockIterator {
     public List<BlockIterator> childIterators = new ArrayList<BlockIterator>();
 
     @Override
-    public BlockIterator newIterator(List<String> args) {
+    public BlockIterator newIterator(List<String> args, World world) {
 	Main.logError("MultiIterator does not support the standard constructor", Operator.currentPlayer);
 	return null;
     }

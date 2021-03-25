@@ -47,7 +47,7 @@ public class AsyncOperation {
     public AsyncOperation(SchemLite sl, boolean saveSchem, int[] o, Player p) {
 	schem = sl;
 	origin = o;
-	blocks = schem.getIterator(origin[0], origin[1], origin[2]);
+	blocks = schem.getIterator(origin[0], origin[1], origin[2], p.getWorld());
 	if (saveSchem) {
 	    key = "saveschem";
 	}
