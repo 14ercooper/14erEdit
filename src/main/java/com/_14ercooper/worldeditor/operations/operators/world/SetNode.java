@@ -71,6 +71,10 @@ public class SetNode extends Node {
 	    if (setMaterial.equalsIgnoreCase("dataonly")) {
 		// Step 1, convert the old data into a map
 		Map<String, String> oldData = new HashMap<String, String>();
+		if (storedData.split("\\[").length < 2) {
+		    // This block doesn't support block data
+		    return true;
+		}
 		for (String s : storedData.split("\\[")[1].replaceAll("\\]", "").split(",")) {
 		    oldData.put(s.split("=")[0], s.split("=")[1]);
 		}
