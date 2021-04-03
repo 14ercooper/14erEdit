@@ -58,6 +58,7 @@ public class Function {
     public List<String> templateArgs = new LinkedList<String>();
     public Player player;
     public boolean isOperator;
+    public boolean exitVal = true;
 
     public Function(String filename, List<String> args, Player player, boolean isOperator) {
 	// Set constant variables
@@ -101,7 +102,7 @@ public class Function {
 	// Generate labels map
 	for (int i = 0; i < dataSegment.size(); i++) {
 	    String s = dataSegment.get(i).replaceAll("^\\s+", "");
-	    if (s.charAt(0) == ':') {
+	    if (!s.isBlank() && s.charAt(0) == ':') {
 		labelsMap.put(s.substring(1), i);
 	    }
 	}
@@ -110,7 +111,7 @@ public class Function {
 	Main.logDebug("Number of labels: " + labelsMap.size());
     }
 
-    public void run() {
+    public boolean run() {
 	try {
 	    // Until pause or exit, loop
 	    while (!exit && waitDelay == 0) {
@@ -177,13 +178,19 @@ public class Function {
 	    Main.logError(
 		    "Error executing function. Error on line " + (currentLine + 1) + ".\nError: " + e.getMessage(),
 		    player);
-	    return;
+	    return false;
 	}
 
 	// If pause, register callback
 	if (waitDelay != 0 && !exit) {
 	    waitingFunctions.add(this);
 	}
+	
+	if (exit) {
+	    return exitVal;
+	}
+	
+	return exitVal;
     }
 
     public double parseVariable(String var) {

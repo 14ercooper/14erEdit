@@ -27,6 +27,7 @@ import com._14ercooper.worldeditor.functions.commands.player.PrintErrorCommand;
 import com._14ercooper.worldeditor.functions.commands.player.SetSlotCommand;
 import com._14ercooper.worldeditor.functions.commands.player.SwapCommand;
 import com._14ercooper.worldeditor.functions.commands.variable.GetCommand;
+import com._14ercooper.worldeditor.functions.commands.variable.GetValCommand;
 import com._14ercooper.worldeditor.functions.commands.variable.RemoveCommand;
 import com._14ercooper.worldeditor.functions.commands.variable.StoreCommand;
 import com._14ercooper.worldeditor.functions.commands.world.BlockCommand;
@@ -68,6 +69,7 @@ public class RegisterFunctions {
 	Function.commands.put("store", new StoreCommand());
 	Function.commands.put("get", new GetCommand());
 	Function.commands.put("remove", new RemoveCommand());
+	Function.commands.put("getval", new GetValCommand());
     }
 
     private static void RegisterMath() {

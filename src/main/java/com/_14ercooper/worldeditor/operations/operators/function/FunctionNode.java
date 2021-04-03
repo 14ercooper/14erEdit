@@ -27,8 +27,7 @@ public class FunctionNode extends Node {
     @Override
     public boolean performNode() {
 	Function fx = new Function(filename, args, Operator.currentPlayer, true);
-	fx.run();
-	return true;
+	return fx.run();
     }
 
     @Override

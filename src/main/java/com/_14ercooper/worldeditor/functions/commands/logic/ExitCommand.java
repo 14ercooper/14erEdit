@@ -10,5 +10,8 @@ public class ExitCommand extends InterpreterCommand {
     @Override
     public void run(List<String> args, Function function) {
 	function.exit = true;
+	if (args.size() > 0) {
+	    function.exitVal = Boolean.parseBoolean(args.get(0));
+	}
     }
 }
