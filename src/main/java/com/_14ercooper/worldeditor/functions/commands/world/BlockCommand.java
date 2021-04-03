@@ -34,8 +34,8 @@ public class BlockCommand extends InterpreterCommand {
 	    }
 	}
 	if (returnVal)
-	    function.cmpres = 0;
-	else
 	    function.cmpres = 1;
+	else
+	    function.cmpres = 0;
     }
 }
