@@ -61,9 +61,13 @@ public class Parser {
 	EntryNode entryNode = new EntryNode(rootNode);
 	return entryNode;
     }
+    
+    public Node parsePart() {
+	return parsePart(false);
+    }
 
     // This is the massive recursive nightmare
-    public Node parsePart() {
+    public Node parsePart(boolean numberNode) {
 	index++;
 
 	try {
@@ -96,16 +100,21 @@ public class Parser {
 		return n;
 	    }
 	    else {
-		index--;
-		StringNode strNode = parseStringNode();
-		BlockNode bn = new BlockNode().newNode(strNode.getText());
-		if (bn != null) {
-		    Main.logDebug("Block node created: " + bn.toString());
-		    return bn;
+		if (!numberNode) {
+    		    index--;
+    		    StringNode strNode = parseStringNode();
+    		    BlockNode bn = new BlockNode().newNode(strNode.getText());
+    		    if (bn != null) {
+    			Main.logDebug("Block node created: " + bn.toString());
+    			return bn;
+    		    }
+    		    else {
+    			Main.logDebug("String node created: " + strNode.toString()); // -----
+    			return strNode;
+    		    }
 		}
 		else {
-		    Main.logDebug("String node created: " + strNode.toString()); // -----
-		    return strNode;
+		    return new NumberNode().newNode();
 		}
 	    }
 	}
@@ -115,10 +124,9 @@ public class Parser {
     }
 
     public NumberNode parseNumberNode() {
-	index++;
 	Main.logDebug("Number node created"); // -----
 	try {
-	    return new NumberNode().newNode();
+	    return (NumberNode) this.parsePart(true);
 	}
 	catch (Exception e) {
 	    Main.logError("Number expected. Did not find a number.", Operator.currentPlayer);
