@@ -58,7 +58,7 @@ public class Function {
     public List<String> templateArgs = new LinkedList<String>();
     public Player player;
     public boolean isOperator;
-    public boolean exitVal = true;
+    public double exitVal = 1;
 
     public Function(String filename, List<String> args, Player player, boolean isOperator) {
 	// Set constant variables
@@ -111,7 +111,7 @@ public class Function {
 	Main.logDebug("Number of labels: " + labelsMap.size());
     }
 
-    public boolean run() {
+    public double run() {
 	try {
 	    // Until pause or exit, loop
 	    while (!exit && waitDelay == 0) {
@@ -178,7 +178,7 @@ public class Function {
 	    Main.logError(
 		    "Error executing function. Error on line " + (currentLine + 1) + ".\nError: " + e.getMessage(),
 		    player);
-	    return false;
+	    return 0;
 	}
 
 	// If pause, register callback

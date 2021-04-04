@@ -6,9 +6,9 @@ import java.util.List;
 import com._14ercooper.worldeditor.functions.Function;
 import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.operations.Operator;
-import com._14ercooper.worldeditor.operations.operators.Node;
+import com._14ercooper.worldeditor.operations.operators.core.NumberNode;
 
-public class FunctionNode extends Node {
+public class FunctionNode extends NumberNode {
 
     String filename;
     List<String> args = new ArrayList<String>();
@@ -27,12 +27,34 @@ public class FunctionNode extends Node {
     @Override
     public boolean performNode() {
 	Function fx = new Function(filename, args, Operator.currentPlayer, true);
-	return fx.run();
+	return Math.abs(fx.run()) > 0.001;
     }
 
     @Override
     public int getArgCount() {
 	return 2;
+    }
+    
+    @Override
+    public double getValue() {
+	return getValue(0);
+    }
+
+    @Override
+    public double getValue(double center) {
+	Function fx = new Function(filename, args, Operator.currentPlayer, true);
+	return fx.run();
+    }
+
+    @Override
+    public int getInt() {
+	return getInt(0);
+    }
+
+    @Override
+    public int getInt(int center) {
+	Function fx = new Function(filename, args, Operator.currentPlayer, true);
+	return (int) fx.run();
     }
 
 }

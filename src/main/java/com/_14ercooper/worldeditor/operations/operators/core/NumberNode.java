@@ -65,7 +65,7 @@ public class NumberNode extends Node {
 
     @Override
     public boolean performNode() {
-	return arg < 0.01 ? false : true;
+	return Math.abs(arg) < 0.01 ? false : true;
     }
 
     // Return the number

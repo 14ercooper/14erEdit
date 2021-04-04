@@ -11,7 +11,14 @@ public class ExitCommand extends InterpreterCommand {
     public void run(List<String> args, Function function) {
 	function.exit = true;
 	if (args.size() > 0) {
-	    function.exitVal = Boolean.parseBoolean(args.get(0));
+	    try {
+		if (Boolean.parseBoolean(args.get(0)))
+		    function.exitVal = 1;
+		else function.exitVal = 0;
+	    }
+	    catch (Exception e) {
+		function.exitVal = Double.parseDouble(args.get(0));
+	    }
 	}
     }
 }
