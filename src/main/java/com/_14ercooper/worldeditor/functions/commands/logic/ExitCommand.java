@@ -4,6 +4,7 @@ import java.util.List;
 
 import com._14ercooper.worldeditor.functions.Function;
 import com._14ercooper.worldeditor.functions.commands.InterpreterCommand;
+import com._14ercooper.worldeditor.main.Main;
 
 public class ExitCommand extends InterpreterCommand {
 
@@ -11,17 +12,20 @@ public class ExitCommand extends InterpreterCommand {
     public void run(List<String> args, Function function) {
 	function.exit = true;
 	if (args.size() > 0) {
-	    try {
+	    if (args.get(0).equalsIgnoreCase("true") || args.get(0).equalsIgnoreCase("false")) {
 		if (Boolean.parseBoolean(args.get(0)))
 		    function.exitVal = 1;
 		else function.exitVal = 0;
+//		Main.logDebug("Function returning as boolean with value " + args.get(0));
 	    }
-	    catch (Exception e) {
+	    else {
 		try {
 		    function.exitVal = function.parseVariable(args.get(0));
+//		    Main.logDebug("Function returning as variable with value " + function.exitVal);
 		}
-		catch (Exception e2) {
+		catch (Exception e) {
 		    function.exitVal = Double.parseDouble(args.get(0));
+//		    Main.logDebug("Function returning as double with value " + function.exitVal);
 		}
 	    }
 	}

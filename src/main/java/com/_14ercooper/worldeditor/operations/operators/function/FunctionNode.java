@@ -5,6 +5,7 @@ import java.util.List;
 
 import com._14ercooper.worldeditor.functions.Function;
 import com._14ercooper.worldeditor.main.GlobalVars;
+import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.operations.operators.core.NumberNode;
 
@@ -43,7 +44,9 @@ public class FunctionNode extends NumberNode {
     @Override
     public double getValue(double center) {
 	Function fx = new Function(filename, args, Operator.currentPlayer, true);
-	return fx.run();
+	double val = fx.run();
+//	Main.logDebug("Function return: " + val);
+	return val;
     }
 
     @Override
@@ -54,7 +57,9 @@ public class FunctionNode extends NumberNode {
     @Override
     public int getInt(int center) {
 	Function fx = new Function(filename, args, Operator.currentPlayer, true);
-	return (int) fx.run();
+	int val = (int) fx.run();
+//	Main.logDebug("Function return: " + val);
+	return val;
     }
 
 }
