@@ -17,7 +17,12 @@ public class ExitCommand extends InterpreterCommand {
 		else function.exitVal = 0;
 	    }
 	    catch (Exception e) {
-		function.exitVal = Double.parseDouble(args.get(0));
+		try {
+		    function.exitVal = function.parseVariable(args.get(0));
+		}
+		catch (Exception e2) {
+		    function.exitVal = Double.parseDouble(args.get(0));
+		}
 	    }
 	}
     }
