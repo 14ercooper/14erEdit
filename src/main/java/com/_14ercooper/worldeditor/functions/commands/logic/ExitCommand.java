@@ -4,7 +4,6 @@ import java.util.List;
 
 import com._14ercooper.worldeditor.functions.Function;
 import com._14ercooper.worldeditor.functions.commands.InterpreterCommand;
-import com._14ercooper.worldeditor.main.Main;
 
 public class ExitCommand extends InterpreterCommand {
 

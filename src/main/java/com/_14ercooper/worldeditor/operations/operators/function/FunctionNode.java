@@ -5,7 +5,6 @@ import java.util.List;
 
 import com._14ercooper.worldeditor.functions.Function;
 import com._14ercooper.worldeditor.main.GlobalVars;
-import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.operations.operators.core.NumberNode;
 

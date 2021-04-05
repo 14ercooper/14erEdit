@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.bukkit.block.Biome;
-
 import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.Operator;
@@ -19,7 +17,7 @@ public class CheckBiomeNode extends Node {
     public Node newNode() {
 	try {
 	    CheckBiomeNode node = new CheckBiomeNode();
-	    biomes.addAll(Arrays.asList(GlobalVars.operationParser.parseStringNode().getText().split(",")));
+	    node.biomes.addAll(Arrays.asList(GlobalVars.operationParser.parseStringNode().getText().split(",")));
 	    if (node.biomes == null) {
 		Main.logError("Could not parse set biome node. Did you provide a biome?", Operator.currentPlayer);
 	    }
@@ -34,9 +32,9 @@ public class CheckBiomeNode extends Node {
     @Override
     public boolean performNode() {
 	try {
-	    Biome currBiome = Operator.currentBlock.getBiome();
+	    String currBiome = Operator.currentBlock.getBiome().toString();
 	    for (String s : biomes) {
-		if (Biome.valueOf(s) == currBiome)
+		if (currBiome.equalsIgnoreCase(s))
 		    return true;
 	    }
 	    return false;
