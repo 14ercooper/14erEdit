@@ -27,7 +27,7 @@ public class AdvancedErodeMacro extends Macro {
 	}
 	catch (Exception e) {
 	    Main.logError("Could not parse advanced erode macro. Is your radius a valid number?",
-		    Operator.currentPlayer);
+		    Operator.currentPlayer, e);
 	}
 	erodeCenter = loc;
 
@@ -37,7 +37,7 @@ public class AdvancedErodeMacro extends Macro {
 	}
 	catch (Exception e) {
 	    Main.logError("Could not parse advanced erode macro. Did you provide integers for both solid and air cut?",
-		    Operator.currentPlayer);
+		    Operator.currentPlayer, e);
 	}
     }
 

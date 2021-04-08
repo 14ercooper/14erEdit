@@ -21,7 +21,7 @@ public class GetBlockDataNode extends Node {
 	catch (Exception e) {
 	    Main.logError(
 		    "Error performing get block data node. Please check your syntax (or tell 14er how you got here).",
-		    Operator.currentPlayer);
+		    Operator.currentPlayer, e);
 	    return false;
 	}
     }

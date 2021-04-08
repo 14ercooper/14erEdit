@@ -20,7 +20,7 @@ public class SpawnerVarNode extends Node {
     @Override
     public boolean performNode() {
 	if (Operator.spawnerVars.containsKey(name)) {
-	    Main.logError("Could not create new spawner variable. Does it already exist?", Operator.currentPlayer);
+	    Main.logError("Could not create new spawner variable. Does it already exist?", Operator.currentPlayer, null);
 	    return false;
 	}
 	Operator.spawnerVars.put(name, new SpawnerVar());

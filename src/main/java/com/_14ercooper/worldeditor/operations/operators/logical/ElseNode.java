@@ -16,12 +16,12 @@ public class ElseNode extends Node {
 	    node.subNode = GlobalVars.operationParser.parsePart();
 	}
 	catch (Exception e) {
-	    Main.logError("Error creating else node. Please check your syntax.", Operator.currentPlayer);
+	    Main.logError("Error creating else node. Please check your syntax.", Operator.currentPlayer, e);
 	    return null;
 	}
 	if (node.subNode == null) {
 	    Main.logError("Could not create else node. An argument is required but not provided.",
-		    Operator.currentPlayer);
+		    Operator.currentPlayer, null);
 	}
 	return node;
     }
@@ -32,7 +32,7 @@ public class ElseNode extends Node {
 	    return subNode.performNode();
 	}
 	catch (Exception e) {
-	    Main.logError("Error performing else node. Please check your syntax.", Operator.currentPlayer);
+	    Main.logError("Error performing else node. Please check your syntax.", Operator.currentPlayer, e);
 	    return false;
 	}
     }

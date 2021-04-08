@@ -31,7 +31,7 @@ public class CommandBrmask implements CommandExecutor {
 	    return true;
 	}
 	catch (Exception e) {
-	    Main.logError("Failed to set block mask.", sender);
+	    Main.logError("Failed to set block mask.", sender, e);
 	    return false;
 	}
     }

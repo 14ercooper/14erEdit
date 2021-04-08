@@ -25,7 +25,7 @@ public class MultiNoiseNode extends Node {
 	    }
 	    catch (Exception e) {
 		Main.logError("Multinoise node expected first argument to be a number, but it was not.",
-			Operator.currentPlayer);
+			Operator.currentPlayer, e);
 		return null;
 	    }
 
@@ -33,7 +33,7 @@ public class MultiNoiseNode extends Node {
 		node.noiseFunction = (NoiseNode) GlobalVars.operationParser.parsePart();
 	    }
 	    catch (Exception e) {
-		Main.logError("Multinoise node requires a noise node, but none was found.", Operator.currentPlayer);
+		Main.logError("Multinoise node requires a noise node, but none was found.", Operator.currentPlayer, e);
 		return null;
 	    }
 
@@ -43,14 +43,14 @@ public class MultiNoiseNode extends Node {
 		}
 	    }
 	    catch (Exception e) {
-		Main.logError("Error parsing nodes for multinoise, likely ran out of nodes.", Operator.currentPlayer);
+		Main.logError("Error parsing nodes for multinoise, likely ran out of nodes.", Operator.currentPlayer, e);
 		return null;
 	    }
 
 	    return node;
 	}
 	catch (Exception e) {
-	    Main.logError("Could not create multinoise node. Are you missing an argument?", Operator.currentPlayer);
+	    Main.logError("Could not create multinoise node. Are you missing an argument?", Operator.currentPlayer, e);
 	    return null;
 	}
     }

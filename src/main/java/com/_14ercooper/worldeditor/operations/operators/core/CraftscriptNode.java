@@ -21,7 +21,7 @@ public class CraftscriptNode extends Node {
 	}
 	catch (Exception e) {
 	    Main.logError("Error parsing craftscript. Operator requires an argument containing a script.",
-		    Operator.currentPlayer);
+		    Operator.currentPlayer, e);
 	    return null;
 	}
     }
@@ -37,7 +37,7 @@ public class CraftscriptNode extends Node {
 	catch (Exception e) {
 	    Main.logError(
 		    "Could not parse craftscript. Is your input formatted correctly, with arguments contained in {}?",
-		    Operator.currentPlayer);
+		    Operator.currentPlayer, e);
 	    return false;
 	}
     }

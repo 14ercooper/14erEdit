@@ -23,7 +23,7 @@ public class CommandFunction implements CommandExecutor {
 	}
 
 	if (!(arg0 instanceof Player)) {
-	    Main.logError("This command must be run as a player.", arg0);
+	    Main.logError("This command must be run as a player.", arg0, null);
 	    return false;
 	}
 
@@ -33,7 +33,7 @@ public class CommandFunction implements CommandExecutor {
 	    filename = arg3[0];
 	}
 	catch (Exception e) {
-	    Main.logError("Must provide at least a filename.", player);
+	    Main.logError("Must provide at least a filename.", player, e);
 	    return false;
 	}
 	List<String> args = new ArrayList<String>();

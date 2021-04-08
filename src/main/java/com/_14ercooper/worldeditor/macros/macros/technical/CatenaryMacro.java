@@ -38,7 +38,7 @@ public class CatenaryMacro extends Macro {
 	catch (Exception e) {
 	    Main.logError(
 		    "Could not parse catenary macro. Did you pass in the correct 8 numerical arguments and material?",
-		    Operator.currentPlayer);
+		    Operator.currentPlayer, e);
 	    return false;
 	}
 

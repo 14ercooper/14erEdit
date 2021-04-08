@@ -25,7 +25,7 @@ public class MacroLauncher {
 	    temp1 = split1[1].replace("}", "");
 	}
 	catch (IndexOutOfBoundsException e) {
-	    Main.logError("Could not parse the macro. Did you provide arguments in {}?", Operator.currentPlayer);
+	    Main.logError("Could not parse the macro. Did you provide arguments in {}?", Operator.currentPlayer, e);
 	    return false;
 	}
 	String[] macroArgs = temp1.split(";");

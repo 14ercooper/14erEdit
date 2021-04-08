@@ -36,7 +36,7 @@ public class ScriptOverlay extends Craftscript {
 	}
 	catch (Exception e) {
 	    Main.logError("Could not parse overlay macro. Did you provide the correct arguments?",
-		    Operator.currentPlayer);
+		    Operator.currentPlayer, e);
 	    return false;
 	}
     }

@@ -21,12 +21,12 @@ public class FacesExposedNode extends Node {
 	    node.arg = GlobalVars.operationParser.parseNumberNode();
 	}
 	catch (Exception e) {
-	    Main.logError("Error creating faces exposed node. Please check your syntax.", Operator.currentPlayer);
+	    Main.logError("Error creating faces exposed node. Please check your syntax.", Operator.currentPlayer, e);
 	    return null;
 	}
 	if (node.arg == null) {
 	    Main.logError("Could not create faces exposed node. Requires a number argument that was not given.",
-		    Operator.currentPlayer);
+		    Operator.currentPlayer, null);
 	}
 	return node;
     }

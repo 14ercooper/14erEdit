@@ -31,7 +31,7 @@ public class BasicTreeMacro extends Macro {
 	}
 	catch (Exception e) {
 	    Main.logError("Could not parse tree macro. Did you provide all 4 arguments correctly?",
-		    Operator.currentPlayer);
+		    Operator.currentPlayer, e);
 	}
 
 	// Type 1 - Trunk with sphere of leaves (oak)
@@ -72,7 +72,7 @@ public class BasicTreeMacro extends Macro {
 	}
 
 	if (type == -1) {
-	    Main.logError("Could not parse tree macro. Did you provide a valid tree type?", Operator.currentPlayer);
+	    Main.logError("Could not parse tree macro. Did you provide a valid tree type?", Operator.currentPlayer, null);
 	}
     }
 
@@ -134,7 +134,7 @@ public class BasicTreeMacro extends Macro {
 	    return true;
 	}
 
-	Main.logError("Could not perform tree macro. An invalid tree type was given.", Operator.currentPlayer);
+	Main.logError("Could not perform tree macro. An invalid tree type was given.", Operator.currentPlayer, null);
 	return false;
     }
 

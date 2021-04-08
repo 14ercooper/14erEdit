@@ -24,7 +24,7 @@ public class LoadFromFileNode extends Node {
 	    return node;
 	}
 	catch (Exception e) {
-	    Main.logError("Could not create file node, no file path was found.", Operator.currentPlayer);
+	    Main.logError("Could not create file node, no file path was found.", Operator.currentPlayer, e);
 	    return null;
 	}
     }
@@ -41,7 +41,7 @@ public class LoadFromFileNode extends Node {
 		Main.logDebug("Issue opening file " + Paths
 			.get(("plugins/14erEdit/ops/" + path.getText()).replace("/", File.separator)).toString());
 		Main.logError("Could not open file \"plugins/14erEdit/ops/" + path.contents + "\". Does it exist?",
-			Operator.currentPlayer);
+			Operator.currentPlayer, e);
 		e.printStackTrace();
 	    }
 	    List<String> newOperators = new ArrayList<String>();

@@ -20,7 +20,7 @@ public class BlockVarNode extends Node {
     @Override
     public boolean performNode() {
 	if (Operator.blockVars.containsKey(name)) {
-	    Main.logError("Could not create block variable. Does it already exist?", Operator.currentPlayer);
+	    Main.logError("Could not create block variable. Does it already exist?", Operator.currentPlayer, null);
 	    return false;
 	}
 	Operator.blockVars.put(name, new BlockVar());

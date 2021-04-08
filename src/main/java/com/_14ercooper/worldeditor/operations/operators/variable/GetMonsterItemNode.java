@@ -22,7 +22,7 @@ public class GetMonsterItemNode extends Node {
 	if (!Operator.monsterVars.containsKey(name)) {
 	    Main.logError(
 		    "Error performing get monster item node. Please check your syntax (does the variable exist?).",
-		    Operator.currentPlayer);
+		    Operator.currentPlayer, null);
 	    return false;
 	}
 	MonsterVar var = Operator.monsterVars.get(name);

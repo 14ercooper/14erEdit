@@ -39,7 +39,7 @@ public class ScriptClone extends Craftscript {
 	    return true;
 	}
 	catch (Exception e) {
-	    Main.logError("Error performing clone. Did you pass in the correct parameters?", Operator.currentPlayer);
+	    Main.logError("Error performing clone. Did you pass in the correct parameters?", Operator.currentPlayer, e);
 	    return false;
 	}
     }

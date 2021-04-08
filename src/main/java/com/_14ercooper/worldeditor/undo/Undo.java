@@ -121,7 +121,7 @@ public class Undo {
 	    return numPlaced;
 	}
 	catch (Exception e) {
-	    Main.logError("Could not perform an undo. Is there anything to undo?", Operator.currentPlayer);
+	    Main.logError("Could not perform an undo. Is there anything to undo?", Operator.currentPlayer, e);
 	    return 0;
 	}
     }
@@ -154,7 +154,7 @@ public class Undo {
 	    return numPlaced;
 	}
 	catch (Exception e) {
-	    Main.logError("Could not perform redo. Is there anything to redo?", Operator.currentPlayer);
+	    Main.logError("Could not perform redo. Is there anything to redo?", Operator.currentPlayer, e);
 	    return 0;
 	}
     }

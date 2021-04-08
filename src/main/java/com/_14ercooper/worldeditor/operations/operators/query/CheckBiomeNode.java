@@ -19,12 +19,12 @@ public class CheckBiomeNode extends Node {
 	    CheckBiomeNode node = new CheckBiomeNode();
 	    node.biomes.addAll(Arrays.asList(GlobalVars.operationParser.parseStringNode().getText().split(",")));
 	    if (node.biomes == null) {
-		Main.logError("Could not parse set biome node. Did you provide a biome?", Operator.currentPlayer);
+		Main.logError("Could not parse set biome node. Did you provide a biome?", Operator.currentPlayer, null);
 	    }
 	    return node;
 	}
 	catch (Exception e) {
-	    Main.logError("Error parisng biome node. Please check your syntax.", Operator.currentPlayer);
+	    Main.logError("Error parisng biome node. Please check your syntax.", Operator.currentPlayer, e);
 	    return null;
 	}
     }
@@ -40,7 +40,7 @@ public class CheckBiomeNode extends Node {
 	    return false;
 	}
 	catch (Exception e) {
-	    Main.logError("Error perfoming check biome node. Did you provide valid biomes?", Operator.currentPlayer);
+	    Main.logError("Error perfoming check biome node. Did you provide valid biomes?", Operator.currentPlayer, e);
 	    return false;
 	}
     }

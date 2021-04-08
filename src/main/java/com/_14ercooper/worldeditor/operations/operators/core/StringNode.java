@@ -23,7 +23,7 @@ public class StringNode extends Node {
 	}
 	catch (Exception e) {
 	    Main.logError("Error performing string node. " + contents + " could not be resolved to a block.",
-		    Operator.currentPlayer);
+		    Operator.currentPlayer, e);
 	    return false;
 	}
     }

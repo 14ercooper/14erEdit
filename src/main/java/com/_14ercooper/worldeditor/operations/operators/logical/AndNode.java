@@ -17,12 +17,12 @@ public class AndNode extends Node {
 	    node.arg2 = GlobalVars.operationParser.parsePart();
 	}
 	catch (Exception e) {
-	    Main.logError("Error creating and node. Please check your syntax.", Operator.currentPlayer);
+	    Main.logError("Error creating and node. Please check your syntax.", Operator.currentPlayer, e);
 	    return null;
 	}
 	if (node.arg2 == null) {
 	    Main.logError("Could not create and node. Two arguments are required, but were not given.",
-		    Operator.currentPlayer);
+		    Operator.currentPlayer, null);
 	}
 	return node;
     }
@@ -33,7 +33,7 @@ public class AndNode extends Node {
 	    return ((arg1.performNode()) && (arg2.performNode()));
 	}
 	catch (Exception e) {
-	    Main.logError("Error performing and node. Please check your syntax.", Operator.currentPlayer);
+	    Main.logError("Error performing and node. Please check your syntax.", Operator.currentPlayer, e);
 	    return false;
 	}
     }

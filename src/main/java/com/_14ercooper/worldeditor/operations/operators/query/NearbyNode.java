@@ -25,13 +25,13 @@ public class NearbyNode extends Node {
 	    if (node.trueRange == null) {
 		Main.logError(
 			"Could not create nearby node. Did you provide a block mask, a distance, and a range node?",
-			Operator.currentPlayer);
+			Operator.currentPlayer, null);
 		return null;
 	    }
 	    return node;
 	}
 	catch (Exception e) {
-	    Main.logError("Error parsing nearby node. Please check your syntax.", Operator.currentPlayer);
+	    Main.logError("Error parsing nearby node. Please check your syntax.", Operator.currentPlayer, e);
 	    return null;
 	}
     }

@@ -40,7 +40,7 @@ public class SphereIterator extends BlockIterator {
 	}
 	catch (Exception e) {
 	    Main.logError("Error creating sphere iterator. Please check your brush parameters.",
-		    Operator.currentPlayer);
+		    Operator.currentPlayer, e);
 	    return null;
 	}
     }

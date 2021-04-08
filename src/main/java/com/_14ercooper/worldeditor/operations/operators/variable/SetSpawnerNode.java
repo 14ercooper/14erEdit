@@ -21,7 +21,7 @@ public class SetSpawnerNode extends Node {
     public boolean performNode() {
 	if (!Operator.spawnerVars.containsKey(name)) {
 	    Main.logError("Error performing set spawner node. Please check your syntax (does the variable exist?).",
-		    Operator.currentPlayer);
+		    Operator.currentPlayer, null);
 	    return false;
 	}
 	SpawnerVar var = Operator.spawnerVars.get(name);

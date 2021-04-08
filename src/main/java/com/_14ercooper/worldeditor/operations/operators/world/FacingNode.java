@@ -25,12 +25,12 @@ public class FacingNode extends BlockNode {
 	    node.arg = (BlockNode) GlobalVars.operationParser.parsePart();
 	}
 	catch (Exception e) {
-	    Main.logError("Error creating facing node. Please check your syntax.", Operator.currentPlayer);
+	    Main.logError("Error creating facing node. Please check your syntax.", Operator.currentPlayer, e);
 	    return null;
 	}
 	if (node.arg == null) {
 	    Main.logError("Could not parse facing node. A child operation is required, but not found.",
-		    Operator.currentPlayer);
+		    Operator.currentPlayer, null);
 	}
 	return node;
     }
@@ -72,7 +72,7 @@ public class FacingNode extends BlockNode {
 	    return dat.getAsString();
 	}
 	catch (Exception e) {
-	    Main.logError("Error performing facing node. Please check your syntax.", Operator.currentPlayer);
+	    Main.logError("Error performing facing node. Please check your syntax.", Operator.currentPlayer, e);
 	    return null;
 	}
     }

@@ -21,12 +21,12 @@ public class BlocksBelowNode extends Node {
 	    node.arg2 = GlobalVars.operationParser.parsePart();
 	}
 	catch (Exception e) {
-	    Main.logError("Error creating blocks below node. Please check your syntax.", Operator.currentPlayer);
+	    Main.logError("Error creating blocks below node. Please check your syntax.", Operator.currentPlayer, e);
 	    return null;
 	}
 	if (node.arg2 == null) {
 	    Main.logError("Could not create blocks below node. Two arguments are required, but not given.",
-		    Operator.currentPlayer);
+		    Operator.currentPlayer, null);
 	}
 	return node;
     }

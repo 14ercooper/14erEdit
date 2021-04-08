@@ -62,7 +62,7 @@ public class SelectionWandListener implements Listener {
 
 	// No manager, return with an error
 	if (wand == null || wand.manager == null) {
-	    Main.logError("Could not use wand. Did you get a new wand after relogging?", p);
+	    Main.logError("Could not use wand. Did you get a new wand after relogging?", p, null);
 	    return;
 	}
 

@@ -19,12 +19,12 @@ public class NumericEqualityNode extends Node {
 	    node.val = GlobalVars.operationParser.parseNumberNode();
 	}
 	catch (Exception e) {
-	    Main.logError("Error creating numeric equality node. Please check your syntax.", Operator.currentPlayer);
+	    Main.logError("Error creating numeric equality node. Please check your syntax.", Operator.currentPlayer, e);
 	    return null;
 	}
 	if (node.val == null) {
 	    Main.logError("Could not create numeric equality node. Two arguments required, but not given.",
-		    Operator.currentPlayer);
+		    Operator.currentPlayer, null);
 	}
 	return node;
     }
@@ -37,7 +37,7 @@ public class NumericEqualityNode extends Node {
 	catch (Exception e) {
 	    Main.logError(
 		    "Error performing numeric equality node. Please check your syntax (does the variable exist?).",
-		    Operator.currentPlayer);
+		    Operator.currentPlayer, e);
 	    return false;
 	}
     }

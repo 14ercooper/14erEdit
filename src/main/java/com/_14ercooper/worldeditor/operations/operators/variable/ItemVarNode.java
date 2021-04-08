@@ -20,7 +20,7 @@ public class ItemVarNode extends Node {
     @Override
     public boolean performNode() {
 	if (Operator.itemVars.containsKey(name)) {
-	    Main.logError("Could not create item variable. Does it already exist?", Operator.currentPlayer);
+	    Main.logError("Could not create item variable. Does it already exist?", Operator.currentPlayer, null);
 	    return false;
 	}
 	Operator.itemVars.put(name, new ItemVar());

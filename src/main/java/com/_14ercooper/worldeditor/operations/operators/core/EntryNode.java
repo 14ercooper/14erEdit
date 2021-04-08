@@ -17,7 +17,7 @@ public class EntryNode {
 	    return node.performNode();
 	}
 	catch (Exception e) {
-	    Main.logError("Error performing node. Async queue dropped.", Operator.currentPlayer);
+	    Main.logError("Error performing node. Async queue dropped.", Operator.currentPlayer, e);
 	    e.printStackTrace();
 	    GlobalVars.asyncManager.dropAsync();
 	    return false;

@@ -21,12 +21,12 @@ public class BlocksAboveNode extends Node {
 	    node.arg2 = GlobalVars.operationParser.parsePart();
 	}
 	catch (Exception e) {
-	    Main.logError("Error treating blocks above node. Please check your syntax.", Operator.currentPlayer);
+	    Main.logError("Error creating blocks above node. Please check your syntax.", Operator.currentPlayer, e);
 	    return null;
 	}
 	if (node.arg2 == null) {
 	    Main.logError("Could not parse blocks above node. Range node and a block are required, but not given.",
-		    Operator.currentPlayer);
+		    Operator.currentPlayer, null);
 	}
 	return node;
     }

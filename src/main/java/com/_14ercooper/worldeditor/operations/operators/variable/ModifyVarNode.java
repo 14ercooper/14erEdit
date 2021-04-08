@@ -85,7 +85,7 @@ public class ModifyVarNode extends Node {
 		}
 
 		Main.logError("Could not modify variable. Modification \"" + mod.get(0) + "\" is not valid.",
-			Operator.currentPlayer);
+			Operator.currentPlayer, null);
 		return false;
 	    }
 
@@ -114,7 +114,7 @@ public class ModifyVarNode extends Node {
 		}
 
 		Main.logError("Could not modify variable. Modification \"" + mod.get(0) + "\" is not valid.",
-			Operator.currentPlayer);
+			Operator.currentPlayer, null);
 		return false;
 	    }
 
@@ -240,7 +240,7 @@ public class ModifyVarNode extends Node {
 		}
 
 		Main.logError("Could not modify variable. Modification \"" + mod.get(0) + "\" is not valid.",
-			Operator.currentPlayer);
+			Operator.currentPlayer, null);
 		return false;
 	    }
 
@@ -334,7 +334,7 @@ public class ModifyVarNode extends Node {
 		}
 
 		Main.logError("Could not modify variable. Modification \"" + mod.get(0) + "\" is not valid.",
-			Operator.currentPlayer);
+			Operator.currentPlayer, null);
 		return false;
 	    }
 
@@ -398,19 +398,19 @@ public class ModifyVarNode extends Node {
 		}
 
 		Main.logError("Could not modify variable. Modification \"" + mod.get(0) + "\" is not valid.",
-			Operator.currentPlayer);
+			Operator.currentPlayer, null);
 		return false;
 	    }
 
 	    // Invalid type
 	    Main.logError("Could not modify variable. Type \"" + type + "\" is not a valid type.",
-		    Operator.currentPlayer);
+		    Operator.currentPlayer, null);
 	    return false;
 	}
 	catch (Exception e) {
 	    Main.logError(
 		    "Could not modify variable. Please check your syntax (did you give enough arguments for the modifier?).",
-		    Operator.currentPlayer);
+		    Operator.currentPlayer, e);
 	    return false;
 	}
     }

@@ -54,6 +54,7 @@ public class GlobalVars {
 
     // No error spam
     public static boolean errorLogged = false;
+    public static boolean outputStacktrace = false;
 
     // Caps for edits
     public static long minEditX = Long.MIN_VALUE;

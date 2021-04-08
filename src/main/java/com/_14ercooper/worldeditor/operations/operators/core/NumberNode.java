@@ -58,7 +58,7 @@ public class NumberNode extends Node {
 	    return node;
 	}
 	catch (Exception e) {
-	    Main.logError("Could not parse number node. " + num + " is not a number.", Operator.currentPlayer);
+	    Main.logError("Could not parse number node. " + num + " is not a number.", Operator.currentPlayer, e);
 	    return null;
 	}
     }

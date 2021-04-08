@@ -33,7 +33,7 @@ public class FlattenMacro extends Macro {
 	catch (Exception e) {
 	    Main.logError(
 		    "Could not parse flatten macro. Did you provide radius, absolute flatten, height setting, and a block material?",
-		    Operator.currentPlayer);
+		    Operator.currentPlayer, e);
 	}
 	pos = loc;
     }

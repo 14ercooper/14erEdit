@@ -19,12 +19,12 @@ public class StringContainsNode extends Node {
 	    node.arg2 = GlobalVars.operationParser.parsePart();
 	}
 	catch (Exception e) {
-	    Main.logError("Could not create string contains node. Please check your syntax.", Operator.currentPlayer);
+	    Main.logError("Could not create string contains node. Please check your syntax.", Operator.currentPlayer, e);
 	    return null;
 	}
 	if (node.arg2 == null) {
 	    Main.logError("Could not create string contains node. Two string nodes required, but not provided.",
-		    Operator.currentPlayer);
+		    Operator.currentPlayer, null);
 	}
 	return node;
     }
@@ -46,7 +46,7 @@ public class StringContainsNode extends Node {
 	}
 	catch (Exception e) {
 	    Main.logError("Could not perform string contains node. Are the child nodes of the appropriate types?",
-		    Operator.currentPlayer);
+		    Operator.currentPlayer, e);
 	    return false;
 	}
     }

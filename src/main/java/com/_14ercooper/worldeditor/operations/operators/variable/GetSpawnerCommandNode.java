@@ -29,7 +29,7 @@ public class GetSpawnerCommandNode extends Node {
 	if (!Operator.spawnerVars.containsKey(name)) {
 	    Main.logError(
 		    "Error performing get spawner command node. Please check your syntax (does the variable exist?).",
-		    Operator.currentPlayer);
+		    Operator.currentPlayer, null);
 	    return false;
 	}
 	SpawnerVar var = Operator.spawnerVars.get(name);

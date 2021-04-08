@@ -43,7 +43,7 @@ public class SaveVariableNode extends Node {
 		    return true;
 		}
 		catch (IOException e) {
-		    Main.logError("Could not open file to save variable.", Operator.currentPlayer);
+		    Main.logError("Could not open file to save variable.", Operator.currentPlayer, e);
 		    Main.logDebug(e.getMessage());
 		}
 	    }
@@ -57,7 +57,7 @@ public class SaveVariableNode extends Node {
 		    return true;
 		}
 		catch (IOException e) {
-		    Main.logError("Could not open file to save variable.", Operator.currentPlayer);
+		    Main.logError("Could not open file to save variable.", Operator.currentPlayer, e);
 		    Main.logDebug(e.getMessage());
 		}
 	    }
@@ -71,16 +71,16 @@ public class SaveVariableNode extends Node {
 		    return true;
 		}
 		catch (IOException e) {
-		    Main.logError("Could not open file to save variable.", Operator.currentPlayer);
+		    Main.logError("Could not open file to save variable.", Operator.currentPlayer, e);
 		    Main.logDebug(e.getMessage());
 		}
 	    }
 	    Main.logError("Could not save variable to disk. Only items, monsters, and spawners may be saved.",
-		    Operator.currentPlayer);
+		    Operator.currentPlayer, null);
 	    return false;
 	}
 	catch (Exception e) {
-	    Main.logError("Error saving variable to disk. Please check your syntax.", Operator.currentPlayer);
+	    Main.logError("Error saving variable to disk. Please check your syntax.", Operator.currentPlayer, e);
 	    return false;
 	}
     }

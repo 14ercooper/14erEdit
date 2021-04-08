@@ -23,12 +23,12 @@ public class SimplexNode extends Node {
 	    node.scaleFactor = GlobalVars.operationParser.parseNumberNode();
 	}
 	catch (Exception e) {
-	    Main.logError("Could not create simplex node. Please check your syntax.", Operator.currentPlayer);
+	    Main.logError("Could not create simplex node. Please check your syntax.", Operator.currentPlayer, e);
 	    return null;
 	}
 	if (node.scaleFactor == null) {
 	    Main.logError("Could not create simplex node. Three numbers are required, but not provided.",
-		    Operator.currentPlayer);
+		    Operator.currentPlayer, null);
 	}
 	return node;
     }
@@ -53,11 +53,11 @@ public class SimplexNode extends Node {
 			(loc.getX() + loc.getY() + loc.getZ()) * 0.33333333 / scale) <= arg2.getValue();
 	    }
 	    Main.logError("Simplex in " + arg1.getValue() + " dimensions not found. Please check your simplex syntax.",
-		    Operator.currentPlayer);
+		    Operator.currentPlayer, null);
 	    return false;
 	}
 	catch (Exception e) {
-	    Main.logError("Error performing simplex node. Please check your syntax.", Operator.currentPlayer);
+	    Main.logError("Error performing simplex node. Please check your syntax.", Operator.currentPlayer, e);
 	    return false;
 	}
     }

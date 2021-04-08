@@ -26,11 +26,11 @@ public class AnyOfNode extends Node {
 	    }
 	}
 	catch (Exception e) {
-	    Main.logError("Error creating and node. Please check your syntax.", Operator.currentPlayer);
+	    Main.logError("Error creating and node. Please check your syntax.", Operator.currentPlayer, e);
 	    return null;
 	}
 	if (node.conditions.size() != node.total.getInt()) {
-	    Main.logError("Could not create AnyOf node. Did you provide enough arguments?", Operator.currentPlayer);
+	    Main.logError("Could not create AnyOf node. Did you provide enough arguments?", Operator.currentPlayer, null);
 	    return null;
 	}
 	return node;

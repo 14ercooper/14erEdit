@@ -28,12 +28,12 @@ public class SetNode extends Node {
 	    Operator.inSetNode = false;
 	}
 	catch (Exception e) {
-	    Main.logError("Error parsing set block node. Please check your syntax.", Operator.currentPlayer);
+	    Main.logError("Error parsing set block node. Please check your syntax.", Operator.currentPlayer, e);
 	    return null;
 	}
 	if (node.arg == null) {
 	    Main.logError("Could not create set block node. A block is required, but not provided.",
-		    Operator.currentPlayer);
+		    Operator.currentPlayer, null);
 	}
 	return node;
     }
@@ -142,7 +142,7 @@ public class SetNode extends Node {
 	}
 	catch (Exception e) {
 	    e.printStackTrace();
-	    Main.logError("Error performing block set node. Please check your syntax.", Operator.currentPlayer);
+	    Main.logError("Error performing block set node. Please check your syntax.", Operator.currentPlayer, e);
 	    return false;
 	}
     }

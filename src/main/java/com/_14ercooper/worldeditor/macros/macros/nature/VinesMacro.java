@@ -40,7 +40,7 @@ public class VinesMacro extends Macro {
 	catch (Exception e) {
 	    Main.logError(
 		    "Error parsing vine macro. Did you pass in radius, length, variance, density, and optionally block material?",
-		    Operator.currentPlayer);
+		    Operator.currentPlayer, e);
 	}
 	try {
 	    Material m = Material.matchMaterial(block);
@@ -48,7 +48,7 @@ public class VinesMacro extends Macro {
 		throw new Exception();
 	}
 	catch (Exception e) {
-	    Main.logError("Error parsing vine macro. " + block + " is not a valid block.", Operator.currentPlayer);
+	    Main.logError("Error parsing vine macro. " + block + " is not a valid block.", Operator.currentPlayer, e);
 	}
 	pos = loc;
     }

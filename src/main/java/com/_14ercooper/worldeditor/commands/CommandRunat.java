@@ -79,12 +79,12 @@ public class CommandRunat implements CommandExecutor {
 		return true;
 	    }
 	    catch (Exception e) {
-		Main.logError("Error in runat. Please check your syntax.", sender);
+		Main.logError("Error in runat. Please check your syntax.", sender, e);
 		return false;
 	    }
 	}
 	catch (Exception e) {
-	    Main.logError("Could not parse runat command. Please check your syntax.", sender);
+	    Main.logError("Could not parse runat command. Please check your syntax.", sender, e);
 	    return false;
 	}
     }

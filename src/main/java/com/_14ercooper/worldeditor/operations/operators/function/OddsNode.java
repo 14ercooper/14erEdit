@@ -17,12 +17,12 @@ public class OddsNode extends Node {
 	    node.arg = GlobalVars.operationParser.parseNumberNode();
 	}
 	catch (Exception e) {
-	    Main.logError("Could not create odds node, argument is not a number.", Operator.currentPlayer);
+	    Main.logError("Could not create odds node, argument is not a number.", Operator.currentPlayer, e);
 	    return null;
 	}
 	if (node.arg == null) {
 	    Main.logError("Error creating odds node. Requires a number, but no number was found.",
-		    Operator.currentPlayer);
+		    Operator.currentPlayer, null);
 	}
 	return node;
     }

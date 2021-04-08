@@ -20,7 +20,7 @@ public class MobVarNode extends Node {
     @Override
     public boolean performNode() {
 	if (Operator.monsterVars.containsKey(name)) {
-	    Main.logError("Could not create monster variable. Does it already exist?", Operator.currentPlayer);
+	    Main.logError("Could not create monster variable. Does it already exist?", Operator.currentPlayer, null);
 	    return false;
 	}
 	Operator.monsterVars.put(name, new MonsterVar());

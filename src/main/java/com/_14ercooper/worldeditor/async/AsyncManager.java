@@ -401,7 +401,7 @@ public class AsyncManager {
 				currentAsyncOp.schem.resetWrite();
 			    }
 			    catch (IOException e) {
-				Main.logError("Could not write to schematic file", currentAsyncOp.player);
+				Main.logError("Could not write to schematic file", currentAsyncOp.player, e);
 			    }
 			}
 			GlobalVars.currentUndo = currentAsyncOp.undo;
@@ -524,7 +524,7 @@ public class AsyncManager {
 		}
 
 		else {
-		    Main.logError("Invalid operation in async queue. Removing operation.", Bukkit.getConsoleSender());
+		    Main.logError("Invalid operation in async queue. Removing operation.", Bukkit.getConsoleSender(), null);
 		    operations.remove(i);
 		    i--;
 		    opSize--;

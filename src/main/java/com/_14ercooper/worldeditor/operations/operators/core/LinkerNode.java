@@ -17,12 +17,12 @@ public class LinkerNode extends Node {
 	    node.arg2 = GlobalVars.operationParser.parsePart();
 	}
 	catch (Exception e) {
-	    Main.logError("Could not create linker node. Please check your syntax.", Operator.currentPlayer);
+	    Main.logError("Could not create linker node. Please check your syntax.", Operator.currentPlayer, e);
 	    return null;
 	}
 	if (node.arg2 == null) {
 	    Main.logError("Could not create Linker node. Node requries two operations, two were not provided.",
-		    Operator.currentPlayer);
+		    Operator.currentPlayer, null);
 	}
 	return node;
     }
@@ -35,7 +35,7 @@ public class LinkerNode extends Node {
 	    return (a1 && a2);
 	}
 	catch (Exception e) {
-	    Main.logError("Error performing linker node. Please check your operation syntax.", Operator.currentPlayer);
+	    Main.logError("Error performing linker node. Please check your operation syntax.", Operator.currentPlayer, e);
 	    return false;
 	}
     }

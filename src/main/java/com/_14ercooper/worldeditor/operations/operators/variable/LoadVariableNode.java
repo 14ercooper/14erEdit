@@ -41,12 +41,12 @@ public class LoadVariableNode extends Node {
 		    return true;
 		}
 		catch (IOException e) {
-		    Main.logError("Could not load variable. Does the file exist?", Operator.currentPlayer);
+		    Main.logError("Could not load variable. Does the file exist?", Operator.currentPlayer, e);
 		    Main.logDebug(e.getMessage());
 		}
 		catch (ClassNotFoundException e) {
 		    Main.logError("Error loading varibale - class not found. Is the file a saved item?",
-			    Operator.currentPlayer);
+			    Operator.currentPlayer, e);
 		    Main.logDebug(e.getMessage());
 		}
 	    }
@@ -59,12 +59,12 @@ public class LoadVariableNode extends Node {
 		    return true;
 		}
 		catch (IOException e) {
-		    Main.logError("Could not load variable. Does the file exist?", Operator.currentPlayer);
+		    Main.logError("Could not load variable. Does the file exist?", Operator.currentPlayer, e);
 		    Main.logDebug(e.getMessage());
 		}
 		catch (ClassNotFoundException e) {
 		    Main.logError("Error loading varibale - class not found. Is the file a saved monster?",
-			    Operator.currentPlayer);
+			    Operator.currentPlayer, e);
 		    Main.logDebug(e.getMessage());
 		}
 	    }
@@ -77,21 +77,21 @@ public class LoadVariableNode extends Node {
 		    return true;
 		}
 		catch (IOException e) {
-		    Main.logError("Could not load variable. Does the file exist?", Operator.currentPlayer);
+		    Main.logError("Could not load variable. Does the file exist?", Operator.currentPlayer, e);
 		    Main.logDebug(e.getMessage());
 		}
 		catch (ClassNotFoundException e) {
 		    Main.logError("Error loading varibale - class not found. Is the file a saved spawner?",
-			    Operator.currentPlayer);
+			    Operator.currentPlayer, e);
 		    Main.logDebug(e.getMessage());
 		}
 	    }
 	    Main.logError("Could not load variable. Only items, monsters, and spawners can be loaded.",
-		    Operator.currentPlayer);
+		    Operator.currentPlayer, null);
 	    return false;
 	}
 	catch (Exception e) {
-	    Main.logError("Error loading variable. Please check your syntax.", Operator.currentPlayer);
+	    Main.logError("Error loading variable. Please check your syntax.", Operator.currentPlayer, e);
 	    return false;
 	}
     }

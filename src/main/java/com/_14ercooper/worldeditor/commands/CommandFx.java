@@ -36,7 +36,7 @@ public class CommandFx implements CommandExecutor {
 
 	try {
 	    if (args.length < argOffset + 1) {
-		Main.logError("fx requires at least one argument.", sender);
+		Main.logError("fx requires at least one argument.", sender, null);
 		return false;
 	    }
 	    if (sender instanceof Player) {
@@ -119,11 +119,11 @@ public class CommandFx implements CommandExecutor {
 
 		return false;
 	    }
-	    Main.logError("This command must be run as a player.", sender);
+	    Main.logError("This command must be run as a player.", sender, null);
 	    return false;
 	}
 	catch (Exception e) {
-	    Main.logError("Error in fx command. Please check your syntax.", sender);
+	    Main.logError("Error in fx command. Please check your syntax.", sender, e);
 	    return false;
 	}
     }

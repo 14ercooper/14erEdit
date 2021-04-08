@@ -22,7 +22,7 @@ public class GetItemVarNode extends Node {
 	if (!Operator.itemVars.containsKey(name)) {
 	    Main.logError(
 		    "Error performing get item variable node. Please check your syntax (does the variable exist?).",
-		    Operator.currentPlayer);
+		    Operator.currentPlayer, null);
 	    return false;
 	}
 	ItemVar iv = Operator.itemVars.get(name);

@@ -120,7 +120,7 @@ public class ScriptGrass extends Craftscript {
 	}
 	catch (Exception e) {
 	    Main.logError("Error performing grass script. Did you pass in the correct parameters?",
-		    Operator.currentPlayer);
+		    Operator.currentPlayer, e);
 	    return false;
 	}
     }

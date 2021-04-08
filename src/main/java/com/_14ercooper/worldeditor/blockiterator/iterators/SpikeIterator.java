@@ -48,8 +48,7 @@ public class SpikeIterator extends BlockIterator {
 	    return iterator;
 	}
 	catch (Exception e) {
-	    Main.logError("Error creating spike iterator. Please check your brush parameters.", Operator.currentPlayer);
-	    e.printStackTrace();
+	    Main.logError("Error creating spike iterator. Please check your brush parameters.", Operator.currentPlayer, e);
 	    return null;
 	}
     }

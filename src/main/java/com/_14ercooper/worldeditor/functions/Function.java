@@ -88,14 +88,14 @@ public class Function {
 	    filename += ".mcfunction";
 	}
 	else {
-	    Main.logError("Function file not found.", player);
+	    Main.logError("Function file not found.", player, null);
 	    return;
 	}
 	try {
 	    dataSegment.addAll(Files.readAllLines(Paths.get(filename)));
 	}
 	catch (IOException e) {
-	    Main.logError("Could not open function file.", player);
+	    Main.logError("Could not open function file.", player, e);
 	    return;
 	}
 
@@ -129,7 +129,7 @@ public class Function {
 		// Log error and exit if running too long
 		if (iters > GlobalVars.maxFunctionIters) {
 		    exit = true;
-		    Main.logError("Function max iterations exceeded.", player);
+		    Main.logError("Function max iterations exceeded.", player, null);
 		    continue;
 		}
 
@@ -170,14 +170,14 @@ public class Function {
 		Main.logDebug("Running as normal command.");
 		boolean didRun = Bukkit.dispatchCommand(player, line);
 		if (!didRun) {
-		    Main.logError("Invalid command detected. Line " + currentLine, player);
+		    Main.logError("Invalid command detected. Line " + currentLine, player, null);
 		}
 	    }
 	}
 	catch (Exception e) {
 	    Main.logError(
 		    "Error executing function. Error on line " + (currentLine + 1) + ".\nError: " + e.getMessage(),
-		    player);
+		    player, e);
 	    return 0;
 	}
 
@@ -200,7 +200,7 @@ public class Function {
 		return variables.get(Integer.parseInt(s));
 	    }
 	    catch (Exception e) {
-		Main.logError("Invalid variable: " + var, player);
+		Main.logError("Invalid variable: " + var, player, e);
 		return 0;
 	    }
 	}
@@ -214,7 +214,7 @@ public class Function {
 	    return Double.parseDouble(var);
 	}
 	catch (Exception e) {
-	    Main.logError("Invalid number: " + var, player);
+	    Main.logError("Invalid number: " + var, player, e);
 	    return 0;
 	}
     }
@@ -226,7 +226,7 @@ public class Function {
 		variables.set(Integer.parseInt(s), num);
 	    }
 	    catch (Exception e) {
-		Main.logError("Invalid variable: " + var, player);
+		Main.logError("Invalid variable: " + var, player, e);
 	    }
 	    return;
 	}
@@ -238,7 +238,7 @@ public class Function {
 	    cmpres = num;
 	    return;
 	}
-	Main.logError("Unknown variable: " + var, player);
+	Main.logError("Unknown variable: " + var, player, null);
     }
 
     public boolean checkCallback(int waitPos) {

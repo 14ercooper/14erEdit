@@ -42,7 +42,7 @@ public class ScriptGrassBrush extends Craftscript {
 	}
 	catch (Exception e) {
 	    Main.logError("Could not parse grass brush macro. Did you provide the correct arguments?",
-		    Operator.currentPlayer);
+		    Operator.currentPlayer, e);
 	    return false;
 	}
     }

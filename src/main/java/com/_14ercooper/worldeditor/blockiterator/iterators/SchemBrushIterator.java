@@ -36,7 +36,7 @@ public class SchemBrushIterator extends BlockIterator {
 	    return iter;
 	}
 	catch (Exception e) {
-	    Main.logError("Could not create schem brush iterator", Operator.currentPlayer);
+	    Main.logError("Could not create schem brush iterator", Operator.currentPlayer, e);
 	    return null;
 	}
     }
@@ -60,7 +60,7 @@ public class SchemBrushIterator extends BlockIterator {
 	    nbt = data[2];
 	}
 	catch (IOException e) {
-	    Main.logError("Could not read next block from schematic.", Operator.currentPlayer);
+	    Main.logError("Could not read next block from schematic.", Operator.currentPlayer, e);
 	    blockType = blockData = nbt = "";
 	}
 

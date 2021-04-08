@@ -38,12 +38,12 @@ public class BlockNode extends Node {
 		}
 	    }
 	    if (node.blockList.isEmpty() && node.textMasks.isEmpty()) {
-		Main.logError("Error creating block node. No blocks were provided.", Operator.currentPlayer);
+		Main.logError("Error creating block node. No blocks were provided.", Operator.currentPlayer, null);
 		return null;
 	    }
 	}
 	catch (Exception e) {
-	    Main.logError("Could not parse block node. Block name required, but not found.", Operator.currentPlayer);
+	    Main.logError("Could not parse block node. Block name required, but not found.", Operator.currentPlayer, e);
 	    return null;
 	}
 	return node;
@@ -66,12 +66,12 @@ public class BlockNode extends Node {
 		}
 	    }
 	    if (node.blockList.isEmpty() && node.textMasks.isEmpty()) {
-		Main.logError("Error creating block node. No blocks were provided.", Operator.currentPlayer);
+		Main.logError("Error creating block node. No blocks were provided.", Operator.currentPlayer, null);
 		return null;
 	    }
 	}
 	catch (Exception e) {
-	    Main.logError("Could not parse block node. Block name required, but not found.", Operator.currentPlayer);
+	    Main.logError("Could not parse block node. Block name required, but not found.", Operator.currentPlayer, e);
 	    return null;
 	}
 	return node;
@@ -83,7 +83,7 @@ public class BlockNode extends Node {
 	    nextBlock = (new BlockInstance()).GetRandom(blockList);
 	}
 	catch (Exception e) {
-	    Main.logError("Error performing block node. Does it contain blocks?", Operator.currentPlayer);
+	    Main.logError("Error performing block node. Does it contain blocks?", Operator.currentPlayer, e);
 	    return null;
 	}
 	return nextBlock.mat;
@@ -111,7 +111,7 @@ public class BlockNode extends Node {
 	    return (new BlockInstance()).Contains(blockList, textMasks, Operator.currentBlock);
 	}
 	catch (Exception e) {
-	    Main.logError("Error performing block node. Does it contain blocks?", Operator.currentPlayer);
+	    Main.logError("Error performing block node. Does it contain blocks?", Operator.currentPlayer, e);
 	    return false;
 	}
     }

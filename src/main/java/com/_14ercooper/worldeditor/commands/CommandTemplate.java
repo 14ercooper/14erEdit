@@ -32,7 +32,7 @@ public class CommandTemplate implements CommandExecutor {
 	    filename = "plugins/14erEdit/templates/" + arg3[0];
 	}
 	catch (Exception e) {
-	    Main.logError("Template name required to use this command.", player);
+	    Main.logError("Template name required to use this command.", player, e);
 	    return false;
 	}
 
@@ -47,7 +47,7 @@ public class CommandTemplate implements CommandExecutor {
 	    filename += ".fx";
 	}
 	else {
-	    Main.logError("Template not found.", player);
+	    Main.logError("Template not found.", player, null);
 	    return false;
 	}
 
@@ -57,7 +57,7 @@ public class CommandTemplate implements CommandExecutor {
 	    command = readFile(filename);
 	}
 	catch (IOException e) {
-	    Main.logError("Error reading template file.", player);
+	    Main.logError("Error reading template file.", player, e);
 	    return false;
 	}
 
@@ -76,7 +76,7 @@ public class CommandTemplate implements CommandExecutor {
 	    return Bukkit.dispatchCommand(player, command);
 	}
 	catch (Exception e) {
-	    Main.logError("Could not run command in template.", player);
+	    Main.logError("Could not run command in template.", player, e);
 	    return false;
 	}
     }

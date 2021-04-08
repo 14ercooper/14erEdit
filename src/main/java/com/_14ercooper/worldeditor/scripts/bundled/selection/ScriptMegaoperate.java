@@ -35,7 +35,7 @@ public class ScriptMegaoperate extends Craftscript {
 	}
 	catch (Exception e) {
 	    Main.logError("Error performing megaoperate script. Did you provide the correct arguments?",
-		    Operator.currentPlayer);
+		    Operator.currentPlayer, e);
 	    return false;
 	}
     }

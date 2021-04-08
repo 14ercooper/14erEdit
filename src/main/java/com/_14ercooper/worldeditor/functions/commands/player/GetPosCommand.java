@@ -25,7 +25,7 @@ public class GetPosCommand extends InterpreterCommand {
 	    function.setVariable(args.get(0), loc.getZ());
 	}
 	else {
-	    Main.logError("Invalid dimension provided: " + dim, function.player);
+	    Main.logError("Invalid dimension provided: " + dim, function.player, null);
 	}
     }
 }

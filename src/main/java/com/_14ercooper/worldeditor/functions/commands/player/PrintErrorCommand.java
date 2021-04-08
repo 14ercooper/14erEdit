@@ -11,6 +11,6 @@ public class PrintErrorCommand extends InterpreterCommand {
     @Override
     public void run(List<String> args, Function function) {
 	String message = String.join(" ", args);
-	Main.logError(message, function.player);
+	Main.logError(message, function.player, null);
     }
 }

@@ -18,12 +18,12 @@ public class SetBiomeNode extends Node {
 	    SetBiomeNode node = new SetBiomeNode();
 	    node.biome = GlobalVars.operationParser.parseStringNode();
 	    if (node.biome == null) {
-		Main.logError("Could not parse set biome node. Did you provide a biome?", Operator.currentPlayer);
+		Main.logError("Could not parse set biome node. Did you provide a biome?", Operator.currentPlayer, null);
 	    }
 	    return node;
 	}
 	catch (Exception e) {
-	    Main.logError("Error parisng biome node. Please check your syntax.", Operator.currentPlayer);
+	    Main.logError("Error parisng biome node. Please check your syntax.", Operator.currentPlayer, e);
 	    return null;
 	}
     }
@@ -36,7 +36,7 @@ public class SetBiomeNode extends Node {
 	    return true;
 	}
 	catch (Exception e) {
-	    Main.logError("Could not perform set biome node. Did you provide a valid biome?", Operator.currentPlayer);
+	    Main.logError("Could not perform set biome node. Did you provide a valid biome?", Operator.currentPlayer, e);
 	    return false;
 	}
     }

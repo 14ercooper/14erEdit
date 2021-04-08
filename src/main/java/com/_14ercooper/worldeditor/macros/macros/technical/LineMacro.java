@@ -27,7 +27,7 @@ public class LineMacro extends Macro {
 	}
 	catch (Exception e) {
 	    Main.logError("Error parsing line macro. Did you provide start and end coordinates and a block material?",
-		    Operator.currentPlayer);
+		    Operator.currentPlayer, e);
 	    return false;
 	}
 	dx = (x1 - x2) / 1000f;

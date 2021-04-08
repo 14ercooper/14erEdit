@@ -15,12 +15,12 @@ public class NotNode extends Node {
 	    node.arg = GlobalVars.operationParser.parsePart();
 	}
 	catch (Exception e) {
-	    Main.logError("Error creating not node. Please check your syntax.", Operator.currentPlayer);
+	    Main.logError("Error creating not node. Please check your syntax.", Operator.currentPlayer, e);
 	    return null;
 	}
 	if (node.arg == null) {
 	    Main.logError("Error creating not node. An argument is required, but was not provided.",
-		    Operator.currentPlayer);
+		    Operator.currentPlayer, null);
 	}
 	return node;
     }
@@ -31,7 +31,7 @@ public class NotNode extends Node {
 	    return !(arg.performNode());
 	}
 	catch (Exception e) {
-	    Main.logError("Error performing not node. Please check your syntax.", Operator.currentPlayer);
+	    Main.logError("Error performing not node. Please check your syntax.", Operator.currentPlayer, e);
 	    return false;
 	}
     }

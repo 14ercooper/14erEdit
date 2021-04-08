@@ -44,7 +44,7 @@ public class BrushNode extends Node {
 	}
 	catch (Exception e) {
 	    Main.logError("Could not create brush node. Did you provide the correct number of arguments?",
-		    Operator.currentPlayer);
+		    Operator.currentPlayer, e);
 	    return null;
 	}
     }

@@ -18,11 +18,11 @@ public class SetNBTNode extends Node {
 	    node.nbt = GlobalVars.operationParser.parseStringNode().contents;
 	}
 	catch (Exception e) {
-	    Main.logError("Error creating set NBT node. Please check your syntax.", Operator.currentPlayer);
+	    Main.logError("Error creating set NBT node. Please check your syntax.", Operator.currentPlayer, e);
 	    return null;
 	}
 	if (node.nbt.isEmpty()) {
-	    Main.logError("Could not parse set NBT node. Requires NBT, but did not find nay.", Operator.currentPlayer);
+	    Main.logError("Could not parse set NBT node. Requires NBT, but did not find nay.", Operator.currentPlayer, null);
 	}
 	return node;
     }
@@ -39,7 +39,7 @@ public class SetNBTNode extends Node {
 	    return true;
 	}
 	catch (Exception e) {
-	    Main.logError("Error performing set NBT node. Please check your syntax.", Operator.currentPlayer);
+	    Main.logError("Error performing set NBT node. Please check your syntax.", Operator.currentPlayer, e);
 	    return false;
 	}
     }

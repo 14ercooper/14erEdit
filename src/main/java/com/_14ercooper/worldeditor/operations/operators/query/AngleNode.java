@@ -23,13 +23,13 @@ public class AngleNode extends Node {
 	    node.distance = GlobalVars.operationParser.parseNumberNode();
 	    if (node.distance == null) {
 		Main.logError("Could not parse angle node. Did you provide a range node and a distance?",
-			Operator.currentPlayer);
+			Operator.currentPlayer, null);
 		return null;
 	    }
 	    return node;
 	}
 	catch (Exception e) {
-	    Main.logError("Error parsing range node. Please check your syntax.", Operator.currentPlayer);
+	    Main.logError("Error parsing range node. Please check your syntax.", Operator.currentPlayer, e);
 	    return null;
 	}
     }

@@ -17,7 +17,7 @@ public class MultiIterator extends BlockIterator {
 
     @Override
     public BlockIterator newIterator(List<String> args, World world) {
-	Main.logError("MultiIterator does not support the standard constructor", Operator.currentPlayer);
+	Main.logError("MultiIterator does not support the standard constructor", Operator.currentPlayer, null);
 	return null;
     }
 

@@ -32,7 +32,7 @@ public class Parser {
     public Node GetOperator(String name) {
 	if (!operators.containsKey(name)) {
 	    Main.logError("Operator \"" + name + "\" not found. Please check that you input a valid operator.",
-		    Operator.currentPlayer);
+		    Operator.currentPlayer, null);
 	    return null;
 	}
 	return operators.get(name);
@@ -52,7 +52,7 @@ public class Parser {
 	// This is an error if this is true
 	// Probably user error with an invalid operation
 	if (rootNode == null) {
-	    Main.logError("Operation parse failed. Please check your syntax.", Operator.currentPlayer);
+	    Main.logError("Operation parse failed. Please check your syntax.", Operator.currentPlayer, null);
 	    return null;
 	}
 
@@ -92,7 +92,7 @@ public class Parser {
 	    if (index == 0 && !operators.containsKey(parts.get(index))) {
 		Main.logError(
 			"First node parsed was a string node. This is likely a mistake. Please check that you used a valid operator.",
-			Operator.currentPlayer);
+			Operator.currentPlayer, null);
 	    }
 	    if (operators.containsKey(parts.get(index))) {
 		Node n = operators.get(parts.get(index)).newNode();
@@ -129,7 +129,7 @@ public class Parser {
 	    return (NumberNode) this.parsePart(true);
 	}
 	catch (Exception e) {
-	    Main.logError("Number expected. Did not find a number.", Operator.currentPlayer);
+	    Main.logError("Number expected. Did not find a number.", Operator.currentPlayer, e);
 	    return null;
 	}
     }
@@ -141,7 +141,7 @@ public class Parser {
 	    return new RangeNode().newNode();
 	}
 	catch (Exception e) {
-	    Main.logError("Range node expected. Could not create a range node.", Operator.currentPlayer);
+	    Main.logError("Range node expected. Could not create a range node.", Operator.currentPlayer, e);
 	    return null;
 	}
     }
@@ -157,7 +157,7 @@ public class Parser {
 	}
 	catch (Exception e) {
 	    Main.logError("Ran off end of operator (could not create string node). Are you missing arguments?",
-		    Operator.currentPlayer);
+		    Operator.currentPlayer, e);
 	    return null;
 	}
     }

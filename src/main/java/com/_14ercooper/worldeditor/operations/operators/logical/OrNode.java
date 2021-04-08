@@ -17,11 +17,11 @@ public class OrNode extends Node {
 	    node.arg2 = GlobalVars.operationParser.parsePart();
 	}
 	catch (Exception e) {
-	    Main.logError("Error creating or node. Please check your syntax.", Operator.currentPlayer);
+	    Main.logError("Error creating or node. Please check your syntax.", Operator.currentPlayer, e);
 	    return null;
 	}
 	if (node.arg2 == null) {
-	    Main.logError("Error creating or node. Two arguments required, but not provided.", Operator.currentPlayer);
+	    Main.logError("Error creating or node. Two arguments required, but not provided.", Operator.currentPlayer, null);
 	}
 	return node;
     }
@@ -32,7 +32,7 @@ public class OrNode extends Node {
 	    return ((arg1.performNode()) || (arg2.performNode()));
 	}
 	catch (Exception e) {
-	    Main.logError("Error performing or node. Please check your syntax.", Operator.currentPlayer);
+	    Main.logError("Error performing or node. Please check your syntax.", Operator.currentPlayer, e);
 	    return false;
 	}
     }

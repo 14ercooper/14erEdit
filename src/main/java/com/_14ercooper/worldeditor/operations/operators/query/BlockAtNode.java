@@ -34,13 +34,13 @@ public class BlockAtNode extends BlockNode {
 	    }
 	}
 	catch (Exception e) {
-	    Main.logError("Error creating block at node. Please check your syntax.", Operator.currentPlayer);
+	    Main.logError("Error creating block at node. Please check your syntax.", Operator.currentPlayer, e);
 	    return null;
 	}
 	if (baNode.z == null) {
 	    Main.logError(
 		    "Could not parse block at node. Three numbers and optionally an operation are required, but not given.",
-		    Operator.currentPlayer);
+		    Operator.currentPlayer, null);
 	}
 	return baNode;
     }
@@ -60,7 +60,7 @@ public class BlockAtNode extends BlockNode {
 	    return matches;
 	}
 	catch (Exception e) {
-	    Main.logError("Error performing block at node. Please check your syntax.", Operator.currentPlayer);
+	    Main.logError("Error performing block at node. Please check your syntax.", Operator.currentPlayer, e);
 	    return false;
 	}
     }

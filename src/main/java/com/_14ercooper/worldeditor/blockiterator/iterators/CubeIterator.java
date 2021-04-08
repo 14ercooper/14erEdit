@@ -70,7 +70,7 @@ public class CubeIterator extends BlockIterator {
 	catch (Exception e) {
 	    Main.logError(
 		    "Could not create cube iterator. Please check your brush parameters/if you have a selection box.",
-		    Operator.currentPlayer);
+		    Operator.currentPlayer, e);
 	    return null;
 	}
     }

@@ -24,7 +24,7 @@ public class ScriptErode extends Craftscript {
 	    return player.performCommand("fx br s 0 0.5 $ erode{" + radius + ";" + mode + ";" + modeArg + "}");
 	}
 	catch (Exception e) {
-	    Main.logError("Error parsing erode macro. Did you pass in the correct arguments?", Operator.currentPlayer);
+	    Main.logError("Error parsing erode macro. Did you pass in the correct arguments?", Operator.currentPlayer, e);
 	    return false;
 	}
     }

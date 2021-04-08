@@ -1,6 +1,8 @@
 package com._14ercooper.worldeditor.main;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
@@ -20,6 +22,7 @@ import com._14ercooper.worldeditor.commands.CommandAsync;
 import com._14ercooper.worldeditor.commands.CommandBrmask;
 import com._14ercooper.worldeditor.commands.CommandConfirm;
 import com._14ercooper.worldeditor.commands.CommandDebug;
+import com._14ercooper.worldeditor.commands.CommandError;
 import com._14ercooper.worldeditor.commands.CommandFunction;
 import com._14ercooper.worldeditor.commands.CommandFx;
 import com._14ercooper.worldeditor.commands.CommandInfo;
@@ -85,6 +88,7 @@ public class Main extends JavaPlugin {
 	this.getCommand("run").setExecutor(new CommandRun());
 	this.getCommand("runat").setExecutor(new CommandRunat());
 	this.getCommand("debug").setExecutor(new CommandDebug());
+	this.getCommand("error").setExecutor(new CommandError());
 	this.getCommand("14erEdit").setExecutor(new CommandInfo());
 	this.getCommand("async").setExecutor(new CommandAsync());
 	this.getCommand("brmask").setExecutor(new CommandBrmask());
@@ -170,15 +174,22 @@ public class Main extends JavaPlugin {
 	}
     }
 
-    public static void logError(String message, CommandSender p) {
+    public static void logError(String message, CommandSender p, Exception e) {
 	GlobalVars.errorLogged = true;
 	if (p == null)
 	    p = Bukkit.getConsoleSender();
-	p.sendMessage("§6[ERROR] " + message);
+	String stackTrace = "";
+	if (e != null && GlobalVars.outputStacktrace) {
+	    StringWriter sw = new StringWriter();
+	    PrintWriter pw = new PrintWriter(sw);
+	    e.printStackTrace(pw);
+	    stackTrace = "\n" + sw.toString();
+	}
+	p.sendMessage("§6[ERROR] " + message + stackTrace);
 	if (GlobalVars.logErrors) {
 	    try {
 		String errMessage = "";
-		errMessage += message + "\n";
+		errMessage += message + stackTrace + "\n";
 
 		if (!Files.exists(Paths.get("plugins/14erEdit/error.log")))
 		    Files.createFile(Paths.get("plugins/14erEdit/error.log"));

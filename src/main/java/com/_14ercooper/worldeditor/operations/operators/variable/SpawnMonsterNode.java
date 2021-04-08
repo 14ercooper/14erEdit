@@ -21,7 +21,7 @@ public class SpawnMonsterNode extends Node {
     public boolean performNode() {
 	if (!Operator.monsterVars.containsKey(name)) {
 	    Main.logError("Error performing spawn monster node. Please check your syntax (does the variable exist?).",
-		    Operator.currentPlayer);
+		    Operator.currentPlayer, null);
 	    return false;
 	}
 	MonsterVar var = Operator.monsterVars.get(name);

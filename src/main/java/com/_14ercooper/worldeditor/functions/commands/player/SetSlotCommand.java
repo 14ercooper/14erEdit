@@ -23,7 +23,7 @@ public class SetSlotCommand extends InterpreterCommand {
 
 	Material toSet = Material.matchMaterial(args.get(1));
 	if (toSet == null) {
-	    Main.logError("Item ID not known: " + args.get(1), function.player);
+	    Main.logError("Item ID not known: " + args.get(1), function.player, null);
 	}
 	else {
 	    function.player.getInventory().setItem(slot, new ItemStack(toSet));

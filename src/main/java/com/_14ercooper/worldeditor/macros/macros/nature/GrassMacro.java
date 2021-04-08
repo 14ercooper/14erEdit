@@ -34,7 +34,7 @@ public class GrassMacro extends Macro {
 	    density = Double.parseDouble(args[3]);
 	}
 	catch (Exception e) {
-	    Main.logError("Could not parse grass macro. Did you provide all 4 arguments?", Operator.currentPlayer);
+	    Main.logError("Could not parse grass macro. Did you provide all 4 arguments?", Operator.currentPlayer, e);
 	}
 	pos = loc;
     }

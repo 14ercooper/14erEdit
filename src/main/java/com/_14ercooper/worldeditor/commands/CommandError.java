@@ -6,9 +6,10 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com._14ercooper.worldeditor.main.Main;
+import com._14ercooper.worldeditor.main.GlobalVars;
 
-public class CommandInfo implements CommandExecutor {
+// These are dedicated versions of the undo and redo commands
+public class CommandError implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -19,16 +20,8 @@ public class CommandInfo implements CommandExecutor {
 	    }
 	}
 
-	try {
-	    Bukkit.broadcastMessage("§d14erEdit is running properly");
-
-	    return true;
-	}
-	catch (Exception e) {
-	    Main.logError(
-		    "It's obviously doing something wrong. If you ever see this, tell 14er. This should be unreachable code.",
-		    sender, e);
-	    return false;
-	}
+	GlobalVars.outputStacktrace = !GlobalVars.outputStacktrace;
+	Bukkit.broadcastMessage("§dVerbose errors toggled to " + GlobalVars.outputStacktrace);
+	return true;
     }
 }

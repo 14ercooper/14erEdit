@@ -33,7 +33,7 @@ public class ScriptVines extends Craftscript {
 		    + density + ";" + block + "}");
 	}
 	catch (Exception e) {
-	    Main.logError("Could not parse vine script. Did you pass the correct arguments?", Operator.currentPlayer);
+	    Main.logError("Could not parse vine script. Did you pass the correct arguments?", Operator.currentPlayer, e);
 	    return false;
 	}
     }

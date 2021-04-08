@@ -25,13 +25,13 @@ public class IfNode extends Node {
 	    }
 	}
 	catch (Exception e) {
-	    Main.logError("Error creating if node. Please check your syntax.", Operator.currentPlayer);
+	    Main.logError("Error creating if node. Please check your syntax.", Operator.currentPlayer, e);
 	    return null;
 	}
 	if (node.arg2 == null) {
 	    Main.logError(
 		    "Error creating if node. At least a condition and on-true operator are required, but are not provided.",
-		    Operator.currentPlayer);
+		    Operator.currentPlayer, null);
 	}
 	return node;
     }
@@ -62,7 +62,7 @@ public class IfNode extends Node {
 	    return toReturn;
 	}
 	catch (Exception e) {
-	    Main.logError("Error performing if node. Please check your syntax.", Operator.currentPlayer);
+	    Main.logError("Error performing if node. Please check your syntax.", Operator.currentPlayer, e);
 	    return false;
 	}
     }

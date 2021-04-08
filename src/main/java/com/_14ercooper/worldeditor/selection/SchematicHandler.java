@@ -32,7 +32,7 @@ public class SchematicHandler {
 	    schem.resetWrite();
 	}
 	catch (IOException e) {
-	    Main.logError("Could not write to schematic file.", p);
+	    Main.logError("Could not write to schematic file.", p, e);
 	}
 	GlobalVars.asyncManager.scheduleEdit(schem, true, p, origin);
 	return true;
@@ -50,7 +50,7 @@ public class SchematicHandler {
 	    schem.openRead();
 	}
 	catch (IOException e) {
-	    Main.logError("Could not load schematic. File " + file + " not found.", p);
+	    Main.logError("Could not load schematic. File " + file + " not found.", p, e);
 	}
 	if (!mirror.isEmpty()) {
 	    schem.mirror(mirror.contains("x"), mirror.contains("y"), mirror.contains("z"));
@@ -73,7 +73,7 @@ public class SchematicHandler {
 	    schem.openRead();
 	}
 	catch (IOException e) {
-	    Main.logError("Could not load schematic. File " + file + " not found.", p);
+	    Main.logError("Could not load schematic. File " + file + " not found.", p, e);
 	}
 	if (!mirror.isEmpty()) {
 	    schem.mirror(mirror.contains("x"), mirror.contains("y"), mirror.contains("z"));
@@ -94,7 +94,7 @@ public class SchematicHandler {
 	    schem.openRead();
 	}
 	catch (IOException e) {
-	    Main.logError("Could not load schematic. File " + file + " not found.", p);
+	    Main.logError("Could not load schematic. File " + file + " not found.", p, e);
 	}
 //	if (bigValue(origin[0])) {
 //	    Main.logDebug("Schematic center x not number. Using autocenter.");
@@ -127,7 +127,7 @@ public class SchematicHandler {
 	    schem.openRead();
 	}
 	catch (IOException e) {
-	    Main.logError("Could not load schematic. File " + file + " not found.", p);
+	    Main.logError("Could not load schematic. File " + file + " not found.", p, e);
 	}
 	if (bigValue(origin[0])) {
 	    Main.logDebug("Schematic center x not number. Using autocenter.");

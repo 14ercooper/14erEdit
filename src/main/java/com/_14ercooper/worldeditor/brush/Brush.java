@@ -105,13 +105,13 @@ public class Brush {
 	    catch (Exception e) {
 		Main.logError(
 			"Could not parse brush arguments. Please check that you provided enough numerical arguments for the brush shape.",
-			player);
+			player, e);
 		return;
 	    }
 
 	    if (!shapeGenerator.gotEnoughArgs()) {
 		Main.logError("Not enough inputs to the brush shape were provided. Please provide enough inputs.",
-			player);
+			player, null);
 	    }
 
 	    if (!(shapeGenerator instanceof Multi)) {
@@ -142,7 +142,7 @@ public class Brush {
 
 	}
 	catch (Exception e) {
-	    Main.logError("Error creating brush. Please check your syntax.", player);
+	    Main.logError("Error creating brush. Please check your syntax.", player, e);
 	}
     }
 
@@ -177,7 +177,7 @@ public class Brush {
 	}
 	catch (Exception e) {
 	    e.printStackTrace();
-	    Main.logError("Error operating with brush. Please check your syntax.", owner);
+	    Main.logError("Error operating with brush. Please check your syntax.", owner, e);
 	    return false;
 	}
     }

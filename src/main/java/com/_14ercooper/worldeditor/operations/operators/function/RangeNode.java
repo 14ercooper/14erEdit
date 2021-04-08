@@ -20,12 +20,12 @@ public class RangeNode extends Node {
 	catch (Exception e) {
 	    Main.logError(
 		    "Could not create range node. Please check your syntax (did you remember to create a range node?).",
-		    Operator.currentPlayer);
+		    Operator.currentPlayer, e);
 	    return null;
 	}
 	if (node.arg2 == null) {
 	    Main.logError("Could not create range node. Two numbers were expected, but not provided.",
-		    Operator.currentPlayer);
+		    Operator.currentPlayer, null);
 	}
 	return node;
     }

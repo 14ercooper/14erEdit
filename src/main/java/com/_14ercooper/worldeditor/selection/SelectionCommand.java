@@ -46,7 +46,7 @@ public class SelectionCommand {
 		    return operate(manager, wand, args);
 		}
 		catch (Exception e) {
-		    Main.logError("Error performing operation. Do you have a selection box?", player);
+		    Main.logError("Error performing operation. Do you have a selection box?", player, e);
 		}
 	    }
 
@@ -72,7 +72,7 @@ public class SelectionCommand {
 		    return SchematicHandler.saveSchematic(getSchematicName(player), player);
 		}
 		catch (Exception e) {
-		    Main.logError("Error copying clipboard.", player);
+		    Main.logError("Error copying clipboard.", player, e);
 		}
 	    }
 
@@ -91,7 +91,7 @@ public class SelectionCommand {
 		    }
 		}
 		catch (Exception e) {
-		    Main.logError("Error pasting clipboard.", player);
+		    Main.logError("Error pasting clipboard.", player, e);
 		}
 	    }
 
@@ -104,7 +104,7 @@ public class SelectionCommand {
 		    return true;
 		}
 		catch (Exception e) {
-		    Main.logError("Error mirroring clipboard. Did you provide a mirror axis(es)?", player);
+		    Main.logError("Error mirroring clipboard. Did you provide a mirror axis(es)?", player, e);
 		}
 	    }
 
@@ -117,7 +117,7 @@ public class SelectionCommand {
 		    return true;
 		}
 		catch (Exception e) {
-		    Main.logError("Error rotating clipboard. Did you provide a mirror value?", player);
+		    Main.logError("Error rotating clipboard. Did you provide a mirror value?", player, e);
 		}
 	    }
 
@@ -132,7 +132,7 @@ public class SelectionCommand {
 		    return true;
 		}
 		catch (Exception e) {
-		    Main.logError("Error shifting clipboard origin. Did you provide an amount?", player);
+		    Main.logError("Error shifting clipboard origin. Did you provide an amount?", player, e);
 		}
 	    }
 
@@ -147,7 +147,7 @@ public class SelectionCommand {
 		    return true;
 		}
 		catch (Exception e) {
-		    Main.logError("Error setting clipboard origin. Did you provide a new offset?", player);
+		    Main.logError("Error setting clipboard origin. Did you provide a new offset?", player, e);
 		}
 	    }
 
@@ -158,7 +158,7 @@ public class SelectionCommand {
 		    return manager.resetSelection();
 		}
 		catch (Exception e) {
-		    Main.logError("Could not reset selection.", player);
+		    Main.logError("Could not reset selection.", player, e);
 		}
 	    }
 
@@ -176,7 +176,7 @@ public class SelectionCommand {
 		    return true;
 		}
 		catch (Exception e) {
-		    Main.logError("Could not set up selection clone. Please check your syntax.", player);
+		    Main.logError("Could not set up selection clone. Please check your syntax.", player, e);
 		}
 	    }
 
@@ -212,7 +212,7 @@ public class SelectionCommand {
 			    player.getLocation().getBlockZ(), wand.owner);
 		}
 		catch (Exception e) {
-		    Main.logError("Failed to update first position.", player);
+		    Main.logError("Failed to update first position.", player, e);
 		}
 	    }
 
@@ -248,15 +248,15 @@ public class SelectionCommand {
 			    player.getLocation().getBlockZ(), wand.owner);
 		}
 		catch (Exception e) {
-		    Main.logError("Failed to update second position.", player);
+		    Main.logError("Failed to update second position.", player, e);
 		}
 	    }
 
-	    Main.logError("Could not find a selection subcommand. Did you provide a valid one?", player);
+	    Main.logError("Could not find a selection subcommand. Did you provide a valid one?", player, null);
 	    return false;
 	}
 	catch (Exception e) {
-	    Main.logError("Error in selection command. Please check your syntax.", player);
+	    Main.logError("Error in selection command. Please check your syntax.", player, e);
 	    return false;
 	}
     }

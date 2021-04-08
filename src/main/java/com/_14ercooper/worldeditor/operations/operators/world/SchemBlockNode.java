@@ -32,7 +32,7 @@ public class SchemBlockNode extends BlockNode {
     // This should never be run
     @Override
     public BlockNode newNode(String text) {
-	Main.logError("Schematic block node in invalid state", Operator.currentPlayer);
+	Main.logError("Schematic block node in invalid state", Operator.currentPlayer, null);
 	return null;
     }
 
@@ -68,7 +68,7 @@ public class SchemBlockNode extends BlockNode {
 		retVal = arg.performNode();
 	    }
 	    catch (Exception e) {
-		Main.logError("Could not perform schem block node", Operator.currentPlayer);
+		Main.logError("Could not perform schem block node", Operator.currentPlayer, e);
 	    }
 	    finally {
 		Operator.currentBlock.setType(state.getType());

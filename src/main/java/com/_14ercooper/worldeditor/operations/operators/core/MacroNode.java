@@ -18,7 +18,7 @@ public class MacroNode extends Node {
 	}
 	catch (Exception e) {
 	    Main.logError("Could not create macro node, no argument provided. At least one argument is required.",
-		    Operator.currentPlayer);
+		    Operator.currentPlayer, e);
 	    return null;
 	}
     }

@@ -18,7 +18,7 @@ public class LineBrushMacro extends Macro {
 	Player p = Operator.currentPlayer;
 	Material m = Material.matchMaterial(args[0]);
 	if (m == null) {
-	    Main.logError("Could not parse line brush macro. " + args[0] + " does not match a known block.", p);
+	    Main.logError("Could not parse line brush macro. " + args[0] + " does not match a known block.", p, null);
 	    return false;
 	}
 	int blockCount = 1000;
@@ -27,7 +27,7 @@ public class LineBrushMacro extends Macro {
 		blockCount = Integer.parseInt(args[1]);
 	    }
 	    catch (Exception e) {
-		Main.logError("Could not parse line brush macro. " + args[1] + " is not a valid number.", p);
+		Main.logError("Could not parse line brush macro. " + args[1] + " is not a valid number.", p, e);
 		return false;
 	    }
 	}
@@ -37,7 +37,7 @@ public class LineBrushMacro extends Macro {
 		startDist = Float.parseFloat(args[2]);
 	    }
 	    catch (Exception e) {
-		Main.logError("Could not parse line brush macro. " + args[2] + " is not a valid number.", p);
+		Main.logError("Could not parse line brush macro. " + args[2] + " is not a valid number.", p, e);
 		return false;
 	    }
 	}

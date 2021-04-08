@@ -41,7 +41,7 @@ public class ScriptCaternary extends Craftscript {
 		    + dz + ";" + step + ";" + block + "}");
 	}
 	catch (Exception e) {
-	    Main.logError("Error running Catenary script. Did you pass the correct arguments?", Operator.currentPlayer);
+	    Main.logError("Error running Catenary script. Did you pass the correct arguments?", Operator.currentPlayer, e);
 	    return false;
 	}
 

@@ -23,7 +23,7 @@ public class BlockCommand extends InterpreterCommand {
 	    Material m = Material.matchMaterial(s);
 	    if (!s.contains("#")) {
 		if (m == null) {
-		    Main.logError("Material " + s + " not found.", function.player);
+		    Main.logError("Material " + s + " not found.", function.player, null);
 		}
 		else {
 		    returnVal = returnVal || m == blk.getType();

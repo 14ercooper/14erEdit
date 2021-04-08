@@ -37,6 +37,9 @@ commands:
     debug:
         description: Toggle debug messages globally
         usage: "Usage: /debug"
+    error:
+        description: Toggle verbose error messages globally
+        usage: "Usage: /error"
     14erEdit:
         description: Display plugin information
         usage: "Usage: /14erEdit"

@@ -32,11 +32,11 @@ public class CommandRun implements CommandExecutor {
 		op.operateOnBlock(b, (Player) sender);
 		return true;
 	    }
-	    Main.logError("This must be run as a player.", sender);
+	    Main.logError("This must be run as a player.", sender, null);
 	    return false;
 	}
 	catch (Exception e) {
-	    Main.logError("Error performing run command. Please check your syntax.", sender);
+	    Main.logError("Error performing run command. Please check your syntax.", sender, e);
 	    return false;
 	}
     }

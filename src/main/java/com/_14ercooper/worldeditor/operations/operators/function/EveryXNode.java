@@ -28,12 +28,12 @@ public class EveryXNode extends Node {
 	    arg2 = GlobalVars.operationParser.parseNumberNode();
 	}
 	catch (Exception e) {
-	    Main.logError("Could not create remainder node. Please check your syntax.", Operator.currentPlayer);
+	    Main.logError("Could not create remainder node. Please check your syntax.", Operator.currentPlayer, e);
 	    return null;
 	}
 	if (node.arg2 == null) {
 	    Main.logError("Could not create remainder node. Requires an axis and a number, but these were not given.",
-		    Operator.currentPlayer);
+		    Operator.currentPlayer, null);
 	}
 	return node;
     }
@@ -53,7 +53,7 @@ public class EveryXNode extends Node {
 	    int value = Operator.currentBlock.getZ();
 	    return Math.floorMod(value, base) == 0;
 	}
-	Main.logError("Invalid axis provided to remainder node. Please check your syntax.", Operator.currentPlayer);
+	Main.logError("Invalid axis provided to remainder node. Please check your syntax.", Operator.currentPlayer, null);
 	return false;
     }
 

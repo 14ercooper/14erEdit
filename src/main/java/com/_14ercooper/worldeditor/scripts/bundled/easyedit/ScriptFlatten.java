@@ -45,7 +45,7 @@ public class ScriptFlatten extends Craftscript {
 	}
 	catch (Exception e) {
 	    Main.logError("Could not parse flatten script. Did you pass in the correct arguments?",
-		    Operator.currentPlayer);
+		    Operator.currentPlayer, e);
 	    return false;
 	}
     }

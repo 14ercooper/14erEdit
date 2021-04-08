@@ -39,7 +39,7 @@ public class EllipseIterator extends BlockIterator {
 	}
 	catch (Exception e) {
 	    Main.logError("Error creating ellipse iterator. Please check your brush parameters.",
-		    Operator.currentPlayer);
+		    Operator.currentPlayer, e);
 	    return null;
 	}
     }

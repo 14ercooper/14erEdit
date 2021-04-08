@@ -20,12 +20,12 @@ public class NumericLessEqualNode extends Node {
 	}
 	catch (Exception e) {
 	    Main.logError("Error creating numeric less than or equal node. Please check your syntax.",
-		    Operator.currentPlayer);
+		    Operator.currentPlayer, e);
 	    return null;
 	}
 	if (node.val == null) {
 	    Main.logError("Could not create numeric less than or equal node. Two arguments required, but not provided.",
-		    Operator.currentPlayer);
+		    Operator.currentPlayer, null);
 	}
 	return node;
     }
@@ -38,7 +38,7 @@ public class NumericLessEqualNode extends Node {
 	catch (Exception e) {
 	    Main.logError(
 		    "Error performing numeric less than or equal node. Please check your syntax (does the variable exist?).",
-		    Operator.currentPlayer);
+		    Operator.currentPlayer, e);
 	    return false;
 	}
     }

@@ -25,7 +25,7 @@ public class Multi extends BrushShape {
 
     @Override
     public BlockIterator GetBlocks(double x, double y, double z, World world) {
-	Main.logError("Multibrush used in a normal brush context. This is an error.", Operator.currentPlayer);
+	Main.logError("Multibrush used in a normal brush context. This is an error.", Operator.currentPlayer, null);
 	return null;
     }
 
@@ -82,7 +82,7 @@ public class Multi extends BrushShape {
 	    brushesRaw = Files.readAllLines(Paths.get(filename));
 	}
 	catch (IOException e1) {
-	    Main.logError("Error loading multibrush file: " + filename, Brush.currentPlayer);
+	    Main.logError("Error loading multibrush file: " + filename, Brush.currentPlayer, e1);
 	}
 
 	// Perform templating
@@ -118,13 +118,13 @@ public class Multi extends BrushShape {
 	    catch (Exception e) {
 		Main.logError(
 			"Could not parse brush arguments. Please check that you provided enough numerical arguments for the brush shape.",
-			Brush.currentPlayer);
+			Brush.currentPlayer, e);
 		return;
 	    }
 
 	    if (!shapeGenerator.gotEnoughArgs()) {
 		Main.logError("Not enough inputs to the brush shape were provided. Please provide enough inputs.",
-			Brush.currentPlayer);
+			Brush.currentPlayer, null);
 	    }
 
 	    // Construct the operator

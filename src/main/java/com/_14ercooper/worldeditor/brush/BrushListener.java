@@ -73,7 +73,7 @@ public class BrushListener implements Listener {
 	    brush.operate(block.getX(), block.getY(), block.getZ());
 	}
 	catch (Exception e) {
-	    Main.logError("Could not process brush click.", event.getPlayer());
+	    Main.logError("Could not process brush click.", event.getPlayer(), e);
 	}
     }
 

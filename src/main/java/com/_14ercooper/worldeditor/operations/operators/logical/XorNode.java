@@ -17,12 +17,12 @@ public class XorNode extends Node {
 	    node.arg2 = GlobalVars.operationParser.parsePart();
 	}
 	catch (Exception e) {
-	    Main.logError("Error creating xor node. Please check your syntax.", Operator.currentPlayer);
+	    Main.logError("Error creating xor node. Please check your syntax.", Operator.currentPlayer, e);
 	    return null;
 	}
 	if (node.arg2 == null) {
 	    Main.logError("Error creating xor node. Requires 2 arguments, but these were not provided.",
-		    Operator.currentPlayer);
+		    Operator.currentPlayer, null);
 	}
 	return node;
     }
@@ -35,7 +35,7 @@ public class XorNode extends Node {
 	    return ((x || y) && !(x && y));
 	}
 	catch (Exception e) {
-	    Main.logError("Error performing xor node. Please check your syntax.", Operator.currentPlayer);
+	    Main.logError("Error performing xor node. Please check your syntax.", Operator.currentPlayer, e);
 	    return false;
 	}
     }

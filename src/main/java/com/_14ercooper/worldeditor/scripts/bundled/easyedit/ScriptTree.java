@@ -30,7 +30,7 @@ public class ScriptTree extends Craftscript {
 		catch (Exception e) {
 		    Main.logError(
 			    "Error parsing tree script. If you provide leaves, you must provide wood block material as well.",
-			    Operator.currentPlayer);
+			    Operator.currentPlayer, e);
 		    return false;
 		}
 	    }
@@ -38,7 +38,7 @@ public class ScriptTree extends Craftscript {
 		    + treeSize + ";" + treeSizeVariance + "}");
 	}
 	catch (Exception e) {
-	    Main.logError("Error parsing tree script. Did you provide the correct arguments?", Operator.currentPlayer);
+	    Main.logError("Error parsing tree script. Did you provide the correct arguments?", Operator.currentPlayer, e);
 	    return false;
 	}
     }

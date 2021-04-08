@@ -24,7 +24,7 @@ public class CommandLimit implements CommandExecutor {
 		val = Long.MIN_VALUE;
 	    }
 	    else {
-		Main.logError("Could not parse value for limiter, " + arg3[1] + "is not a number", arg0);
+		Main.logError("Could not parse value for limiter, " + arg3[1] + "is not a number", arg0, null);
 		return false;
 	    }
 	}
@@ -60,7 +60,7 @@ public class CommandLimit implements CommandExecutor {
 	    return true;
 	}
 	else {
-	    Main.logError("Invalid limiter provided: " + arg3[0], arg0);
+	    Main.logError("Invalid limiter provided: " + arg3[0], arg0, null);
 	    return false;
 	}
     }

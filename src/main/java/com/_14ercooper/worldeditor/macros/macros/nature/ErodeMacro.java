@@ -29,7 +29,7 @@ public class ErodeMacro extends Macro {
 	    erodeRadius = Integer.parseInt(args[0]);
 	}
 	catch (Exception e) {
-	    Main.logError("Could not parse erode macro. Is your radius a number?", Operator.currentPlayer);
+	    Main.logError("Could not parse erode macro. Is your radius a number?", Operator.currentPlayer, e);
 	}
 	erodeCenter = loc;
 
@@ -82,7 +82,7 @@ public class ErodeMacro extends Macro {
 	    }
 	}
 	catch (Exception e) {
-	    Main.logError("Could not parse erode macro. Did you provide a valid mode?", Operator.currentPlayer);
+	    Main.logError("Could not parse erode macro. Did you provide a valid mode?", Operator.currentPlayer, e);
 	}
     }
 

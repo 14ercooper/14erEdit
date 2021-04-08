@@ -50,7 +50,7 @@ public class Operator {
 	    return entryNode.performNode();
 	}
 	catch (Exception e) {
-	    Main.logError("Could not perform operation. Please check your syntax.", p);
+	    Main.logError("Could not perform operation. Please check your syntax.", p, e);
 	    GlobalVars.asyncManager.dropAsync();
 	    return false;
 	}
@@ -73,7 +73,7 @@ public class Operator {
 	    return entryNode.performNode();
 	}
 	catch (Exception e) {
-	    Main.logError("Could not perform operation. Please check your syntax.", Bukkit.getConsoleSender());
+	    Main.logError("Could not perform operation. Please check your syntax.", Bukkit.getConsoleSender(), e);
 	    GlobalVars.asyncManager.dropAsync();
 	    return false;
 	}
@@ -84,7 +84,7 @@ public class Operator {
 	    return entryNode.performNode();
 	}
 	catch (Exception e) {
-	    Main.logError("Could not perform operation. Please check your syntax.", Bukkit.getConsoleSender());
+	    Main.logError("Could not perform operation. Please check your syntax.", Bukkit.getConsoleSender(), e);
 	    GlobalVars.asyncManager.dropAsync();
 	    return false;
 	}

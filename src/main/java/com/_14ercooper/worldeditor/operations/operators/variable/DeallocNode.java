@@ -43,7 +43,7 @@ public class DeallocNode extends Node {
 	    Operator.fileLoads.remove(name);
 	    return true;
 	}
-	Main.logError("Could not deallocate variable, type \"" + type + "\" not found.", Operator.currentPlayer);
+	Main.logError("Could not deallocate variable, type \"" + type + "\" not found.", Operator.currentPlayer, null);
 	return false;
     }
 

@@ -48,7 +48,7 @@ public class TemplateNode extends Node {
 	    filename += ".fx";
 	}
 	else {
-	    Main.logError("Template not found.", player);
+	    Main.logError("Template not found.", player, null);
 	    return false;
 	}
 
@@ -58,7 +58,7 @@ public class TemplateNode extends Node {
 	    command = readFile(filename);
 	}
 	catch (IOException e) {
-	    Main.logError("Error reading template file.", player);
+	    Main.logError("Error reading template file.", player, e);
 	    return false;
 	}
 
@@ -81,7 +81,7 @@ public class TemplateNode extends Node {
 	    return retVal;
 	}
 	catch (Exception e) {
-	    Main.logError("Could not run command in template.", player);
+	    Main.logError("Could not run command in template.", player, e);
 	    return false;
 	}
     }
