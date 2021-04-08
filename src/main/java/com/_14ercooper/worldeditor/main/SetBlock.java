@@ -5,10 +5,14 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.data.type.Leaves;
 
+import com._14ercooper.worldeditor.async.AsyncManager;
 import com._14ercooper.worldeditor.operations.Operator;
 
 public class SetBlock {
     public static void setMaterial(Block b, Material mat) {
+	if (GlobalVars.countEdits) {
+	    ++AsyncManager.doneOperations;
+	}
 	if (!Main.inEditRegion(b.getX(), b.getY(), b.getZ())) {
 	    return;
 	}
@@ -36,6 +40,9 @@ public class SetBlock {
     }
 
     public static void setMaterial(Block b, Material mat, boolean physics) {
+	if (GlobalVars.countEdits) {
+	    ++AsyncManager.doneOperations;
+	}
 	if (!Main.inEditRegion(b.getX(), b.getY(), b.getZ())) {
 	    return;
 	}
@@ -63,6 +70,9 @@ public class SetBlock {
     }
 
     public static void setMaterial(BlockState b, Material mat) {
+	if (GlobalVars.countEdits) {
+	    ++AsyncManager.doneOperations;
+	}
 	if (!Main.inEditRegion(b.getX(), b.getY(), b.getZ())) {
 	    return;
 	}

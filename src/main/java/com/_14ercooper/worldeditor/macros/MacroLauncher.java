@@ -6,6 +6,7 @@ import java.util.Map;
 import org.bukkit.Location;
 
 import com._14ercooper.worldeditor.macros.macros.Macro;
+import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.Operator;
 
@@ -28,7 +29,10 @@ public class MacroLauncher {
 	    return false;
 	}
 	String[] macroArgs = temp1.split(";");
-	return macros.get(macroName).performMacro(macroArgs, location);
+	GlobalVars.countEdits = true;
+	boolean returnVal = macros.get(macroName).performMacro(macroArgs, location);
+	GlobalVars.countEdits = false;
+	return returnVal;
     }
 
     public boolean addMacro(String name, Macro macro) {
