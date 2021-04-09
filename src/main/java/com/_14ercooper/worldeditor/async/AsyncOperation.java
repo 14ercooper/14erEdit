@@ -1,21 +1,20 @@
 package com._14ercooper.worldeditor.async;
 
-import java.util.ArrayDeque;
-import java.util.List;
-
-import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
-
 import com._14ercooper.schematics.SchemLite;
 import com._14ercooper.worldeditor.blockiterator.BlockIterator;
 import com._14ercooper.worldeditor.blockiterator.iterators.MultiIterator;
 import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.undo.Undo;
+import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
+
+import java.util.ArrayDeque;
+import java.util.List;
 
 public class AsyncOperation {
     protected String key = "";
     protected Operator operation = null;
-    protected ArrayDeque<Block> toOperate = null;
+    protected final ArrayDeque<Block> toOperate = null;
     protected BlockIterator blocks = null;
     protected Player player = null;
     protected Undo undo = null;

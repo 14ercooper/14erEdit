@@ -1,5 +1,10 @@
 package com._14ercooper.schematics;
 
+import com._14ercooper.worldeditor.blockiterator.BlockIterator;
+import com._14ercooper.worldeditor.main.GlobalVars;
+import com._14ercooper.worldeditor.main.Main;
+import org.bukkit.World;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -10,12 +15,6 @@ import java.nio.file.StandardCopyOption;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.bukkit.World;
-
-import com._14ercooper.worldeditor.blockiterator.BlockIterator;
-import com._14ercooper.worldeditor.main.GlobalVars;
-import com._14ercooper.worldeditor.main.Main;
 
 public class SchemLite {
 
@@ -70,25 +69,25 @@ public class SchemLite {
 	    xS = xE;
 	    xE = temp;
 	}
-	if (yMirror) {
-	    int temp = yS;
-	    yS = yE;
-	    yE = temp;
-	}
-	if (zMirror) {
-	    int temp = zS;
-	    zS = zE;
-	    zE = temp;
-	}
-	List<String> iterArgs = new ArrayList<String>();
-	iterArgs.add(Integer.toString(xS));
-	iterArgs.add(Integer.toString(yS));
-	iterArgs.add(Integer.toString(zS));
-	iterArgs.add(Integer.toString(xE));
-	iterArgs.add(Integer.toString(yE));
-	iterArgs.add(Integer.toString(zE));
-	iterArgs.add(Integer.toString(executionOrder));
-	return GlobalVars.iteratorManager.getIterator("cube").newIterator(iterArgs, world);
+        if (yMirror) {
+            int temp = yS;
+            yS = yE;
+            yE = temp;
+        }
+        if (zMirror) {
+            int temp = zS;
+            zS = zE;
+            zE = temp;
+        }
+        List<String> iterArgs = new ArrayList<>();
+        iterArgs.add(Integer.toString(xS));
+        iterArgs.add(Integer.toString(yS));
+        iterArgs.add(Integer.toString(zS));
+        iterArgs.add(Integer.toString(xE));
+        iterArgs.add(Integer.toString(yE));
+        iterArgs.add(Integer.toString(zE));
+        iterArgs.add(Integer.toString(executionOrder));
+        return GlobalVars.iteratorManager.getIterator("cube").newIterator(iterArgs, world);
     }
 
     // Reset the write position of the schem lite object

@@ -1,23 +1,22 @@
 package com._14ercooper.worldeditor.commands;
 
+import com._14ercooper.worldeditor.main.GlobalVars;
+import com._14ercooper.worldeditor.main.Main;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import com._14ercooper.worldeditor.main.GlobalVars;
-import com._14ercooper.worldeditor.main.Main;
 
 public class CommandAsync implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 	if (sender instanceof Player) {
-	    if (!((Player) sender).isOp()) {
-		sender.sendMessage("You must be opped to use 14erEdit");
-		return false;
-	    }
-	}
+        if (!sender.isOp()) {
+            sender.sendMessage("You must be opped to use 14erEdit");
+            return false;
+        }
+    }
 
 	try {
 	    if (args[0].equalsIgnoreCase("drop")) {

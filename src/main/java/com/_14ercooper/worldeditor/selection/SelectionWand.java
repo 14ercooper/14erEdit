@@ -10,7 +10,7 @@ public class SelectionWand {
     public Player owner; // Store the owner so people can have different selections
     public SelectionManager manager; // Same reason as above
 
-    public static String wandName = "Selection Wand";
+    public static final String wandName = "Selection Wand";
 
     // The wand has NBT so that it can be told apart from a standard axe
     // This determines if a new wand is needed, and if so, creates one

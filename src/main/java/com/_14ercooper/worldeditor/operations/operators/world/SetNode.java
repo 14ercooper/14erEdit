@@ -1,19 +1,18 @@
 package com._14ercooper.worldeditor.operations.operators.world;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.block.data.BlockData;
-
 import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.main.SetBlock;
 import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.operations.operators.Node;
 import com._14ercooper.worldeditor.operations.operators.query.BlockAtNode;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.block.data.BlockData;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 public class SetNode extends Node {
 
@@ -75,32 +74,31 @@ public class SetNode extends Node {
 	    }
 	    // Case only data to set, do the data merge
 	    if (setMaterial.equalsIgnoreCase("dataonly")) {
-		// Step 1, convert the old data into a map
-		Map<String, String> oldData = new HashMap<String, String>();
-		if (storedData.split("\\[").length < 2) {
-		    // This block doesn't support block data
-		    return true;
-		}
-		for (String s : storedData.split("\\[")[1].replaceAll("\\]", "").split(",")) {
-		    oldData.put(s.split("=")[0], s.split("=")[1]);
-		}
-		// Step 2, merge the new data into the map
-		for (String s : setData.split("\\[")[0].replaceAll("\\]", "").split(",")) {
-		    if (oldData.containsKey(s.split("=")[0]))
-			oldData.remove(s.split("=")[0]);
-		    oldData.put(s.split("=")[0], s.split("=")[1]);
-		}
-		// Step 3, rebuild the data and set
-		String newData = storedMaterial.toString().toLowerCase() + "[";
-		for (Entry<String, String> e : oldData.entrySet()) {
-		    newData = newData + e.getKey() + "=" + e.getValue() + ",";
-		}
-		newData = newData.substring(0, newData.length() - 1);
-		newData = newData + "]";
-		Operator.currentBlock.setBlockData(Bukkit.getServer().createBlockData(newData),
-			Operator.ignoringPhysics);
-		return storedMaterial == Material.matchMaterial(setMaterial) && !storedData.equalsIgnoreCase(setData);
-	    }
+            // Step 1, convert the old data into a map
+            Map<String, String> oldData = new HashMap<>();
+            if (storedData.split("\\[").length < 2) {
+                // This block doesn't support block data
+                return true;
+            }
+            for (String s : storedData.split("\\[")[1].replaceAll("\\]", "").split(",")) {
+                oldData.put(s.split("=")[0], s.split("=")[1]);
+            }
+            // Step 2, merge the new data into the map
+            for (String s : setData.split("\\[")[0].replaceAll("\\]", "").split(",")) {
+                oldData.remove(s.split("=")[0]);
+                oldData.put(s.split("=")[0], s.split("=")[1]);
+            }
+            // Step 3, rebuild the data and set
+            StringBuilder newData = new StringBuilder(storedMaterial.toString().toLowerCase() + "[");
+            for (Entry<String, String> e : oldData.entrySet()) {
+                newData.append(e.getKey()).append("=").append(e.getValue()).append(",");
+            }
+            newData = new StringBuilder(newData.substring(0, newData.length() - 1));
+            newData.append("]");
+            Operator.currentBlock.setBlockData(Bukkit.getServer().createBlockData(newData.toString()),
+                    Operator.ignoringPhysics);
+            return storedMaterial == Material.matchMaterial(setMaterial) && !storedData.equalsIgnoreCase(setData);
+        }
 	    // Case NBT only, merge nbt
 	    else if (setMaterial.equalsIgnoreCase("nbtonly")) {
 		String command = "data merge block " + Operator.currentBlock.getX() + " " + Operator.currentBlock.getY()

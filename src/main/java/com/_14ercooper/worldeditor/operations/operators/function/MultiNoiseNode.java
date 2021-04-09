@@ -1,19 +1,19 @@
 package com._14ercooper.worldeditor.operations.operators.function;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.operations.operators.Node;
 import com._14ercooper.worldeditor.operations.operators.core.NumberNode;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MultiNoiseNode extends Node {
 
     NumberNode noiseCount;
     NoiseNode noiseFunction;
-    List<Node> noises = new ArrayList<Node>();
+    final List<Node> noises = new ArrayList<>();
 
     @Override
     public MultiNoiseNode newNode() {

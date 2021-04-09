@@ -1,18 +1,5 @@
 package com._14ercooper.worldeditor.async;
 
-import java.io.IOException;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Queue;
-
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitScheduler;
-
 import com._14ercooper.schematics.SchemLite;
 import com._14ercooper.worldeditor.blockiterator.BlockIterator;
 import com._14ercooper.worldeditor.blockiterator.iterators.SchemBrushIterator;
@@ -22,6 +9,18 @@ import com._14ercooper.worldeditor.main.NBTExtractor;
 import com._14ercooper.worldeditor.main.SetBlock;
 import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.undo.UndoManager;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitScheduler;
+
+import java.io.IOException;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Queue;
 
 public class AsyncManager {
 
@@ -32,34 +31,29 @@ public class AsyncManager {
     boolean queueDropped = false;
 
     // Store operations
-    private ArrayList<AsyncOperation> operations = new ArrayList<AsyncOperation>();
-    private ArrayList<AsyncOperation> queuedOperations = new ArrayList<AsyncOperation>();
+    private ArrayList<AsyncOperation> operations = new ArrayList<>();
+    private ArrayList<AsyncOperation> queuedOperations = new ArrayList<>();
 
     // Store large operations
-    private Queue<AsyncOperation> largeOps = new ArrayDeque<AsyncOperation>();
+    private Queue<AsyncOperation> largeOps = new ArrayDeque<>();
 
     // On initialization start the scheduler
     public AsyncManager() {
-	BukkitScheduler scheduler = Bukkit.getServer().getScheduler();
-	scheduler.scheduleSyncRepeatingTask(GlobalVars.plugin, new Runnable() {
-	    @Override
-	    public void run() {
-		GlobalVars.asyncManager.performOperation();
-	    }
-	}, GlobalVars.ticksPerAsync, GlobalVars.ticksPerAsync);
+        BukkitScheduler scheduler = Bukkit.getServer().getScheduler();
+        scheduler.scheduleSyncRepeatingTask(GlobalVars.plugin, () -> GlobalVars.asyncManager.performOperation(), GlobalVars.ticksPerAsync, GlobalVars.ticksPerAsync);
     }
 
     // Drops the async queue
     public void dropAsync() {
-	Main.logDebug("Async queue dropped.");
-	for (AsyncOperation asyncOp : operations) {
-	    if (asyncOp.undo != null && asyncOp.undoRunning)
-		asyncOp.undo.finishUndo();
-	}
-	operations = new ArrayList<AsyncOperation>();
-	queuedOperations = new ArrayList<AsyncOperation>();
-	largeOps = new ArrayDeque<AsyncOperation>();
-	queueDropped = true;
+        Main.logDebug("Async queue dropped.");
+        for (AsyncOperation asyncOp : operations) {
+            if (asyncOp.undo != null && asyncOp.undoRunning)
+                asyncOp.undo.finishUndo();
+        }
+        operations = new ArrayList<>();
+        queuedOperations = new ArrayList<>();
+        largeOps = new ArrayDeque<>();
+        queueDropped = true;
     }
 
     // How many blocks do we have less
@@ -200,24 +194,20 @@ public class AsyncManager {
 
     // Confirm large edits
     public void confirmEdits(int number) {
-	number = number < 1 ? 1 : number > largeOps.size() ? largeOps.size() : number;
-	Main.logDebug("Confirming " + number + " large edits.");
-//	if (number < largeOps.size())
-//	    return;
-	while (number-- > 0) {
-	    queuedOperations.add(largeOps.remove());
-	}
+        number = number < 1 ? 1 : Math.min(number, largeOps.size());
+        Main.logDebug("Confirming " + number + " large edits.");
+        while (number-- > 0) {
+            queuedOperations.add(largeOps.remove());
+        }
     }
 
     // Cancel large edits
     public void cancelEdits(int number) {
-	number = number < 1 ? 1 : number > largeOps.size() ? largeOps.size() : number;
-	Main.logDebug("Cancelling " + number + " large edits.");
-//	if (number < largeOps.size())
-//	    return;
-	while (number-- > 0) {
-	    largeOps.remove();
-	}
+        number = number < 1 ? 1 : Math.min(number, largeOps.size());
+        Main.logDebug("Cancelling " + number + " large edits.");
+        while (number-- > 0) {
+            largeOps.remove();
+        }
     }
     
     public static long doneOperations = 0;

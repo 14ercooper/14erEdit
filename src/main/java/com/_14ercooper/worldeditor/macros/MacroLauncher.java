@@ -1,18 +1,17 @@
 package com._14ercooper.worldeditor.macros;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.bukkit.Location;
-
 import com._14ercooper.worldeditor.macros.macros.Macro;
 import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.Operator;
+import org.bukkit.Location;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class MacroLauncher {
 
-    Map<String, Macro> macros = new HashMap<String, Macro>();
+    final Map<String, Macro> macros = new HashMap<>();
 
     // This allows for macros to be launched and executed
     public boolean launchMacro(String macro, Location location) {
@@ -35,11 +34,10 @@ public class MacroLauncher {
 	return returnVal;
     }
 
-    public boolean addMacro(String name, Macro macro) {
-	if (macros.containsKey(name)) {
-	    return false;
-	}
-	macros.put(name, macro);
-	return true;
+    public void addMacro(String name, Macro macro) {
+        if (macros.containsKey(name)) {
+            return;
+        }
+        macros.put(name, macro);
     }
 }

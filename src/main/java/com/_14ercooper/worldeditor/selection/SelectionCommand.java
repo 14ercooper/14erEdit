@@ -1,15 +1,14 @@
 package com._14ercooper.worldeditor.selection;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-
-import org.bukkit.entity.Player;
-
 import com._14ercooper.worldeditor.blockiterator.BlockIterator;
 import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.Operator;
+import org.bukkit.entity.Player;
+
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 public class SelectionCommand {
     public static boolean performCommand(String[] args, Player player) {
@@ -262,25 +261,24 @@ public class SelectionCommand {
     }
 
     // Operate on the selection
-    @SuppressWarnings("static-access")
     private static boolean operate(SelectionManager manager, SelectionWand wand, String[] brushOperation) {
-	// Build an array of blocks within this selection
-	BlockIterator blockArray = manager.getBlocks(wand.owner.getWorld());
-	Main.logDebug("Block array size is " + Long.toString(blockArray.getTotalBlocks())); // -----
+		// Build an array of blocks within this selection
+		BlockIterator blockArray = manager.getBlocks(wand.owner.getWorld());
+		Main.logDebug("Block array size is " + blockArray.getTotalBlocks()); // -----
 
-	// Construct the operation
-	int brushOpOffset = 2;
-	List<String> opArray = new LinkedList<String>(Arrays.asList(brushOperation));
-	while (brushOpOffset > 0) {
-	    opArray.remove(0);
-	    brushOpOffset--;
-	}
-	// Construct the string
-	String opStr = "";
-	for (String s : opArray) {
-	    opStr = opStr.concat(s).concat(" ");
-	}
-	// And turn the string into an operation
+		// Construct the operation
+		int brushOpOffset = 2;
+		List<String> opArray = new LinkedList<>(Arrays.asList(brushOperation));
+		while (brushOpOffset > 0) {
+			opArray.remove(0);
+			brushOpOffset--;
+		}
+		// Construct the string
+		String opStr = "";
+		for (String s : opArray) {
+			opStr = opStr.concat(s).concat(" ");
+		}
+		// And turn the string into an operation
 	Operator operator = new Operator(opStr, wand.owner);
 
 	GlobalVars.asyncManager.scheduleEdit(operator, wand.owner, blockArray);

@@ -1,5 +1,13 @@
 package com._14ercooper.worldeditor.operations.operators.core;
 
+import com._14ercooper.worldeditor.main.GlobalVars;
+import com._14ercooper.worldeditor.main.Main;
+import com._14ercooper.worldeditor.operations.Operator;
+import com._14ercooper.worldeditor.operations.operators.Node;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
+
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -7,19 +15,10 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.entity.Player;
-
-import com._14ercooper.worldeditor.main.GlobalVars;
-import com._14ercooper.worldeditor.main.Main;
-import com._14ercooper.worldeditor.operations.Operator;
-import com._14ercooper.worldeditor.operations.operators.Node;
-
 public class TemplateNode extends Node {
 
     String filename;
-    List<String> args = new ArrayList<String>();
+    final List<String> args = new ArrayList<>();
 
     @Override
     public TemplateNode newNode() {

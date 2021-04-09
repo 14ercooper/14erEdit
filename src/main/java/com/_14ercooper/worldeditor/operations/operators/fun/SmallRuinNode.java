@@ -1,14 +1,13 @@
 package com._14ercooper.worldeditor.operations.operators.fun;
 
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
-
 import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.operations.operators.Node;
 import com._14ercooper.worldeditor.operations.operators.function.RangeNode;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 
 public class SmallRuinNode extends Node {
 
@@ -28,18 +27,12 @@ public class SmallRuinNode extends Node {
 
     @Override
     public boolean performNode() {
-//	int xSize = (int) (rand.nextInt((int) (xMax.getMax() - xMax.getMin())) + xMax.getMin());
-//	int zSize = (int) (rand.nextInt((int) (zMax.getMax() - zMax.getMin())) + zMax.getMin());
-	int xSize = Main.randRange((int) xMax.getMin(), (int) xMax.getMax());
-	int zSize = Main.randRange((int) zMax.getMin(), (int) zMax.getMax());
+        int xSize = Main.randRange((int) xMax.getMin(), (int) xMax.getMax());
+        int zSize = Main.randRange((int) zMax.getMin(), (int) zMax.getMax());
 
 	int stackCount = Main.randRange((int) stackSize.getMin(), (int) stackSize.getMax());
-//	if (stackSize.getMax() == stackSize.getMin())
-//	    stackCount = (int) stackSize.getMax();
-//	else
-//	    stackCount = (int) (rand.nextInt((int) (stackSize.getMax() - stackSize.getMin())) + stackSize.getMin());
 
-	Block savedBlock = Operator.currentBlock;
+        Block savedBlock = Operator.currentBlock;
 
 	for (int ruinNum = 0; ruinNum < stackCount; ruinNum++) {
 	    Block currBlock = savedBlock.getRelative(BlockFace.UP, 4 * ruinNum);

@@ -1,19 +1,18 @@
 package com._14ercooper.worldeditor.blockiterator.iterators;
 
+import com._14ercooper.worldeditor.blockiterator.BlockIterator;
+import com._14ercooper.worldeditor.main.Main;
+import com._14ercooper.worldeditor.operations.Operator;
+import org.bukkit.World;
+import org.bukkit.block.Block;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import org.bukkit.World;
-import org.bukkit.block.Block;
-
-import com._14ercooper.worldeditor.blockiterator.BlockIterator;
-import com._14ercooper.worldeditor.main.Main;
-import com._14ercooper.worldeditor.operations.Operator;
-
 public class MultiIterator extends BlockIterator {
 
-    public List<BlockIterator> childIterators = new ArrayList<BlockIterator>();
+    public final List<BlockIterator> childIterators = new ArrayList<>();
 
     @Override
     public BlockIterator newIterator(List<String> args, World world) {

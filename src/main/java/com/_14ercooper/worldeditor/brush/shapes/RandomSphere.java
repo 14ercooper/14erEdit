@@ -1,14 +1,13 @@
 package com._14ercooper.worldeditor.brush.shapes;
 
-import java.util.LinkedList;
-import java.util.List;
-
-import org.bukkit.World;
-
 import com._14ercooper.worldeditor.blockiterator.BlockIterator;
 import com._14ercooper.worldeditor.brush.BrushShape;
 import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
+import org.bukkit.World;
+
+import java.util.LinkedList;
+import java.util.List;
 
 public class RandomSphere extends BrushShape {
 
@@ -18,16 +17,16 @@ public class RandomSphere extends BrushShape {
 
     @Override
     public BlockIterator GetBlocks(double x, double y, double z, World world) {
-	List<String> argList = new LinkedList<String>();
+        List<String> argList = new LinkedList<>();
 //	int radius = rand.nextInt(radiusMax - radiusMin) + radiusMin;
-	int radius = Main.randRange(radiusMin, radiusMax);
-	argList.add(Integer.toString((int) x));
-	argList.add(Integer.toString((int) y));
-	argList.add(Integer.toString((int) z));
-	argList.add(Integer.toString(radius));
-	argList.add(Integer.toString(0));
-	argList.add(correction);
-	return GlobalVars.iteratorManager.getIterator("sphere").newIterator(argList, world);
+        int radius = Main.randRange(radiusMin, radiusMax);
+        argList.add(Integer.toString((int) x));
+        argList.add(Integer.toString((int) y));
+        argList.add(Integer.toString((int) z));
+        argList.add(Integer.toString(radius));
+        argList.add(Integer.toString(0));
+        argList.add(correction);
+        return GlobalVars.iteratorManager.getIterator("sphere").newIterator(argList, world);
     }
 
     @Override
@@ -57,7 +56,7 @@ public class RandomSphere extends BrushShape {
 
     @Override
     public boolean gotEnoughArgs() {
-	return gotArgs > 1;
+        return gotArgs <= 1;
     }
 
 }

@@ -651,19 +651,6 @@ public class FastNoise {
 	return hash;
     }
 
-//	private static int Hash4D(int seed, int x, int y, int z, int w) {
-//		int hash = seed;
-//		hash ^= X_PRIME * x;
-//		hash ^= Y_PRIME * y;
-//		hash ^= Z_PRIME * z;
-//		hash ^= W_PRIME * w;
-//
-//		hash = hash * hash * hash * 60493;
-//		hash = (hash >> 13) ^ hash;
-//
-//		return hash;
-//	}
-
     private static float ValCoord2D(int seed, int x, int y) {
 	int n = seed;
 	n ^= X_PRIME * x;
@@ -1635,9 +1622,6 @@ public class FastNoise {
     public float GetSimplex(float x, float y) {
 	return SingleSimplex(m_seed, x * m_frequency, y * m_frequency);
     }
-
-    // private final static float F2 = (float) (1.0 / 2.0);
-    // private final static float G2 = (float) (1.0 / 4.0);
 
     private final static float SQRT3 = (float) 1.7320508075688772935274463415059;
     private final static float F2 = 0.5f * (SQRT3 - 1.0f);

@@ -1,18 +1,17 @@
 package com._14ercooper.worldeditor.operations.operators.world;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-
+import com._14ercooper.worldeditor.main.GlobalVars;
+import com._14ercooper.worldeditor.main.Main;
+import com._14ercooper.worldeditor.operations.Operator;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.BlockData;
 
-import com._14ercooper.worldeditor.main.GlobalVars;
-import com._14ercooper.worldeditor.main.Main;
-import com._14ercooper.worldeditor.operations.Operator;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 public class FacingNode extends BlockNode {
 
@@ -38,19 +37,19 @@ public class FacingNode extends BlockNode {
     @Override
     public String getData() {
 	try {
-	    BlockData dat = Bukkit.getServer().createBlockData(arg.getData());
+        BlockData dat = Bukkit.getServer().createBlockData(arg.getData());
 
-	    List<String> dirs = new ArrayList<String>();
-	    Block b = Operator.currentBlock;
-	    // And next to a solid block
-	    if (b.getRelative(BlockFace.NORTH).getType() != Material.AIR) {
-		dirs.add("[north=true]");
-	    }
-	    if (b.getRelative(BlockFace.EAST).getType() != Material.AIR) {
-		dirs.add("[east=true]");
-	    }
-	    if (b.getRelative(BlockFace.SOUTH).getType() != Material.AIR) {
-		dirs.add("[south=true]");
+        List<String> dirs = new ArrayList<>();
+        Block b = Operator.currentBlock;
+        // And next to a solid block
+        if (b.getRelative(BlockFace.NORTH).getType() != Material.AIR) {
+            dirs.add("[north=true]");
+        }
+        if (b.getRelative(BlockFace.EAST).getType() != Material.AIR) {
+            dirs.add("[east=true]");
+        }
+        if (b.getRelative(BlockFace.SOUTH).getType() != Material.AIR) {
+            dirs.add("[south=true]");
 	    }
 	    if (b.getRelative(BlockFace.WEST).getType() != Material.AIR) {
 		dirs.add("[west=true]");
@@ -63,11 +62,11 @@ public class FacingNode extends BlockNode {
 	    }
 
 	    if (dirs.size() > 0) {
-		String newData = arg.getBlock().toString().toLowerCase(Locale.ROOT);
-		newData += dirs.get(GlobalVars.rand.nextInt(dirs.size()));
-		BlockData newDat = Bukkit.getServer().createBlockData(newData);
-		dat = dat.merge(newDat);
-	    }
+            String newData = arg.getBlock().toLowerCase(Locale.ROOT);
+            newData += dirs.get(GlobalVars.rand.nextInt(dirs.size()));
+            BlockData newDat = Bukkit.getServer().createBlockData(newData);
+            dat = dat.merge(newDat);
+        }
 
 	    return dat.getAsString();
 	}

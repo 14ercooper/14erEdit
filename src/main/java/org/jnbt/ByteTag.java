@@ -111,10 +111,7 @@ public final class ByteTag extends Tag {
 	    return false;
 	}
 	final ByteTag other = (ByteTag) obj;
-	if (value != other.value) {
-	    return false;
-	}
-	return true;
+        return value == other.value;
     }
 
 }

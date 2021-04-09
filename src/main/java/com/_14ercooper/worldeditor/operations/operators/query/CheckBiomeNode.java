@@ -1,17 +1,17 @@
 package com._14ercooper.worldeditor.operations.operators.query;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.operations.operators.Node;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class CheckBiomeNode extends Node {
 
-    List<String> biomes = new ArrayList<String>();
+    final List<String> biomes = new ArrayList<>();
 
     @Override
     public Node newNode() {

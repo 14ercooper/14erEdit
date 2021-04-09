@@ -1,28 +1,27 @@
 package com._14ercooper.worldeditor.scripts.bundled.easyedit;
 
-import java.util.LinkedList;
-
-import org.bukkit.entity.Player;
-
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.scripts.Craftscript;
 import com._14ercooper.worldeditor.selection.SelectionManager;
+import org.bukkit.entity.Player;
+
+import java.util.LinkedList;
 
 public class ScriptCaternary extends Craftscript {
 
     @Override
-    public boolean perform(LinkedList<String> args, Player player, String label) {
-	try {
-	    String block = args.get(0);
-	    double step = 0.01;
-	    double droop = Double.parseDouble(args.get(1));
-	    if (args.size() > 2) {
-		step = Double.parseDouble(args.get(2));
-	    }
+    public void perform(LinkedList<String> args, Player player, String label) {
+        try {
+            String block = args.get(0);
+            double step = 0.01;
+            double droop = Double.parseDouble(args.get(1));
+            if (args.size() > 2) {
+                step = Double.parseDouble(args.get(2));
+            }
 
-	    double[] negativeCorner = SelectionManager.getSelectionManager(player).getPositionOne();
-	    double[] positiveCorner = SelectionManager.getSelectionManager(player).getPositionTwo();
+            double[] negativeCorner = SelectionManager.getSelectionManager(player).getPositionOne();
+            double[] positiveCorner = SelectionManager.getSelectionManager(player).getPositionTwo();
 	    double midpointY = ((positiveCorner[1] + negativeCorner[1]) * 0.5) - droop;
 
 	    double x0 = negativeCorner[0];
@@ -42,10 +41,8 @@ public class ScriptCaternary extends Craftscript {
 	}
 	catch (Exception e) {
 	    Main.logError("Error running Catenary script. Did you pass the correct arguments?", Operator.currentPlayer, e);
-	    return false;
-	}
+    }
 
-	return true;
     }
 
 }

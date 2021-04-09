@@ -2,7 +2,7 @@ package com._14ercooper.worldeditor.compat;
 
 public class WorldEditCompat {
     public static void init() {
-
+        // TODO
     }
 }
 

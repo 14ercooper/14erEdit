@@ -1,12 +1,12 @@
 package com._14ercooper.worldeditor.undo;
 
+import org.bukkit.entity.Player;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.entity.Player;
-
 public class UndoManager {
-    private static List<Undo> undoList = new ArrayList<Undo>();
+    private static final List<Undo> undoList = new ArrayList<>();
 
     public static Undo getUndo(Player owner) {
 	for (Undo u : undoList) {

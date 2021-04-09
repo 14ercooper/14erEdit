@@ -1,13 +1,12 @@
 package com._14ercooper.worldeditor.brush.shapes;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.bukkit.World;
-
 import com._14ercooper.worldeditor.blockiterator.BlockIterator;
 import com._14ercooper.worldeditor.brush.BrushShape;
 import com._14ercooper.worldeditor.main.GlobalVars;
+import org.bukkit.World;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class RotatedEllipse extends BrushShape {
 
@@ -16,17 +15,17 @@ public class RotatedEllipse extends BrushShape {
 
     @Override
     public BlockIterator GetBlocks(double x, double y, double z, World world) {
-	List<String> args = new ArrayList<String>();
-	args.add(Integer.toString((int) x));
-	args.add(Integer.toString((int) y));
-	args.add(Integer.toString((int) z));
-	args.add(hFD);
-	args.add(strL);
-	if (dZ.isEmpty()) {
-	    args.add(Double.toString((GlobalVars.rand.nextDouble() * 2) - 1));
-	    args.add(Double.toString((GlobalVars.rand.nextDouble() * 2) - 1));
-	    args.add(Double.toString((GlobalVars.rand.nextDouble() * 2) - 1));
-	}
+        List<String> args = new ArrayList<>();
+        args.add(Integer.toString((int) x));
+        args.add(Integer.toString((int) y));
+        args.add(Integer.toString((int) z));
+        args.add(hFD);
+        args.add(strL);
+        if (dZ.isEmpty()) {
+            args.add(Double.toString((GlobalVars.rand.nextDouble() * 2) - 1));
+            args.add(Double.toString((GlobalVars.rand.nextDouble() * 2) - 1));
+            args.add(Double.toString((GlobalVars.rand.nextDouble() * 2) - 1));
+        }
 	else {
 	    args.add(dX);
 	    args.add(dY);
@@ -69,7 +68,7 @@ public class RotatedEllipse extends BrushShape {
 
     @Override
     public boolean gotEnoughArgs() {
-	return gotArgs > 1;
+        return gotArgs <= 1;
     }
 
 }

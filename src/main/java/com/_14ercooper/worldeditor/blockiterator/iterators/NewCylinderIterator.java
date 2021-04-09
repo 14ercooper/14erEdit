@@ -1,19 +1,16 @@
 package com._14ercooper.worldeditor.blockiterator.iterators;
 
-import java.util.List;
-
-import org.bukkit.World;
-import org.bukkit.block.Block;
-
 import com._14ercooper.worldeditor.blockiterator.BlockIterator;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.Operator;
+import org.bukkit.World;
+import org.bukkit.block.Block;
+
+import java.util.List;
 
 public class NewCylinderIterator extends BlockIterator {
 
     long totalBlocks;
-//    long doneBlocks = 0;
-//    int x, y, z;
     int xC, yC, zC;
     double xS, yS, zS;
     int radMax;
@@ -23,31 +20,31 @@ public class NewCylinderIterator extends BlockIterator {
 
     @Override
     public NewCylinderIterator newIterator(List<String> args, World world) {
-	try {
-	    NewCylinderIterator iterator = new NewCylinderIterator();
+        try {
+            NewCylinderIterator iterator = new NewCylinderIterator();
 	    iterator.iterWorld = world;
 	    iterator.xC = Integer.parseInt(args.get(0)); // Center
 	    iterator.yC = Integer.parseInt(args.get(1));
 	    iterator.zC = Integer.parseInt(args.get(2));
-	    iterator.radMax = Integer.parseInt(args.get(3)); // Radius
-	    iterator.radCorr = Double.parseDouble(args.get(4));
-	    iterator.height = Integer.parseInt(args.get(5)); // Height
-	    iterator.xS = Double.parseDouble(args.get(6)); // Scaling stuff
-	    iterator.yS = Double.parseDouble(args.get(7));
-	    iterator.zS = Double.parseDouble(args.get(8));
+            iterator.radMax = Integer.parseInt(args.get(3)); // Radius
+            iterator.radCorr = Double.parseDouble(args.get(4));
+            iterator.height = Integer.parseInt(args.get(5)); // Height
+            iterator.xS = Double.parseDouble(args.get(6)); // Scaling stuff
+            iterator.yS = Double.parseDouble(args.get(7));
+            iterator.zS = Double.parseDouble(args.get(8));
 //	    iterator.dirMax = Math.max(iterator.height, iterator.radMax) + 2;
-	    iterator.dirMaxX = iterator.xS == 0 ? iterator.height : iterator.radMax;
-	    iterator.dirMaxY = iterator.yS == 0 ? iterator.height : iterator.radMax;
-	    iterator.dirMaxZ = iterator.zS == 0 ? iterator.height : iterator.radMax;
-	    iterator.totalBlocks = (2 * iterator.dirMaxX + 1) * (2 * iterator.dirMaxY + 1) * (2 * iterator.dirMaxZ + 1);
-	    iterator.x = -iterator.dirMaxX - 1;
-	    iterator.y = -iterator.dirMaxY;
-	    iterator.z = -iterator.dirMaxZ;
-	    while (iterator.y + iterator.yC < 0) {
-		iterator.y++;
-	    }
-	    return iterator;
-	}
+            iterator.dirMaxX = iterator.xS == 0 ? iterator.height : iterator.radMax;
+            iterator.dirMaxY = iterator.yS == 0 ? iterator.height : iterator.radMax;
+            iterator.dirMaxZ = iterator.zS == 0 ? iterator.height : iterator.radMax;
+            iterator.totalBlocks = (2L * iterator.dirMaxX + 1) * (2L * iterator.dirMaxY + 1) * (2L * iterator.dirMaxZ + 1);
+            iterator.x = -iterator.dirMaxX - 1;
+            iterator.y = -iterator.dirMaxY;
+            iterator.z = -iterator.dirMaxZ;
+            while (iterator.y + iterator.yC < 0) {
+                iterator.y++;
+            }
+            return iterator;
+        }
 	catch (Exception e) {
 	    Main.logError("Error creating new cylinder iterator. Please check your brush parameters.",
 		    Operator.currentPlayer, e);
@@ -58,22 +55,9 @@ public class NewCylinderIterator extends BlockIterator {
     @Override
     public Block getNext() {
 	while (true) {
-//	    x++;
-//	    doneBlocks++;
-//	    if (x > dirMax) {
-//		z++;
-//		x = -dirMax;
-//	    }
-//	    if (z > dirMax) {
-//		y++;
-//		z = -dirMax;
-//	    }
-//	    if (y > dirMax || y + yC > 255) {
-//		return null;
-//	    }
-	    if (incrXYZ(dirMaxX, dirMaxY, dirMaxZ, xC, yC, zC)) {
-		return null;
-	    }
+        if (incrXYZ(dirMaxX, dirMaxY, dirMaxZ, xC, yC, zC)) {
+            return null;
+        }
 
 	    // Max radius check
 	    if ((x * x) * xS + (y * y) * yS + (z * z) * zS >= (radMax + radCorr) * (radMax + radCorr)) {
@@ -86,12 +70,6 @@ public class NewCylinderIterator extends BlockIterator {
 	}
 
 	return iterWorld.getBlockAt(x + xC, y + yC, z + zC);
-//	try {
-//	    return Operator.currentPlayer.getWorld().getBlockAt(x + xC, y + yC, z + zC);
-//	}
-//	catch (NullPointerException e) {
-//	    return Bukkit.getWorlds().get(0).getBlockAt(x + xC, y + yC, z + zC);
-//	}
     }
 
     @Override

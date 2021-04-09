@@ -1,21 +1,21 @@
 package com._14ercooper.worldeditor.operations.type;
 
+import com._14ercooper.worldeditor.main.GlobalVars;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com._14ercooper.worldeditor.main.GlobalVars;
-
 public class ItemVar implements Serializable {
     private static final long serialVersionUID = 1L;
 
     String type = "";
     ColorText name = new ColorText();
-    List<ColorText> lore = new ArrayList<ColorText>();
-    Map<String, Integer> enchants = new HashMap<String, Integer>();
-    Map<String, String> attributes = new HashMap<String, String>();
+    List<ColorText> lore = new ArrayList<>();
+    Map<String, Integer> enchants = new HashMap<>();
+    Map<String, String> attributes = new HashMap<>();
     int count = 1;
     int flags = 0;
     int damage = 0;
@@ -23,76 +23,74 @@ public class ItemVar implements Serializable {
 
     // Get the item's NBT tag
     public String getNBT() {
-	String s = "{";
-	// Unbreakable
-	if (unbreakable) {
-	    s += "Unbreakable:1b";
-	}
-	else {
-	    s += "Unbreakable:0b";
-	}
-	// Damage
-	if (damage > 0) {
-	    s += ",Damage:" + damage;
-	}
+        StringBuilder s = new StringBuilder("{");
+        // Unbreakable
+        if (unbreakable) {
+            s.append("Unbreakable:1b");
+        } else {
+            s.append("Unbreakable:0b");
+        }
+        // Damage
+        if (damage > 0) {
+            s.append(",Damage:").append(damage);
+        }
 	// Display tags
 	if (!name.getText().isEmpty() || lore.size() > 0) {
-	    s += ",display:{";
-	    // Name
-	    if (!name.getText().isEmpty()) {
-		s += "Name:";
-		s += name.asNBT();
-		if (lore.size() > 0) {
-		    s += ",";
-		}
-	    }
-	    // Lore
-	    if (lore.size() > 0) {
-		s += "Lore:[";
-		for (int i = 0; i < lore.size(); i++) {
-		    s += lore.get(i).asNBT();
-		    if (i != lore.size() - 1) {
-			s += ",";
-		    }
-		}
-		s += "]";
-	    }
-	    s += "}";
-	}
+        s.append(",display:{");
+        // Name
+        if (!name.getText().isEmpty()) {
+            s.append("Name:");
+            s.append(name.asNBT());
+            if (lore.size() > 0) {
+                s.append(",");
+            }
+        }
+        // Lore
+        if (lore.size() > 0) {
+            s.append("Lore:[");
+            for (int i = 0; i < lore.size(); i++) {
+                s.append(lore.get(i).asNBT());
+                if (i != lore.size() - 1) {
+                    s.append(",");
+                }
+            }
+            s.append("]");
+        }
+        s.append("}");
+    }
 	// Flags
 	if (flags != 0) {
-	    s += ",HideFlags:" + flags;
-	}
+        s.append(",HideFlags:").append(flags);
+    }
 	// Enchants
 	if (enchants.size() > 0) {
-	    s += ",Enchantments:[";
-	    for (Map.Entry<String, Integer> entry : enchants.entrySet()) {
-		s += "{id:\"minecraft:";
-		s += entry.getKey().toLowerCase();
-		s += "\",lvl:" + entry.getValue() + "s},";
-	    }
-	    s = s.substring(0, s.length() - 1);
-	    s += "]";
-	}
+        s.append(",Enchantments:[");
+        for (Map.Entry<String, Integer> entry : enchants.entrySet()) {
+            s.append("{id:\"minecraft:");
+            s.append(entry.getKey().toLowerCase());
+            s.append("\",lvl:").append(entry.getValue()).append("s},");
+        }
+        s = new StringBuilder(s.substring(0, s.length() - 1));
+        s.append("]");
+    }
 	// Attributes
 	if (attributes.size() > 0) {
-	    s += ",AttributeModifiers:[";
-	    for (Map.Entry<String, String> entry : attributes.entrySet()) {
-		String[] mods = entry.getValue().split(",");
-		s += "{AttributeName:\"" + entry.getKey() + "\",";
-		s += "Name:\"" + entry.getKey() + "\",";
-		s += "Amount:" + mods[2] + ",";
-		s += "Operation:" + mods[0] + ",";
-		s += "UUIDLeast:" + (GlobalVars.rand.nextInt() % 1000000 + 1) + ",UUIDMost:"
-			+ (GlobalVars.rand.nextInt() % 1000000 + 1) + ",";
-		s += "Slot:\"" + mods[1] + "\"";
-		s += "},";
-	    }
-	    s = s.substring(0, s.length() - 1);
-	    s += "]";
-	}
-	s += "}";
-	return s;
+        s.append(",AttributeModifiers:[");
+        for (Map.Entry<String, String> entry : attributes.entrySet()) {
+            String[] mods = entry.getValue().split(",");
+            s.append("{AttributeName:\"").append(entry.getKey()).append("\",");
+            s.append("Name:\"").append(entry.getKey()).append("\",");
+            s.append("Amount:").append(mods[2]).append(",");
+            s.append("Operation:").append(mods[0]).append(",");
+            s.append("UUIDLeast:").append(GlobalVars.rand.nextInt() % 1000000 + 1).append(",UUIDMost:").append(GlobalVars.rand.nextInt() % 1000000 + 1).append(",");
+            s.append("Slot:\"").append(mods[1]).append("\"");
+            s.append("},");
+        }
+        s = new StringBuilder(s.substring(0, s.length() - 1));
+        s.append("]");
+    }
+        s.append("}");
+        return s.toString();
     }
 
     // Get the item as NBT (e.g. for nesting in other NBT)

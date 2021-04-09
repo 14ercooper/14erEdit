@@ -111,10 +111,7 @@ public final class IntTag extends Tag {
 	    return false;
 	}
 	final IntTag other = (IntTag) obj;
-	if (value != other.value) {
-	    return false;
-	}
-	return true;
+        return value == other.value;
     }
 
 }

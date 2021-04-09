@@ -5,8 +5,8 @@ import java.io.Serializable;
 public class ColorText implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    String text;
-    String color;
+    final String text;
+    final String color;
     String bold = "false";
     String italic = "false";
     String underlined = "false";
@@ -14,8 +14,8 @@ public class ColorText implements Serializable {
     String obfuscated = "false";
 
     public ColorText() {
-	text = "";
-	color = "white";
+        text = "";
+        color = "white";
     }
 
     public ColorText(String txt) {

@@ -1,9 +1,10 @@
 package com._14ercooper.worldeditor.macros.macros.nature;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-
+import com._14ercooper.worldeditor.macros.macros.Macro;
+import com._14ercooper.worldeditor.main.GlobalVars;
+import com._14ercooper.worldeditor.main.Main;
+import com._14ercooper.worldeditor.main.SetBlock;
+import com._14ercooper.worldeditor.operations.Operator;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -11,11 +12,9 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 
-import com._14ercooper.worldeditor.macros.macros.Macro;
-import com._14ercooper.worldeditor.main.GlobalVars;
-import com._14ercooper.worldeditor.main.Main;
-import com._14ercooper.worldeditor.main.SetBlock;
-import com._14ercooper.worldeditor.operations.Operator;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 public class VinesMacro extends Macro {
 
@@ -56,49 +55,49 @@ public class VinesMacro extends Macro {
     // Run this macro
     @Override
     public boolean performMacro(String[] args, Location loc) {
-	SetupMacro(args, loc);
+        SetupMacro(args, loc);
 
-	// Location of the brush
-	double x = pos.getX();
-	double y = pos.getY();
-	double z = pos.getZ();
+        // Location of the brush
+        double x = pos.getX();
+        double y = pos.getY();
+        double z = pos.getZ();
 
-	// Generate the sphere
-	int radiusInt = (int) Math.round(radius);
-	List<Block> blockArray = new ArrayList<Block>();
-	for (int rx = -radiusInt; rx <= radiusInt; rx++) {
-	    for (int rz = -radiusInt; rz <= radiusInt; rz++) {
-		for (int ry = -radiusInt; ry <= radiusInt; ry++) {
-		    if (rx * rx + ry * ry + rz * rz <= (radius + 0.5) * (radius + 0.5)) {
-			blockArray.add(
-				Operator.currentPlayer.getWorld().getBlockAt((int) x + rx, (int) y + ry, (int) z + rz));
-		    }
-		}
-	    }
-	}
-	Main.logDebug("Block array size: " + Integer.toString(blockArray.size())); // ----
+        // Generate the sphere
+        int radiusInt = (int) Math.round(radius);
+        List<Block> blockArray = new ArrayList<>();
+        for (int rx = -radiusInt; rx <= radiusInt; rx++) {
+            for (int rz = -radiusInt; rz <= radiusInt; rz++) {
+                for (int ry = -radiusInt; ry <= radiusInt; ry++) {
+                    if (rx * rx + ry * ry + rz * rz <= (radius + 0.5) * (radius + 0.5)) {
+                        blockArray.add(
+                                Operator.currentPlayer.getWorld().getBlockAt((int) x + rx, (int) y + ry, (int) z + rz));
+                    }
+                }
+            }
+        }
+        Main.logDebug("Block array size: " + blockArray.size()); // ----
 
-	// Create a snapshot array
-	List<BlockState> snapshotArray = new ArrayList<BlockState>();
-	for (Block b : blockArray) {
-	    snapshotArray.add(b.getState());
-	}
-	blockArray = null;
-	Main.logDebug(Integer.toString(snapshotArray.size()) + " blocks in snapshot array");
-	LinkedList<BlockState> operatedBlocks = new LinkedList<BlockState>();
+        // Create a snapshot array
+        List<BlockState> snapshotArray = new ArrayList<>();
+        for (Block b : blockArray) {
+            snapshotArray.add(b.getState());
+        }
+        blockArray = null;
+        Main.logDebug(snapshotArray.size() + " blocks in snapshot array");
+        LinkedList<BlockState> operatedBlocks = new LinkedList<>();
 
-	// OPERATE
-	List<Material> nonsolidBlocks = new ArrayList<Material>();
-	nonsolidBlocks.add(Material.AIR);
-	nonsolidBlocks.add(Material.VINE);
-	for (BlockState bs : snapshotArray) {
-	    Block b = Operator.currentPlayer.getWorld().getBlockAt(bs.getLocation());
-	    // Make sure this block is air
-	    if (b.getType() != Material.AIR || b.getRelative(BlockFace.DOWN).getType() != Material.AIR) {
-		continue;
-	    }
+        // OPERATE
+        List<Material> nonsolidBlocks = new ArrayList<>();
+        nonsolidBlocks.add(Material.AIR);
+        nonsolidBlocks.add(Material.VINE);
+        for (BlockState bs : snapshotArray) {
+            Block b = Operator.currentPlayer.getWorld().getBlockAt(bs.getLocation());
+            // Make sure this block is air
+            if (b.getType() != Material.AIR || b.getRelative(BlockFace.DOWN).getType() != Material.AIR) {
+                continue;
+            }
 
-	    // Check density
+            // Check density
 	    if (GlobalVars.rand.nextDouble() >= density) {
 		continue;
 	    }
@@ -106,18 +105,17 @@ public class VinesMacro extends Macro {
 	    String blockStateTop = "[";
 	    String blockState = "";
 	    if (block.equalsIgnoreCase("vine")) {
-		boolean firstState = true;
-		List<String> dirs = new ArrayList<String>();
-		// And next to a solid block
-		if (!nonsolidBlocks.contains(b.getRelative(BlockFace.NORTH).getType())) {
-		    if (firstState) {
-			firstState = false;
-		    }
-		    else {
-			blockStateTop = blockStateTop.concat(",");
-		    }
-		    blockStateTop = blockStateTop.concat("north=true");
-		    dirs.add("[north=true]");
+            boolean firstState = true;
+            List<String> dirs = new ArrayList<>();
+            // And next to a solid block
+            if (!nonsolidBlocks.contains(b.getRelative(BlockFace.NORTH).getType())) {
+                if (firstState) {
+                    firstState = false;
+                } else {
+                    blockStateTop = blockStateTop.concat(",");
+                }
+                blockStateTop = blockStateTop.concat("north=true");
+                dirs.add("[north=true]");
 		}
 		if (!nonsolidBlocks.contains(b.getRelative(BlockFace.EAST).getType())) {
 		    if (firstState) {
@@ -191,24 +189,23 @@ public class VinesMacro extends Macro {
 		state = b.getRelative(BlockFace.DOWN, i).getState();
 		if (state.getType() == Material.AIR) {
 		    state.setType(Material.matchMaterial(block));
-		    if (block.equalsIgnoreCase("vine"))
-			state.setBlockData(Bukkit.getServer().createBlockData("minecraft:vine" + blockState));
-		    operatedBlocks.add(state);
-		}
-		else {
-		    break; // Don't grow through solid blocks
-		}
-	    }
-	}
+            if (block.equalsIgnoreCase("vine"))
+                state.setBlockData(Bukkit.getServer().createBlockData("minecraft:vine" + blockState));
+            operatedBlocks.add(state);
+        } else {
+            break; // Don't grow through solid blocks
+        }
+        }
+        }
 
-	Main.logDebug("Operated on and now placing " + Integer.toString(operatedBlocks.size()) + " blocks");
-	// Apply the changes to the world
-	for (BlockState bs : operatedBlocks) {
-	    Block b = Operator.currentPlayer.getWorld().getBlockAt(bs.getLocation());
-	    SetBlock.setMaterial(b, bs.getType());
-	    b.setBlockData(bs.getBlockData());
-	}
+        Main.logDebug("Operated on and now placing " + operatedBlocks.size() + " blocks");
+        // Apply the changes to the world
+        for (BlockState bs : operatedBlocks) {
+            Block b = Operator.currentPlayer.getWorld().getBlockAt(bs.getLocation());
+            SetBlock.setMaterial(b, bs.getType());
+            b.setBlockData(bs.getBlockData());
+        }
 
-	return true;
+        return true;
     }
 }

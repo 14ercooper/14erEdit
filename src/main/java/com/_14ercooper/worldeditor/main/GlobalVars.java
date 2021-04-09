@@ -1,17 +1,16 @@
 package com._14ercooper.worldeditor.main;
 
-import java.util.Random;
-import java.util.Set;
-
-import org.bukkit.Material;
-import org.bukkit.plugin.Plugin;
-
 import com._14ercooper.worldeditor.async.AsyncManager;
 import com._14ercooper.worldeditor.blockiterator.IteratorManager;
 import com._14ercooper.worldeditor.macros.MacroLauncher;
 import com._14ercooper.worldeditor.operations.Parser;
 import com._14ercooper.worldeditor.scripts.CraftscriptManager;
 import com._14ercooper.worldeditor.undo.Undo;
+import org.bukkit.Material;
+import org.bukkit.plugin.Plugin;
+
+import java.util.Random;
+import java.util.Set;
 
 public class GlobalVars {
 
@@ -19,7 +18,7 @@ public class GlobalVars {
     public static int noiseSeed;
     public static SimplexNoise simplexNoise;
     public static Plugin plugin;
-    public static Random rand = new Random();
+    public static final Random rand = new Random();
 
     // Used to track undos
     public static Undo currentUndo = null;

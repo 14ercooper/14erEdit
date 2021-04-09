@@ -1,14 +1,13 @@
 package com._14ercooper.worldeditor.brush.shapes;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.bukkit.World;
-
 import com._14ercooper.worldeditor.blockiterator.BlockIterator;
 import com._14ercooper.worldeditor.brush.BrushShape;
 import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
+import org.bukkit.World;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class RandomCylinder extends BrushShape {
 
@@ -18,17 +17,17 @@ public class RandomCylinder extends BrushShape {
 
     @Override
     public BlockIterator GetBlocks(double x, double y, double z, World world) {
-	List<String> argList = new ArrayList<String>();
-	argList.add(Integer.toString((int) x));
-	argList.add(Integer.toString((int) y));
-	argList.add(Integer.toString((int) z));
+        List<String> argList = new ArrayList<>();
+        argList.add(Integer.toString((int) x));
+        argList.add(Integer.toString((int) y));
+        argList.add(Integer.toString((int) z));
 //	argList.add(Integer.toString(rand.nextInt(radiusMax - radiusMin) + radiusMin));
-	argList.add(Integer.toString(Main.randRange(radiusMin, radiusMax)));
-	argList.add(correction);
-	// Axis X
-	if (dimension.equalsIgnoreCase("x")) {
-	    argList.add("0");
-	    argList.add("1");
+        argList.add(Integer.toString(Main.randRange(radiusMin, radiusMax)));
+        argList.add(correction);
+        // Axis X
+        if (dimension.equalsIgnoreCase("x")) {
+            argList.add("0");
+            argList.add("1");
 	    argList.add("1");
 	}
 	// Axis Y
@@ -71,7 +70,7 @@ public class RandomCylinder extends BrushShape {
 
     @Override
     public boolean gotEnoughArgs() {
-	return argsGot > 3;
+        return argsGot <= 3;
     }
 
 }

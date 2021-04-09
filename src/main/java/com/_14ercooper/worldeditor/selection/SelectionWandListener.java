@@ -1,8 +1,6 @@
 package com._14ercooper.worldeditor.selection;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com._14ercooper.worldeditor.main.Main;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
@@ -15,13 +13,14 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import com._14ercooper.worldeditor.main.Main;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SelectionWandListener implements Listener {
 
     // Helps to differentiate between different player's selections and prevents
     // duplication
-    public static List<SelectionWand> wands = new ArrayList<SelectionWand>();
+    public static final List<SelectionWand> wands = new ArrayList<>();
 
     // If the player clicks, see if the selection needs updating
     @EventHandler
@@ -44,14 +43,10 @@ public class SelectionWandListener implements Listener {
 	ItemStack itemStack = p.getInventory().getItemInMainHand();
 	ItemMeta itemMeta = itemStack.getItemMeta();
 	try {
-	    if (itemMeta.getDisplayName().equals(SelectionWand.wandName)
-		    && itemStack.getType().equals(Material.WOODEN_AXE)
-		    && itemMeta.getEnchants().containsKey(Enchantment.MENDING)) {
-		isValidPlayer = true;
-	    }
-	    else
-		isValidPlayer = false;
-	}
+        isValidPlayer = itemMeta.getDisplayName().equals(SelectionWand.wandName)
+                && itemStack.getType().equals(Material.WOODEN_AXE)
+                && itemMeta.getEnchants().containsKey(Enchantment.MENDING);
+    }
 	catch (NullPointerException e) {
 	    isValidPlayer = false;
 	}

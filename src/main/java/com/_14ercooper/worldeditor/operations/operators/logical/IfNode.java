@@ -64,10 +64,7 @@ public class IfNode extends Node {
 //		Main.logDebug("else");
 		toReturn = arg3.performNode();
 	    }
-//	    if (!(arg3 instanceof ElseNode)) {
-//		toReturn = arg3.performNode() && toReturn;
-//	    }
-	    return toReturn;
+        return toReturn;
 	}
 	catch (Exception e) {
 	    Main.logError("Error performing if node. Please check your syntax.", Operator.currentPlayer, e);

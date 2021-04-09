@@ -5,11 +5,11 @@ import java.util.Map;
 
 public class IteratorManager {
 
-    Map<String, BlockIterator> iterators = new HashMap<String, BlockIterator>();
+    final Map<String, BlockIterator> iterators = new HashMap<>();
 
     // Register a new block iterator
-    public boolean addIterator(String key, BlockIterator iterator) {
-	return iterators.put(key, iterator) != null;
+    public void addIterator(String key, BlockIterator iterator) {
+        iterators.put(key, iterator);
     }
 
     // Get the referenced block iterator

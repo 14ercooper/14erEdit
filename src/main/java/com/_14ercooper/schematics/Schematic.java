@@ -1,13 +1,6 @@
 package com._14ercooper.schematics;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
+import java.io.*;
 import java.nio.file.Files;
 import java.util.LinkedList;
 
@@ -19,12 +12,11 @@ import java.util.LinkedList;
 // A material-based schematic system for Minecraft
 @SuppressWarnings("serial")
 public class Schematic implements Serializable {
-    private static int formatVersion = 3; // Stores the format of this schematic
-    private int[] origin = { 0, 0, 0 }; // Stores the origin/offset of this schematic
-    private int[] dimensions = { 0, 0, 0 }; // Stores the dimensions of this schematic
+    private final LinkedList<String> blockData; // This is where the block data of the schematic gets stored
+    private final LinkedList<String> blockEntityData; // NBT storage for block entities
     String author = "Unset", name = "Unset"; // Stores the author and name of this schematic
-    private LinkedList<String> blockData; // This is where the block data of the schematic gets stored
-    private LinkedList<String> blockEntityData; // NBT storage for block entities
+    private int[] origin = {0, 0, 0}; // Stores the origin/offset of this schematic
+    private int[] dimensions = {0, 0, 0}; // Stores the dimensions of this schematic
     @SuppressWarnings("unused")
     private LinkedList<String> entityData; // Not yet implemented
     @SuppressWarnings("unused")
@@ -63,11 +55,11 @@ public class Schematic implements Serializable {
 	blockEntityData = blockNbt;
     }
 
-    // Returns the format version of this schematic
-    // Schematics should not be loaded using a Schematic.class of a different
-    // version
-    public int getVersion() {
-	return formatVersion;
+    // Get the version compatibility of the schematic loader
+    // If the schematic loaded has a version not in this list, it should not be used
+    // and instead loaded with a compatible loader
+    public static int[] getLoaderVersion() {
+        return new int[]{3};
     }
 
     // Returns the origin of this schematic. The list should have 3 elements.
@@ -125,29 +117,20 @@ public class Schematic implements Serializable {
 	}
     }
 
-    // Get the version compatibility of the schematic loader
-    // If the schematic loaded has a version not in this list, it should not be used
-    // and instead loaded with a compatible loader
-    public static int[] getLoaderVersion() {
-	int[] fV = { 3 };
-	return fV;
-    }
-
     // Load a schematic from the specified path on disk
     // No file extension should be specified
     // Returns a schematic upon successful load, null otherwise
     public static Schematic loadSchematic(String filePath) {
-	System.out.println((new File(filePath).toPath()).toString());
-	Schematic schem = null;
-	try {
-	    ObjectInputStream oi = new ObjectInputStream(new FileInputStream(filePath));
-	    Object schematicObj = oi.readObject();
-	    schem = (Schematic) schematicObj;
-	    oi.close();
-	}
-	catch (FileNotFoundException e) {
-	    System.out.println("[Schematic] File not found while loading schematic");
-	}
+        System.out.println((new File(filePath).toPath()));
+        Schematic schem = null;
+        try {
+            ObjectInputStream oi = new ObjectInputStream(new FileInputStream(filePath));
+            Object schematicObj = oi.readObject();
+            schem = (Schematic) schematicObj;
+            oi.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("[Schematic] File not found while loading schematic");
+        }
 	catch (IOException e) {
 	    System.out.println("[Schematic] File I/O error while loading schematic");
 	}
@@ -155,5 +138,14 @@ public class Schematic implements Serializable {
 	    System.out.println("[Schematic] Class not found while loading schematic");
 	}
 	return schem;
+    }
+
+    // Returns the format version of this schematic
+    // Schematics should not be loaded using a Schematic.class of a different
+    // version
+    public int getVersion() {
+        // Stores the format of this schematic
+        int formatVersion = 3;
+        return formatVersion;
     }
 }

@@ -111,10 +111,7 @@ public final class FloatTag extends Tag {
 	    return false;
 	}
 	final FloatTag other = (FloatTag) obj;
-	if (Float.floatToIntBits(value) != Float.floatToIntBits(other.value)) {
-	    return false;
-	}
-	return true;
+        return Float.floatToIntBits(value) == Float.floatToIntBits(other.value);
     }
 
 }

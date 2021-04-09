@@ -1,10 +1,10 @@
 package com._14ercooper.worldeditor.operations.type;
 
+import com._14ercooper.worldeditor.operations.Operator;
+
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
-
-import com._14ercooper.worldeditor.operations.Operator;
 
 public class SpawnerVar implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -16,32 +16,32 @@ public class SpawnerVar implements Serializable {
     String maxDelay = "800";
     String maxNearby = "8";
     String requiredRange = "16";
-    Map<String, String> mobs = new HashMap<String, String>();
+    final Map<String, String> mobs = new HashMap<>();
     String firstName = "";
 
     public String getNBT() {
-	String s = "{";
-	// Spawner variables
-	s += "SpawnCount:" + spawnCount;
-	s += ",SpawnRange:" + spawnRange;
-	s += ",Delay:" + delay;
-	s += ",MinSpawnDelay:" + minDelay;
-	s += ",MaxSpawnDelay:" + maxDelay;
-	s += ",MaxNearbyEntities:" + maxNearby;
-	s += ",RequiredPlayerRange:" + requiredRange;
-	// First mob to spawn
-	s += ",SpawnData:" + Operator.monsterVars.get(firstName).asNBT();
-	// Spawn potentials
-	s += ",SpawnPotentials:[";
-	for (Map.Entry<String, String> entry : mobs.entrySet()) {
-	    s += "{Weight:" + entry.getValue();
-	    s += ",Entity:" + Operator.monsterVars.get(entry.getKey()).asNBT();
-	    s += "},";
-	}
-	s = s.substring(0, s.length() - 1);
-	s += "]";
-	s += "}";
-	return s;
+        StringBuilder s = new StringBuilder("{");
+        // Spawner variables
+        s.append("SpawnCount:").append(spawnCount);
+        s.append(",SpawnRange:").append(spawnRange);
+        s.append(",Delay:").append(delay);
+        s.append(",MinSpawnDelay:").append(minDelay);
+        s.append(",MaxSpawnDelay:").append(maxDelay);
+        s.append(",MaxNearbyEntities:").append(maxNearby);
+        s.append(",RequiredPlayerRange:").append(requiredRange);
+        // First mob to spawn
+        s.append(",SpawnData:").append(Operator.monsterVars.get(firstName).asNBT());
+        // Spawn potentials
+        s.append(",SpawnPotentials:[");
+        for (Map.Entry<String, String> entry : mobs.entrySet()) {
+            s.append("{Weight:").append(entry.getValue());
+            s.append(",Entity:").append(Operator.monsterVars.get(entry.getKey()).asNBT());
+            s.append("},");
+        }
+        s = new StringBuilder(s.substring(0, s.length() - 1));
+        s.append("]");
+        s.append("}");
+        return s.toString();
     }
 
     public void setCount(String cnt) {

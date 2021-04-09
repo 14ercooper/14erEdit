@@ -1,19 +1,18 @@
 package com._14ercooper.worldeditor.scripts;
 
+import com._14ercooper.worldeditor.main.GlobalVars;
+import com._14ercooper.worldeditor.main.Main;
+import com._14ercooper.worldeditor.undo.UndoManager;
+import org.bukkit.entity.Player;
+
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
-import org.bukkit.entity.Player;
-
-import com._14ercooper.worldeditor.main.GlobalVars;
-import com._14ercooper.worldeditor.main.Main;
-import com._14ercooper.worldeditor.undo.UndoManager;
-
 public class CraftscriptManager {
 
     // Stores registered scripts
-    Map<String, Craftscript> registeredScripts = new HashMap<String, Craftscript>();
+    final Map<String, Craftscript> registeredScripts = new HashMap<>();
 
     // Create a new manager
     public CraftscriptManager() {
@@ -21,9 +20,8 @@ public class CraftscriptManager {
     }
 
     // Register a new Craftscript, called by label label and handled by handler
-    public boolean registerCraftscript(String label, Craftscript handler) {
-	registeredScripts.put(label, handler);
-	return true;
+    public void registerCraftscript(String label, Craftscript handler) {
+        registeredScripts.put(label, handler);
     }
 
     // Run the Craftscript label, with arguments args, and player player

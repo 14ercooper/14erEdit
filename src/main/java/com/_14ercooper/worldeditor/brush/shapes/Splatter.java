@@ -1,16 +1,15 @@
 package com._14ercooper.worldeditor.brush.shapes;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import org.bukkit.World;
-
 import com._14ercooper.worldeditor.blockiterator.BlockIterator;
 import com._14ercooper.worldeditor.blockiterator.iterators.MultiIterator;
 import com._14ercooper.worldeditor.brush.BrushShape;
 import com._14ercooper.worldeditor.main.GlobalVars;
+import org.bukkit.World;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class Splatter extends BrushShape {
 
@@ -20,23 +19,23 @@ public class Splatter extends BrushShape {
 
     @Override
     public BlockIterator GetBlocks(double x, double y, double z, World world) {
-	int spheresGenerated = 0;
-	Set<BlockIterator> spheres = new HashSet<BlockIterator>();
-	while (spheresGenerated < sphereCount) {
-	    double xOff = GlobalVars.rand.nextInt((2 * splatterRadius) + 1) - splatterRadius;
-	    double yOff = GlobalVars.rand.nextInt((2 * splatterRadius) + 1) - splatterRadius;
-	    double zOff = GlobalVars.rand.nextInt((2 * splatterRadius) + 1) - splatterRadius;
-	    if (xOff * xOff + yOff * yOff + zOff * zOff < splatterRadius * splatterRadius + 0.5) {
-		List<String> argList = new ArrayList<String>();
-		argList.add(Integer.toString((int) (x + xOff)));
-		argList.add(Integer.toString((int) (y + yOff)));
-		argList.add(Integer.toString((int) (z + zOff)));
-		argList.add(Integer.toString(sphereRadius));
-		argList.add(Integer.toString(0));
-		argList.add(correction);
-		spheres.add(GlobalVars.iteratorManager.getIterator("sphere").newIterator(argList, world));
-		spheresGenerated++;
-	    }
+        int spheresGenerated = 0;
+        Set<BlockIterator> spheres = new HashSet<>();
+        while (spheresGenerated < sphereCount) {
+            double xOff = GlobalVars.rand.nextInt((2 * splatterRadius) + 1) - splatterRadius;
+            double yOff = GlobalVars.rand.nextInt((2 * splatterRadius) + 1) - splatterRadius;
+            double zOff = GlobalVars.rand.nextInt((2 * splatterRadius) + 1) - splatterRadius;
+            if (xOff * xOff + yOff * yOff + zOff * zOff < splatterRadius * splatterRadius + 0.5) {
+                List<String> argList = new ArrayList<>();
+                argList.add(Integer.toString((int) (x + xOff)));
+                argList.add(Integer.toString((int) (y + yOff)));
+                argList.add(Integer.toString((int) (z + zOff)));
+                argList.add(Integer.toString(sphereRadius));
+                argList.add(Integer.toString(0));
+                argList.add(correction);
+                spheres.add(GlobalVars.iteratorManager.getIterator("sphere").newIterator(argList, world));
+                spheresGenerated++;
+            }
 
 	}
 	return ((MultiIterator) GlobalVars.iteratorManager.getIterator("multi")).newIterator(spheres);
@@ -72,7 +71,7 @@ public class Splatter extends BrushShape {
 
     @Override
     public boolean gotEnoughArgs() {
-	return argsSeen > 2;
+        return argsSeen <= 2;
     }
 
 }

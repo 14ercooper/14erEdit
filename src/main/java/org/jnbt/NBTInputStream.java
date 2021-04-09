@@ -173,39 +173,38 @@ public final class NBTInputStream implements Closeable {
 	    int length = is.readInt();
 	    byte[] bytes = new byte[length];
 	    is.readFully(bytes);
-	    return new ByteArrayTag(name, bytes);
-	case NBTConstants.TYPE_STRING:
-	    length = is.readShort();
-	    bytes = new byte[length];
-	    is.readFully(bytes);
-	    return new StringTag(name, new String(bytes, NBTConstants.CHARSET));
-	case NBTConstants.TYPE_LIST:
-	    final int childType = is.readByte();
-	    length = is.readInt();
+		return new ByteArrayTag(name, bytes);
+		case NBTConstants.TYPE_STRING:
+			length = is.readShort();
+			bytes = new byte[length];
+			is.readFully(bytes);
+			return new StringTag(name, new String(bytes, NBTConstants.CHARSET));
+		case NBTConstants.TYPE_LIST:
+			final int childType = is.readByte();
+			length = is.readInt();
 
-	    final List<Tag> tagList = new ArrayList<Tag>();
-	    for (int i = 0; i < length; i++) {
-		final Tag tag = readTagPayload(childType, "", depth + 1);
-		if (tag instanceof EndTag) {
-		    throw new IOException("[JNBT] TAG_End not permitted in a list.");
-		}
-		tagList.add(tag);
-	    }
+			final List<Tag> tagList = new ArrayList<>();
+			for (int i = 0; i < length; i++) {
+				final Tag tag = readTagPayload(childType, "", depth + 1);
+				if (tag instanceof EndTag) {
+					throw new IOException("[JNBT] TAG_End not permitted in a list.");
+				}
+				tagList.add(tag);
+			}
 
-	    return new ListTag(name, NBTUtils.getTypeClass(childType), tagList);
-	case NBTConstants.TYPE_COMPOUND:
-	    final Map<String, Tag> tagMap = new HashMap<String, Tag>();
-	    while (true) {
-		final Tag tag = readTag(depth + 1);
-		if (tag instanceof EndTag) {
-		    break;
-		}
-		else {
-		    tagMap.put(tag.getName(), tag);
-		}
-	    }
+			return new ListTag(name, NBTUtils.getTypeClass(childType), tagList);
+		case NBTConstants.TYPE_COMPOUND:
+			final Map<String, Tag> tagMap = new HashMap<>();
+			while (true) {
+				final Tag tag = readTag(depth + 1);
+				if (tag instanceof EndTag) {
+					break;
+				} else {
+					tagMap.put(tag.getName(), tag);
+				}
+			}
 
-	    return new CompoundTag(name, tagMap);
+			return new CompoundTag(name, tagMap);
 	case NBTConstants.TYPE_INT_ARRAY:
 	    length = is.readInt();
 	    final int[] ints = new int[length];

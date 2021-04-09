@@ -1,13 +1,12 @@
 package com._14ercooper.worldeditor.functions.commands.player;
 
-import java.util.List;
-
-import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
-
 import com._14ercooper.worldeditor.functions.Function;
 import com._14ercooper.worldeditor.functions.commands.InterpreterCommand;
 import com._14ercooper.worldeditor.main.Main;
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
+
+import java.util.List;
 
 public class SetSlotCommand extends InterpreterCommand {
 
@@ -27,7 +26,6 @@ public class SetSlotCommand extends InterpreterCommand {
 	}
 	else {
 	    function.player.getInventory().setItem(slot, new ItemStack(toSet));
-	    ;
-	}
+    }
     }
 }

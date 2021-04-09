@@ -8,14 +8,8 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Set;
 
 public class Artifacts {
 
@@ -25,27 +19,27 @@ public class Artifacts {
     // Root of artifacts
     public static final String artifactsBase = "https://files.14erc.com/edit/mms/";
     // Map of artifacts by type
-    private static List<String> buildTools = new ArrayList<String>();
-    private static List<List<String>> servers = new ArrayList<List<String>>();
-    private static List<List<String>> plugins = new ArrayList<List<String>>();
+    private static List<String> buildTools = new ArrayList<>();
+    private static List<List<String>> servers = new ArrayList<>();
+    private static List<List<String>> plugins = new ArrayList<>();
 
     // Local artifacts
     // Format in file Type;MinecraftVersion;Name;File;Version
-    private static Map<String, Integer> localArtifacts = new HashMap<String, Integer>();
+    private static Map<String, Integer> localArtifacts = new HashMap<>();
 
     // List all artifacts of a certain type
     public static List<String> getVersions() {
-	Set<String> versions = new HashSet<String>();
-	for (Entry<String, Integer> entry : localArtifacts.entrySet()) {
-	    versions.add(entry.getKey().split(";")[1]);
-	}
-	List<String> toReturn = new ArrayList<String>();
-	for (String s : versions) {
-	    if (s.equalsIgnoreCase("all"))
-		continue;
-	    toReturn.add(s);
-	}
-	return toReturn;
+        Set<String> versions = new HashSet<>();
+        for (Entry<String, Integer> entry : localArtifacts.entrySet()) {
+            versions.add(entry.getKey().split(";")[1]);
+        }
+        List<String> toReturn = new ArrayList<>();
+        for (String s : versions) {
+            if (s.equalsIgnoreCase("all"))
+                continue;
+            toReturn.add(s);
+        }
+        return toReturn;
     }
 
     // Get the file path of the artifact
@@ -61,34 +55,33 @@ public class Artifacts {
 
     // Load local artifacts into the file
     public static void loadLocalArtifacts() throws IOException {
-	localArtifacts = new HashMap<String, Integer>();
-	if (!FileIO.exists("artifacts/local.mms"))
-	    return;
-	String[] artifacts = FileIO.readFromFile("artifacts/local.mms").split("&");
-	for (String s : artifacts) {
-	    List<String> data = new ArrayList<String>();
-	    data.addAll(Arrays.asList(s.split(";")));
-	    String data4 = data.get(4);
-	    data4 = data4.replace("\n", "").replace("\r", "");
-	    int ver = Integer.parseInt(data4);
-	    data.remove(4);
-	    String dat = "";
-	    for (int i = 0; i < 4; i++) {
-		dat += data.get(i) + ";";
-	    }
-	    dat = dat.substring(0, dat.length() - 1);
-	    localArtifacts.put(dat, ver);
-	}
+        localArtifacts = new HashMap<>();
+        if (FileIO.exists("artifacts/local.mms"))
+            return;
+        String[] artifacts = FileIO.readFromFile("artifacts/local.mms").split("&");
+        for (String s : artifacts) {
+            List<String> data = new ArrayList<>(Arrays.asList(s.split(";")));
+            String data4 = data.get(4);
+            data4 = data4.replace("\n", "").replace("\r", "");
+            int ver = Integer.parseInt(data4);
+            data.remove(4);
+            StringBuilder dat = new StringBuilder();
+            for (int i = 0; i < 4; i++) {
+                dat.append(data.get(i)).append(";");
+            }
+            dat = new StringBuilder(dat.substring(0, dat.length() - 1));
+            localArtifacts.put(dat.toString(), ver);
+        }
     }
 
     // Save local artifacts to file
     public static void saveLocalArtifacts() throws IOException {
-	String toSave = "";
-	for (Entry<String, Integer> e : localArtifacts.entrySet()) {
-	    toSave += e.getKey() + ";" + e.getValue() + "&";
-	}
-	toSave = toSave.substring(0, toSave.length() - 1);
-	FileIO.writeToFile("artifacts/local.mms", false, toSave);
+        StringBuilder toSave = new StringBuilder();
+        for (Entry<String, Integer> e : localArtifacts.entrySet()) {
+            toSave.append(e.getKey()).append(";").append(e.getValue()).append("&");
+        }
+        toSave = new StringBuilder(toSave.substring(0, toSave.length() - 1));
+        FileIO.writeToFile("artifacts/local.mms", false, toSave.toString());
     }
 
     // Get version of a local artifact
@@ -139,14 +132,14 @@ public class Artifacts {
     }
 
     public static List<String> getLocalArtifacts(String type, String version) {
-	String key = type + ";" + version;
-	List<String> artifacts = new ArrayList<String>();
-	for (Entry<String, Integer> entry : localArtifacts.entrySet()) {
-	    if (entry.getKey().contains(key)) {
-		artifacts.add(entry.getKey());
-	    }
-	}
-	return artifacts;
+        String key = type + ";" + version;
+        List<String> artifacts = new ArrayList<>();
+        for (Entry<String, Integer> entry : localArtifacts.entrySet()) {
+            if (entry.getKey().contains(key)) {
+                artifacts.add(entry.getKey());
+            }
+        }
+        return artifacts;
     }
 
     // Check for internet connectivity
@@ -166,37 +159,33 @@ public class Artifacts {
 
     // Grab new artifacts from the network
     private static void updateNetworkArtifactsList() throws IOException {
-	ArrayList<String> rows = new ArrayList<String>();
-	buildTools = new ArrayList<String>();
-	servers = new ArrayList<List<String>>();
-	plugins = new ArrayList<List<String>>();
-	rows.addAll(Arrays.asList(getTextFromURL(artifactsBase + "Artifacts.txt").split("&")));
-	int found = 0;
-	while (rows.size() > 0) {
-	    String[] data = rows.get(0).split(";");
-	    found++;
-	    rows.remove(0);
-	    if (data[0].equalsIgnoreCase("artifacts")) {
-		if (data[1].equalsIgnoreCase("this"))
-		    continue;
-		else
-		    rows.addAll(Arrays.asList(getTextFromURL(data[1]).split("&")));
+        buildTools = new ArrayList<>();
+        servers = new ArrayList<>();
+        plugins = new ArrayList<>();
+        ArrayList<String> rows = new ArrayList<>(Arrays.asList(getTextFromURL(artifactsBase + "Artifacts.txt").split("&")));
+        int found = 0;
+        while (rows.size() > 0) {
+            String[] data = rows.get(0).split(";");
+            found++;
+            rows.remove(0);
+            if (data[0].equalsIgnoreCase("artifacts")) {
+                if (data[1].equalsIgnoreCase("this"))
+                    continue;
+                else
+                    rows.addAll(Arrays.asList(getTextFromURL(data[1]).split("&")));
 	    }
 	    if (data[0].equalsIgnoreCase("buildtools")) {
-		ArrayList<String> list = new ArrayList<String>();
-		list.addAll(Arrays.asList(data));
+            ArrayList<String> list = new ArrayList<>(Arrays.asList(data));
 		list.remove(0);
 		buildTools = list;
 	    }
 	    if (data[0].equalsIgnoreCase("server")) {
-		ArrayList<String> list = new ArrayList<String>();
-		list.addAll(Arrays.asList(data));
+            ArrayList<String> list = new ArrayList<>(Arrays.asList(data));
 		list.remove(0);
 		servers.add(list);
 	    }
 	    if (data[0].equalsIgnoreCase("plugin")) {
-		ArrayList<String> list = new ArrayList<String>();
-		list.addAll(Arrays.asList(data));
+            ArrayList<String> list = new ArrayList<>(Arrays.asList(data));
 		list.remove(0);
 		plugins.add(list);
 	    }

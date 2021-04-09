@@ -1,17 +1,17 @@
 package com._14ercooper.worldeditor.operations.operators.function;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com._14ercooper.worldeditor.functions.Function;
 import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.operations.operators.core.NumberNode;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class FunctionNode extends NumberNode {
 
     String filename;
-    List<String> args = new ArrayList<String>();
+    final List<String> args = new ArrayList<>();
 
     @Override
     public FunctionNode newNode() {
@@ -42,10 +42,9 @@ public class FunctionNode extends NumberNode {
 
     @Override
     public double getValue(double center) {
-	Function fx = new Function(filename, args, Operator.currentPlayer, true);
-	double val = fx.run();
-//	Main.logDebug("Function return: " + val);
-	return val;
+        Function fx = new Function(filename, args, Operator.currentPlayer, true);
+        //	Main.logDebug("Function return: " + val);
+        return fx.run();
     }
 
     @Override
@@ -55,10 +54,9 @@ public class FunctionNode extends NumberNode {
 
     @Override
     public int getInt(int center) {
-	Function fx = new Function(filename, args, Operator.currentPlayer, true);
-	int val = (int) fx.run();
-//	Main.logDebug("Function return: " + val);
-	return val;
+        Function fx = new Function(filename, args, Operator.currentPlayer, true);
+        //	Main.logDebug("Function return: " + val);
+        return (int) fx.run();
     }
 
 }

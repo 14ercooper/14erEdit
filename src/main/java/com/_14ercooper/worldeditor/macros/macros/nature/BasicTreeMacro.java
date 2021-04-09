@@ -1,18 +1,17 @@
 package com._14ercooper.worldeditor.macros.macros.nature;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
-
 import com._14ercooper.worldeditor.macros.macros.Macro;
 import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.main.SetBlock;
 import com._14ercooper.worldeditor.operations.Operator;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class BasicTreeMacro extends Macro {
 
@@ -139,37 +138,37 @@ public class BasicTreeMacro extends Macro {
     }
 
     private void jungleTreeGenerator() {
-	// Calculate the size of the tree
-	double actVariance = ((GlobalVars.rand.nextDouble() * 2.0) - 1.0) * variance;
-	double treeSize = size + actVariance;
-	double eTopX = treeSize * 0.9;
-	double eTopZ = eTopX, eTopY = eTopX * 0.5;
+        // Calculate the size of the tree
+        double actVariance = ((GlobalVars.rand.nextDouble() * 2.0) - 1.0) * variance;
+        double treeSize = size + actVariance;
+        double eTopX = treeSize * 0.9;
+        double eTopY = eTopX * 0.5;
 
-	// Calculate the size and frequency of branches
-	double branchSize = treeSize * 0.35;
-	double branchVariance = variance * 0.35;
-	double branchStartHeight = treeSize * 0.4;
-	double branchFrequency = ((270.0 / treeSize) / (treeSize - branchStartHeight)) * 0.5;
-	double eBranchX = branchSize * 1.25;
-	double eBranchZ = eBranchX, eBranchY = eBranchX * 0.7;
+        // Calculate the size and frequency of branches
+        double branchSize = treeSize * 0.35;
+        double branchVariance = variance * 0.35;
+        double branchStartHeight = treeSize * 0.4;
+        double branchFrequency = ((270.0 / treeSize) / (treeSize - branchStartHeight)) * 0.5;
+        double eBranchX = branchSize * 1.25;
+        double eBranchY = eBranchX * 0.7;
 
-	// Stores the centers of the various ellipoids and starts of branches
-	Block currentBlock = Operator.currentPlayer.getWorld().getBlockAt(plantOn);
-	Block topBlock;
-	List<Block> branchEnds = new ArrayList<Block>();
-	List<Block> branchStarts = new ArrayList<Block>();
-	List<Block> trunkBlocks = new ArrayList<Block>();
-	List<Block> leafBlocks = new ArrayList<Block>();
+        // Stores the centers of the various ellipoids and starts of branches
+        Block currentBlock = Operator.currentPlayer.getWorld().getBlockAt(plantOn);
+        Block topBlock;
+        List<Block> branchEnds = new ArrayList<>();
+        List<Block> branchStarts = new ArrayList<>();
+        List<Block> trunkBlocks = new ArrayList<>();
+        List<Block> leafBlocks = new ArrayList<>();
 
-	// Generate the central trunk
-	for (int i = 1; i <= treeSize + ((treeSize * 0.25 > 7) ? (treeSize * 0.25) : 7); i++) {
-	    // Move the current block
-	    currentBlock = currentBlock.getRelative(BlockFace.UP);
+        // Generate the central trunk
+        for (int i = 1; i <= treeSize + ((treeSize * 0.25 > 7) ? (treeSize * 0.25) : 7); i++) {
+            // Move the current block
+            currentBlock = currentBlock.getRelative(BlockFace.UP);
 
-	    // Set the current block and other trunk blocks
-	    trunkBlocks.add(currentBlock);
-	    trunkBlocks.add(currentBlock.getRelative(BlockFace.NORTH));
-	    trunkBlocks.add(currentBlock.getRelative(BlockFace.EAST));
+            // Set the current block and other trunk blocks
+            trunkBlocks.add(currentBlock);
+            trunkBlocks.add(currentBlock.getRelative(BlockFace.NORTH));
+            trunkBlocks.add(currentBlock.getRelative(BlockFace.EAST));
 	    trunkBlocks.add(currentBlock.getRelative(BlockFace.NORTH_EAST));
 
 	    // Add a new branch if needed
@@ -241,15 +240,15 @@ public class BasicTreeMacro extends Macro {
 	int x = topBlock.getX(), y = topBlock.getY(), z = topBlock.getZ();
 	for (double rx = -eTopX; rx <= eTopX; rx++) {
 	    for (double ry = -(eTopY / 3.0); ry <= eTopY; ry++) {
-		for (double rz = -eTopZ; rz <= eTopZ; rz++) {
-		    double ellipsoidValue = (((rx * rx) / (eTopX * eTopX)) + ((ry * ry) / (eTopY * eTopY))
-			    + ((rz * rz) / (eTopZ * eTopZ)));
-		    if (ellipsoidValue <= (1.15)) {
-			leafBlocks.add(Operator.currentPlayer.getWorld().getBlockAt((int) (x + rx), (int) (y + ry),
-				(int) (z + rz)));
-		    }
-		}
-	    }
+            for (double rz = -eTopX; rz <= eTopX; rz++) {
+                double ellipsoidValue = (((rx * rx) / (eTopX * eTopX)) + ((ry * ry) / (eTopY * eTopY))
+                        + ((rz * rz) / (eTopX * eTopX)));
+                if (ellipsoidValue <= (1.15)) {
+                    leafBlocks.add(Operator.currentPlayer.getWorld().getBlockAt((int) (x + rx), (int) (y + ry),
+                            (int) (z + rz)));
+                }
+            }
+        }
 	}
 
 	// Generate the leaf semi-ellipses for the branches
@@ -259,15 +258,15 @@ public class BasicTreeMacro extends Macro {
 	    z = b.getZ();
 	    for (double rx = -eBranchX; rx <= eBranchX; rx++) {
 		for (double ry = -(eBranchY / 3.0); ry <= eBranchY / 2.0; ry++) {
-		    for (double rz = -eBranchZ; rz <= eBranchZ; rz++) {
-			double ellipsoidValue = (((rx * rx) / (eBranchX * eBranchX))
-				+ ((ry * ry) / (eBranchY * eBranchY)) + ((rz * rz) / (eBranchZ * eBranchZ)));
-			if (ellipsoidValue <= (1.15)) {
-			    leafBlocks.add(Operator.currentPlayer.getWorld().getBlockAt((int) (x + rx), (int) (y + ry),
-				    (int) (z + rz)));
-			}
-		    }
-		}
+            for (double rz = -eBranchX; rz <= eBranchX; rz++) {
+                double ellipsoidValue = (((rx * rx) / (eBranchX * eBranchX))
+                        + ((ry * ry) / (eBranchY * eBranchY)) + ((rz * rz) / (eBranchX * eBranchX)));
+                if (ellipsoidValue <= (1.15)) {
+                    leafBlocks.add(Operator.currentPlayer.getWorld().getBlockAt((int) (x + rx), (int) (y + ry),
+                            (int) (z + rz)));
+                }
+            }
+        }
 	    }
 	}
 
@@ -287,20 +286,19 @@ public class BasicTreeMacro extends Macro {
     }
 
     private void brownMushroomTreeGenerator() {
-	// Determine the size of the mushroom
-	double actVariance = ((GlobalVars.rand.nextDouble() * 2.0) - 1.0) * variance;
-	double treeSize = size + actVariance;
-	Main.logDebug("Generating mushroom of size " + Double.toString(treeSize)); // -----
+        // Determine the size of the mushroom
+        double actVariance = ((GlobalVars.rand.nextDouble() * 2.0) - 1.0) * variance;
+        double treeSize = size + actVariance;
+        Main.logDebug("Generating mushroom of size " + treeSize); // -----
 
-	// One, two, or 3 layer cap?
-	// Also calculate cap circle cutoffs
-	int numCaps = 0;
-	if (treeSize > 60) {
-	    Main.logDebug("5 cap mushroom"); // -----
-	    numCaps = 5;
-	}
-	else if (treeSize > 40) {
-	    Main.logDebug("4 cap mushroom"); // -----
+        // One, two, or 3 layer cap?
+        // Also calculate cap circle cutoffs
+        int numCaps = 0;
+        if (treeSize > 60) {
+            Main.logDebug("5 cap mushroom"); // -----
+            numCaps = 5;
+        } else if (treeSize > 40) {
+            Main.logDebug("4 cap mushroom"); // -----
 	    numCaps = 4;
 	}
 	else if (treeSize > 27) {
@@ -372,82 +370,82 @@ public class BasicTreeMacro extends Macro {
 	    }
 	    currentBlock = currentBlock.getRelative(BlockFace.UP);
 
-	    // Place the current block
-	    if (currentBlock.getType() == Material.AIR) {
-		SetBlock.setMaterial(currentBlock, trunk);
-	    }
-	}
-	currentBlock = currentBlock.getRelative(BlockFace.UP);
+        // Place the current block
+        if (currentBlock.getType() == Material.AIR) {
+            SetBlock.setMaterial(currentBlock, trunk);
+        }
+    }
+        currentBlock = currentBlock.getRelative(BlockFace.UP);
 
-	// Generate the three cap layers as needed
-	double x = currentBlock.getX(), y = currentBlock.getY(), z = currentBlock.getZ();
-	Main.logDebug(
-		"Generating cap at (" + Double.toString(x) + "," + Double.toString(y) + "," + Double.toString(z) + ")"); // -----
-	List<Block> capBlocks = new ArrayList<Block>();
-	if (numCaps >= 1) {
-	    Main.logDebug("Size 1 cap generating"); // -----
-	    for (double rx = -cap1Cut; rx <= cap1Cut; rx++) {
-		for (double rz = -cap1Cut; rz <= cap1Cut; rz++) {
-		    if ((rx * rx) + (rz * rz) <= ((cap1Cut + radiusCorrection) * (cap1Cut + radiusCorrection))) {
-			capBlocks.add(Operator.currentPlayer.getWorld().getBlockAt((int) (x + rx), (int) (y),
-				(int) (z + rz)));
-		    }
-		}
-	    }
-	    Main.logDebug("Number of blocks: " + Integer.toString(capBlocks.size())); // -----
-	}
+        // Generate the three cap layers as needed
+        double x = currentBlock.getX(), y = currentBlock.getY(), z = currentBlock.getZ();
+        Main.logDebug(
+                "Generating cap at (" + x + "," + y + "," + z + ")"); // -----
+        List<Block> capBlocks = new ArrayList<>();
+        if (numCaps >= 1) {
+            Main.logDebug("Size 1 cap generating"); // -----
+            for (double rx = -cap1Cut; rx <= cap1Cut; rx++) {
+                for (double rz = -cap1Cut; rz <= cap1Cut; rz++) {
+                    if ((rx * rx) + (rz * rz) <= ((cap1Cut + radiusCorrection) * (cap1Cut + radiusCorrection))) {
+                        capBlocks.add(Operator.currentPlayer.getWorld().getBlockAt((int) (x + rx), (int) (y),
+                                (int) (z + rz)));
+                    }
+                }
+            }
+            Main.logDebug("Number of blocks: " + capBlocks.size()); // -----
+        }
 	if (numCaps >= 2) {
-	    Main.logDebug("Size 2 cap generating"); // -----
-	    for (int rx = -(int) cap2Cut; rx <= cap2Cut; rx++) {
-		for (int rz = -(int) cap2Cut; rz <= cap2Cut; rz++) {
-		    if ((rx * rx) + (rz * rz) <= ((cap2Cut + radiusCorrection) * (cap2Cut + radiusCorrection))
-			    && (rx * rx) + (rz * rz) >= ((cap1Cut - radiusCorrection) * (cap1Cut - radiusCorrection))) {
-			capBlocks.add(Operator.currentPlayer.getWorld().getBlockAt((int) (x + rx), (int) (y - 1),
-				(int) (z + rz)));
-		    }
-		}
-	    }
-	    Main.logDebug("Number of blocks: " + Integer.toString(capBlocks.size())); // -----
-	}
+        Main.logDebug("Size 2 cap generating"); // -----
+        for (int rx = -(int) cap2Cut; rx <= cap2Cut; rx++) {
+            for (int rz = -(int) cap2Cut; rz <= cap2Cut; rz++) {
+                if ((rx * rx) + (rz * rz) <= ((cap2Cut + radiusCorrection) * (cap2Cut + radiusCorrection))
+                        && (rx * rx) + (rz * rz) >= ((cap1Cut - radiusCorrection) * (cap1Cut - radiusCorrection))) {
+                    capBlocks.add(Operator.currentPlayer.getWorld().getBlockAt((int) (x + rx), (int) (y - 1),
+                            (int) (z + rz)));
+                }
+            }
+        }
+        Main.logDebug("Number of blocks: " + capBlocks.size()); // -----
+    }
 	if (numCaps >= 3) {
-	    Main.logDebug("Size 3 cap generating"); // -----
-	    for (int rx = -(int) cap3Cut; rx <= cap3Cut; rx++) {
-		for (int rz = -(int) cap3Cut; rz <= cap3Cut; rz++) {
-		    if ((rx * rx) + (rz * rz) <= ((cap3Cut + radiusCorrection) * (cap3Cut + radiusCorrection))
-			    && (rx * rx) + (rz * rz) >= ((cap2Cut - radiusCorrection) * (cap2Cut - radiusCorrection))) {
-			capBlocks.add(Operator.currentPlayer.getWorld().getBlockAt((int) (x + rx), (int) (y - 2),
-				(int) (z + rz)));
-		    }
-		}
-	    }
-	    Main.logDebug("Number of blocks: " + Integer.toString(capBlocks.size())); // -----
-	}
+        Main.logDebug("Size 3 cap generating"); // -----
+        for (int rx = -(int) cap3Cut; rx <= cap3Cut; rx++) {
+            for (int rz = -(int) cap3Cut; rz <= cap3Cut; rz++) {
+                if ((rx * rx) + (rz * rz) <= ((cap3Cut + radiusCorrection) * (cap3Cut + radiusCorrection))
+                        && (rx * rx) + (rz * rz) >= ((cap2Cut - radiusCorrection) * (cap2Cut - radiusCorrection))) {
+                    capBlocks.add(Operator.currentPlayer.getWorld().getBlockAt((int) (x + rx), (int) (y - 2),
+                            (int) (z + rz)));
+                }
+            }
+        }
+        Main.logDebug("Number of blocks: " + capBlocks.size()); // -----
+    }
 	if (numCaps >= 4) {
-	    Main.logDebug("Size 4 cap generating"); // -----
-	    for (int rx = -(int) cap4Cut; rx <= cap4Cut; rx++) {
-		for (int rz = -(int) cap4Cut; rz <= cap4Cut; rz++) {
-		    if ((rx * rx) + (rz * rz) <= ((cap4Cut + radiusCorrection) * (cap4Cut + radiusCorrection))
-			    && (rx * rx) + (rz * rz) >= ((cap3Cut - radiusCorrection) * (cap3Cut - radiusCorrection))) {
-			capBlocks.add(Operator.currentPlayer.getWorld().getBlockAt((int) (x + rx), (int) (y - 3),
-				(int) (z + rz)));
-		    }
-		}
-	    }
-	    Main.logDebug("Number of blocks: " + Integer.toString(capBlocks.size())); // -----
-	}
+        Main.logDebug("Size 4 cap generating"); // -----
+        for (int rx = -(int) cap4Cut; rx <= cap4Cut; rx++) {
+            for (int rz = -(int) cap4Cut; rz <= cap4Cut; rz++) {
+                if ((rx * rx) + (rz * rz) <= ((cap4Cut + radiusCorrection) * (cap4Cut + radiusCorrection))
+                        && (rx * rx) + (rz * rz) >= ((cap3Cut - radiusCorrection) * (cap3Cut - radiusCorrection))) {
+                    capBlocks.add(Operator.currentPlayer.getWorld().getBlockAt((int) (x + rx), (int) (y - 3),
+                            (int) (z + rz)));
+                }
+            }
+        }
+        Main.logDebug("Number of blocks: " + capBlocks.size()); // -----
+    }
 	if (numCaps >= 5) {
-	    Main.logDebug("Size 5 cap generating"); // -----
-	    for (int rx = -(int) cap5Cut; rx <= cap5Cut; rx++) {
-		for (int rz = -(int) cap5Cut; rz <= cap5Cut; rz++) {
-		    if ((rx * rx) + (rz * rz) <= ((cap5Cut + radiusCorrection) * (cap5Cut + radiusCorrection))
-			    && (rx * rx) + (rz * rz) >= ((cap4Cut - radiusCorrection) * (cap4Cut - radiusCorrection))) {
-			capBlocks.add(Operator.currentPlayer.getWorld().getBlockAt((int) (x + rx), (int) (y - 2),
-				(int) (z + rz)));
-		    }
-		}
-	    }
-	    Main.logDebug("Number of blocks: " + Integer.toString(capBlocks.size())); // -----
-	}
+        Main.logDebug("Size 5 cap generating"); // -----
+        for (int rx = -(int) cap5Cut; rx <= cap5Cut; rx++) {
+            for (int rz = -(int) cap5Cut; rz <= cap5Cut; rz++) {
+                if ((rx * rx) + (rz * rz) <= ((cap5Cut + radiusCorrection) * (cap5Cut + radiusCorrection))
+                        && (rx * rx) + (rz * rz) >= ((cap4Cut - radiusCorrection) * (cap4Cut - radiusCorrection))) {
+                    capBlocks.add(Operator.currentPlayer.getWorld().getBlockAt((int) (x + rx), (int) (y - 2),
+                            (int) (z + rz)));
+                }
+            }
+        }
+        Main.logDebug("Number of blocks: " + capBlocks.size()); // -----
+    }
 
 	// Place the cap blocks
 	Main.logDebug("Placing cap blocks"); // -----
@@ -497,27 +495,27 @@ public class BasicTreeMacro extends Macro {
 		    }
 		}
 		currentBlock = currentBlock.getRelative(currentDirection);
-	    }
-	    currentBlock = currentBlock.getRelative(BlockFace.UP);
+        }
+        currentBlock = currentBlock.getRelative(BlockFace.UP);
 
-	    // Place the current block
-	    if (currentBlock.getType() == Material.AIR) {
-		SetBlock.setMaterial(currentBlock, trunk);
-	    }
-	}
+        // Place the current block
+        if (currentBlock.getType() == Material.AIR) {
+            SetBlock.setMaterial(currentBlock, trunk);
+        }
+    }
 
-	// Create the cap
-	List<Block> leafList = new ArrayList<Block>();
-	leafList.add(currentBlock.getRelative(BlockFace.UP));
-	leafList.add(currentBlock.getRelative(BlockFace.UP).getRelative(BlockFace.NORTH));
-	leafList.add(currentBlock.getRelative(BlockFace.UP).getRelative(BlockFace.NORTH_EAST));
-	leafList.add(currentBlock.getRelative(BlockFace.UP).getRelative(BlockFace.EAST));
-	leafList.add(currentBlock.getRelative(BlockFace.UP).getRelative(BlockFace.SOUTH_EAST));
-	leafList.add(currentBlock.getRelative(BlockFace.UP).getRelative(BlockFace.SOUTH));
-	leafList.add(currentBlock.getRelative(BlockFace.UP).getRelative(BlockFace.SOUTH_WEST));
-	leafList.add(currentBlock.getRelative(BlockFace.UP).getRelative(BlockFace.WEST));
-	leafList.add(currentBlock.getRelative(BlockFace.UP).getRelative(BlockFace.NORTH_WEST));
-	leafList.add(currentBlock.getRelative(BlockFace.NORTH, 2));
+        // Create the cap
+        List<Block> leafList = new ArrayList<>();
+        leafList.add(currentBlock.getRelative(BlockFace.UP));
+        leafList.add(currentBlock.getRelative(BlockFace.UP).getRelative(BlockFace.NORTH));
+        leafList.add(currentBlock.getRelative(BlockFace.UP).getRelative(BlockFace.NORTH_EAST));
+        leafList.add(currentBlock.getRelative(BlockFace.UP).getRelative(BlockFace.EAST));
+        leafList.add(currentBlock.getRelative(BlockFace.UP).getRelative(BlockFace.SOUTH_EAST));
+        leafList.add(currentBlock.getRelative(BlockFace.UP).getRelative(BlockFace.SOUTH));
+        leafList.add(currentBlock.getRelative(BlockFace.UP).getRelative(BlockFace.SOUTH_WEST));
+        leafList.add(currentBlock.getRelative(BlockFace.UP).getRelative(BlockFace.WEST));
+        leafList.add(currentBlock.getRelative(BlockFace.UP).getRelative(BlockFace.NORTH_WEST));
+        leafList.add(currentBlock.getRelative(BlockFace.NORTH, 2));
 	leafList.add(currentBlock.getRelative(BlockFace.EAST, 2));
 	leafList.add(currentBlock.getRelative(BlockFace.SOUTH, 2));
 	leafList.add(currentBlock.getRelative(BlockFace.WEST, 2));
@@ -626,26 +624,25 @@ public class BasicTreeMacro extends Macro {
 		curveCut += 1;
 	    }
 
-	    // Calculate the new corner block
-	    if (doCurve) {
-		currentBlock = currentBlock.getRelative(BlockFace.UP).getRelative(curveDirection);
-	    }
-	    else {
-		currentBlock = currentBlock.getRelative(BlockFace.UP);
-	    }
+        // Calculate the new corner block
+        if (doCurve) {
+            currentBlock = currentBlock.getRelative(BlockFace.UP).getRelative(curveDirection);
+        } else {
+            currentBlock = currentBlock.getRelative(BlockFace.UP);
+        }
 
-	    // Place the blocks as needed
-	    List<Block> blockList = new ArrayList<Block>();
-	    if (trunkSize == 2) {
-		blockList.add(currentBlock);
-		blockList.add(currentBlock.getRelative(BlockFace.NORTH));
-		blockList.add(currentBlock.getRelative(BlockFace.EAST));
-		blockList.add(currentBlock.getRelative(BlockFace.NORTH_EAST));
-		for (Block b : blockList) {
-		    SetBlock.setMaterial(b, trunk);
-		}
-	    }
-	    if (trunkSize == 3) {
+        // Place the blocks as needed
+        List<Block> blockList = new ArrayList<>();
+        if (trunkSize == 2) {
+            blockList.add(currentBlock);
+            blockList.add(currentBlock.getRelative(BlockFace.NORTH));
+            blockList.add(currentBlock.getRelative(BlockFace.EAST));
+            blockList.add(currentBlock.getRelative(BlockFace.NORTH_EAST));
+            for (Block b : blockList) {
+                SetBlock.setMaterial(b, trunk);
+            }
+        }
+        if (trunkSize == 3) {
 		blockList.add(currentBlock);
 		blockList.add(currentBlock.getRelative(BlockFace.NORTH));
 		blockList.add(currentBlock.getRelative(BlockFace.EAST));
@@ -654,31 +651,30 @@ public class BasicTreeMacro extends Macro {
 		blockList.add(currentBlock.getRelative(BlockFace.EAST, 2));
 		blockList.add(currentBlock.getRelative(BlockFace.NORTH_EAST, 2));
 		blockList.add(currentBlock.getRelative(BlockFace.NORTH_EAST).getRelative(BlockFace.NORTH));
-		blockList.add(currentBlock.getRelative(BlockFace.NORTH_EAST).getRelative(BlockFace.EAST));
-		for (Block b : blockList) {
-		    SetBlock.setMaterial(b, trunk);
-		}
-	    }
-	}
+            blockList.add(currentBlock.getRelative(BlockFace.NORTH_EAST).getRelative(BlockFace.EAST));
+            for (Block b : blockList) {
+                SetBlock.setMaterial(b, trunk);
+            }
+        }
+    }
 
-	// Place the semi-ellipse of leaves
-	double eX = treeSize * 0.75;
-	double eY = eX * 0.42;
-	double eZ = eX;
-	int x = currentBlock.getX(), y = currentBlock.getY(), z = currentBlock.getZ();
-	for (double rx = -eX; rx <= eX; rx++) {
-	    for (double ry = -(eY / 3.0); ry <= eY; ry++) {
-		for (double rz = -eZ; rz <= eZ; rz++) {
-		    double ellipsoidValue = (((rx * rx) / (eX * eX)) + ((ry * ry) / (eY * eY))
-			    + ((rz * rz) / (eZ * eZ)));
-		    if (ellipsoidValue <= (1.15)) {
-			Block toPlace = Operator.currentPlayer.getWorld().getBlockAt((int) (x + rx), (int) (y + ry),
-				(int) (z + rz));
-			if (toPlace.getType() == Material.AIR) {
-			    SetBlock.setMaterial(toPlace, leaves);
-			}
-		    }
-		}
+        // Place the semi-ellipse of leaves
+        double eX = treeSize * 0.75;
+        double eY = eX * 0.42;
+        int x = currentBlock.getX(), y = currentBlock.getY(), z = currentBlock.getZ();
+        for (double rx = -eX; rx <= eX; rx++) {
+            for (double ry = -(eY / 3.0); ry <= eY; ry++) {
+                for (double rz = -eX; rz <= eX; rz++) {
+                    double ellipsoidValue = (((rx * rx) / (eX * eX)) + ((ry * ry) / (eY * eY))
+                            + ((rz * rz) / (eX * eX)));
+                    if (ellipsoidValue <= (1.15)) {
+                        Block toPlace = Operator.currentPlayer.getWorld().getBlockAt((int) (x + rx), (int) (y + ry),
+                                (int) (z + rz));
+                        if (toPlace.getType() == Material.AIR) {
+                            SetBlock.setMaterial(toPlace, leaves);
+                        }
+                    }
+                }
 	    }
 	}
     }
@@ -687,27 +683,27 @@ public class BasicTreeMacro extends Macro {
 	// Create the vertical log
 	double actVariance = ((GlobalVars.rand.nextDouble() * 2.0) - 1.0) * variance;
 	double treeSize = size + actVariance;
-	Block currentBlock = Operator.currentPlayer.getWorld().getBlockAt(plantOn);
-	for (int i = 1; i <= treeSize; i++) {
-	    currentBlock = currentBlock.getRelative(BlockFace.UP);
-	    if (currentBlock.getType() == Material.AIR) {
-		SetBlock.setMaterial(currentBlock, trunk);
-	    }
-	}
+        Block currentBlock = Operator.currentPlayer.getWorld().getBlockAt(plantOn);
+        for (int i = 1; i <= treeSize; i++) {
+            currentBlock = currentBlock.getRelative(BlockFace.UP);
+            if (currentBlock.getType() == Material.AIR) {
+                SetBlock.setMaterial(currentBlock, trunk);
+            }
+        }
 
-	// Create the leaves
-	// First create an array of locations where leaves will go
-	List<Block> leafList = new ArrayList<Block>();
-	// These leaves are guaranteed
-	leafList.add(currentBlock.getRelative(BlockFace.UP));
-	leafList.add(currentBlock.getRelative(BlockFace.UP).getRelative(BlockFace.NORTH));
-	leafList.add(currentBlock.getRelative(BlockFace.UP).getRelative(BlockFace.SOUTH));
-	leafList.add(currentBlock.getRelative(BlockFace.UP).getRelative(BlockFace.EAST));
-	leafList.add(currentBlock.getRelative(BlockFace.UP).getRelative(BlockFace.WEST));
-	leafList.add(currentBlock.getRelative(BlockFace.NORTH));
-	leafList.add(currentBlock.getRelative(BlockFace.SOUTH));
-	leafList.add(currentBlock.getRelative(BlockFace.EAST));
-	leafList.add(currentBlock.getRelative(BlockFace.WEST));
+        // Create the leaves
+        // First create an array of locations where leaves will go
+        List<Block> leafList = new ArrayList<>();
+        // These leaves are guaranteed
+        leafList.add(currentBlock.getRelative(BlockFace.UP));
+        leafList.add(currentBlock.getRelative(BlockFace.UP).getRelative(BlockFace.NORTH));
+        leafList.add(currentBlock.getRelative(BlockFace.UP).getRelative(BlockFace.SOUTH));
+        leafList.add(currentBlock.getRelative(BlockFace.UP).getRelative(BlockFace.EAST));
+        leafList.add(currentBlock.getRelative(BlockFace.UP).getRelative(BlockFace.WEST));
+        leafList.add(currentBlock.getRelative(BlockFace.NORTH));
+        leafList.add(currentBlock.getRelative(BlockFace.SOUTH));
+        leafList.add(currentBlock.getRelative(BlockFace.EAST));
+        leafList.add(currentBlock.getRelative(BlockFace.WEST));
 	leafList.add(currentBlock.getRelative(BlockFace.DOWN).getRelative(BlockFace.NORTH));
 	leafList.add(currentBlock.getRelative(BlockFace.DOWN).getRelative(BlockFace.SOUTH));
 	leafList.add(currentBlock.getRelative(BlockFace.DOWN).getRelative(BlockFace.EAST));
@@ -820,31 +816,30 @@ public class BasicTreeMacro extends Macro {
 
     private void bushTreeGenerator() {
 	// Place the log block
-	Block baseBlock = Operator.currentPlayer.getWorld().getBlockAt(plantOn).getRelative(BlockFace.UP);
-	if (baseBlock.getType() == Material.AIR) {
-	    SetBlock.setMaterial(baseBlock, trunk);
-	}
+        Block baseBlock = Operator.currentPlayer.getWorld().getBlockAt(plantOn).getRelative(BlockFace.UP);
+        if (baseBlock.getType() == Material.AIR) {
+            SetBlock.setMaterial(baseBlock, trunk);
+        }
 
-	// Generate the ellipsoid of leaves
-	double actVariance = ((GlobalVars.rand.nextDouble() * 2.0) - 1.0) * variance;
-	double bushSize = size + actVariance;
-	double eX = bushSize * 0.55;
-	double eY = eX * 0.333;
-	double eZ = eX;
-	int x = baseBlock.getX(), y = baseBlock.getY(), z = baseBlock.getZ();
-	for (double rx = -eX; rx <= eX; rx++) {
-	    for (double ry = -eY; ry <= eY; ry++) {
-		for (double rz = -eZ; rz <= eZ; rz++) {
-		    double ellipsoidValue = (((rx * rx) / (eX * eX)) + ((ry * ry) / (eY * eY))
-			    + ((rz * rz) / (eZ * eZ)));
-		    if (ellipsoidValue <= (1.15)) {
-			Block toPlace = Operator.currentPlayer.getWorld().getBlockAt((int) (x + rx), (int) (y + ry),
-				(int) (z + rz));
-			// Further leaves are less likely to get placed
-			if (1.0 - (ellipsoidValue * 0.869565217) < (GlobalVars.rand.nextDouble() * 0.5)) {
-			    continue;
-			}
-			if (toPlace.getType() == Material.AIR) {
+        // Generate the ellipsoid of leaves
+        double actVariance = ((GlobalVars.rand.nextDouble() * 2.0) - 1.0) * variance;
+        double bushSize = size + actVariance;
+        double eX = bushSize * 0.55;
+        double eY = eX * 0.333;
+        int x = baseBlock.getX(), y = baseBlock.getY(), z = baseBlock.getZ();
+        for (double rx = -eX; rx <= eX; rx++) {
+            for (double ry = -eY; ry <= eY; ry++) {
+                for (double rz = -eX; rz <= eX; rz++) {
+                    double ellipsoidValue = (((rx * rx) / (eX * eX)) + ((ry * ry) / (eY * eY))
+                            + ((rz * rz) / (eX * eX)));
+                    if (ellipsoidValue <= (1.15)) {
+                        Block toPlace = Operator.currentPlayer.getWorld().getBlockAt((int) (x + rx), (int) (y + ry),
+                                (int) (z + rz));
+                        // Further leaves are less likely to get placed
+                        if (1.0 - (ellipsoidValue * 0.869565217) < (GlobalVars.rand.nextDouble() * 0.5)) {
+                            continue;
+                        }
+                        if (toPlace.getType() == Material.AIR) {
 			    SetBlock.setMaterial(toPlace, leaves);
 			}
 		    }
@@ -872,41 +867,37 @@ public class BasicTreeMacro extends Macro {
 	else if (treeHeight <= 60) {
 	    numSplits = 3;
 	    baseSize = 18;
-	}
-	else if (treeHeight <= 90) {
-	    numSplits = 4;
-	    baseSize = 36;
-	}
-	else {
-	    numSplits = 5;
-	    baseSize = 108;
-	}
+	} else if (treeHeight <= 90) {
+        numSplits = 4;
+        baseSize = 36;
+    } else {
+        numSplits = 5;
+        baseSize = 108;
+    }
 
-	// Variables needed by the generator
-	List<Location> endPoints = new ArrayList<Location>();
-	double leafBallSize = (treeHeight * 0.56) + 1.3;
+        // Variables needed by the generator
+        List<Location> endPoints = new ArrayList<>();
+        double leafBallSize = (treeHeight * 0.56) + 1.3;
 
-	// Generate the trunk of the tree
-	// This is done by generating a "stick" up (with some curves) then creating
-	// circles around it
-	double startBranchThickness = baseSize, nextBranchThickness = baseSize;
-	List<Location> branchStarts = new ArrayList<Location>();
-	branchStarts.add(Operator.currentPlayer.getWorld().getBlockAt(plantOn).getRelative(BlockFace.UP).getLocation());
-	double branchHeight = treeHeight;
-	for (int i = 1; i <= (numSplits + 1); i++) {
-	    Main.logDebug("i value of " + Integer.toString(i)); // -----
-	    List<Location> theseBranches = branchStarts;
-	    branchStarts = new ArrayList<Location>();
-	    // Adjust the length of branch to generate accordingly
-	    if (numSplits == 1) {
-		branchHeight *= 0.75;
-	    }
-	    else if (numSplits == 2) {
-		branchHeight *= 0.6666;
-	    }
-	    else if (numSplits == 3) {
-		branchHeight *= 0.59;
-	    }
+        // Generate the trunk of the tree
+        // This is done by generating a "stick" up (with some curves) then creating
+        // circles around it
+        double startBranchThickness = baseSize, nextBranchThickness = baseSize;
+        List<Location> branchStarts = new ArrayList<>();
+        branchStarts.add(Operator.currentPlayer.getWorld().getBlockAt(plantOn).getRelative(BlockFace.UP).getLocation());
+        double branchHeight = treeHeight;
+        for (int i = 1; i <= (numSplits + 1); i++) {
+            Main.logDebug("i value of " + i); // -----
+            List<Location> theseBranches = branchStarts;
+            branchStarts = new ArrayList<>();
+            // Adjust the length of branch to generate accordingly
+            if (numSplits == 1) {
+                branchHeight *= 0.75;
+            } else if (numSplits == 2) {
+                branchHeight *= 0.6666;
+            } else if (numSplits == 3) {
+                branchHeight *= 0.59;
+            }
 	    else if (numSplits == 4) {
 		branchHeight *= 0.54;
 	    }
@@ -925,8 +916,8 @@ public class BasicTreeMacro extends Macro {
 	    // Generate the stick up with circles around each layer
 	    // For the first branch, build up
 	    if (i == 1) {
-		Main.logDebug(
-			"First branch growing, number of locations equals " + Integer.toString(theseBranches.size())); // -----
+            Main.logDebug(
+                    "First branch growing, number of locations equals " + theseBranches.size()); // -----
 		for (Location startLoc : theseBranches) {
 		    // Grow up
 		    Block currentBlock = Operator.currentPlayer.getWorld().getBlockAt(startLoc);
@@ -995,17 +986,17 @@ public class BasicTreeMacro extends Macro {
 	    // For branches 2, 4, grow out N/S or E/W
 	    else if (i % 2 == 1) {
 
-		Main.logDebug("Even branch growing, number of locations " + Integer.toString(theseBranches.size())); // -----
-		for (Location startLoc : theseBranches) {
-		    // Case N/S
-		    if (GlobalVars.rand.nextBoolean()) {
-			// North branch
-			Block currentBlock = Operator.currentPlayer.getWorld().getBlockAt(startLoc);
-			for (int j = 1; j <= branchHeight; j++) {
-			    branchThickness -= branchTaper;
-			    // Place the central block
-			    if (currentBlock.getType() == Material.AIR) {
-				SetBlock.setMaterial(currentBlock, trunk);
+            Main.logDebug("Even branch growing, number of locations " + theseBranches.size()); // -----
+            for (Location startLoc : theseBranches) {
+                // Case N/S
+                if (GlobalVars.rand.nextBoolean()) {
+                    // North branch
+                    Block currentBlock = Operator.currentPlayer.getWorld().getBlockAt(startLoc);
+                    for (int j = 1; j <= branchHeight; j++) {
+                        branchThickness -= branchTaper;
+                        // Place the central block
+                        if (currentBlock.getType() == Material.AIR) {
+                            SetBlock.setMaterial(currentBlock, trunk);
 			    }
 
 			    // Build the disk
@@ -1182,17 +1173,17 @@ public class BasicTreeMacro extends Macro {
 	    // For branches 3, 5, grow out with one branch N/W/E/S and the other two rotated
 	    // 120 degrees
 	    else if (i % 2 == 0) {
-		Main.logDebug("Odd branch growing, number of locations " + Integer.toString(theseBranches.size())); // -----
-		for (Location startLoc : theseBranches) {
-		    if (GlobalVars.rand.nextBoolean()) {
-			// Case N
-			if (GlobalVars.rand.nextBoolean()) {
-			    // North branch
-			    Block currentBlock = Operator.currentPlayer.getWorld().getBlockAt(startLoc);
-			    for (int j = 1; j <= branchHeight; j++) {
-				branchThickness -= branchTaper;
-				// Place the central block
-				if (currentBlock.getType() == Material.AIR) {
+            Main.logDebug("Odd branch growing, number of locations " + theseBranches.size()); // -----
+            for (Location startLoc : theseBranches) {
+                if (GlobalVars.rand.nextBoolean()) {
+                    // Case N
+                    if (GlobalVars.rand.nextBoolean()) {
+                        // North branch
+                        Block currentBlock = Operator.currentPlayer.getWorld().getBlockAt(startLoc);
+                        for (int j = 1; j <= branchHeight; j++) {
+                            branchThickness -= branchTaper;
+                            // Place the central block
+                            if (currentBlock.getType() == Material.AIR) {
 				    SetBlock.setMaterial(currentBlock, trunk);
 				}
 
@@ -1783,30 +1774,30 @@ public class BasicTreeMacro extends Macro {
 	double branchSize3 = branchSize2 * (0.8 * GlobalVars.rand.nextDouble());
 	double leafSize3 = (branchSize3 * 0.361235) + 1.35425;
 
-	// These determine the density of branches
-	double branch2StartDensity = 0.4;
-	double branch3StartDensity = 0.7;
+        // These determine the density of branches
+        double branch2StartDensity = 0.4;
+        double branch3StartDensity = 0.7;
 
-	// These determine how far from the start the branches must be to start growing
-	double branch2StartOffset = branchSize1 * 0.5;
-	double branch3StartOffset = branchSize2 * 0.5;
+        // These determine how far from the start the branches must be to start growing
+        double branch2StartOffset = branchSize1 * 0.5;
+        double branch3StartOffset = branchSize2 * 0.5;
 
-	// Create some variables to store end points
-	List<Location> branch1Ends = new ArrayList<Location>();
-	List<Location> branch2Ends = new ArrayList<Location>();
-	List<Location> branch3Ends = new ArrayList<Location>();
-	List<Location> branch2Starts = new ArrayList<Location>();
-	List<Location> branch3Starts = new ArrayList<Location>();
+        // Create some variables to store end points
+        List<Location> branch1Ends = new ArrayList<>();
+        List<Location> branch2Ends = new ArrayList<>();
+        List<Location> branch3Ends = new ArrayList<>();
+        List<Location> branch2Starts = new ArrayList<>();
+        List<Location> branch3Starts = new ArrayList<>();
 
-	// Generate the first branch
-	Block currentBlock = Operator.currentPlayer.getWorld().getBlockAt(plantOn);
-	for (int i = 1; i < branchSize1; i++) {
-	    currentBlock = currentBlock.getRelative(BlockFace.UP);
-	    if (i >= branch2StartOffset && GlobalVars.rand.nextDouble() <= branch2StartDensity) {
-		branch2Starts.add(currentBlock.getLocation());
-	    }
-	    if (currentBlock.getType() == Material.AIR) {
-		SetBlock.setMaterial(currentBlock, trunk);
+        // Generate the first branch
+        Block currentBlock = Operator.currentPlayer.getWorld().getBlockAt(plantOn);
+        for (int i = 1; i < branchSize1; i++) {
+            currentBlock = currentBlock.getRelative(BlockFace.UP);
+            if (i >= branch2StartOffset && GlobalVars.rand.nextDouble() <= branch2StartDensity) {
+                branch2Starts.add(currentBlock.getLocation());
+            }
+            if (currentBlock.getType() == Material.AIR) {
+                SetBlock.setMaterial(currentBlock, trunk);
 	    }
 	}
 	branch1Ends.add(currentBlock.getLocation());

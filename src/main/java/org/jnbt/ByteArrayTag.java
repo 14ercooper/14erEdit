@@ -76,17 +76,17 @@ public final class ByteArrayTag extends Tag {
 	final StringBuilder hex = new StringBuilder();
 	for (final byte b : value) {
 	    final String hexDigits = Integer.toHexString(b).toUpperCase();
-	    if (hexDigits.length() == 1) {
-		hex.append("0");
-	    }
-	    hex.append(hexDigits).append(" ");
-	}
-	final String name = getName();
-	String append = "";
-	if ((name != null) && !name.equals("")) {
-	    append = "(\"" + getName() + "\")";
-	}
-	return "TAG_Byte_Array" + append + ": " + hex.toString();
+        if (hexDigits.length() == 1) {
+            hex.append("0");
+        }
+        hex.append(hexDigits).append(" ");
+    }
+        final String name = getName();
+        String append = "";
+        if ((name != null) && !name.equals("")) {
+            append = "(\"" + getName() + "\")";
+        }
+        return "TAG_Byte_Array" + append + ": " + hex;
     }
 
     /*
@@ -111,20 +111,17 @@ public final class ByteArrayTag extends Tag {
     @Override
     public boolean equals(final Object obj) {
 
-	if (this == obj) {
-	    return true;
-	}
-	if (!super.equals(obj)) {
-	    return false;
-	}
-	if (!(obj instanceof ByteArrayTag)) {
-	    return false;
-	}
-	final ByteArrayTag other = (ByteArrayTag) obj;
-	if (!Arrays.equals(value, other.value)) {
-	    return false;
-	}
-	return true;
+        if (this == obj) {
+            return true;
+        }
+        if (!super.equals(obj)) {
+            return false;
+        }
+        if (!(obj instanceof ByteArrayTag)) {
+            return false;
+        }
+        final ByteArrayTag other = (ByteArrayTag) obj;
+        return Arrays.equals(value, other.value);
     }
 
 }

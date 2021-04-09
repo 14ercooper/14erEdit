@@ -1,14 +1,13 @@
 package com._14ercooper.worldeditor.brush.shapes;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.bukkit.World;
-
 import com._14ercooper.worldeditor.blockiterator.BlockIterator;
 import com._14ercooper.worldeditor.brush.Brush;
 import com._14ercooper.worldeditor.brush.BrushShape;
 import com._14ercooper.worldeditor.main.GlobalVars;
+import org.bukkit.World;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Spike extends BrushShape {
 
@@ -17,17 +16,17 @@ public class Spike extends BrushShape {
 
     @Override
     public BlockIterator GetBlocks(double x, double y, double z, World world) {
-	List<String> args = new ArrayList<String>();
-	args.add(Integer.toString((int) x));
-	args.add(Integer.toString((int) y));
-	args.add(Integer.toString((int) z));
-	args.add(baseSizeMax);
-	args.add(baseSizeMin);
-	args.add(height);
-	args.add(Double.toString(Brush.currentPlayer.getLocation().getX()));
-	args.add(Double.toString(Brush.currentPlayer.getLocation().getY()));
-	args.add(Double.toString(Brush.currentPlayer.getLocation().getZ()));
-	return GlobalVars.iteratorManager.getIterator("spike").newIterator(args, world);
+        List<String> args = new ArrayList<>();
+        args.add(Integer.toString((int) x));
+        args.add(Integer.toString((int) y));
+        args.add(Integer.toString((int) z));
+        args.add(baseSizeMax);
+        args.add(baseSizeMin);
+        args.add(height);
+        args.add(Double.toString(Brush.currentPlayer.getLocation().getX()));
+        args.add(Double.toString(Brush.currentPlayer.getLocation().getY()));
+        args.add(Double.toString(Brush.currentPlayer.getLocation().getZ()));
+        return GlobalVars.iteratorManager.getIterator("spike").newIterator(args, world);
     }
 
     @Override
@@ -58,7 +57,7 @@ public class Spike extends BrushShape {
 
     @Override
     public boolean gotEnoughArgs() {
-	return gotArgs > 1;
+        return gotArgs <= 1;
     }
 
 }

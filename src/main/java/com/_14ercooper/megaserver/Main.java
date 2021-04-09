@@ -3,11 +3,7 @@ package com._14ercooper.megaserver;
 import java.io.File;
 import java.io.IOException;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class Main {
 
@@ -33,27 +29,27 @@ public class Main {
 		}
 
 		// Splash text
-		clearConsole();
-		System.out.println("14erEdit - Mapmaking Megaserver");
-		System.out.println("Contributors on the GitHub. Licensed under GPL-3.0. All rights reserved.");
-		System.out.println("Not affiliated with Mojang, Minecraft, or Microsoft.");
-		System.out.println("This is free software. You should not have paid for this.");
-		System.out.println("This software comes with no warranties.");
-		Thread.sleep(5000);
-		clearConsole();
+            clearConsole();
+            System.out.println("14erEdit - Mapmaking Megaserver");
+            System.out.println("Contributors on the GitHub. Licensed under GPL-3.0. All rights reserved.");
+            System.out.println("Not affiliated with Mojang, Minecraft, or Microsoft.");
+            System.out.println("This is free software. You should not have paid for this.");
+            System.out.println("This software comes with no warranties.");
+            Thread.sleep(5000);
+            clearConsole();
 
-		// First time setup
-		if (!FileIO.exists("init.mms")) {
-		    setup();
-		}
-		if (Artifacts.internetConnected()) {
-		    if (updateArtifacts) {
-			FileIO.deleteFile("artifacts", true);
-			FileIO.makePath("artifacts");
-			System.out.println("Redownloading all artifacts (this could take a LONG time)...");
-		    }
-		    Artifacts.updateArtifacts();
-		    System.out.println("Updated all artifacts");
+            // First time setup
+            if (FileIO.exists("init.mms")) {
+                setup();
+            }
+            if (Artifacts.internetConnected()) {
+                if (updateArtifacts) {
+                    FileIO.deleteFile("artifacts", true);
+                    FileIO.makePath("artifacts");
+                    System.out.println("Redownloading all artifacts (this could take a LONG time)...");
+                }
+                Artifacts.updateArtifacts();
+                System.out.println("Updated all artifacts");
 		}
 		Artifacts.loadLocalArtifacts();
 
@@ -61,8 +57,7 @@ public class Main {
 		while (true) {
 		    clearConsole();
 		    System.out.println("What profile?");
-		    ArrayList<String> profiles = new ArrayList<String>();
-		    profiles.addAll(FileIO.listFiles("profiles", true));
+            ArrayList<String> profiles = new ArrayList<>(FileIO.listFiles("profiles", true));
 		    if (profiles.size() == 0) {
 			newProfile();
 			continue;
@@ -99,28 +94,26 @@ public class Main {
 	    System.out.println("\t7) Back");
 	    System.out.print("  > ");
 	    int input = UserInput.numberRange(1, 7);
-	    // Load vars from disk
-	    ArrayList<String> vars = new ArrayList<String>();
-	    vars.addAll(Arrays.asList(FileIO.readFromFile("profiles/" + profile + "/data.mms").split("&")));
-	    String version = vars.get(0).replace("\n", "").replace("\r", "");
-	    String RAM = "";
-	    try {
-		RAM = vars.get(1).replace("\n", "").replace("\r", "");
-	    }
-	    catch (IndexOutOfBoundsException e) {
-		RAM = "2048";
-	    }
-	    List<String> plugins = new ArrayList<String>();
-	    for (int i = 2; i < vars.size(); i++) {
-		plugins.add(vars.get(i).replace("\n", "").replace("\r", ""));
-	    }
-	    // Start server
-	    if (input == 1) {
-		// Copy artifacts & 14erEdit data
-		String jarPath = Artifacts.getArtifactPath("Server", version, "Paper");
-		if (jarPath.equalsIgnoreCase("")) {
-		    System.out.println("Could not locate jar file");
-		    Thread.sleep(5000);
+        // Load vars from disk
+        ArrayList<String> vars = new ArrayList<>(Arrays.asList(FileIO.readFromFile("profiles/" + profile + "/data.mms").split("&")));
+        String version = vars.get(0).replace("\n", "").replace("\r", "");
+        String RAM = "";
+        try {
+            RAM = vars.get(1).replace("\n", "").replace("\r", "");
+        } catch (IndexOutOfBoundsException e) {
+            RAM = "2048";
+        }
+        List<String> plugins = new ArrayList<>();
+        for (int i = 2; i < vars.size(); i++) {
+            plugins.add(vars.get(i).replace("\n", "").replace("\r", ""));
+        }
+        // Start server
+        if (input == 1) {
+            // Copy artifacts & 14erEdit data
+            String jarPath = Artifacts.getArtifactPath("Server", version, "Paper");
+            if (jarPath.equalsIgnoreCase("")) {
+                System.out.println("Could not locate jar file");
+                Thread.sleep(5000);
 		}
 		FileIO.copyFile(jarPath, "profiles/" + profile + "/server.jar", false);
 		for (String s : plugins) {
@@ -154,8 +147,8 @@ public class Main {
 		    FileIO.deleteFile("profiles/" + profile + "/plugins/" + s + ".jar", false);
 		}
 		// Make backup
-		FileIO.zipDirectory(new File("profiles/" + profile), new File("backups"), profile,
-			profile + "_" + String.valueOf(Instant.now().getEpochSecond()));
+            FileIO.zipDirectory(new File("profiles/" + profile), new File("backups"), profile,
+                    profile + "_" + Instant.now().getEpochSecond());
 	    }
 	    // Change version
 	    if (input == 2) {
@@ -166,26 +159,26 @@ public class Main {
 	    }
 	    // Change plugins
 	    if (input == 3) {
-		plugins = new ArrayList<String>();
-		while (true) {
-		    System.out.println("Plugins to install:\nInstalled: ");
-		    for (String s : plugins) {
-			System.out.print(s + " ");
-		    }
-		    System.out.println();
-		    System.out.println("Install which plugins?");
-		    List<String> artifactList = Artifacts.getLocalArtifacts("Plugin", version);
-		    List<String> pluginList = new ArrayList<String>();
-		    for (String s : artifactList) {
-			pluginList.add(s.split(";")[2]);
-		    }
-		    pluginList.add("Done");
-		    String plugin = UserInput.fromList(pluginList);
-		    if (plugin.equalsIgnoreCase("done"))
-			break;
-		    if (plugins.contains(plugin))
-			plugins.remove(plugin);
-		    else
+            plugins = new ArrayList<>();
+            while (true) {
+                System.out.println("Plugins to install:\nInstalled: ");
+                for (String s : plugins) {
+                    System.out.print(s + " ");
+                }
+                System.out.println();
+                System.out.println("Install which plugins?");
+                List<String> artifactList = Artifacts.getLocalArtifacts("Plugin", version);
+                List<String> pluginList = new ArrayList<>();
+                for (String s : artifactList) {
+                    pluginList.add(s.split(";")[2]);
+                }
+                pluginList.add("Done");
+                String plugin = UserInput.fromList(pluginList);
+                if (plugin.equalsIgnoreCase("done"))
+                    break;
+                if (plugins.contains(plugin))
+                    plugins.remove(plugin);
+                else
 			plugins.add(plugin);
 		}
 	    }
@@ -204,78 +197,78 @@ public class Main {
 		    }
 		}
 	    }
-	    // Delete profile
-	    if (input == 6) {
-		System.out.println("Please type the profile name to confirm deletion.");
-		String confirmDelete = UserInput.patternMatch("[A-Za-z0-9\\-_]");
-		if (profile.contentEquals(confirmDelete)) {
-		    FileIO.deleteFile("profiles/" + profile, true);
-		    return;
-		}
-	    }
-	    // Save vars to disk
-	    String data = version + "&";
-	    data += RAM + "&";
-	    for (String s : plugins) {
-		data += s + "&";
-	    }
-	    data = data.substring(0, data.length() - 1);
-	    FileIO.writeToFile("profiles/" + profile + "/data.mms", false, data);
-	    // Back to profile select
-	    if (input == 7)
-		return;
-	}
+        // Delete profile
+        if (input == 6) {
+            System.out.println("Please type the profile name to confirm deletion.");
+            String confirmDelete = UserInput.patternMatch("[A-Za-z0-9\\-_]");
+            if (profile.contentEquals(confirmDelete)) {
+                FileIO.deleteFile("profiles/" + profile, true);
+                return;
+            }
+        }
+        // Save vars to disk
+        StringBuilder data = new StringBuilder(version + "&");
+        data.append(RAM).append("&");
+        for (String s : plugins) {
+            data.append(s).append("&");
+        }
+        data = new StringBuilder(data.substring(0, data.length() - 1));
+        FileIO.writeToFile("profiles/" + profile + "/data.mms", false, data.toString());
+        // Back to profile select
+        if (input == 7)
+            return;
+    }
     }
 
     // Make a new profile
     private static String newProfile() throws IOException {
-	// Name
-	System.out.println("Profile name? (alphanumeric only)");
-	String name = UserInput.patternMatch("[A-Za-z0-9\\-_]");
-	// Spigot version
-	List<String> versions = Artifacts.getVersions();
-	System.out.println("What Minecraft version?");
-	String version = UserInput.fromList(versions);
-	// Initial plugins
-	Set<String> plugins = new HashSet<String>();
-	while (true) {
-	    System.out.println("Plugins to install:\nInstalled: ");
-	    for (String s : plugins) {
-		System.out.print(s + " ");
-	    }
-	    System.out.println();
-	    System.out.println("Install which plugins?");
-	    List<String> artifactList = Artifacts.getLocalArtifacts("Plugin", version);
-	    List<String> pluginList = new ArrayList<String>();
-	    for (String s : artifactList) {
-		pluginList.add(s.split(";")[2]);
-	    }
-	    pluginList.add("Done");
-	    String plugin = UserInput.fromList(pluginList);
-	    if (plugin.equalsIgnoreCase("done"))
-		break;
-	    if (plugins.contains(plugin))
-		plugins.remove(plugin);
-	    else
-		plugins.add(plugin);
-	}
-	// Save to profile folder
-	String data = version + "&";
-	data += "2048&";
-	for (String s : plugins) {
-	    data += s + "&";
-	}
-	data = data.substring(0, data.length() - 1);
-	FileIO.makePath("profiles/" + name);
-	FileIO.makePath("profiles/" + name + "/plugins");
-	FileIO.writeToFile("profiles/" + name + "/data.mms", false, data);
-	// Make EULA and properties files
-	FileIO.writeToFile("profiles/" + name + "/" + "eula.txt", false, "eula=true");
-	String serverProps = Properties.server + "level-name=" + name;
-	FileIO.writeToFile("profiles/" + name + "/server.properties", false, serverProps);
-	FileIO.writeToFile("profiles/" + name + "/spigot.yml", false, Properties.spigot);
-	FileIO.writeToFile("profiles/" + name + "/paper.yml", false, Properties.paper);
-	return name;
+        // Name
+        System.out.println("Profile name? (alphanumeric only)");
+        String name = UserInput.patternMatch("[A-Za-z0-9\\-_]");
+        // Spigot version
+        List<String> versions = Artifacts.getVersions();
+        System.out.println("What Minecraft version?");
+        String version = UserInput.fromList(versions);
+        // Initial plugins
+        Set<String> plugins = new HashSet<>();
+        while (true) {
+            System.out.println("Plugins to install:\nInstalled: ");
+            for (String s : plugins) {
+                System.out.print(s + " ");
+            }
+            System.out.println();
+            System.out.println("Install which plugins?");
+            List<String> artifactList = Artifacts.getLocalArtifacts("Plugin", version);
+            List<String> pluginList = new ArrayList<>();
+            for (String s : artifactList) {
+                pluginList.add(s.split(";")[2]);
+            }
+            pluginList.add("Done");
+            String plugin = UserInput.fromList(pluginList);
+            if (plugin.equalsIgnoreCase("done"))
+                break;
+            if (plugins.contains(plugin))
+                plugins.remove(plugin);
+            else
+                plugins.add(plugin);
+        }
+        // Save to profile folder
+        StringBuilder data = new StringBuilder(version + "&");
+        data.append("2048&");
+        for (String s : plugins) {
+            data.append(s).append("&");
+        }
+        data = new StringBuilder(data.substring(0, data.length() - 1));
+        FileIO.makePath("profiles/" + name);
+        FileIO.makePath("profiles/" + name + "/plugins");
+        FileIO.writeToFile("profiles/" + name + "/data.mms", false, data.toString());
+        // Make EULA and properties files
+        FileIO.writeToFile("profiles/" + name + "/" + "eula.txt", false, "eula=true");
+        String serverProps = Properties.server + "level-name=" + name;
+        FileIO.writeToFile("profiles/" + name + "/server.properties", false, serverProps);
+        FileIO.writeToFile("profiles/" + name + "/spigot.yml", false, Properties.spigot);
+        FileIO.writeToFile("profiles/" + name + "/paper.yml", false, Properties.paper);
+        return name;
     }
 
     // First time setup
@@ -312,27 +305,26 @@ public class Main {
     private static void clearConsole() {
 	System.out.print("\033[H\033[2J");
 	System.out.flush();
-	try {
-	    if (System.getProperty("os.name").contains("Windows"))
-		new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-	    else
-		Runtime.getRuntime().exec("clear");
-	}
-	catch (Exception ex) {
-	}
+        try {
+            if (System.getProperty("os.name").contains("Windows"))
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+            else
+                Runtime.getRuntime().exec("clear");
+        } catch (Exception ignored) {
+        }
     }
 
     private static void onError(Exception e) {
 	try {
-	    System.out.println("Something went wrong. Restarting in 5 seconds...");
-	    String out = e.getMessage() + "\n";
-	    e.printStackTrace();
-	    for (StackTraceElement ste : e.getStackTrace()) {
-		out += ste.toString() + "\n";
-	    }
-	    FileIO.writeToFile("error_" + String.valueOf(Instant.now().getEpochSecond()) + ".txt", false, out);
-	    Thread.sleep(5000);
-	}
+        System.out.println("Something went wrong. Restarting in 5 seconds...");
+        StringBuilder out = new StringBuilder(e.getMessage() + "\n");
+        e.printStackTrace();
+        for (StackTraceElement ste : e.getStackTrace()) {
+            out.append(ste.toString()).append("\n");
+        }
+        FileIO.writeToFile("error_" + Instant.now().getEpochSecond() + ".txt", false, out.toString());
+        Thread.sleep(5000);
+    }
 	catch (Exception e1) {
 	    System.out.println("Error");
 	}

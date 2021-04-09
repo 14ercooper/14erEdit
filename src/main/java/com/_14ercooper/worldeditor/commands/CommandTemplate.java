@@ -1,39 +1,36 @@
 package com._14ercooper.worldeditor.commands;
 
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-
+import com._14ercooper.worldeditor.main.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com._14ercooper.worldeditor.main.Main;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class CommandTemplate implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender arg0, Command arg1, String arg2, String[] arg3) {
 	if (arg0 instanceof Player) {
-	    if (!((Player) arg0).isOp()) {
-		arg0.sendMessage("You must be opped to use 14erEdit");
-		return false;
-	    }
+		if (!arg0.isOp()) {
+			arg0.sendMessage("You must be opped to use 14erEdit");
+			return false;
+		}
 	}
 
-	CommandSender player = arg0;
-
-	// Grab the filename
+		// Grab the filename
 	String filename;
 	try {
 	    filename = "plugins/14erEdit/templates/" + arg3[0];
 	}
 	catch (Exception e) {
-	    Main.logError("Template name required to use this command.", player, e);
-	    return false;
+		Main.logError("Template name required to use this command.", arg0, e);
+		return false;
 	}
 
 	// Extension expansion
@@ -47,8 +44,8 @@ public class CommandTemplate implements CommandExecutor {
 	    filename += ".fx";
 	}
 	else {
-	    Main.logError("Template not found.", player, null);
-	    return false;
+		Main.logError("Template not found.", arg0, null);
+		return false;
 	}
 
 	// Grab the command
@@ -57,8 +54,8 @@ public class CommandTemplate implements CommandExecutor {
 	    command = readFile(filename);
 	}
 	catch (IOException e) {
-	    Main.logError("Error reading template file.", player, e);
-	    return false;
+		Main.logError("Error reading template file.", arg0, e);
+		return false;
 	}
 
 	// Clean up newlines
@@ -73,11 +70,11 @@ public class CommandTemplate implements CommandExecutor {
 
 	// Run the command
 	try {
-	    return Bukkit.dispatchCommand(player, command);
+		return Bukkit.dispatchCommand(arg0, command);
 	}
 	catch (Exception e) {
-	    Main.logError("Could not run command in template.", player, e);
-	    return false;
+		Main.logError("Could not run command in template.", arg0, e);
+		return false;
 	}
     }
 

@@ -1,73 +1,43 @@
 package com._14ercooper.worldeditor.functions;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-
 import com._14ercooper.worldeditor.functions.commands.InterpreterCommand;
 import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.*;
 
 public class Function {
 
-    // Interpreter commands map
-    public static Map<String, InterpreterCommand> commands = new HashMap<String, InterpreterCommand>();
-    public static List<Function> waitingFunctions = new LinkedList<Function>();
+	// Interpreter commands map
+	public static final Map<String, InterpreterCommand> commands = new HashMap<>();
+	public static final List<Function> waitingFunctions = new LinkedList<>();
+	// Function-specific variables
+	public final List<Double> variables = new ArrayList<>();
+	public final List<Double> variableStack = new ArrayList<>();
+	public final List<String> dataSegment = new LinkedList<>();
+	public final Map<String, Integer> labelsMap = new HashMap<>();
+	public final List<String> templateArgs = new LinkedList<>();
+	public final Player player;
+	public final boolean isOperator;
+	public double ra, cmpres;
+	public int waitDelay = 0;
+	public boolean exit = false;
+	public int currentLine = -1; // Incremented as the first step
+	public double exitVal = 1;
+	long iters = 0;
+	public Function(String filename, List<String> args, Player player, boolean isOperator) {
+		// Set constant variables
+		templateArgs.addAll(args);
+		this.player = player;
+		this.isOperator = isOperator;
 
-    // Setup all functions
-    public static void SetupFunctions() {
-	RegisterFunctions.RegisterAll();
-
-	Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(GlobalVars.plugin, new Runnable() {
-	    @Override
-	    public void run() {
-		Function.CheckWaitingFunctions();
-	    }
-	}, 1l, 1l);
-    }
-
-    // See if any waiting functions are ready to keep running
-    public static void CheckWaitingFunctions() {
-	for (int i = 0; i < waitingFunctions.size(); i++) {
-	    boolean didStart = waitingFunctions.get(i).checkCallback(i);
-	    if (didStart) {
-		Main.logDebug("Resuming paused function.");
-		i--;
-	    }
-	}
-    }
-
-    // Function-specific variables
-    public List<Double> variables = new ArrayList<Double>();
-    public double ra, cmpres;
-    public List<Double> variableStack = new ArrayList<Double>();
-    public List<String> dataSegment = new LinkedList<String>();
-    public Map<String, Integer> labelsMap = new HashMap<String, Integer>();
-    public int waitDelay = 0;
-    long iters = 0;
-    public boolean exit = false;
-    public int currentLine = -1; // Incremented as the first step
-    public List<String> templateArgs = new LinkedList<String>();
-    public Player player;
-    public boolean isOperator;
-    public double exitVal = 1;
-
-    public Function(String filename, List<String> args, Player player, boolean isOperator) {
-	// Set constant variables
-	templateArgs.addAll(args);
-	this.player = player;
-	this.isOperator = isOperator;
-
-	for (int i = 0; i < 10; i++) {
-	    variables.add(0.0);
+		for (int i = 0; i < 10; i++) {
+			variables.add(0.0);
 	}
 
 	// Load data from file
@@ -111,6 +81,24 @@ public class Function {
 	Main.logDebug("Number of labels: " + labelsMap.size());
     }
 
+	// Setup all functions
+	public static void SetupFunctions() {
+		RegisterFunctions.RegisterAll();
+
+		Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(GlobalVars.plugin, () -> Function.CheckWaitingFunctions(), 1L, 1L);
+	}
+
+	// See if any waiting functions are ready to keep running
+	public static void CheckWaitingFunctions() {
+	for (int i = 0; i < waitingFunctions.size(); i++) {
+	    boolean didStart = waitingFunctions.get(i).checkCallback(i);
+		if (didStart) {
+			Main.logDebug("Resuming paused function.");
+			i--;
+		}
+	}
+	}
+
     public double run() {
 	try {
 	    // Until pause or exit, loop
@@ -130,30 +118,28 @@ public class Function {
 		if (iters > GlobalVars.maxFunctionIters) {
 		    exit = true;
 		    Main.logError("Function max iterations exceeded.", player, null);
-		    continue;
+			continue;
 		}
 
-		// Process template variables
-		String line = dataSegment.get(currentLine).replaceAll("^\\s+", "");
-		for (int i = templateArgs.size(); i >= 1; i--) {
-		    line = line.replaceAll("\\$" + i, templateArgs.get(i - 1));
-		}
+			// Process template variables
+			String line = dataSegment.get(currentLine).replaceAll("^\\s+", "");
+			for (int i = templateArgs.size(); i >= 1; i--) {
+				line = line.replaceAll("\\$" + i, templateArgs.get(i - 1));
+			}
 
-		// Split into list
-		List<String> lineContents = new ArrayList<String>();
-		for (String str : line.split("\\s")) {
-		    lineContents.add(str);
-		}
+			// Split into list
+			List<String> lineContents = new ArrayList<>();
+			lineContents.addAll(Arrays.asList(line.split("\\s")));
 
-		// If blank line
-		if (lineContents.get(0).isEmpty()) {
-		    Main.logDebug("Empty line processed.");
-		    continue;
-		}
+			// If blank line
+			if (lineContents.get(0).isEmpty()) {
+				Main.logDebug("Empty line processed.");
+				continue;
+			}
 
-		// If comment or label
-		if (lineContents.get(0).charAt(0) == '#' || lineContents.get(0).charAt(0) == ':') {
-		    Main.logDebug("Comment or label processed.");
+			// If comment or label
+			if (lineContents.get(0).charAt(0) == '#' || lineContents.get(0).charAt(0) == ':') {
+				Main.logDebug("Comment or label processed.");
 		    continue;
 		}
 
@@ -175,23 +161,19 @@ public class Function {
 	    }
 	}
 	catch (Exception e) {
-	    Main.logError(
-		    "Error executing function. Error on line " + (currentLine + 1) + ".\nError: " + e.getMessage(),
-		    player, e);
-	    return 0;
+		Main.logError(
+				"Error executing function. Error on line " + (currentLine + 1) + ".\nError: " + e.getMessage(),
+				player, e);
+		return 0;
 	}
 
-	// If pause, register callback
-	if (waitDelay != 0 && !exit) {
-	    waitingFunctions.add(this);
+		// If pause, register callback
+		if (waitDelay != 0 && !exit) {
+			waitingFunctions.add(this);
+		}
+
+		return exitVal;
 	}
-	
-	if (exit) {
-	    return exitVal;
-	}
-	
-	return exitVal;
-    }
 
     public double parseVariable(String var) {
 	if (var.contains("$v")) {

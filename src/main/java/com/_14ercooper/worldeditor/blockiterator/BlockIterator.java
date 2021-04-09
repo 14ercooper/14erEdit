@@ -1,11 +1,10 @@
 package com._14ercooper.worldeditor.blockiterator;
 
-import java.util.List;
-
+import com._14ercooper.worldeditor.main.GlobalVars;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 
-import com._14ercooper.worldeditor.main.GlobalVars;
+import java.util.List;
 
 public abstract class BlockIterator {
     // Returns a new instance of the block iterator based on the passed arguments
@@ -53,10 +52,6 @@ public abstract class BlockIterator {
 	    }
 	}
 
-	if (z > radZ || z + zOff > GlobalVars.maxEditZ) {
-	    return true;
-	}
-
-	return false;
+        return z > radZ || z + zOff > GlobalVars.maxEditZ;
     }
 }

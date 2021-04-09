@@ -1,17 +1,16 @@
 package com._14ercooper.worldeditor.brush.shapes;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.bukkit.World;
-
 import com._14ercooper.worldeditor.blockiterator.BlockIterator;
 import com._14ercooper.worldeditor.brush.BrushShape;
 import com._14ercooper.worldeditor.main.GlobalVars;
+import org.bukkit.World;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Ellipse extends BrushShape {
 
-    List<String> args = new ArrayList<String>();
+    final List<String> args = new ArrayList<>();
     int argsGot = 0;
 
     public Ellipse() {
@@ -23,16 +22,16 @@ public class Ellipse extends BrushShape {
 
     @Override
     public BlockIterator GetBlocks(double x, double y, double z, World world) {
-	// Generate the ellipse
-	List<String> argList = new ArrayList<String>();
-	argList.add(Integer.toString((int) x));
-	argList.add(Integer.toString((int) y));
-	argList.add(Integer.toString((int) z));
-	argList.add(args.get(0));
-	argList.add(args.get(1));
-	argList.add(args.get(2));
-	argList.add(args.get(3));
-	return GlobalVars.iteratorManager.getIterator("ellipse").newIterator(argList, world);
+        // Generate the ellipse
+        List<String> argList = new ArrayList<>();
+        argList.add(Integer.toString((int) x));
+        argList.add(Integer.toString((int) y));
+        argList.add(Integer.toString((int) z));
+        argList.add(args.get(0));
+        argList.add(args.get(1));
+        argList.add(args.get(2));
+        argList.add(args.get(3));
+        return GlobalVars.iteratorManager.getIterator("ellipse").newIterator(argList, world);
     }
 
     @Override
@@ -59,7 +58,7 @@ public class Ellipse extends BrushShape {
 
     @Override
     public boolean gotEnoughArgs() {
-	return !args.get(2).isEmpty();
+        return args.get(2).isEmpty();
     }
 
 }

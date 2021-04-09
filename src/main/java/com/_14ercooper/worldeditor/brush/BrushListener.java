@@ -1,8 +1,7 @@
 package com._14ercooper.worldeditor.brush;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com._14ercooper.worldeditor.main.GlobalVars;
+import com._14ercooper.worldeditor.main.Main;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -13,13 +12,13 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.BlockIterator;
 
-import com._14ercooper.worldeditor.main.GlobalVars;
-import com._14ercooper.worldeditor.main.Main;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BrushListener implements Listener {
 
     // Store all active brushes
-    public static List<Brush> brushes = new ArrayList<Brush>();
+    public static final List<Brush> brushes = new ArrayList<>();
 
     boolean dedupe = false;
 
@@ -54,41 +53,40 @@ public class BrushListener implements Listener {
 	    if (event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock() != null) {
 		if (!dedupe) {
 		    dedupe = true;
-		    return;
-		}
-		if (dedupe) {
-		    dedupe = false;
-		}
-	    }
+            return;
+        }
+            if (dedupe) {
+                dedupe = false;
+            }
+        }
 
-	    // Then get the location where the brush should operate
-	    // This is a block where the player is looking, at a range no more than 256
-	    // blocks away
-	    Block block = getTargetBlock(player, 256);
-	    // If it's air, return
-	    if (block.getType().equals(Material.AIR))
-		return;
+        // Then get the location where the brush should operate
+        // This is a block where the player is looking, at a range no more than 256
+        // blocks away
+        Block block = getTargetBlock(player);
+        // If it's air, return
+        if (block.getType().equals(Material.AIR))
+            return;
 
-	    // And perform the operation there
-	    brush.operate(block.getX(), block.getY(), block.getZ());
-	}
-	catch (Exception e) {
-	    Main.logError("Could not process brush click.", event.getPlayer(), e);
-	}
+        // And perform the operation there
+        brush.operate(block.getX(), block.getY(), block.getZ());
+    } catch (Exception e) {
+        Main.logError("Could not process brush click.", event.getPlayer(), e);
+    }
     }
 
-    private Block getTargetBlock(Player player, int range) {
-	BlockIterator iter = new BlockIterator(player, range);
-	Block lastBlock = iter.next();
-	while (iter.hasNext()) {
-	    lastBlock = iter.next();
+    private Block getTargetBlock(Player player) {
+        BlockIterator iter = new BlockIterator(player, 256);
+        Block lastBlock = iter.next();
+        while (iter.hasNext()) {
+            lastBlock = iter.next();
 
-	    if (GlobalVars.brushMask.contains(lastBlock.getType())) {
-		continue;
-	    }
+            if (GlobalVars.brushMask.contains(lastBlock.getType())) {
+                continue;
+            }
 
-	    break;
-	}
+            break;
+        }
 	return lastBlock;
     }
 }

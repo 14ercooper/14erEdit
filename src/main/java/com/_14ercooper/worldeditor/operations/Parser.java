@@ -1,10 +1,5 @@
 package com._14ercooper.worldeditor.operations;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.operators.Node;
 import com._14ercooper.worldeditor.operations.operators.core.EntryNode;
@@ -13,21 +8,25 @@ import com._14ercooper.worldeditor.operations.operators.core.StringNode;
 import com._14ercooper.worldeditor.operations.operators.function.RangeNode;
 import com._14ercooper.worldeditor.operations.operators.world.BlockNode;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class Parser {
     // This starts as -1 since the first thing the parser does is increment it
     public int index = -1;
     public List<String> parts;
 
     // Store operators
-    public Map<String, Node> operators = new HashMap<String, Node>();
+	public final Map<String, Node> operators = new HashMap<>();
 
-    public boolean AddOperator(String name, Node node) {
-	if (operators.containsKey(name)) {
-	    return false;
+	public void AddOperator(String name, Node node) {
+		if (operators.containsKey(name)) {
+			return;
+		}
+		operators.put(name, node);
 	}
-	operators.put(name, node);
-	return true;
-    }
 
     public Node GetOperator(String name) {
 	if (!operators.containsKey(name)) {
@@ -40,27 +39,26 @@ public class Parser {
 
     public EntryNode parseOperation(String op) {
 
-	// Here there be parsing magic
-	// A massive recursive nightmare
-	index = -1;
-	parts = Arrays.asList(Arrays.asList(op.split(" ")).stream().map(
-		s -> s.matches(".*\\[.+=.+\\].*") ? s.replaceAll("[\\(\\)]+", "") : s.replaceAll("[\\(\\)\\[\\]]+", ""))
-		.toArray(size -> new String[size]));
+		// Here there be parsing magic
+		// A massive recursive nightmare
+		index = -1;
+		parts = Arrays.asList(Arrays.stream(op.split(" ")).map(
+				s -> s.matches(".*\\[.+=.+\\].*") ? s.replaceAll("[\\(\\)]+", "") : s.replaceAll("[\\(\\)\\[\\]]+", ""))
+				.toArray(String[]::new));
 
-	Node rootNode = parsePart();
+		Node rootNode = parsePart();
 
-	// This is an error if this is true
-	// Probably user error with an invalid operation
-	if (rootNode == null) {
-	    Main.logError("Operation parse failed. Please check your syntax.", Operator.currentPlayer, null);
-	    return null;
+		// This is an error if this is true
+		// Probably user error with an invalid operation
+		if (rootNode == null) {
+			Main.logError("Operation parse failed. Please check your syntax.", Operator.currentPlayer, null);
+			return null;
+		}
+
+		// Generate the entry node of the operation
+		Main.logDebug("Building entry node from root node"); // -----
+		return new EntryNode(rootNode);
 	}
-
-	// Generate the entry node of the operation
-	Main.logDebug("Building entry node from root node"); // -----
-	EntryNode entryNode = new EntryNode(rootNode);
-	return entryNode;
-    }
     
     public Node parsePart() {
 	return parsePart(false);
@@ -107,13 +105,13 @@ public class Parser {
     		    StringNode strNode = parseStringNode();
     		    BlockNode bn = new BlockNode().newNode(strNode.getText());
     		    if (bn != null) {
-    			Main.logDebug("Block node created: " + bn.toString());
-    			return bn;
-    		    }
+					Main.logDebug("Block node created: " + bn);
+					return bn;
+				}
     		    else {
-    			Main.logDebug("String node created: " + strNode.toString()); // -----
-    			return strNode;
-    		    }
+					Main.logDebug("String node created: " + strNode); // -----
+					return strNode;
+				}
 		}
 		else {
 		    return new NumberNode().newNode();

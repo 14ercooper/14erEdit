@@ -1,16 +1,15 @@
 package com._14ercooper.worldeditor.operations.operators.world;
 
-import java.util.LinkedList;
-import java.util.List;
-
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-
 import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.main.NBTExtractor;
 import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.operations.operators.Node;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+
+import java.util.LinkedList;
+import java.util.List;
 
 public class BlockNode extends Node {
 
@@ -24,19 +23,18 @@ public class BlockNode extends Node {
     public BlockNode newNode() {
 	BlockNode node = new BlockNode();
 	try {
-	    String[] data = GlobalVars.operationParser.parseStringNode().getText().split(";");
-	    node.blockList = new LinkedList<BlockInstance>();
-	    node.textMasks = new LinkedList<String>();
-	    for (String s : data) {
-		if (s.contains("#")) {
-		    Main.logDebug("Created text mask");
-		    node.textMasks.add(s.replaceAll("#", ""));
-		}
-		else {
-		    Main.logDebug("Created block instance");
-		    node.blockList.add(new BlockInstance(s));
-		}
-	    }
+        String[] data = GlobalVars.operationParser.parseStringNode().getText().split(";");
+        node.blockList = new LinkedList<>();
+        node.textMasks = new LinkedList<>();
+        for (String s : data) {
+            if (s.contains("#")) {
+                Main.logDebug("Created text mask");
+                node.textMasks.add(s.replaceAll("#", ""));
+            } else {
+                Main.logDebug("Created block instance");
+                node.blockList.add(new BlockInstance(s));
+            }
+        }
 	    if (node.blockList.isEmpty() && node.textMasks.isEmpty()) {
 		Main.logError("Error creating block node. No blocks were provided.", Operator.currentPlayer, null);
 		return null;
@@ -52,19 +50,18 @@ public class BlockNode extends Node {
     public BlockNode newNode(String input) {
 	BlockNode node = new BlockNode();
 	try {
-	    String[] data = input.split(";");
-	    node.blockList = new LinkedList<BlockInstance>();
-	    node.textMasks = new LinkedList<String>();
-	    for (String s : data) {
-		if (s.contains("#")) {
-		    Main.logDebug("Created text mask");
-		    node.textMasks.add(s.replaceAll("#", ""));
-		}
-		else {
-		    Main.logDebug("Created block instance");
-		    node.blockList.add(new BlockInstance(s));
-		}
-	    }
+        String[] data = input.split(";");
+        node.blockList = new LinkedList<>();
+        node.textMasks = new LinkedList<>();
+        for (String s : data) {
+            if (s.contains("#")) {
+                Main.logDebug("Created text mask");
+                node.textMasks.add(s.replaceAll("#", ""));
+            } else {
+                Main.logDebug("Created block instance");
+                node.blockList.add(new BlockInstance(s));
+            }
+        }
 	    if (node.blockList.isEmpty() && node.textMasks.isEmpty()) {
 		Main.logError("Error creating block node. No blocks were provided.", Operator.currentPlayer, null);
 		return null;
@@ -123,56 +120,54 @@ public class BlockNode extends Node {
     }
 
     // Nested class to make parsing , and % lists easier
-    private class BlockInstance {
-	String mat;
-	String data;
-	String nbt = "";
-	int weight;
+    private static class BlockInstance {
+        String mat;
+        String data;
+        String nbt = "";
+        int weight;
 
-	// Construct a new block instance from an input string
-	BlockInstance(String input) {
-	    if (input.toCharArray()[0] == '[') {
-		Main.logDebug("Data only node");
-		// Data only
+        // Construct a new block instance from an input string
+        BlockInstance(String input) {
+            if (input.toCharArray()[0] == '[') {
+                Main.logDebug("Data only node");
+                // Data only
 		mat = "dataonly";
 		data = input.replaceAll("[\\[\\]]", "");
 		weight = 1;
 	    }
 	    else if (input.toCharArray()[0] == '{') {
-		Main.logDebug("NBT node");
-		// NBT only
-		mat = "nbtonly";
-		data = null;
-		while (input.charAt(input.length() - 1) != '}') {
-		    input = input + " " + GlobalVars.operationParser.parseStringNode().getText();
-		}
-		nbt = input.replaceAll("[{}]", "");
-		weight = 1;
-	    }
+                Main.logDebug("NBT node");
+                // NBT only
+                mat = "nbtonly";
+                data = null;
+                StringBuilder inputBuilder = new StringBuilder(input);
+                while (inputBuilder.charAt(inputBuilder.length() - 1) != '}') {
+                    inputBuilder.append(" ").append(GlobalVars.operationParser.parseStringNode().getText());
+                }
+                input = inputBuilder.toString();
+                nbt = input.replaceAll("[{}]", "");
+                weight = 1;
+            }
 	    else if (input.contains("%")) {
-		if (input.contains("[")) {
-		    mat = input.split("%")[1].split("\\[")[0];
-		    data = input.split("%")[1];
-		    weight = Integer.parseInt(input.split("%")[0]);
-		}
-		else {
-		    mat = input.split("%")[1];
-		    data = null;
-		    weight = Integer.parseInt(input.split("%")[0]);
-		}
-	    }
+                if (input.contains("[")) {
+                    mat = input.split("%")[1].split("\\[")[0];
+                    data = input.split("%")[1];
+                } else {
+                    mat = input.split("%")[1];
+                    data = null;
+                }
+                weight = Integer.parseInt(input.split("%")[0]);
+            }
 	    else {
-		if (input.contains("[")) {
-		    mat = input.split("\\[")[0];
-		    data = input;
-		    weight = 1;
-		}
-		else {
-		    mat = input;
-		    data = null;
-		    weight = 1;
-		}
-	    }
+                if (input.contains("[")) {
+                    mat = input.split("\\[")[0];
+                    data = input;
+                } else {
+                    mat = input;
+                    data = null;
+                }
+                weight = 1;
+            }
 	}
 
 	// Empty constructor
