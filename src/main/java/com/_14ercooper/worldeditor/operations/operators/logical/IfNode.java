@@ -35,6 +35,14 @@ public class IfNode extends Node {
 	}
 	return node;
     }
+    
+    public IfNode newNode(Node cond, Node onTrue, Node onFalse) {
+	IfNode node = new IfNode();
+	node.arg1 = cond;
+	node.arg2 = onTrue;
+	node.arg3 = onFalse;
+	return node;
+    }
 
     // /fx br v if bedrock if both simplex 3 130 4 not simplex 3 110 4 set
     // polished_andesite else if simplex 3 110 4 set
@@ -52,7 +60,7 @@ public class IfNode extends Node {
 //		Main.logDebug("no else");
 		return toReturn;
 	    }
-	    else if (arg3 instanceof ElseNode && !isTrue) {
+	    else if (arg3 != null && !isTrue) {
 //		Main.logDebug("else");
 		toReturn = arg3.performNode();
 	    }

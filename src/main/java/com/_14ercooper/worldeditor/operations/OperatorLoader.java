@@ -71,6 +71,7 @@ import com._14ercooper.worldeditor.operations.operators.world.FacingNode;
 import com._14ercooper.worldeditor.operations.operators.world.GetBlockDataNode;
 import com._14ercooper.worldeditor.operations.operators.world.GravityNode;
 import com._14ercooper.worldeditor.operations.operators.world.IgnorePhysicsNode;
+import com._14ercooper.worldeditor.operations.operators.world.ReplaceNode;
 import com._14ercooper.worldeditor.operations.operators.world.SameNode;
 import com._14ercooper.worldeditor.operations.operators.world.SchemBlockNode;
 import com._14ercooper.worldeditor.operations.operators.world.SetBiomeNode;
@@ -271,6 +272,8 @@ public class OperatorLoader {
 	GlobalVars.operationParser.AddOperator("set_biome", GlobalVars.operationParser.GetOperator("biome"));
 	GlobalVars.operationParser.AddOperator("schem", new SchemBlockNode());
 	GlobalVars.operationParser.AddOperator("schematic", GlobalVars.operationParser.GetOperator("schem"));
+	GlobalVars.operationParser.AddOperator(">r", new ReplaceNode());
+	GlobalVars.operationParser.AddOperator("replace", GlobalVars.operationParser.GetOperator(">r"));
     }
 
     private static void LoadFun() {

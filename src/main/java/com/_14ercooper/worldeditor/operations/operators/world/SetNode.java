@@ -37,6 +37,12 @@ public class SetNode extends Node {
 	}
 	return node;
     }
+    
+    public SetNode newNode(BlockNode arg) {
+	SetNode node = new SetNode();
+	node.arg = arg;
+	return node;
+    }
 
     @Override
     public boolean performNode() {

@@ -19,7 +19,7 @@ public class Parser {
     public List<String> parts;
 
     // Store operators
-    Map<String, Node> operators = new HashMap<String, Node>();
+    public Map<String, Node> operators = new HashMap<String, Node>();
 
     public boolean AddOperator(String name, Node node) {
 	if (operators.containsKey(name)) {
@@ -88,6 +88,8 @@ public class Parser {
 		    index++;
 		}
 	    }
+	    
+	    int oldIndex = index;
 
 	    if (index == 0 && !operators.containsKey(parts.get(index))) {
 		Main.logError(
@@ -96,7 +98,7 @@ public class Parser {
 	    }
 	    if (operators.containsKey(parts.get(index))) {
 		Node n = operators.get(parts.get(index)).newNode();
-		Main.logDebug(parts.get(index) + " node created: " + n.toString());
+		Main.logDebug(parts.get(oldIndex) + " node created: " + n.toString());
 		return n;
 	    }
 	    else {
