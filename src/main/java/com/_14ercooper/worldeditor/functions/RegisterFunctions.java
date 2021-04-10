@@ -9,18 +9,7 @@ import com._14ercooper.worldeditor.functions.commands.logic.GoIfNotCommand;
 import com._14ercooper.worldeditor.functions.commands.logic.ReturnCommand;
 import com._14ercooper.worldeditor.functions.commands.logic.WaitCommand;
 import com._14ercooper.worldeditor.functions.commands.logic.WaitTimeCommand;
-import com._14ercooper.worldeditor.functions.commands.math.AddCommand;
-import com._14ercooper.worldeditor.functions.commands.math.CosineCommand;
-import com._14ercooper.worldeditor.functions.commands.math.DecrementCommand;
-import com._14ercooper.worldeditor.functions.commands.math.DivideCommand;
-import com._14ercooper.worldeditor.functions.commands.math.IncrementCommand;
-import com._14ercooper.worldeditor.functions.commands.math.ModCommand;
-import com._14ercooper.worldeditor.functions.commands.math.MultiplyCommand;
-import com._14ercooper.worldeditor.functions.commands.math.PowerCommand;
-import com._14ercooper.worldeditor.functions.commands.math.RandCommand;
-import com._14ercooper.worldeditor.functions.commands.math.SetVarCommand;
-import com._14ercooper.worldeditor.functions.commands.math.SineCommand;
-import com._14ercooper.worldeditor.functions.commands.math.SubtractCommand;
+import com._14ercooper.worldeditor.functions.commands.math.*;
 import com._14ercooper.worldeditor.functions.commands.player.GetPosCommand;
 import com._14ercooper.worldeditor.functions.commands.player.PrintDebugCommand;
 import com._14ercooper.worldeditor.functions.commands.player.PrintErrorCommand;
@@ -85,5 +74,8 @@ public class RegisterFunctions {
 	Function.commands.put("sin", new SineCommand());
 	Function.commands.put("cos", new CosineCommand());
 	Function.commands.put("pow", new PowerCommand());
+	Function.commands.put("ceiling", new CeilingCommand());
+	Function.commands.put("floor", new FloorCommand());
+	Function.commands.put("round", new RoundCommand());
     }
 }
