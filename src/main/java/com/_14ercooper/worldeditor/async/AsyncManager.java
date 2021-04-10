@@ -54,6 +54,7 @@ public class AsyncManager {
         queuedOperations = new ArrayList<>();
         largeOps = new ArrayDeque<>();
         queueDropped = true;
+        doneOperations += Integer.MAX_VALUE / 2;
     }
 
     // How many blocks do we have less
