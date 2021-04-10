@@ -1,7 +1,22 @@
 package com._14ercooper.megaserver;
 
-import java.io.*;
-import java.nio.file.*;
+import java.io.BufferedInputStream;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.FilenameFilter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.file.FileVisitResult;
+import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.StandardCopyOption;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Arrays;
 import java.util.List;
@@ -53,25 +68,30 @@ public class FileIO {
 
     // List all files at path
     public static List<String> listFiles(String path, boolean folders) {
-        if (!folders) {
-            File f = new File(path);
-            return Arrays.asList(f.list());
-        }
-        File file = new File(path);
-        String[] directories = file.list((current, name) -> new File(current, name).isDirectory());
-        return Arrays.asList(directories);
+	if (!folders) {
+	    File f = new File(path);
+	    return Arrays.asList(f.list());
+	}
+	File file = new File(path);
+	String[] directories = file.list(new FilenameFilter() {
+	    @Override
+	    public boolean accept(File current, String name) {
+		return new File(current, name).isDirectory();
+	    }
+	});
+	return Arrays.asList(directories);
     }
 
     // Read a text file into a string
     public static String readFromFile(String file) throws IOException {
 	try {
-        List<String> fileContentsList = Files.readAllLines(Paths.get(file));
-        StringBuilder fileContents = new StringBuilder();
-        for (String i : fileContentsList) {
-            fileContents.append(i).append("\n");
-        }
-        return fileContents.toString();
-    }
+	    List<String> fileContentsList = Files.readAllLines(Paths.get(file));
+	    String fileContents = "";
+	    for (String i : fileContentsList) {
+		fileContents += i + "\n";
+	    }
+	    return fileContents;
+	}
 	catch (NoSuchFileException e) {
 	    return "";
 	}
@@ -79,8 +99,8 @@ public class FileIO {
 
     // File exists?
     public static boolean exists(String path) {
-        File f = new File(path);
-        return !f.exists();
+	File f = new File(path);
+	return f.exists();
     }
 
     // Writes a string to a file
@@ -95,33 +115,33 @@ public class FileIO {
     // Writes the data in textList to file, splitting each element with sepChar
     public static void writeToFile(String file, boolean append, List<String> textList, String sepChar)
 	    throws IOException {
-        StringBuilder text = new StringBuilder();
-        for (String s : textList) {
-            text.append(s).append(sepChar);
-        }
-        FileWriter fileWriter = new FileWriter(file, append);
-        BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-        bufferedWriter.write(text.toString());
-        bufferedWriter.close();
-        fileWriter.close();
+	String text = "";
+	for (String s : textList) {
+	    text += s + sepChar;
+	}
+	FileWriter fileWriter = new FileWriter(file, append);
+	BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+	bufferedWriter.write(text);
+	bufferedWriter.close();
+	fileWriter.close();
     }
 
     // Used to delete a folder with files
     private static void delDirectory(String target) throws IOException {
-        Path directory = Paths.get(target);
-        Files.walkFileTree(directory, new SimpleFileVisitor<>() {
-            @Override
-            public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-                Files.delete(file);
-                return FileVisitResult.CONTINUE;
-            }
+	Path directory = Paths.get(target);
+	Files.walkFileTree(directory, new SimpleFileVisitor<Path>() {
+	    @Override
+	    public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+		Files.delete(file);
+		return FileVisitResult.CONTINUE;
+	    }
 
-            @Override
-            public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
-                Files.delete(dir);
-                return FileVisitResult.CONTINUE;
-            }
-        });
+	    @Override
+	    public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
+		Files.delete(dir);
+		return FileVisitResult.CONTINUE;
+	    }
+	});
     }
 
     // Helper for zipping folders
@@ -160,16 +180,16 @@ public class FileIO {
 	File source = new File(src);
 	File destination = new File(dest);
 	if (source.isDirectory()) {
-        if (!destination.exists()) {
-            destination.mkdirs();
-        }
-        String[] files = source.list();
-        for (String file : files) {
-            File srcFile = new File(source, file);
-            File destFile = new File(destination, file);
-            copyDirectory(srcFile.toString(), destFile.toString());
-        }
-    }
+	    if (!destination.exists()) {
+		destination.mkdirs();
+	    }
+	    String files[] = source.list();
+	    for (String file : files) {
+		File srcFile = new File(source, file);
+		File destFile = new File(destination, file);
+		copyDirectory(srcFile.toString(), destFile.toString());
+	    }
+	}
 	else {
 	    InputStream in = null;
 	    OutputStream out = null;
