@@ -2,7 +2,6 @@ package com._14ercooper.worldeditor.async;
 
 import com._14ercooper.schematics.SchemLite;
 import com._14ercooper.worldeditor.blockiterator.BlockIterator;
-import com._14ercooper.worldeditor.blockiterator.iterators.MultiIterator;
 import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.undo.Undo;
 import org.bukkit.block.Block;
@@ -12,14 +11,13 @@ import java.util.ArrayDeque;
 import java.util.List;
 
 public class AsyncOperation {
-    protected String key = "";
+    protected final String key;
     protected Operator operation = null;
     protected final ArrayDeque<Block> toOperate = null;
     protected BlockIterator blocks = null;
     protected Player player = null;
     protected Undo undo = null;
     protected boolean undoRunning = false;
-    public MultiIterator childOp = null;
 
     public AsyncOperation(Operator o, Player p, BlockIterator b) {
         key = "iteredit";
@@ -32,11 +30,6 @@ public class AsyncOperation {
         key = "rawiteredit";
         operation = o;
         blocks = b;
-    }
-
-    public AsyncOperation(Operator o) {
-        key = "messyedit";
-        operation = o;
     }
 
     // New schematics system

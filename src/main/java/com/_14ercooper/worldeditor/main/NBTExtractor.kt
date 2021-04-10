@@ -6,8 +6,7 @@ import org.bukkit.block.BlockState
 class NBTExtractor {
     fun getNBT(bs: BlockState): String {
         return if (!bs.javaClass.name.endsWith("CraftBlockState")) {
-//            var craftbukkitApiVer = "v1_16_R3"
-            var craftbukkitApiVer = if (GlobalVars.majorVer == 13) {
+            val craftbukkitApiVer = if (GlobalVars.majorVer == 13) {
                 if (GlobalVars.minorVer == 0) {
                     "1_13_R1"
                 }

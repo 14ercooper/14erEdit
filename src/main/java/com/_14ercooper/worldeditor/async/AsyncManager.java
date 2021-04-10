@@ -24,9 +24,6 @@ import java.util.Queue;
 
 public class AsyncManager {
 
-    // NBT extractor for clipboard
-    NBTExtractor nbtExtractor = new NBTExtractor();
-
     // Flag queue dropped
     boolean queueDropped = false;
 
@@ -60,20 +57,15 @@ public class AsyncManager {
     // How many blocks do we have less
     public long getRemainingBlocks() {
         long remBlocks = 0;
-        for (AsyncOperation a : operations) {
+        remBlocks = getRemBlocks(remBlocks, operations);
+        remBlocks = getRemBlocks(remBlocks, queuedOperations);
+        return remBlocks;
+    }
+
+    private long getRemBlocks(long remBlocks, List<AsyncOperation> ops) {
+        for (AsyncOperation a : ops) {
             if (a.blocks != null) {
                 remBlocks += a.blocks.getRemainingBlocks();
-            } else if (a.toOperate != null) {
-                remBlocks += a.toOperate.size();
-            } else {
-                remBlocks += 100;
-            }
-        }
-        for (AsyncOperation a : queuedOperations) {
-            if (a.blocks != null) {
-                remBlocks += a.blocks.getRemainingBlocks();
-            } else if (a.toOperate != null) {
-                remBlocks += a.toOperate.size();
             } else {
                 remBlocks += 100;
             }
@@ -128,6 +120,10 @@ public class AsyncManager {
 
     // Schedule a nested block iterator task
     public void scheduleEdit(Operator o, Player p, BlockIterator b, boolean force) {
+        if (!force) {
+            scheduleEdit(o, p, b);
+            return;
+        }
         if (p == null)
             queuedOperations.add(new AsyncOperation(o, b));
         else if (b.getTotalBlocks() > GlobalVars.undoLimit) {
@@ -138,10 +134,6 @@ public class AsyncManager {
             asyncOp.undo = UndoManager.getUndo(p);
             queuedOperations.add(asyncOp);
         }
-    }
-
-    public void scheduleEdit(Operator o, BlockIterator b) {
-        queuedOperations.add(new AsyncOperation(o, b));
     }
 
     // Schedule a multibrush operation
@@ -276,15 +268,8 @@ public class AsyncManager {
                 }
 
                 // Iterator edit
-                if (currentAsyncOp.key.equalsIgnoreCase("iteredit")) {
-                    Block b = null;
-                    b = currentAsyncOp.blocks.getNext();
-                    if (currentAsyncOp.undo != null) {
-                        if (!currentAsyncOp.undoRunning)
-                            currentAsyncOp.undo.startUndo(currentAsyncOp.blocks.getTotalBlocks());
-                        GlobalVars.currentUndo = currentAsyncOp.undo;
-                        currentAsyncOp.undoRunning = true;
-                    }
+                if (currentAsyncOp.key.equalsIgnoreCase("iteredit") || currentAsyncOp.key.equalsIgnoreCase("rawiteredit")) {
+                    Block b = getBlock(currentAsyncOp);
                     if (b == null) {
                         if (currentAsyncOp.undo != null) {
                             currentAsyncOp.undo.finishUndo();
@@ -302,43 +287,16 @@ public class AsyncManager {
                     GlobalVars.currentUndo = null;
                 }
 
-                // Raw iterator edit
-                else if (currentAsyncOp.key.equalsIgnoreCase("rawiteredit")) {
-                    Block b = null;
-                    b = currentAsyncOp.blocks.getNext();
-                    if (currentAsyncOp.undo != null) {
-                        if (!currentAsyncOp.undoRunning)
-                            currentAsyncOp.undo.startUndo(currentAsyncOp.blocks.getTotalBlocks());
-                        GlobalVars.currentUndo = currentAsyncOp.undo;
-                        currentAsyncOp.undoRunning = true;
-                    }
-                    if (b == null) {
-                        if (currentAsyncOp.undo != null) {
-                            currentAsyncOp.undo.finishUndo();
-                        }
-                        if (currentAsyncOp.blocks instanceof SchemBrushIterator) {
-                            ((SchemBrushIterator) currentAsyncOp.blocks).cleanup();
-                        }
-                        operations.remove(i);
-                        i--;
-                        opSize--;
-                        continue;
-                    }
-                    currentAsyncOp.operation.operateOnBlock(b);
-                    doneOperations++;
-                    GlobalVars.currentUndo = null;
-                }
-
                 // Multibrush
                 else if (currentAsyncOp.key.equalsIgnoreCase("multibrush")) {
-                    Block b = null;
+                    Block b;
                     boolean doContinue = false;
                     while (true) {
                         b = currentAsyncOp.iterators.get(0).getNext();
                         if (b != null) {
                             break;
                         }
-                        if (b == null && currentAsyncOp.iterators.size() > 1) {
+                        if (currentAsyncOp.iterators.size() > 1) {
                             currentAsyncOp.iterators.remove(0);
                             if (currentAsyncOp.iterators.get(0) instanceof SchemBrushIterator) {
                                 ((SchemBrushIterator) currentAsyncOp.iterators.get(0)).cleanup();
@@ -371,8 +329,8 @@ public class AsyncManager {
 
                 // Save schematic
                 else if (currentAsyncOp.key.equalsIgnoreCase("saveschem")) {
-                    Block b = null;
-                    b = currentAsyncOp.blocks.getNext();
+                    assert currentAsyncOp.blocks != null;
+                    Block b = currentAsyncOp.blocks.getNext();
                     if (currentAsyncOp.undo != null) {
                         if (!currentAsyncOp.undoRunning) {
                             currentAsyncOp.undo.startUndo(currentAsyncOp.blocks.getTotalBlocks());
@@ -410,15 +368,7 @@ public class AsyncManager {
 
                 // Load schematic
                 else if (currentAsyncOp.key.equalsIgnoreCase("loadschem")) {
-                    Block b = null;
-                    b = currentAsyncOp.blocks.getNext();
-                    if (currentAsyncOp.undo != null) {
-                        if (!currentAsyncOp.undoRunning) {
-                            currentAsyncOp.undo.startUndo(currentAsyncOp.blocks.getTotalBlocks());
-                        }
-                        GlobalVars.currentUndo = currentAsyncOp.undo;
-                        currentAsyncOp.undoRunning = true;
-                    }
+                    Block b = getBlock(currentAsyncOp);
                     if (b == null) {
                         if (currentAsyncOp.undo != null) {
                             currentAsyncOp.undo.finishUndo();
@@ -440,7 +390,8 @@ public class AsyncManager {
                     } catch (IOException e) {
                         // Don't need to do anything
                     }
-                    if (!Material.matchMaterial(results[0]).isAir() || currentAsyncOp.schem.setAir()) {
+                    Material m = Material.matchMaterial(results[0]);
+                    if (m != null && !m.isAir() || currentAsyncOp.schem.setAir()) {
                         SetBlock.setMaterial(b, Material.matchMaterial(results[0]), false);
                         b.setBlockData(Bukkit.getServer().createBlockData(results[1]));
                         if (!results[2].isEmpty()) {
@@ -457,6 +408,7 @@ public class AsyncManager {
                 else if (currentAsyncOp.key.equalsIgnoreCase("selclone")) {
                     Player tempPlayer = Operator.currentPlayer;
                     Operator.currentPlayer = currentAsyncOp.player;
+                    assert currentAsyncOp.blocks != null;
                     Block b = currentAsyncOp.blocks.getNext();
                     Operator.currentPlayer = tempPlayer;
                     if (currentAsyncOp.undo != null) {
@@ -509,5 +461,18 @@ public class AsyncManager {
         if (doneOperations > 0) {
             Main.logDebug("Performed " + doneOperations + " async operations");
         }
+    }
+
+    private Block getBlock(AsyncOperation currentAsyncOp) {
+        assert currentAsyncOp.blocks != null;
+        Block b = currentAsyncOp.blocks.getNext();
+        if (currentAsyncOp.undo != null) {
+            if (!currentAsyncOp.undoRunning) {
+                currentAsyncOp.undo.startUndo(currentAsyncOp.blocks.getTotalBlocks());
+            }
+            GlobalVars.currentUndo = currentAsyncOp.undo;
+            currentAsyncOp.undoRunning = true;
+        }
+        return b;
     }
 }
