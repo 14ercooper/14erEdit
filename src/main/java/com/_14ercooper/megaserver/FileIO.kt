@@ -9,7 +9,7 @@ import java.util.zip.ZipOutputStream
 object FileIO {
     // Move a file or folder
     @Throws(IOException::class)
-    fun copyFile(src: String?, dest: String, folder: Boolean) {
+    fun copyFile(src: String, dest: String, folder: Boolean) {
         if (!folder) {
             Files.copy(Paths.get(src), Paths.get(dest), StandardCopyOption.REPLACE_EXISTING)
         } else {
@@ -21,22 +21,21 @@ object FileIO {
     @Throws(IOException::class)
     fun deleteFile(src: String, folder: Boolean) {
         if (!folder) {
-            Files.delete(Paths.get(src))
+            Files.deleteIfExists(Paths.get(src))
         } else {
             delDirectory(src)
         }
     }
 
     // Makes a path of folders
-    fun makePath(path: String?) {
-        val f = File(path)
-        f.mkdirs()
+    fun makePath(path: String) {
+        File(path).mkdirs()
     }
 
     // Zip a folder
     @Throws(InterruptedException::class)
     fun zipDirectory(
-        directoryToCompress: File, outputDirectory: File?, topFolderName: String?,
+        directoryToCompress: File, outputDirectory: File, topFolderName: String,
         outFile: String
     ) {
         try {
@@ -51,43 +50,42 @@ object FileIO {
     }
 
     // List all files at path
-    fun listFiles(path: String?, folders: Boolean): List<String> {
+    fun listFiles(path: String, folders: Boolean): List<String> {
         if (!folders) {
             val f = File(path)
-            return listOf(*f.list())
+            return listOf(*f.list()!!)
         }
         val file = File(path)
         val directories = file.list { current, name -> File(current, name).isDirectory }
-        return listOf(*directories)
+        return listOf(*directories!!)
     }
 
     // Read a text file into a string
     @Throws(IOException::class)
-    fun readFromFile(file: String?): String {
+    fun readFromFile(file: String): String {
         return try {
-            val fileContentsList = Files.readAllLines(Paths.get(file))
-            var fileContents = ""
-            for (i in fileContentsList) {
-                fileContents += """
-                $i
-                
-                """.trimIndent()
-            }
-            fileContents
+//            val fileContentsList = Files.readAllLines(Paths.get(file))
+            Files.readString(Paths.get(file))
+//            for (i in fileContentsList) {
+//                fileContents += """
+//                $i
+//
+//                """.trimIndent()
+//            }
+//            fileContents
         } catch (e: NoSuchFileException) {
             ""
         }
     }
 
     // File exists?
-    fun exists(path: String?): Boolean {
-        val f = File(path)
-        return f.exists()
+    fun exists(path: String): Boolean {
+        return File(path).exists()
     }
 
     // Writes a string to a file
     @Throws(IOException::class)
-    fun writeToFile(file: String?, append: Boolean, text: String?) {
+    fun writeToFile(file: String, append: Boolean, text: String) {
         val fileWriter = FileWriter(file, append)
         val bufferedWriter = BufferedWriter(fileWriter)
         bufferedWriter.write(text)
@@ -118,7 +116,7 @@ object FileIO {
     @Throws(Exception::class)
     private fun zipDirectoryHelper(
         rootDirectory: File, currentDirectory: File, out: ZipOutputStream,
-        topFolderName: String?
+        topFolderName: String
     ) {
         val data = ByteArray(2048)
         val files = currentDirectory.listFiles()
@@ -131,7 +129,7 @@ object FileIO {
                 } else {
                     val fi = FileInputStream(file)
                     // creating structure and avoiding duplicate file names
-                    val name = file.absolutePath.replace(rootDirectory.absolutePath, topFolderName!!)
+                    val name = file.absolutePath.replace(rootDirectory.absolutePath, topFolderName)
                     val entry = ZipEntry(name)
                     out.putNextEntry(entry)
                     var count: Int
@@ -147,14 +145,14 @@ object FileIO {
 
     // Used to copy a directory (replacing existing files)
     @Throws(IOException::class)
-    private fun copyDirectory(src: String?, dest: String) {
+    private fun copyDirectory(src: String, dest: String) {
         val source = File(src)
         val destination = File(dest)
         if (source.isDirectory) {
             if (!destination.exists()) {
                 destination.mkdirs()
             }
-            val files = source.list()
+            val files = source.list()!!
             for (file in files) {
                 val srcFile = File(source, file)
                 val destFile = File(destination, file)

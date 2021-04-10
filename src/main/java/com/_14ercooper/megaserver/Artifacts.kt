@@ -40,7 +40,7 @@ object Artifacts {
         }
 
     // Get the file path of the artifact
-    fun getArtifactPath(type: String, version: String?, name: String?): String {
+    fun getArtifactPath(type: String, version: String?, name: String): String {
         val key = "$type;$version;$name"
         for ((key1) in localArtifacts) {
             if (key1.contains(key)) {
@@ -130,7 +130,7 @@ object Artifacts {
         saveLocalArtifacts()
     }
 
-    fun getLocalArtifacts(type: String, version: String?): List<String> {
+    fun getLocalArtifacts(type: String, version: String): List<String> {
         val key = "$type;$version"
         val artifacts: MutableList<String> = ArrayList()
         for ((key1) in localArtifacts) {
@@ -212,7 +212,7 @@ object Artifacts {
 
     // Downloads the file at the URL to the target
     @Throws(IOException::class)
-    fun downloadFromURL(sourceURL: String?, target: String?) {
+    fun downloadFromURL(sourceURL: String, target: String) {
         val website = URL(sourceURL)
         val rbc = Channels.newChannel(website.openStream())
         val fos = FileOutputStream(target)

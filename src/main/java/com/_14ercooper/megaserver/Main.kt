@@ -7,6 +7,7 @@ import java.util.*
 
 object Main {
     private var javaPath = "java"
+
     @JvmStatic
     fun main(args: Array<String>) {
         var updateArtifacts = false
@@ -54,7 +55,7 @@ object Main {
                 while (true) {
                     clearConsole()
                     println("What profile?")
-                    val profiles = ArrayList<String?>()
+                    val profiles = ArrayList<String>()
                     profiles.addAll(FileIO.listFiles("profiles", true))
                     if (profiles.size == 0) {
                         newProfile()
@@ -75,7 +76,7 @@ object Main {
 
     // What to do in profile function
     @Throws(IOException::class, InterruptedException::class)
-    private fun inProfile(profile: String?) {
+    private fun inProfile(profile: String) {
         // Loop until back selected
         while (true) {
             // Get choice
@@ -93,13 +94,13 @@ object Main {
             // Load vars from disk
             val vars = ArrayList<String>()
             vars.addAll(listOf(*FileIO.readFromFile("profiles/$profile/data.mms").split("&").toTypedArray()))
-            var version: String? = vars[0].replace("\n", "").replace("\r", "")
+            var version: String = vars[0].replace("\n", "").replace("\r", "")
             var ramAmt = try {
                 vars[1].replace("\n", "").replace("\r", "")
             } catch (e: IndexOutOfBoundsException) {
                 "2048"
             }
-            var plugins: MutableList<String?> = ArrayList()
+            var plugins: MutableList<String> = ArrayList()
             for (i in 2 until vars.size) {
                 plugins.add(vars[i].replace("\n", "").replace("\r", ""))
             }
@@ -165,7 +166,7 @@ object Main {
             if (input == 5) {
                 val backups = FileIO.listFiles("backups", false)
                 for (s in backups) {
-                    if (s.contains(profile!!)) {
+                    if (s.contains(profile)) {
                         FileIO.deleteFile("backups/$s", false)
                     }
                 }
@@ -174,7 +175,7 @@ object Main {
             if (input == 6) {
                 println("Please type the profile name to confirm deletion.")
                 val confirmDelete = UserInput.patternMatch("[A-Za-z0-9\\-_]")
-                if (profile!!.contentEquals(confirmDelete)) {
+                if (profile.contentEquals(confirmDelete)) {
                     FileIO.deleteFile("profiles/$profile", true)
                     return
                 }
@@ -192,7 +193,7 @@ object Main {
         }
     }
 
-    private fun choosePlugins(plugins: MutableList<String?>, version: String?) {
+    private fun choosePlugins(plugins: MutableList<String>, version: String) {
         while (true) {
             println("Plugins to install:\nInstalled: ")
             for (s in plugins) {
@@ -201,7 +202,7 @@ object Main {
             println()
             println("Install which plugins?")
             val artifactList = Artifacts.getLocalArtifacts("Plugin", version)
-            val pluginList: MutableList<String?> = ArrayList()
+            val pluginList: MutableList<String> = ArrayList()
             for (s in artifactList) {
                 pluginList.add(s.split(";").toTypedArray()[2])
             }
@@ -223,7 +224,7 @@ object Main {
         println("What Minecraft version?")
         val version = UserInput.fromList(versions)
         // Initial plugins
-        val plugins: MutableList<String?> = ArrayList()
+        val plugins: MutableList<String> = ArrayList()
         choosePlugins(plugins, version)
         // Save to profile folder
         var data = "$version&"

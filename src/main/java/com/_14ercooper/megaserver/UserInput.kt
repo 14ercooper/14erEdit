@@ -17,7 +17,7 @@ object UserInput {
         }
     }
 
-    fun patternMatch(regex: String?): String {
+    fun patternMatch(regex: String): String {
         return try {
             val s = System.console().readLine()
             val p = Pattern.compile(regex)
@@ -32,9 +32,9 @@ object UserInput {
         }
     }
 
-    fun fromList(choices: List<String?>?): String? {
+    fun fromList(choices: List<String>): String {
         var i = 1
-        for (s in choices!!) {
+        for (s in choices) {
             println("\t$i) $s")
             i++
         }
