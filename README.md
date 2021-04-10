@@ -20,6 +20,7 @@ Directly access the operations system for maximum power and customizability, or 
 ### Top Tier Supporters
 
  - CooleyBrekka
+ - Jevex
 
 Thanks for helping keep these projects running!
 
@@ -27,6 +28,7 @@ Thanks for helping keep these projects running!
 
 - 14er
 - NotQuiteAmish
+- Enshano
 
 To help develop the plugin, please read [CONTRIBUTING.md](CONTRIBUTING.md).
 
