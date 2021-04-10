@@ -21,6 +21,7 @@ Directly access the operations system for maximum power and customizability, or 
 
  - CooleyBrekka
  - Jevex
+ - Heliceo
 
 Thanks for helping keep these projects running!
 
