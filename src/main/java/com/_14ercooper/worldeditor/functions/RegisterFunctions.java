@@ -74,7 +74,7 @@ public class RegisterFunctions {
         Function.commands.put("sin", new SineCommand());
         Function.commands.put("cos", new CosineCommand());
         Function.commands.put("pow", new PowerCommand());
-        Function.commands.put("ceiling", new CeilingCommand());
+        Function.commands.put("ceil", new CeilingCommand());
         Function.commands.put("floor", new FloorCommand());
         Function.commands.put("round", new RoundCommand());
         Function.commands.put("single", new SingleMathCommand());
