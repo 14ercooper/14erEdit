@@ -27,15 +27,15 @@ public class RadiusSphere extends BrushShape {
 
     @Override
     public void addNewArgument(String argument) {
-	if (!gotArg) {
-	    radius = argument;
-	    gotArg = true;
-	}
+        if (!gotArg) {
+            radius = argument;
+            gotArg = true;
+        }
     }
 
     @Override
     public boolean lastInputProcessed() {
-	return !gotArg;
+        return !gotArg;
     }
 
     @Override

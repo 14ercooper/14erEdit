@@ -13,27 +13,27 @@ public class BlocklightNode extends Node {
 
     @Override
     public BlocklightNode newNode() {
-	BlocklightNode node = new BlocklightNode();
-	node.arg = GlobalVars.operationParser.parseNumberNode();
-	return node;
+        BlocklightNode node = new BlocklightNode();
+        node.arg = GlobalVars.operationParser.parseNumberNode();
+        return node;
     }
 
     @Override
     public boolean performNode() {
-	BlockFace[] faces = { BlockFace.UP, BlockFace.DOWN, BlockFace.NORTH, BlockFace.SOUTH, BlockFace.EAST,
-		BlockFace.WEST };
-	int light = Operator.currentBlock.getLightFromBlocks();
-	for (BlockFace face : faces) {
-	    int l = Operator.currentBlock.getRelative(face).getLightFromBlocks();
-	    if (l > light)
-		light = l;
-	}
-	return light >= arg.getValue();
+        BlockFace[] faces = {BlockFace.UP, BlockFace.DOWN, BlockFace.NORTH, BlockFace.SOUTH, BlockFace.EAST,
+                BlockFace.WEST};
+        int light = Operator.currentBlock.getLightFromBlocks();
+        for (BlockFace face : faces) {
+            int l = Operator.currentBlock.getRelative(face).getLightFromBlocks();
+            if (l > light)
+                light = l;
+        }
+        return light >= arg.getValue();
     }
 
     @Override
     public int getArgCount() {
-	return 1;
+        return 1;
     }
 
 }

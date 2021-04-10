@@ -23,18 +23,17 @@ public class FlattenMacro extends Macro {
 
     // Create a new macro
     private void SetupMacro(String[] args, Location loc) {
-	try {
-	    radius = Double.parseDouble(args[0]);
-	    isAbsolute = Boolean.parseBoolean(args[1]);
-	    height = Double.parseDouble(args[2]);
-	    block = Material.matchMaterial(args[3]);
-	}
-	catch (Exception e) {
-	    Main.logError(
-		    "Could not parse flatten macro. Did you provide radius, absolute flatten, height setting, and a block material?",
-		    Operator.currentPlayer, e);
-	}
-	pos = loc;
+        try {
+            radius = Double.parseDouble(args[0]);
+            isAbsolute = Boolean.parseBoolean(args[1]);
+            height = Double.parseDouble(args[2]);
+            block = Material.matchMaterial(args[3]);
+        } catch (Exception e) {
+            Main.logError(
+                    "Could not parse flatten macro. Did you provide radius, absolute flatten, height setting, and a block material?",
+                    Operator.currentPlayer, e);
+        }
+        pos = loc;
     }
 
     // Run this macro
@@ -99,13 +98,12 @@ public class FlattenMacro extends Macro {
                 BlockState state = b.getState();
                 state.setType(block);
                 operatedBlocks.add(state);
+            } else {
+                BlockState state = b.getState();
+                state.setType(Material.AIR);
+                operatedBlocks.add(state);
             }
-	    else {
-		BlockState state = b.getState();
-		state.setType(Material.AIR);
-		operatedBlocks.add(state);
-	    }
-	}
+        }
     }
 
     private void notAbsoluteFlatten(double x, double y, double z, LinkedList<BlockState> operatedBlocks) {
@@ -141,12 +139,11 @@ public class FlattenMacro extends Macro {
                 BlockState state = b.getState();
                 state.setType(block);
                 operatedBlocks.add(state);
+            } else {
+                BlockState state = b.getState();
+                state.setType(Material.AIR);
+                operatedBlocks.add(state);
             }
-	    else {
-		BlockState state = b.getState();
-		state.setType(Material.AIR);
-		operatedBlocks.add(state);
-	    }
-	}
+        }
     }
 }

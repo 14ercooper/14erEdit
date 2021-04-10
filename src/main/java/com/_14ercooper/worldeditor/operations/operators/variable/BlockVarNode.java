@@ -12,23 +12,23 @@ public class BlockVarNode extends Node {
 
     @Override
     public BlockVarNode newNode() {
-	BlockVarNode node = new BlockVarNode();
-	node.name = GlobalVars.operationParser.parseStringNode().contents;
-	return node;
+        BlockVarNode node = new BlockVarNode();
+        node.name = GlobalVars.operationParser.parseStringNode().contents;
+        return node;
     }
 
     @Override
     public boolean performNode() {
-	if (Operator.blockVars.containsKey(name)) {
-	    Main.logError("Could not create block variable. Does it already exist?", Operator.currentPlayer, null);
-	    return false;
-	}
-	Operator.blockVars.put(name, new BlockVar());
-	return true;
+        if (Operator.blockVars.containsKey(name)) {
+            Main.logError("Could not create block variable. Does it already exist?", Operator.currentPlayer, null);
+            return false;
+        }
+        Operator.blockVars.put(name, new BlockVar());
+        return true;
     }
 
     @Override
     public int getArgCount() {
-	return 1;
+        return 1;
     }
 }

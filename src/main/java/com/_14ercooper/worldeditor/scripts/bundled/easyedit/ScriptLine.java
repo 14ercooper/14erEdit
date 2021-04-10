@@ -23,22 +23,21 @@ public class ScriptLine extends Craftscript {
             }
 
             Vector blockPos = player.getLocation().getDirection();
-	    Vector playerPos = player.getLocation().toVector();
+            Vector playerPos = player.getLocation().toVector();
 
-	    int x1 = (int) playerPos.getX();
-	    int y1 = (int) playerPos.getY() + 1;
-	    int z1 = (int) playerPos.getZ();
-	    int x2 = (int) (blockPos.getX() * -1 * length + playerPos.getX());
-	    int y2 = (int) (blockPos.getY() * -1 * length + playerPos.getY());
-	    int z2 = (int) (blockPos.getZ() * -1 * length + playerPos.getZ());
+            int x1 = (int) playerPos.getX();
+            int y1 = (int) playerPos.getY() + 1;
+            int z1 = (int) playerPos.getZ();
+            int x2 = (int) (blockPos.getX() * -1 * length + playerPos.getX());
+            int y2 = (int) (blockPos.getY() * -1 * length + playerPos.getY());
+            int z2 = (int) (blockPos.getZ() * -1 * length + playerPos.getZ());
 
-	    player.performCommand(
-		    "run $ line_old{" + x1 + ";" + y1 + ";" + z1 + ";" + x2 + ";" + y2 + ";" + z2 + ";" + block + "}");
+            player.performCommand(
+                    "run $ line_old{" + x1 + ";" + y1 + ";" + z1 + ";" + x2 + ";" + y2 + ";" + z2 + ";" + block + "}");
 
+        } catch (Exception e) {
+            Main.logError("Could not parse line macro. Did you provide a block material and optionally length?",
+                    Operator.currentPlayer, e);
         }
-	catch (Exception e) {
-	    Main.logError("Could not parse line macro. Did you provide a block material and optionally length?",
-		    Operator.currentPlayer, e);
-    }
     }
 }

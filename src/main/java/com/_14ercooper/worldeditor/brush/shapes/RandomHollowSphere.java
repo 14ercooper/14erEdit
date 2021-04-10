@@ -29,32 +29,27 @@ public class RandomHollowSphere extends BrushShape {
 
     @Override
     public void addNewArgument(String argument) {
-	if (argsGot == 0) {
-	    radiusMin = Integer.parseInt(argument);
-	}
-	else if (argsGot == 1) {
-	    radiusMax = Integer.parseInt(argument);
-	}
-	else if (argsGot == 2) {
-	    centerMin = Integer.parseInt(argument);
-	}
-	else if (argsGot == 3) {
-	    centerMax = Integer.parseInt(argument);
-	}
-	else if (argsGot == 4) {
-	    try {
-		correction = argument;
-	    }
-	    catch (NumberFormatException e) {
-		argsGot++;
-	    }
-	}
-	argsGot++;
+        if (argsGot == 0) {
+            radiusMin = Integer.parseInt(argument);
+        } else if (argsGot == 1) {
+            radiusMax = Integer.parseInt(argument);
+        } else if (argsGot == 2) {
+            centerMin = Integer.parseInt(argument);
+        } else if (argsGot == 3) {
+            centerMax = Integer.parseInt(argument);
+        } else if (argsGot == 4) {
+            try {
+                correction = argument;
+            } catch (NumberFormatException e) {
+                argsGot++;
+            }
+        }
+        argsGot++;
     }
 
     @Override
     public boolean lastInputProcessed() {
-	return argsGot < 6;
+        return argsGot < 6;
     }
 
     @Override

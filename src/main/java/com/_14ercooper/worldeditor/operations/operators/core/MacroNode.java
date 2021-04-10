@@ -11,27 +11,26 @@ public class MacroNode extends Node {
 
     @Override
     public MacroNode newNode() {
-	MacroNode node = new MacroNode();
-	try {
-	    node.arg = GlobalVars.operationParser.parseStringNode();
-	    return node;
-	}
-	catch (Exception e) {
-	    Main.logError("Could not create macro node, no argument provided. At least one argument is required.",
-		    Operator.currentPlayer, e);
-	    return null;
-	}
+        MacroNode node = new MacroNode();
+        try {
+            node.arg = GlobalVars.operationParser.parseStringNode();
+            return node;
+        } catch (Exception e) {
+            Main.logError("Could not create macro node, no argument provided. At least one argument is required.",
+                    Operator.currentPlayer, e);
+            return null;
+        }
     }
 
     @Override
     public boolean performNode() {
-	Main.logDebug("Performing macro node"); // ----
+        Main.logDebug("Performing macro node"); // ----
 //	AsyncManager.doneOperations += (GlobalVars.blocksPerAsync * 0.5) + 1;
-	return GlobalVars.macroLauncher.launchMacro(arg.contents, Operator.currentBlock.getLocation());
+        return GlobalVars.macroLauncher.launchMacro(arg.contents, Operator.currentBlock.getLocation());
     }
 
     @Override
     public int getArgCount() {
-	return 1;
+        return 1;
     }
 }

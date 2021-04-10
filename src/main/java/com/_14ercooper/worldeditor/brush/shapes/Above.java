@@ -24,12 +24,12 @@ public class Above extends BrushShape {
 
     @Override
     public void addNewArgument(String argument) {
-	// Does nothing
+        // Does nothing
     }
 
     @Override
     public boolean lastInputProcessed() {
-	return false;
+        return false;
     }
 
     @Override

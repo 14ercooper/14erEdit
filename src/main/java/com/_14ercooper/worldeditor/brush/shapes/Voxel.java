@@ -24,12 +24,12 @@ public class Voxel extends BrushShape {
 
     @Override
     public void addNewArgument(String argument) {
-	// This does nothing - it's a voxel
+        // This does nothing - it's a voxel
     }
 
     @Override
     public boolean lastInputProcessed() {
-	return false;
+        return false;
     }
 
     @Override

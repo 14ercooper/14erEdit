@@ -43,57 +43,56 @@ public class SpikeIterator extends BlockIterator {
             }
             iterator.setup();
             return iterator;
+        } catch (Exception e) {
+            Main.logError("Error creating spike iterator. Please check your brush parameters.", Operator.currentPlayer, e);
+            return null;
         }
-	catch (Exception e) {
-	    Main.logError("Error creating spike iterator. Please check your brush parameters.", Operator.currentPlayer, e);
-	    return null;
-	}
     }
 
     Point3 basePos;
     Line spikeLine;
 
     private void setup() {
-	basePos = new Point3(xC, yC, zC);
-	Point3 secondPoint = new Point3(dX, dY, dZ);
-	spikeLine = new Line(basePos, secondPoint);
+        basePos = new Point3(xC, yC, zC);
+        Point3 secondPoint = new Point3(dX, dY, dZ);
+        spikeLine = new Line(basePos, secondPoint);
     }
 
     @Override
     public Block getNext() {
-	while (true) {
-        if (incrXYZ(radMax, radMax, radMax, xC, yC, zC)) {
-            return null;
-        }
+        while (true) {
+            if (incrXYZ(radMax, radMax, radMax, xC, yC, zC)) {
+                return null;
+            }
 
-	    // Is in spike logic
-	    // Figure out the block's distances
-	    Point3 blockPos = new Point3(x, y, z);
-	    blockPos = blockPos.add(basePos);
-	    double distToLine = spikeLine.distanceTo(blockPos);
-	    double h0 = spikeLine.distanceFromFirst(spikeLine.closestPoint(blockPos));
-	    double radMi = rMin - ((rMin * h0) / (h + 0.0001));
-	    double radMa = bSize - ((bSize * h0) / (h + 0.0001));
+            // Is in spike logic
+            // Figure out the block's distances
+            Point3 blockPos = new Point3(x, y, z);
+            blockPos = blockPos.add(basePos);
+            double distToLine = spikeLine.distanceTo(blockPos);
+            double h0 = spikeLine.distanceFromFirst(spikeLine.closestPoint(blockPos));
+            double radMi = rMin - ((rMin * h0) / (h + 0.0001));
+            double radMa = bSize - ((bSize * h0) / (h + 0.0001));
 //	    Main.logDebug("dists " + distToLine + " " + h0 + " " + radMi + " " + radMa);
 
-	    // Check they are in compliance
-	    if (distToLine > radMa || (distToLine < radMi && radMi > 0.05))
-		continue;
+            // Check they are in compliance
+            if (distToLine > radMa || (distToLine < radMi && radMi > 0.05))
+                continue;
 
-	    break;
-	}
+            break;
+        }
 
-	return iterWorld.getBlockAt(x + xC, y + yC, z + zC);
+        return iterWorld.getBlockAt(x + xC, y + yC, z + zC);
     }
 
     @Override
     public long getTotalBlocks() {
-	return totalBlocks;
+        return totalBlocks;
     }
 
     @Override
     public long getRemainingBlocks() {
-	return totalBlocks - doneBlocks;
+        return totalBlocks - doneBlocks;
     }
 
 }

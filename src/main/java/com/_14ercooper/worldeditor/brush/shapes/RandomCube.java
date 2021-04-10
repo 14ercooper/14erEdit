@@ -30,18 +30,17 @@ public class RandomCube extends BrushShape {
 
     @Override
     public void addNewArgument(String argument) {
-	if (argsSeen == 0) {
-	    sideMin = Integer.parseInt(argument);
-	}
-	else if (argsSeen == 1) {
-	    sideMax = Integer.parseInt(argument);
-	}
-	argsSeen++;
+        if (argsSeen == 0) {
+            sideMin = Integer.parseInt(argument);
+        } else if (argsSeen == 1) {
+            sideMax = Integer.parseInt(argument);
+        }
+        argsSeen++;
     }
 
     @Override
     public boolean lastInputProcessed() {
-	return argsSeen < 3;
+        return argsSeen < 3;
     }
 
     @Override

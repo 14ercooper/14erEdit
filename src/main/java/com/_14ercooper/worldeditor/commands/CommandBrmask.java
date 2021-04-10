@@ -14,24 +14,23 @@ public class CommandBrmask implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-	if (sender instanceof Player) {
-        if (!sender.isOp()) {
-            sender.sendMessage("You must be opped to use 14erEdit");
+        if (sender instanceof Player) {
+            if (!sender.isOp()) {
+                sender.sendMessage("You must be opped to use 14erEdit");
+                return false;
+            }
+        }
+
+        try {
+            GlobalVars.brushMask = new HashSet<>();
+            for (String s : args) {
+                GlobalVars.brushMask.add(Material.matchMaterial(s));
+            }
+
+            return true;
+        } catch (Exception e) {
+            Main.logError("Failed to set block mask.", sender, e);
             return false;
         }
-    }
-
-	try {
-        GlobalVars.brushMask = new HashSet<>();
-        for (String s : args) {
-            GlobalVars.brushMask.add(Material.matchMaterial(s));
-        }
-
-        return true;
-    }
-	catch (Exception e) {
-	    Main.logError("Failed to set block mask.", sender, e);
-	    return false;
-	}
     }
 }

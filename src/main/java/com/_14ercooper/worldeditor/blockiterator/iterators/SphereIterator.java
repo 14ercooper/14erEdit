@@ -31,49 +31,48 @@ public class SphereIterator extends BlockIterator {
             iterator.y = -iterator.radMax;
             iterator.z = -iterator.radMax;
             return iterator;
+        } catch (Exception e) {
+            Main.logError("Error creating sphere iterator. Please check your brush parameters.",
+                    Operator.currentPlayer, e);
+            return null;
         }
-	catch (Exception e) {
-	    Main.logError("Error creating sphere iterator. Please check your brush parameters.",
-		    Operator.currentPlayer, e);
-	    return null;
-	}
     }
 
     @Override
     public Block getNext() {
-	while (true) {
-        if (incrXYZ(radMax, radMax, radMax, xC, yC, zC)) {
-            return null;
-        }
+        while (true) {
+            if (incrXYZ(radMax, radMax, radMax, xC, yC, zC)) {
+                return null;
+            }
 
 //	    if (y > radMax || y + yC > 255) {
 //		return null;
 //	    }
 
-	    // Max radius check
-	    if (x * x + y * y + z * z >= (radMax + radCorr) * (radMax + radCorr)) {
-		continue;
-	    }
+            // Max radius check
+            if (x * x + y * y + z * z >= (radMax + radCorr) * (radMax + radCorr)) {
+                continue;
+            }
 
-	    // Min radius check
-	    if (radMin > 1 && x * x + y * y + z * z <= (radMin - radCorr) * (radMin - radCorr)) {
-		continue;
-	    }
+            // Min radius check
+            if (radMin > 1 && x * x + y * y + z * z <= (radMin - radCorr) * (radMin - radCorr)) {
+                continue;
+            }
 
-	    break;
-	}
+            break;
+        }
 
-	return iterWorld.getBlockAt(x + xC, y + yC, z + zC);
+        return iterWorld.getBlockAt(x + xC, y + yC, z + zC);
     }
 
     @Override
     public long getTotalBlocks() {
-	return totalBlocks;
+        return totalBlocks;
     }
 
     @Override
     public long getRemainingBlocks() {
-	return totalBlocks - doneBlocks;
+        return totalBlocks - doneBlocks;
     }
 
 }

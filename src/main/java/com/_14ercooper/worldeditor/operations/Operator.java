@@ -43,11 +43,10 @@ public class Operator {
 
             // Perform the operation
             entryNode.performNode();
+        } catch (Exception e) {
+            Main.logError("Could not perform operation. Please check your syntax.", p, e);
+            GlobalVars.asyncManager.dropAsync();
         }
-	catch (Exception e) {
-	    Main.logError("Could not perform operation. Please check your syntax.", p, e);
-	    GlobalVars.asyncManager.dropAsync();
-	}
     }
 
     public void operateOnBlock(Block block) {
@@ -65,31 +64,29 @@ public class Operator {
 
             // Perform the operation
             entryNode.performNode();
+        } catch (Exception e) {
+            Main.logError("Could not perform operation. Please check your syntax.", Bukkit.getConsoleSender(), e);
+            GlobalVars.asyncManager.dropAsync();
         }
-	catch (Exception e) {
-	    Main.logError("Could not perform operation. Please check your syntax.", Bukkit.getConsoleSender(), e);
-	    GlobalVars.asyncManager.dropAsync();
-	}
     }
 
     public boolean messyOperate() {
-	try {
-	    return entryNode.performNode();
-	}
-	catch (Exception e) {
-	    Main.logError("Could not perform operation. Please check your syntax.", Bukkit.getConsoleSender(), e);
-	    GlobalVars.asyncManager.dropAsync();
-	    return false;
-	}
+        try {
+            return entryNode.performNode();
+        } catch (Exception e) {
+            Main.logError("Could not perform operation. Please check your syntax.", Bukkit.getConsoleSender(), e);
+            GlobalVars.asyncManager.dropAsync();
+            return false;
+        }
     }
 
     public Operator(String op, Player p) {
-	currentPlayer = p; // Used to show errors in the parse process
-	entryNode = GlobalVars.operationParser.parseOperation(op);
+        currentPlayer = p; // Used to show errors in the parse process
+        entryNode = GlobalVars.operationParser.parseOperation(op);
     }
 
     public Operator(EntryNode e, Player p) {
-	currentPlayer = p;
-	entryNode = e;
+        currentPlayer = p;
+        entryNode = e;
     }
 }

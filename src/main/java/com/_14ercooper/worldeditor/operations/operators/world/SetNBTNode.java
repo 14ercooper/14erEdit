@@ -13,39 +13,37 @@ public class SetNBTNode extends Node {
 
     @Override
     public SetNBTNode newNode() {
-	SetNBTNode node = new SetNBTNode();
-	try {
-	    node.nbt = GlobalVars.operationParser.parseStringNode().contents;
-	}
-	catch (Exception e) {
-	    Main.logError("Error creating set NBT node. Please check your syntax.", Operator.currentPlayer, e);
-	    return null;
-	}
-	if (node.nbt.isEmpty()) {
-	    Main.logError("Could not parse set NBT node. Requires NBT, but did not find nay.", Operator.currentPlayer, null);
-	}
-	return node;
+        SetNBTNode node = new SetNBTNode();
+        try {
+            node.nbt = GlobalVars.operationParser.parseStringNode().contents;
+        } catch (Exception e) {
+            Main.logError("Error creating set NBT node. Please check your syntax.", Operator.currentPlayer, e);
+            return null;
+        }
+        if (node.nbt.isEmpty()) {
+            Main.logError("Could not parse set NBT node. Requires NBT, but did not find nay.", Operator.currentPlayer, null);
+        }
+        return node;
     }
 
     @Override
     public boolean performNode() {
-	try {
-	    String command = "data merge block ";
-	    command += Operator.currentBlock.getLocation().getBlockX() + " ";
-	    command += Operator.currentBlock.getLocation().getBlockY() + " ";
-	    command += Operator.currentBlock.getLocation().getBlockZ() + " ";
-	    command += nbt.replaceAll("_", " ");
-	    Bukkit.dispatchCommand(Bukkit.getServer().getConsoleSender(), command);
-	    return true;
-	}
-	catch (Exception e) {
-	    Main.logError("Error performing set NBT node. Please check your syntax.", Operator.currentPlayer, e);
-	    return false;
-	}
+        try {
+            String command = "data merge block ";
+            command += Operator.currentBlock.getLocation().getBlockX() + " ";
+            command += Operator.currentBlock.getLocation().getBlockY() + " ";
+            command += Operator.currentBlock.getLocation().getBlockZ() + " ";
+            command += nbt.replaceAll("_", " ");
+            Bukkit.dispatchCommand(Bukkit.getServer().getConsoleSender(), command);
+            return true;
+        } catch (Exception e) {
+            Main.logError("Error performing set NBT node. Please check your syntax.", Operator.currentPlayer, e);
+            return false;
+        }
     }
 
     @Override
     public int getArgCount() {
-	return 1;
+        return 1;
     }
 }

@@ -24,13 +24,13 @@ public class Column extends BrushShape {
 
     @Override
     public void addNewArgument(String argument) {
-	// Zero argument brush, do nothing
+        // Zero argument brush, do nothing
 
     }
 
     @Override
     public boolean lastInputProcessed() {
-	return false;
+        return false;
     }
 
     @Override

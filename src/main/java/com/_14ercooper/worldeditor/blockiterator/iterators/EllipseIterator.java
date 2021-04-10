@@ -33,40 +33,39 @@ public class EllipseIterator extends BlockIterator {
             iterator.y = (int) -iterator.ry;
             iterator.z = (int) -iterator.rz;
             return iterator;
+        } catch (Exception e) {
+            Main.logError("Error creating ellipse iterator. Please check your brush parameters.",
+                    Operator.currentPlayer, e);
+            return null;
         }
-	catch (Exception e) {
-	    Main.logError("Error creating ellipse iterator. Please check your brush parameters.",
-		    Operator.currentPlayer, e);
-	    return null;
-	}
     }
 
     @Override
     public Block getNext() {
-	while (true) {
-        if (incrXYZ((int) rx, (int) ry, (int) rz, xC, yC, zC)) {
-            return null;
+        while (true) {
+            if (incrXYZ((int) rx, (int) ry, (int) rz, xC, yC, zC)) {
+                return null;
+            }
+
+            // Radius check
+            if ((x * x / (rx * rx)) + (y * y / (ry * ry)) + (z * z / (rz * rz)) > 1 + radCorr) {
+                continue;
+            }
+
+            break;
         }
 
-	    // Radius check
-	    if ((x * x / (rx * rx)) + (y * y / (ry * ry)) + (z * z / (rz * rz)) > 1 + radCorr) {
-		continue;
-	    }
-
-	    break;
-	}
-
-	return iterWorld.getBlockAt(x + xC, y + yC, z + zC);
+        return iterWorld.getBlockAt(x + xC, y + yC, z + zC);
     }
 
     @Override
     public long getTotalBlocks() {
-	return totalBlocks;
+        return totalBlocks;
     }
 
     @Override
     public long getRemainingBlocks() {
-	return totalBlocks - doneBlocks;
+        return totalBlocks - doneBlocks;
     }
 
 }

@@ -24,32 +24,29 @@ public class VinesMacro extends Macro {
 
     // Create a new macro
     private void SetupMacro(String[] args, Location loc) {
-	try {
-	    radius = Double.parseDouble(args[0]);
-	    length = Double.parseDouble(args[1]);
-	    variance = Double.parseDouble(args[2]);
-	    density = Double.parseDouble(args[3]);
-	    try {
-		block = args[4];
-	    }
-	    catch (Exception e) {
-		block = "vine";
-	    }
-	}
-	catch (Exception e) {
-	    Main.logError(
-		    "Error parsing vine macro. Did you pass in radius, length, variance, density, and optionally block material?",
-		    Operator.currentPlayer, e);
-	}
-	try {
-	    Material m = Material.matchMaterial(block);
-	    if (m == null)
-		throw new Exception();
-	}
-	catch (Exception e) {
-	    Main.logError("Error parsing vine macro. " + block + " is not a valid block.", Operator.currentPlayer, e);
-	}
-	pos = loc;
+        try {
+            radius = Double.parseDouble(args[0]);
+            length = Double.parseDouble(args[1]);
+            variance = Double.parseDouble(args[2]);
+            density = Double.parseDouble(args[3]);
+            try {
+                block = args[4];
+            } catch (Exception e) {
+                block = "vine";
+            }
+        } catch (Exception e) {
+            Main.logError(
+                    "Error parsing vine macro. Did you pass in radius, length, variance, density, and optionally block material?",
+                    Operator.currentPlayer, e);
+        }
+        try {
+            Material m = Material.matchMaterial(block);
+            if (m == null)
+                throw new Exception();
+        } catch (Exception e) {
+            Main.logError("Error parsing vine macro. " + block + " is not a valid block.", Operator.currentPlayer, e);
+        }
+        pos = loc;
     }
 
     // Run this macro
@@ -98,104 +95,99 @@ public class VinesMacro extends Macro {
             }
 
             // Check density
-	    if (GlobalVars.rand.nextDouble() >= density) {
-		continue;
-	    }
+            if (GlobalVars.rand.nextDouble() >= density) {
+                continue;
+            }
 
-	    String blockStateTop = "[";
-	    String blockState = "";
-	    if (block.equalsIgnoreCase("vine")) {
-            boolean firstState = true;
-            List<String> dirs = new ArrayList<>();
-            // And next to a solid block
-            if (!nonsolidBlocks.contains(b.getRelative(BlockFace.NORTH).getType())) {
-                if (firstState) {
-                    firstState = false;
-                } else {
-                    blockStateTop = blockStateTop.concat(",");
+            String blockStateTop = "[";
+            String blockState = "";
+            if (block.equalsIgnoreCase("vine")) {
+                boolean firstState = true;
+                List<String> dirs = new ArrayList<>();
+                // And next to a solid block
+                if (!nonsolidBlocks.contains(b.getRelative(BlockFace.NORTH).getType())) {
+                    if (firstState) {
+                        firstState = false;
+                    } else {
+                        blockStateTop = blockStateTop.concat(",");
+                    }
+                    blockStateTop = blockStateTop.concat("north=true");
+                    dirs.add("[north=true]");
                 }
-                blockStateTop = blockStateTop.concat("north=true");
-                dirs.add("[north=true]");
-		}
-		if (!nonsolidBlocks.contains(b.getRelative(BlockFace.EAST).getType())) {
-		    if (firstState) {
-			firstState = false;
-		    }
-		    else {
-			blockStateTop = blockStateTop.concat(",");
-		    }
-		    blockStateTop = blockStateTop.concat("east=true");
-		    dirs.add("[east=true]");
-		}
-		if (!nonsolidBlocks.contains(b.getRelative(BlockFace.SOUTH).getType())) {
-		    if (firstState) {
-			firstState = false;
-		    }
-		    else {
-			blockStateTop = blockStateTop.concat(",");
-		    }
-		    blockStateTop = blockStateTop.concat("south=true");
-		    dirs.add("[south=true]");
-		}
-		if (!nonsolidBlocks.contains(b.getRelative(BlockFace.WEST).getType())) {
-		    if (firstState) {
-			firstState = false;
-		    }
-		    else {
-			blockStateTop = blockStateTop.concat(",");
-		    }
-		    blockStateTop = blockStateTop.concat("west=true");
-		    dirs.add("[west=true]");
-		}
+                if (!nonsolidBlocks.contains(b.getRelative(BlockFace.EAST).getType())) {
+                    if (firstState) {
+                        firstState = false;
+                    } else {
+                        blockStateTop = blockStateTop.concat(",");
+                    }
+                    blockStateTop = blockStateTop.concat("east=true");
+                    dirs.add("[east=true]");
+                }
+                if (!nonsolidBlocks.contains(b.getRelative(BlockFace.SOUTH).getType())) {
+                    if (firstState) {
+                        firstState = false;
+                    } else {
+                        blockStateTop = blockStateTop.concat(",");
+                    }
+                    blockStateTop = blockStateTop.concat("south=true");
+                    dirs.add("[south=true]");
+                }
+                if (!nonsolidBlocks.contains(b.getRelative(BlockFace.WEST).getType())) {
+                    if (firstState) {
+                        firstState = false;
+                    } else {
+                        blockStateTop = blockStateTop.concat(",");
+                    }
+                    blockStateTop = blockStateTop.concat("west=true");
+                    dirs.add("[west=true]");
+                }
 
-		// Is this also a top vine?
-		if (!blockStateTop.equals("[")) {
-		    if (!nonsolidBlocks.contains(b.getRelative(BlockFace.UP).getType())) {
-			blockStateTop = blockStateTop.concat(",up=true");
-		    }
-		}
-		else {
-		    continue;
-		}
+                // Is this also a top vine?
+                if (!blockStateTop.equals("[")) {
+                    if (!nonsolidBlocks.contains(b.getRelative(BlockFace.UP).getType())) {
+                        blockStateTop = blockStateTop.concat(",up=true");
+                    }
+                } else {
+                    continue;
+                }
 
-		// Pick the side for the vines that will be below this one
-		if (dirs.size() > 1) {
-		    blockState = dirs.get(GlobalVars.rand.nextInt(dirs.size() - 1));
-		}
-		else {
-		    blockState = dirs.get(0);
-		}
+                // Pick the side for the vines that will be below this one
+                if (dirs.size() > 1) {
+                    blockState = dirs.get(GlobalVars.rand.nextInt(dirs.size() - 1));
+                } else {
+                    blockState = dirs.get(0);
+                }
 
-		// Close off the directional state; and move on if there was no solid block
-		if (!blockStateTop.equals("[")) {
-		    blockStateTop = blockStateTop.concat("]");
-		}
-	    }
+                // Close off the directional state; and move on if there was no solid block
+                if (!blockStateTop.equals("[")) {
+                    blockStateTop = blockStateTop.concat("]");
+                }
+            }
 
-	    // Determine the length of this vine
-	    double actVariance = ((GlobalVars.rand.nextDouble() * 2.0) - 1.0) * variance;
-	    int vineLength = (int) Math.round(length + actVariance);
+            // Determine the length of this vine
+            double actVariance = ((GlobalVars.rand.nextDouble() * 2.0) - 1.0) * variance;
+            int vineLength = (int) Math.round(length + actVariance);
 
-	    // Grow the vine (checking to make sure only air gets replaced and registering
-	    // operated blocks)
-	    // Grow the top vine
-	    BlockState state = b.getState();
-	    state.setType(Material.matchMaterial(block));
-	    if (block.equalsIgnoreCase("vine"))
-		state.setBlockData(Bukkit.getServer().createBlockData("minecraft:vine" + blockState));
-	    operatedBlocks.add(state);
-	    // Grow all the other vines
-	    for (int i = 1; i <= vineLength; i++) {
-		state = b.getRelative(BlockFace.DOWN, i).getState();
-		if (state.getType() == Material.AIR) {
-		    state.setType(Material.matchMaterial(block));
+            // Grow the vine (checking to make sure only air gets replaced and registering
+            // operated blocks)
+            // Grow the top vine
+            BlockState state = b.getState();
+            state.setType(Material.matchMaterial(block));
             if (block.equalsIgnoreCase("vine"))
                 state.setBlockData(Bukkit.getServer().createBlockData("minecraft:vine" + blockState));
             operatedBlocks.add(state);
-        } else {
-            break; // Don't grow through solid blocks
-        }
-        }
+            // Grow all the other vines
+            for (int i = 1; i <= vineLength; i++) {
+                state = b.getRelative(BlockFace.DOWN, i).getState();
+                if (state.getType() == Material.AIR) {
+                    state.setType(Material.matchMaterial(block));
+                    if (block.equalsIgnoreCase("vine"))
+                        state.setBlockData(Bukkit.getServer().createBlockData("minecraft:vine" + blockState));
+                    operatedBlocks.add(state);
+                } else {
+                    break; // Don't grow through solid blocks
+                }
+            }
         }
 
         Main.logDebug("Operated on and now placing " + operatedBlocks.size() + " blocks");

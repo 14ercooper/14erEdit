@@ -15,23 +15,22 @@ public class MacroLauncher {
 
     // This allows for macros to be launched and executed
     public boolean launchMacro(String macro, Location location) {
-	Main.logDebug("Launching macro " + macro); // ----
-	// First off, parse the macro for the macro name and arguments
-	String[] split1 = macro.split("\\{");
-	String macroName = split1[0];
-	String temp1 = "";
-	try {
-	    temp1 = split1[1].replace("}", "");
-	}
-	catch (IndexOutOfBoundsException e) {
-	    Main.logError("Could not parse the macro. Did you provide arguments in {}?", Operator.currentPlayer, e);
-	    return false;
-	}
-	String[] macroArgs = temp1.split(";");
-	GlobalVars.countEdits = true;
-	boolean returnVal = macros.get(macroName).performMacro(macroArgs, location);
-	GlobalVars.countEdits = false;
-	return returnVal;
+        Main.logDebug("Launching macro " + macro); // ----
+        // First off, parse the macro for the macro name and arguments
+        String[] split1 = macro.split("\\{");
+        String macroName = split1[0];
+        String temp1 = "";
+        try {
+            temp1 = split1[1].replace("}", "");
+        } catch (IndexOutOfBoundsException e) {
+            Main.logError("Could not parse the macro. Did you provide arguments in {}?", Operator.currentPlayer, e);
+            return false;
+        }
+        String[] macroArgs = temp1.split(";");
+        GlobalVars.countEdits = true;
+        boolean returnVal = macros.get(macroName).performMacro(macroArgs, location);
+        GlobalVars.countEdits = false;
+        return returnVal;
     }
 
     public void addMacro(String name, Macro macro) {

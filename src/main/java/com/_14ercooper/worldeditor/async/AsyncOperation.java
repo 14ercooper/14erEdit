@@ -22,21 +22,21 @@ public class AsyncOperation {
     public MultiIterator childOp = null;
 
     public AsyncOperation(Operator o, Player p, BlockIterator b) {
-	key = "iteredit";
-	operation = o;
-	player = p;
-	blocks = b;
+        key = "iteredit";
+        operation = o;
+        player = p;
+        blocks = b;
     }
 
     public AsyncOperation(Operator o, BlockIterator b) {
-	key = "rawiteredit";
-	operation = o;
-	blocks = b;
+        key = "rawiteredit";
+        operation = o;
+        blocks = b;
     }
 
     public AsyncOperation(Operator o) {
-	key = "messyedit";
-	operation = o;
+        key = "messyedit";
+        operation = o;
     }
 
     // New schematics system
@@ -44,16 +44,15 @@ public class AsyncOperation {
     protected int[] origin = {};
 
     public AsyncOperation(SchemLite sl, boolean saveSchem, int[] o, Player p) {
-	schem = sl;
-	origin = o;
-	blocks = schem.getIterator(origin[0], origin[1], origin[2], p.getWorld());
-	if (saveSchem) {
-	    key = "saveschem";
-	}
-	else {
-	    key = "loadschem";
-	}
-	player = p;
+        schem = sl;
+        origin = o;
+        blocks = schem.getIterator(origin[0], origin[1], origin[2], p.getWorld());
+        if (saveSchem) {
+            key = "saveschem";
+        } else {
+            key = "loadschem";
+        }
+        player = p;
     }
 
     // Selection move/stack
@@ -63,13 +62,13 @@ public class AsyncOperation {
     // Uses the same iterator as other functions
 
     public AsyncOperation(BlockIterator selectionIter, int[] cloneOffset, int cloneTimes, boolean delOriginalBlocks,
-	    Player p) {
-	key = "selclone";
-	blocks = selectionIter;
-	offset = cloneOffset;
-	times = cloneTimes;
-	delOriginal = delOriginalBlocks;
-	player = p;
+                          Player p) {
+        key = "selclone";
+        blocks = selectionIter;
+        offset = cloneOffset;
+        times = cloneTimes;
+        delOriginal = delOriginalBlocks;
+        player = p;
     }
 
     // Multibrush
@@ -77,9 +76,9 @@ public class AsyncOperation {
     List<Operator> operations;
 
     public AsyncOperation(List<BlockIterator> iterators, List<Operator> operations, Player p) {
-	key = "multibrush";
-	this.iterators = iterators;
-	this.operations = operations;
-	player = p;
+        key = "multibrush";
+        this.iterators = iterators;
+        this.operations = operations;
+        player = p;
     }
 }

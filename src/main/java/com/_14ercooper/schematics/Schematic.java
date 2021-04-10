@@ -36,23 +36,23 @@ public class Schematic implements Serializable {
     // A constructor for a schematic
     // The arrays should be arranged as {x,y,z} and only have 3 elements
     public Schematic(int[] schematicOrigin, int[] schematicDimensions, LinkedList<String> blocks,
-	    LinkedList<String> blockNbt) {
-	origin = schematicOrigin;
-	dimensions = schematicDimensions;
-	blockData = blocks;
-	blockEntityData = blockNbt;
+                     LinkedList<String> blockNbt) {
+        origin = schematicOrigin;
+        dimensions = schematicDimensions;
+        blockData = blocks;
+        blockEntityData = blockNbt;
     }
 
     // A constructor for a schematic
     // The arrays should be arranged as {x,y,z} and only have 3 elements
     public Schematic(String schematicName, String schematicAuthor, int[] schematicOrigin, int[] schematicDimensions,
-	    LinkedList<String> blocks, LinkedList<String> blockNbt) {
-	origin = schematicOrigin;
-	dimensions = schematicDimensions;
-	name = schematicName;
-	author = schematicAuthor;
-	blockData = blocks;
-	blockEntityData = blockNbt;
+                     LinkedList<String> blocks, LinkedList<String> blockNbt) {
+        origin = schematicOrigin;
+        dimensions = schematicDimensions;
+        name = schematicName;
+        author = schematicAuthor;
+        blockData = blocks;
+        blockEntityData = blockNbt;
     }
 
     // Get the version compatibility of the schematic loader
@@ -64,57 +64,55 @@ public class Schematic implements Serializable {
 
     // Returns the origin of this schematic. The list should have 3 elements.
     public int[] getOrigin() {
-	return origin;
+        return origin;
     }
 
     // Returns the dimensions of this schematic. The list should have 3 elements.
     public int[] getDimensions() {
-	return dimensions;
+        return dimensions;
     }
 
     // Returns the block data of this schematic
     public LinkedList<String> getBlocks() {
-	return blockData;
+        return blockData;
     }
 
     // Returns the block entity data of this schematic
     public LinkedList<String> getBlockNbt() {
-	return blockEntityData;
+        return blockEntityData;
     }
 
     // Returns the name of this schematic, or "Unset" if not set
     public String getName() {
-	return name;
+        return name;
     }
 
     // Returns the name of this schematic, or "Unset" if not set
     public String getAuthor() {
-	return author;
+        return author;
     }
 
     // Save this schematic to the specified path on disk
     // No file extension should be specified
     // Returns true upon a successful save, false otherwise
     public boolean saveSchematic(String filePath) {
-	filePath = filePath.concat(".matschem");
-	(new File(filePath)).mkdirs();
-	try {
-	    // Delete any schematics existing at the location
-	    Files.deleteIfExists((new File(filePath).toPath()));
-	    // Create an object output stream and output the schematic
-	    ObjectOutputStream oo = new ObjectOutputStream(new FileOutputStream(filePath));
-	    oo.writeObject(this);
-	    oo.close();
-	    return true;
-	}
-	catch (FileNotFoundException e) {
-	    System.out.println("[Schematic] File not found or could not be created while saving schematic.");
-	    return false;
-	}
-	catch (IOException e) {
-	    System.out.println("[Schematic] File I/O error while saving schematic.");
-	    return false;
-	}
+        filePath = filePath.concat(".matschem");
+        (new File(filePath)).mkdirs();
+        try {
+            // Delete any schematics existing at the location
+            Files.deleteIfExists((new File(filePath).toPath()));
+            // Create an object output stream and output the schematic
+            ObjectOutputStream oo = new ObjectOutputStream(new FileOutputStream(filePath));
+            oo.writeObject(this);
+            oo.close();
+            return true;
+        } catch (FileNotFoundException e) {
+            System.out.println("[Schematic] File not found or could not be created while saving schematic.");
+            return false;
+        } catch (IOException e) {
+            System.out.println("[Schematic] File I/O error while saving schematic.");
+            return false;
+        }
     }
 
     // Load a schematic from the specified path on disk
@@ -130,14 +128,12 @@ public class Schematic implements Serializable {
             oi.close();
         } catch (FileNotFoundException e) {
             System.out.println("[Schematic] File not found while loading schematic");
+        } catch (IOException e) {
+            System.out.println("[Schematic] File I/O error while loading schematic");
+        } catch (ClassNotFoundException e) {
+            System.out.println("[Schematic] Class not found while loading schematic");
         }
-	catch (IOException e) {
-	    System.out.println("[Schematic] File I/O error while loading schematic");
-	}
-	catch (ClassNotFoundException e) {
-	    System.out.println("[Schematic] Class not found while loading schematic");
-	}
-	return schem;
+        return schem;
     }
 
     // Returns the format version of this schematic

@@ -22,10 +22,10 @@ public class NewCylinderIterator extends BlockIterator {
     public NewCylinderIterator newIterator(List<String> args, World world) {
         try {
             NewCylinderIterator iterator = new NewCylinderIterator();
-	    iterator.iterWorld = world;
-	    iterator.xC = Integer.parseInt(args.get(0)); // Center
-	    iterator.yC = Integer.parseInt(args.get(1));
-	    iterator.zC = Integer.parseInt(args.get(2));
+            iterator.iterWorld = world;
+            iterator.xC = Integer.parseInt(args.get(0)); // Center
+            iterator.yC = Integer.parseInt(args.get(1));
+            iterator.zC = Integer.parseInt(args.get(2));
             iterator.radMax = Integer.parseInt(args.get(3)); // Radius
             iterator.radCorr = Double.parseDouble(args.get(4));
             iterator.height = Integer.parseInt(args.get(5)); // Height
@@ -44,42 +44,41 @@ public class NewCylinderIterator extends BlockIterator {
                 iterator.y++;
             }
             return iterator;
+        } catch (Exception e) {
+            Main.logError("Error creating new cylinder iterator. Please check your brush parameters.",
+                    Operator.currentPlayer, e);
+            return null;
         }
-	catch (Exception e) {
-	    Main.logError("Error creating new cylinder iterator. Please check your brush parameters.",
-		    Operator.currentPlayer, e);
-	    return null;
-	}
     }
 
     @Override
     public Block getNext() {
-	while (true) {
-        if (incrXYZ(dirMaxX, dirMaxY, dirMaxZ, xC, yC, zC)) {
-            return null;
+        while (true) {
+            if (incrXYZ(dirMaxX, dirMaxY, dirMaxZ, xC, yC, zC)) {
+                return null;
+            }
+
+            // Max radius check
+            if ((x * x) * xS + (y * y) * yS + (z * z) * zS >= (radMax + radCorr) * (radMax + radCorr)) {
+                continue;
+            }
+
+            // Height check
+
+            break;
         }
 
-	    // Max radius check
-	    if ((x * x) * xS + (y * y) * yS + (z * z) * zS >= (radMax + radCorr) * (radMax + radCorr)) {
-		continue;
-	    }
-
-	    // Height check
-
-	    break;
-	}
-
-	return iterWorld.getBlockAt(x + xC, y + yC, z + zC);
+        return iterWorld.getBlockAt(x + xC, y + yC, z + zC);
     }
 
     @Override
     public long getTotalBlocks() {
-	return totalBlocks;
+        return totalBlocks;
     }
 
     @Override
     public long getRemainingBlocks() {
-	return totalBlocks - doneBlocks;
+        return totalBlocks - doneBlocks;
     }
 
 }

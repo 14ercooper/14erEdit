@@ -12,23 +12,23 @@ public class MobVarNode extends Node {
 
     @Override
     public MobVarNode newNode() {
-	MobVarNode node = new MobVarNode();
-	node.name = GlobalVars.operationParser.parseStringNode().contents;
-	return node;
+        MobVarNode node = new MobVarNode();
+        node.name = GlobalVars.operationParser.parseStringNode().contents;
+        return node;
     }
 
     @Override
     public boolean performNode() {
-	if (Operator.monsterVars.containsKey(name)) {
-	    Main.logError("Could not create monster variable. Does it already exist?", Operator.currentPlayer, null);
-	    return false;
-	}
-	Operator.monsterVars.put(name, new MonsterVar());
-	return true;
+        if (Operator.monsterVars.containsKey(name)) {
+            Main.logError("Could not create monster variable. Does it already exist?", Operator.currentPlayer, null);
+            return false;
+        }
+        Operator.monsterVars.put(name, new MonsterVar());
+        return true;
     }
 
     @Override
     public int getArgCount() {
-	return 1;
+        return 1;
     }
 }

@@ -9,8 +9,8 @@ public class WaitCommand extends InterpreterCommand {
 
     @Override
     public void run(List<String> args, Function function) {
-	if (!function.isOperator) {
-	    function.waitDelay = -1;
-	}
+        if (!function.isOperator) {
+            function.waitDelay = -1;
+        }
     }
 }

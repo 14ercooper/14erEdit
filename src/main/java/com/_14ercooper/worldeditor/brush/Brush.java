@@ -27,109 +27,107 @@ public class Brush {
     static final Map<String, BrushShape> brushShapes = new HashMap<>();
 
     public static boolean removeBrush(Player player) {
-	ItemStack item = player.getInventory().getItemInMainHand();
+        ItemStack item = player.getInventory().getItemInMainHand();
 
-	Brush br = null;
+        Brush br = null;
 
-	for (Brush b : BrushListener.brushes) {
-	    if (b.owner.equals(player) && b.item.equals(item)) {
-		br = b;
-	    }
-	}
-	if (br != null) {
-	    BrushListener.brushes.remove(br);
-	}
-	return true;
+        for (Brush b : BrushListener.brushes) {
+            if (b.owner.equals(player) && b.item.equals(item)) {
+                br = b;
+            }
+        }
+        if (br != null) {
+            BrushListener.brushes.remove(br);
+        }
+        return true;
     }
 
     public Brush(String brushShape, String brushRadius, String[] brushOperation, int brushOpOffset, Player player) {
-	try {
-	    currentPlayer = player;
+        try {
+            currentPlayer = player;
 
-	    ItemStack brushItem = player.getInventory().getItemInMainHand();
+            ItemStack brushItem = player.getInventory().getItemInMainHand();
 
-	    // Make sure this brush doesn't already exist. If it does, remove it
-	    removeBrush(player);
+            // Make sure this brush doesn't already exist. If it does, remove it
+            removeBrush(player);
 
-	    // Create a brush, and assign the easy variables to it
-	    owner = player;
-	    item = brushItem;
+            // Create a brush, and assign the easy variables to it
+            owner = player;
+            item = brushItem;
 
-	    brushOpOffset += 2; // Used to remove brush parameters from the operation
+            brushOpOffset += 2; // Used to remove brush parameters from the operation
 
-	    // Get the shape generator, and store the args
-	    shapeGenerator = brushShapes.get(brushOperation[1]).getClass().getDeclaredConstructor().newInstance();
-	    Main.logDebug("Brush type: " + shapeGenerator.getClass().getSimpleName());
-	    try {
-		do {
-		    if (brushOpOffset >= brushOperation.length
-			    || brushOperation[brushOpOffset].equalsIgnoreCase("end")) {
-			brushOpOffset += 2;
-			break;
-		    }
-		    shapeGenerator.addNewArgument(brushOperation[brushOpOffset]);
-		    Main.logDebug("Passed arg \"" + brushOperation[brushOpOffset] + "\", processed="
-			    + shapeGenerator.lastInputProcessed());
-		    brushOpOffset++;
-		}
-        while (shapeGenerator.lastInputProcessed());
-            brushOpOffset--;
-        } catch (Exception e) {
-            Main.logError(
-                    "Could not parse brush arguments. Please check that you provided enough numerical arguments for the brush shape.",
-                    player, e);
-            return;
-        }
-
-        if (shapeGenerator.gotEnoughArgs()) {
-            Main.logError("Not enough inputs to the brush shape were provided. Please provide enough inputs.",
-                    player, null);
-        }
-
-        if (!(shapeGenerator instanceof Multi)) {
-            // Construct the operator
-            // Start by removing brush parameters
-            List<String> opArray = new LinkedList<>(Arrays.asList(brushOperation));
-            while (brushOpOffset > 0) {
-                opArray.remove(0);
+            // Get the shape generator, and store the args
+            shapeGenerator = brushShapes.get(brushOperation[1]).getClass().getDeclaredConstructor().newInstance();
+            Main.logDebug("Brush type: " + shapeGenerator.getClass().getSimpleName());
+            try {
+                do {
+                    if (brushOpOffset >= brushOperation.length
+                            || brushOperation[brushOpOffset].equalsIgnoreCase("end")) {
+                        brushOpOffset += 2;
+                        break;
+                    }
+                    shapeGenerator.addNewArgument(brushOperation[brushOpOffset]);
+                    Main.logDebug("Passed arg \"" + brushOperation[brushOpOffset] + "\", processed="
+                            + shapeGenerator.lastInputProcessed());
+                    brushOpOffset++;
+                }
+                while (shapeGenerator.lastInputProcessed());
                 brushOpOffset--;
+            } catch (Exception e) {
+                Main.logError(
+                        "Could not parse brush arguments. Please check that you provided enough numerical arguments for the brush shape.",
+                        player, e);
+                return;
             }
-            // Construct the string
-            String opStr = "";
-            for (String s : opArray) {
-                opStr = opStr.concat(s).concat(" ");
+
+            if (shapeGenerator.gotEnoughArgs()) {
+                Main.logError("Not enough inputs to the brush shape were provided. Please provide enough inputs.",
+                        player, null);
             }
-            // And then construct the operator
-		operation = new Operator(opStr, player);
 
-		// Invalid operator?
-		if (operation == null)
-		    return;
-	    }
+            if (!(shapeGenerator instanceof Multi)) {
+                // Construct the operator
+                // Start by removing brush parameters
+                List<String> opArray = new LinkedList<>(Arrays.asList(brushOperation));
+                while (brushOpOffset > 0) {
+                    opArray.remove(0);
+                    brushOpOffset--;
+                }
+                // Construct the string
+                String opStr = "";
+                for (String s : opArray) {
+                    opStr = opStr.concat(s).concat(" ");
+                }
+                // And then construct the operator
+                operation = new Operator(opStr, player);
 
-	    // Store the brush and return success
-	    BrushListener.brushes.add(this);
-	    player.sendMessage("§dBrush created and bound to item in hand.");
-	    GlobalVars.errorLogged = false;
+                // Invalid operator?
+                if (operation == null)
+                    return;
+            }
 
-	}
-	catch (Exception e) {
-	    Main.logError("Error creating brush. Please check your syntax.", player, e);
-	}
+            // Store the brush and return success
+            BrushListener.brushes.add(this);
+            player.sendMessage("§dBrush created and bound to item in hand.");
+            GlobalVars.errorLogged = false;
+
+        } catch (Exception e) {
+            Main.logError("Error creating brush. Please check your syntax.", player, e);
+        }
     }
 
     public static BrushShape GetBrushShape(String name) {
-	if (brushShapes.containsKey(name)) {
-	    try {
-		return brushShapes.get(name).getClass().getDeclaredConstructor().newInstance();
-	    }
-	    catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-		    | InvocationTargetException | NoSuchMethodException | SecurityException e) {
-		Main.logDebug("Error instantiating brush.");
-		return null;
-	    }
-	}
-	return null;
+        if (brushShapes.containsKey(name)) {
+            try {
+                return brushShapes.get(name).getClass().getDeclaredConstructor().newInstance();
+            } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+                    | InvocationTargetException | NoSuchMethodException | SecurityException e) {
+                Main.logDebug("Error instantiating brush.");
+                return null;
+            }
+        }
+        return null;
     }
 
     public static void AddBrushShape(String name, BrushShape shape) {
@@ -154,8 +152,7 @@ public class Brush {
 
                 GlobalVars.asyncManager.scheduleEdit(operation, owner, blockArray);
 
-            }
-	    else {
+            } else {
                 // Create a multi-operator async chain
                 Multi multiShape = (Multi) shapeGenerator;
                 List<BlockIterator> iters = multiShape.getIters(x, y, z, owner.getWorld());
@@ -164,10 +161,9 @@ public class Brush {
                 GlobalVars.asyncManager.scheduleEdit(iters, ops, owner);
 
             }
-	}
-	catch (Exception e) {
-	    e.printStackTrace();
-	    Main.logError("Error operating with brush. Please check your syntax.", owner, e);
-	}
+        } catch (Exception e) {
+            e.printStackTrace();
+            Main.logError("Error operating with brush. Please check your syntax.", owner, e);
+        }
     }
 }

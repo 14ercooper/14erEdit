@@ -7,19 +7,19 @@ public class ZNode extends NumberNode {
     // Returns a new node
     @Override
     public ZNode newNode() {
-	return new ZNode();
+        return new ZNode();
     }
 
     // Return the number
     @Override
     public double getValue() {
-	return Operator.currentBlock.getZ();
+        return Operator.currentBlock.getZ();
     }
 
     // Get how many arguments this type of node takes
     @Override
     public int getArgCount() {
-	return 0;
+        return 0;
     }
 
 }

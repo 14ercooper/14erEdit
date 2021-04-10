@@ -31,27 +31,24 @@ public class RandomSphere extends BrushShape {
 
     @Override
     public void addNewArgument(String argument) {
-	if (gotArgs == 0) {
-	    radiusMin = Integer.parseInt(argument);
-	}
-	else if (gotArgs == 1) {
-	    radiusMax = Integer.parseInt(argument);
-	}
-	else if (gotArgs == 2) {
-	    try {
-		Double.parseDouble(argument);
-		correction = argument;
-	    }
-	    catch (NumberFormatException e) {
-		gotArgs++;
-	    }
-	}
-	gotArgs++;
+        if (gotArgs == 0) {
+            radiusMin = Integer.parseInt(argument);
+        } else if (gotArgs == 1) {
+            radiusMax = Integer.parseInt(argument);
+        } else if (gotArgs == 2) {
+            try {
+                Double.parseDouble(argument);
+                correction = argument;
+            } catch (NumberFormatException e) {
+                gotArgs++;
+            }
+        }
+        gotArgs++;
     }
 
     @Override
     public boolean lastInputProcessed() {
-	return gotArgs < 4;
+        return gotArgs < 4;
     }
 
     @Override

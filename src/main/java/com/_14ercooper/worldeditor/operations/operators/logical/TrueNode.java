@@ -6,16 +6,16 @@ public class TrueNode extends Node {
 
     @Override
     public TrueNode newNode() {
-	return new TrueNode();
+        return new TrueNode();
     }
 
     @Override
     public boolean performNode() {
-	return true;
+        return true;
     }
 
     @Override
     public int getArgCount() {
-	return 0;
+        return 0;
     }
 }

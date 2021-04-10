@@ -17,12 +17,12 @@ public class Line {
     }
 
     public Point3 closestPoint(Point3 other) {
-	Point3 v = other.add(pt1.mult(-1));
-	double d = v.dot(dir);
-	return pt1.add(dir.mult(d));
+        Point3 v = other.add(pt1.mult(-1));
+        double d = v.dot(dir);
+        return pt1.add(dir.mult(d));
     }
 
     public double distanceFromFirst(Point3 linePoint) {
-	return pt1.distance(linePoint);
+        return pt1.distance(linePoint);
     }
 }

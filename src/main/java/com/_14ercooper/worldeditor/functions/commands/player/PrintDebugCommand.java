@@ -10,7 +10,7 @@ public class PrintDebugCommand extends InterpreterCommand {
 
     @Override
     public void run(List<String> args, Function function) {
-	String message = String.join(" ", args);
-	Main.logDebug(message);
+        String message = String.join(" ", args);
+        Main.logDebug(message);
     }
 }

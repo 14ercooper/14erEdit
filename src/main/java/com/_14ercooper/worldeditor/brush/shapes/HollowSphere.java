@@ -27,29 +27,28 @@ public class HollowSphere extends BrushShape {
 
     @Override
     public void addNewArgument(String argument) {
-	if (argsSeen == 0) {
-	    Integer.parseInt(argument);
-	    radius = argument;
-	}
-	if (argsSeen == 1) {
-	    Integer.parseInt(argument);
-	    innerRadius = argument;
-	}
-	if (argsSeen == 2) {
-	    try {
-		Double.parseDouble(argument);
-		correction = argument;
-	    }
-	    catch (NumberFormatException e) {
-		argsSeen++;
-	    }
-	}
-	argsSeen++;
+        if (argsSeen == 0) {
+            Integer.parseInt(argument);
+            radius = argument;
+        }
+        if (argsSeen == 1) {
+            Integer.parseInt(argument);
+            innerRadius = argument;
+        }
+        if (argsSeen == 2) {
+            try {
+                Double.parseDouble(argument);
+                correction = argument;
+            } catch (NumberFormatException e) {
+                argsSeen++;
+            }
+        }
+        argsSeen++;
     }
 
     @Override
     public boolean lastInputProcessed() {
-	return argsSeen < 4;
+        return argsSeen < 4;
     }
 
     @Override

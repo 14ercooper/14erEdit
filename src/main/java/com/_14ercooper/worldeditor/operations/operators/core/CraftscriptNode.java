@@ -14,36 +14,34 @@ public class CraftscriptNode extends Node {
 
     @Override
     public CraftscriptNode newNode() {
-	try {
-	    CraftscriptNode node = new CraftscriptNode();
-	    node.arg = GlobalVars.operationParser.parseStringNode();
-	    return node;
-	}
-	catch (Exception e) {
-	    Main.logError("Error parsing craftscript. Operator requires an argument containing a script.",
-		    Operator.currentPlayer, e);
-	    return null;
-	}
+        try {
+            CraftscriptNode node = new CraftscriptNode();
+            node.arg = GlobalVars.operationParser.parseStringNode();
+            return node;
+        } catch (Exception e) {
+            Main.logError("Error parsing craftscript. Operator requires an argument containing a script.",
+                    Operator.currentPlayer, e);
+            return null;
+        }
     }
 
     @Override
     public boolean performNode() {
-	try {
-		String label = arg.contents.split("{")[0];
-		LinkedList<String> args = new LinkedList<>(
-				Arrays.asList(arg.contents.split("{")[1].replace("}", "").split(",")));
-		return GlobalVars.scriptManager.runCraftscript(label, args, Operator.currentPlayer);
-	}
-	catch (Exception e) {
-	    Main.logError(
-		    "Could not parse craftscript. Is your input formatted correctly, with arguments contained in {}?",
-		    Operator.currentPlayer, e);
-	    return false;
-	}
+        try {
+            String label = arg.contents.split("{")[0];
+            LinkedList<String> args = new LinkedList<>(
+                    Arrays.asList(arg.contents.split("{")[1].replace("}", "").split(",")));
+            return GlobalVars.scriptManager.runCraftscript(label, args, Operator.currentPlayer);
+        } catch (Exception e) {
+            Main.logError(
+                    "Could not parse craftscript. Is your input formatted correctly, with arguments contained in {}?",
+                    Operator.currentPlayer, e);
+            return false;
+        }
     }
 
     @Override
     public int getArgCount() {
-	return 1;
+        return 1;
     }
 }

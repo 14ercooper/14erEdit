@@ -28,45 +28,42 @@ public class Cylinder extends BrushShape {
             argList.add("0");
             argList.add("1");
             argList.add("1");
-	}
-	// Axis Y
-	if (dimension.equalsIgnoreCase("y")) {
-	    argList.add("1");
-	    argList.add("0");
-	    argList.add("1");
-	}
-	// Axis Z
-	if (dimension.equalsIgnoreCase("z")) {
-	    argList.add("1");
-	    argList.add("1");
-	    argList.add("0");
-	}
-	return GlobalVars.iteratorManager.getIterator("cylinder").newIterator(argList, world);
+        }
+        // Axis Y
+        if (dimension.equalsIgnoreCase("y")) {
+            argList.add("1");
+            argList.add("0");
+            argList.add("1");
+        }
+        // Axis Z
+        if (dimension.equalsIgnoreCase("z")) {
+            argList.add("1");
+            argList.add("1");
+            argList.add("0");
+        }
+        return GlobalVars.iteratorManager.getIterator("cylinder").newIterator(argList, world);
     }
 
     @Override
     public void addNewArgument(String argument) {
-	if (gotArgs == 0) {
-	    radius = argument;
-	}
-	else if (gotArgs == 1) {
-	    dimension = argument;
-	}
-	else if (gotArgs == 2) {
-	    try {
-		Double.parseDouble(argument);
-		correction = argument;
-	    }
-	    catch (NumberFormatException e) {
-		gotArgs++;
-	    }
-	}
-	gotArgs++;
+        if (gotArgs == 0) {
+            radius = argument;
+        } else if (gotArgs == 1) {
+            dimension = argument;
+        } else if (gotArgs == 2) {
+            try {
+                Double.parseDouble(argument);
+                correction = argument;
+            } catch (NumberFormatException e) {
+                gotArgs++;
+            }
+        }
+        gotArgs++;
     }
 
     @Override
     public boolean lastInputProcessed() {
-	return gotArgs < 4;
+        return gotArgs < 4;
     }
 
     @Override

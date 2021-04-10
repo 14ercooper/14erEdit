@@ -26,10 +26,9 @@ public class SelectionManager {
         }
         if (wand != null) {
             return wand.manager;
+        } else {
+            return null;
         }
-	else {
-	    return null;
-	}
     }
 
     public boolean updatePositionOne(double x, double y, double z, Player player) {
@@ -69,92 +68,84 @@ public class SelectionManager {
 
     // This recalculates the two corners to help make the math a bit easier
     private void recalculateCorners() {
-	// Check both selection positions have been defined first
-	if (!regionDefined())
-	    return;
+        // Check both selection positions have been defined first
+        if (!regionDefined())
+            return;
 
-	// Set the X, then Y, then Z
-	if (positionOne[0] <= positionTwo[0]) {
-	    mostNegativeCorner[0] = positionOne[0];
-	    mostPositiveCorner[0] = positionTwo[0];
-	}
-	else {
-	    mostNegativeCorner[0] = positionTwo[0];
-	    mostPositiveCorner[0] = positionOne[0];
-	}
+        // Set the X, then Y, then Z
+        if (positionOne[0] <= positionTwo[0]) {
+            mostNegativeCorner[0] = positionOne[0];
+            mostPositiveCorner[0] = positionTwo[0];
+        } else {
+            mostNegativeCorner[0] = positionTwo[0];
+            mostPositiveCorner[0] = positionOne[0];
+        }
 
-	if (positionOne[1] <= positionTwo[1]) {
-	    mostNegativeCorner[1] = positionOne[1];
-	    mostPositiveCorner[1] = positionTwo[1];
-	}
-	else {
-	    mostNegativeCorner[1] = positionTwo[1];
-	    mostPositiveCorner[1] = positionOne[1];
-	}
+        if (positionOne[1] <= positionTwo[1]) {
+            mostNegativeCorner[1] = positionOne[1];
+            mostPositiveCorner[1] = positionTwo[1];
+        } else {
+            mostNegativeCorner[1] = positionTwo[1];
+            mostPositiveCorner[1] = positionOne[1];
+        }
 
-	if (positionOne[2] <= positionTwo[2]) {
-	    mostNegativeCorner[2] = positionOne[2];
-	    mostPositiveCorner[2] = positionTwo[2];
-	}
-	else {
-	    mostNegativeCorner[2] = positionTwo[2];
-	    mostPositiveCorner[2] = positionOne[2];
-	}
+        if (positionOne[2] <= positionTwo[2]) {
+            mostNegativeCorner[2] = positionOne[2];
+            mostPositiveCorner[2] = positionTwo[2];
+        } else {
+            mostNegativeCorner[2] = positionTwo[2];
+            mostPositiveCorner[2] = positionOne[2];
+        }
     }
 
     // Getter for the position
     public double[] getMostNegativeCorner() {
-	return mostNegativeCorner;
+        return mostNegativeCorner;
     }
 
     // Getter for the position
     public double[] getMostPositiveCorner() {
-	return mostPositiveCorner;
+        return mostPositiveCorner;
     }
 
     // Getter for the position
     public double[] getPositionOne() {
-	return positionOne;
+        return positionOne;
     }
 
     // Getter for the position
     public double[] getPositionTwo() {
-	return positionTwo;
+        return positionTwo;
     }
 
     // Expands the selection in direction by amt
     public boolean expandSelection(double amt, String direction, Player player) {
-	if (direction.equalsIgnoreCase("north")) { // -z
-	    mostNegativeCorner[2] = mostNegativeCorner[2] - amt;
-	    expandSelectionMessage(player);
-	    return true;
-	}
-	else if (direction.equalsIgnoreCase("south")) { // +z
-	    mostPositiveCorner[2] = mostPositiveCorner[2] + amt;
-	    expandSelectionMessage(player);
-	    return true;
-	}
-	else if (direction.equalsIgnoreCase("east")) { // +x
-	    mostPositiveCorner[0] = mostPositiveCorner[0] + amt;
-	    expandSelectionMessage(player);
-	    return true;
-	}
-	else if (direction.equalsIgnoreCase("west")) { // -x
-	    mostNegativeCorner[0] = mostNegativeCorner[0] - amt;
-	    expandSelectionMessage(player);
-	    return true;
-	}
-	else if (direction.equalsIgnoreCase("up")) { // +y
-	    mostPositiveCorner[1] = mostPositiveCorner[1] + amt;
-	    expandSelectionMessage(player);
-	    return true;
-	}
-	else if (direction.equalsIgnoreCase("down")) { // -y
-	    mostNegativeCorner[1] = mostNegativeCorner[1] - amt;
-	    expandSelectionMessage(player);
-	    return true;
-	}
-	return false;
+        if (direction.equalsIgnoreCase("north")) { // -z
+            mostNegativeCorner[2] = mostNegativeCorner[2] - amt;
+            expandSelectionMessage(player);
+            return true;
+        } else if (direction.equalsIgnoreCase("south")) { // +z
+            mostPositiveCorner[2] = mostPositiveCorner[2] + amt;
+            expandSelectionMessage(player);
+            return true;
+        } else if (direction.equalsIgnoreCase("east")) { // +x
+            mostPositiveCorner[0] = mostPositiveCorner[0] + amt;
+            expandSelectionMessage(player);
+            return true;
+        } else if (direction.equalsIgnoreCase("west")) { // -x
+            mostNegativeCorner[0] = mostNegativeCorner[0] - amt;
+            expandSelectionMessage(player);
+            return true;
+        } else if (direction.equalsIgnoreCase("up")) { // +y
+            mostPositiveCorner[1] = mostPositiveCorner[1] + amt;
+            expandSelectionMessage(player);
+            return true;
+        } else if (direction.equalsIgnoreCase("down")) { // -y
+            mostNegativeCorner[1] = mostNegativeCorner[1] - amt;
+            expandSelectionMessage(player);
+            return true;
+        }
+        return false;
     }
 
     // Message for the selection expansion
@@ -171,13 +162,13 @@ public class SelectionManager {
 
     // Reset the selection
     public boolean resetSelection() {
-	double[] positionOneNew = { -1.0, -1.0, -1.0 };
-	double[] positionTwoNew = { -1.0, -1.0, -1.0 };
-	positionOne = positionOneNew;
-	positionTwo = positionTwoNew;
-	mostNegativeCorner = new double[3];
-	mostPositiveCorner = new double[3];
-	return true;
+        double[] positionOneNew = {-1.0, -1.0, -1.0};
+        double[] positionTwoNew = {-1.0, -1.0, -1.0};
+        positionOne = positionOneNew;
+        positionTwo = positionTwoNew;
+        mostNegativeCorner = new double[3];
+        mostPositiveCorner = new double[3];
+        return true;
     }
 
     // Get a list of blocks contained by this selection

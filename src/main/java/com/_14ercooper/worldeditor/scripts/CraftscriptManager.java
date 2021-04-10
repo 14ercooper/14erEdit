@@ -16,7 +16,7 @@ public class CraftscriptManager {
 
     // Create a new manager
     public CraftscriptManager() {
-	// This has no function right now
+        // This has no function right now
     }
 
     // Register a new Craftscript, called by label label and handled by handler
@@ -26,26 +26,25 @@ public class CraftscriptManager {
 
     // Run the Craftscript label, with arguments args, and player player
     public boolean runCraftscript(String label, LinkedList<String> args, Player player) {
-	Main.logDebug("Calling Craftsript: " + label);
+        Main.logDebug("Calling Craftsript: " + label);
 
-	GlobalVars.currentUndo = UndoManager.getUndo(player);
-	GlobalVars.currentUndo.startUndo(GlobalVars.undoLimit);
+        GlobalVars.currentUndo = UndoManager.getUndo(player);
+        GlobalVars.currentUndo.startUndo(GlobalVars.undoLimit);
 
-	try {
-	    registeredScripts.get(label).perform(args, player, label);
-	}
-	catch (Exception e) {
-	    Main.logError("Error performing CraftScript. Check your syntax?", player, e);
-	    e.printStackTrace();
-	    GlobalVars.currentUndo.finishUndo();
-	    GlobalVars.currentUndo = null;
-	}
+        try {
+            registeredScripts.get(label).perform(args, player, label);
+        } catch (Exception e) {
+            Main.logError("Error performing CraftScript. Check your syntax?", player, e);
+            e.printStackTrace();
+            GlobalVars.currentUndo.finishUndo();
+            GlobalVars.currentUndo = null;
+        }
 
-	if (!(GlobalVars.currentUndo == null)) {
-	    GlobalVars.currentUndo.finishUndo();
-	}
-	GlobalVars.currentUndo = null;
+        if (!(GlobalVars.currentUndo == null)) {
+            GlobalVars.currentUndo.finishUndo();
+        }
+        GlobalVars.currentUndo = null;
 
-	return true;
+        return true;
     }
 }

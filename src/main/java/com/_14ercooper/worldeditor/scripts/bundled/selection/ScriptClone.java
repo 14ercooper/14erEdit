@@ -24,21 +24,20 @@ public class ScriptClone extends Craftscript {
             int xOff = Integer.parseInt(args.get(6));
             int yOff = Integer.parseInt(args.get(7));
             int zOff = Integer.parseInt(args.get(8));
-	    Bukkit.getServer().broadcastMessage("Starting clone...");
-	    for (int x = xMin; x <= xMax; x++) {
-		for (int y = yMin; y <= yMax; y++) {
-		    for (int z = zMin; z <= zMax; z++) {
-			Material m = Operator.currentPlayer.getWorld().getBlockAt(x, y, z).getType();
-			Block b = Operator.currentPlayer.getWorld().getBlockAt(x + xOff, y + yOff, z + zOff);
-			b.setType(m);
-		    }
-		}
-	    }
-	    Bukkit.getServer().broadcastMessage("Clone finished...");
+            Bukkit.getServer().broadcastMessage("Starting clone...");
+            for (int x = xMin; x <= xMax; x++) {
+                for (int y = yMin; y <= yMax; y++) {
+                    for (int z = zMin; z <= zMax; z++) {
+                        Material m = Operator.currentPlayer.getWorld().getBlockAt(x, y, z).getType();
+                        Block b = Operator.currentPlayer.getWorld().getBlockAt(x + xOff, y + yOff, z + zOff);
+                        b.setType(m);
+                    }
+                }
+            }
+            Bukkit.getServer().broadcastMessage("Clone finished...");
+        } catch (Exception e) {
+            Main.logError("Error performing clone. Did you pass in the correct parameters?", Operator.currentPlayer, e);
         }
-	catch (Exception e) {
-	    Main.logError("Error performing clone. Did you pass in the correct parameters?", Operator.currentPlayer, e);
-    }
     }
 
 }

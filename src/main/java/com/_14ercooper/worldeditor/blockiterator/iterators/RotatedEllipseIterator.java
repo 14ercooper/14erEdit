@@ -41,57 +41,56 @@ public class RotatedEllipseIterator extends BlockIterator {
             }
             iterator.setup();
             return iterator;
+        } catch (Exception e) {
+            Main.logError("Error creating rotated ellipse iterator. Please check your brush parameters.",
+                    Operator.currentPlayer, e);
+            return null;
         }
-	catch (Exception e) {
-	    Main.logError("Error creating rotated ellipse iterator. Please check your brush parameters.",
-		    Operator.currentPlayer, e);
-	    return null;
-	}
     }
 
     Point3 focus1, focus2, negCenter;
 
     private void setup() {
-	Point3 dir = new Point3(dX, dY, dZ);
-	Point3 center = new Point3(xC, yC, zC);
-	dir.normalize();
-	dir = dir.mult(hFD);
-	focus1 = center.add(dir);
-	focus2 = center.add(dir.mult(-1));
-	negCenter = center;
+        Point3 dir = new Point3(dX, dY, dZ);
+        Point3 center = new Point3(xC, yC, zC);
+        dir.normalize();
+        dir = dir.mult(hFD);
+        focus1 = center.add(dir);
+        focus2 = center.add(dir.mult(-1));
+        negCenter = center;
     }
 
     @Override
     public Block getNext() {
-	while (true) {
-        if (incrXYZ(radMax, radMax, radMax, xC, yC, zC)) {
-            return null;
+        while (true) {
+            if (incrXYZ(radMax, radMax, radMax, xC, yC, zC)) {
+                return null;
+            }
+
+            // Check that it's within the ellipse
+            // Get what would be the needed string length
+            Point3 blockPoint = new Point3(x, y, z);
+            blockPoint = blockPoint.add(negCenter);
+            double dist = blockPoint.distance(focus1) + blockPoint.distance(focus2);
+
+            // Make sure it's small enough
+            if (dist > strL)
+                continue;
+
+            break;
         }
 
-	    // Check that it's within the ellipse
-	    // Get what would be the needed string length
-	    Point3 blockPoint = new Point3(x, y, z);
-	    blockPoint = blockPoint.add(negCenter);
-	    double dist = blockPoint.distance(focus1) + blockPoint.distance(focus2);
-
-	    // Make sure it's small enough
-	    if (dist > strL)
-		continue;
-
-	    break;
-	}
-
-	return iterWorld.getBlockAt(x + xC, y + yC, z + zC);
+        return iterWorld.getBlockAt(x + xC, y + yC, z + zC);
     }
 
     @Override
     public long getTotalBlocks() {
-	return totalBlocks;
+        return totalBlocks;
     }
 
     @Override
     public long getRemainingBlocks() {
-	return totalBlocks - doneBlocks;
+        return totalBlocks - doneBlocks;
     }
 
 }

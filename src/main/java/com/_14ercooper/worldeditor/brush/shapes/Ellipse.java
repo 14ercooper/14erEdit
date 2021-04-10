@@ -14,10 +14,10 @@ public class Ellipse extends BrushShape {
     int argsGot = 0;
 
     public Ellipse() {
-	args.add("");
-	args.add("");
-	args.add("");
-	args.add("0.1");
+        args.add("");
+        args.add("");
+        args.add("");
+        args.add("0.1");
     }
 
     @Override
@@ -36,24 +36,22 @@ public class Ellipse extends BrushShape {
 
     @Override
     public void addNewArgument(String argument) {
-	if (argsGot < 3) {
-	    args.set(argsGot, argument);
-	}
-	else if (argsGot == 3) {
-	    try {
-		Double.parseDouble(argument);
-		args.set(argsGot, argument);
-	    }
-	    catch (NumberFormatException e) {
-		argsGot++;
-	    }
-	}
-	argsGot++;
+        if (argsGot < 3) {
+            args.set(argsGot, argument);
+        } else if (argsGot == 3) {
+            try {
+                Double.parseDouble(argument);
+                args.set(argsGot, argument);
+            } catch (NumberFormatException e) {
+                argsGot++;
+            }
+        }
+        argsGot++;
     }
 
     @Override
     public boolean lastInputProcessed() {
-	return argsGot < 5;
+        return argsGot < 5;
     }
 
     @Override

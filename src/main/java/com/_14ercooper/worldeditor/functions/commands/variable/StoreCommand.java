@@ -9,6 +9,6 @@ public class StoreCommand extends InterpreterCommand {
 
     @Override
     public void run(List<String> args, Function function) {
-	function.variableStack.add(function.parseVariable(args.get(0)));
+        function.variableStack.add(function.parseVariable(args.get(0)));
     }
 }

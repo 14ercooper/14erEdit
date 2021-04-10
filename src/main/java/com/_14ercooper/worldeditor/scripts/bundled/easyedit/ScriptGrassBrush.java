@@ -20,12 +20,10 @@ public class ScriptGrassBrush extends Craftscript {
                     airSpaces = args.get(2);
                     if (args.size() >= 4) {
                         density = args.get(3);
+                    } else {
+                        density = "0.35";
                     }
-		    else {
-			density = "0.35";
-		    }
-		}
-		else {
+                } else {
                     airSpaces = "3";
                     density = "0.35";
                 }
@@ -37,10 +35,9 @@ public class ScriptGrassBrush extends Craftscript {
 
             player.performCommand(
                     "fx br s 0 0.5 $ grass{" + radius + ";" + mixture + ";" + airSpaces + ";" + density + "}");
+        } catch (Exception e) {
+            Main.logError("Could not parse grass brush macro. Did you provide the correct arguments?",
+                    Operator.currentPlayer, e);
         }
-	catch (Exception e) {
-	    Main.logError("Could not parse grass brush macro. Did you provide the correct arguments?",
-		    Operator.currentPlayer, e);
-    }
     }
 }

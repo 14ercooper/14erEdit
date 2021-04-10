@@ -13,28 +13,27 @@ public class StringNode extends Node {
     @Override
     public StringNode newNode() {
 
-	return new StringNode();
+        return new StringNode();
     }
 
     @Override
     public boolean performNode() {
-	try {
-	    return Operator.currentBlock.getType() == Material.matchMaterial(contents);
-	}
-	catch (Exception e) {
-	    Main.logError("Error performing string node. " + contents + " could not be resolved to a block.",
-		    Operator.currentPlayer, e);
-	    return false;
-	}
+        try {
+            return Operator.currentBlock.getType() == Material.matchMaterial(contents);
+        } catch (Exception e) {
+            Main.logError("Error performing string node. " + contents + " could not be resolved to a block.",
+                    Operator.currentPlayer, e);
+            return false;
+        }
     }
 
     public String getText() {
-	return contents;
+        return contents;
     }
 
     @Override
     public int getArgCount() {
-	return 1;
+        return 1;
     }
 
 }

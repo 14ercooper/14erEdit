@@ -11,11 +11,11 @@ public class SwapCommand extends InterpreterCommand {
 
     @Override
     public void run(List<String> args, Function function) {
-	int slot1 = (int) function.parseVariable(args.get(0));
-	int slot2 = (int) function.parseVariable(args.get(1));
-	ItemStack first = function.player.getInventory().getItem(slot1);
-	ItemStack second = function.player.getInventory().getItem(slot2);
-	function.player.getInventory().setItem(slot2, first);
-	function.player.getInventory().setItem(slot1, second);
+        int slot1 = (int) function.parseVariable(args.get(0));
+        int slot2 = (int) function.parseVariable(args.get(1));
+        ItemStack first = function.player.getInventory().getItem(slot1);
+        ItemStack second = function.player.getInventory().getItem(slot2);
+        function.player.getInventory().setItem(slot2, first);
+        function.player.getInventory().setItem(slot1, second);
     }
 }

@@ -4,10 +4,10 @@ public class NumericVar {
     double value = 0;
 
     public double getValue() {
-	return value;
+        return value;
     }
 
     public void setValue(double newVal) {
-	value = newVal;
+        value = newVal;
     }
 }

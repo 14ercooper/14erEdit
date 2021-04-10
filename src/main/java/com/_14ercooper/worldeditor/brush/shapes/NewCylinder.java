@@ -26,50 +26,46 @@ public class NewCylinder extends BrushShape {
         if (dimension.equalsIgnoreCase("x")) {
             args.add("0");
             args.add("1");
-	    args.add("1");
-	}
-	// Axis Y
-	if (dimension.equalsIgnoreCase("y")) {
-	    args.add("1");
-	    args.add("0");
-	    args.add("1");
-	}
-	// Axis Z
-	if (dimension.equalsIgnoreCase("z")) {
-	    args.add("1");
-	    args.add("1");
-	    args.add("0");
-	}
-	return GlobalVars.iteratorManager.getIterator("newcylinder").newIterator(args, world);
+            args.add("1");
+        }
+        // Axis Y
+        if (dimension.equalsIgnoreCase("y")) {
+            args.add("1");
+            args.add("0");
+            args.add("1");
+        }
+        // Axis Z
+        if (dimension.equalsIgnoreCase("z")) {
+            args.add("1");
+            args.add("1");
+            args.add("0");
+        }
+        return GlobalVars.iteratorManager.getIterator("newcylinder").newIterator(args, world);
     }
 
     @Override
     public void addNewArgument(String argument) {
-	if (gotArgs == 0) {
-	    radius = argument;
-	}
-	else if (gotArgs == 1) {
-	    height = argument;
-	}
-	else if (gotArgs == 2) {
-	    dimension = argument;
-	}
-	else if (gotArgs == 3) {
-	    try {
-		Double.parseDouble(argument);
-		correction = argument;
-	    }
-	    catch (NumberFormatException e) {
-		// This is okay
-		gotArgs++;
-	    }
-	}
-	gotArgs++;
+        if (gotArgs == 0) {
+            radius = argument;
+        } else if (gotArgs == 1) {
+            height = argument;
+        } else if (gotArgs == 2) {
+            dimension = argument;
+        } else if (gotArgs == 3) {
+            try {
+                Double.parseDouble(argument);
+                correction = argument;
+            } catch (NumberFormatException e) {
+                // This is okay
+                gotArgs++;
+            }
+        }
+        gotArgs++;
     }
 
     @Override
     public boolean lastInputProcessed() {
-	return gotArgs < 5;
+        return gotArgs < 5;
     }
 
     @Override

@@ -25,59 +25,58 @@ public class SelectionWandListener implements Listener {
     // If the player clicks, see if the selection needs updating
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
-	// Makes sure the player is holding a registered wand, else this doesn't need to
-	// do anything
-	Player p = event.getPlayer();
-	boolean isValidPlayer = false;
-	SelectionWand wand = null;
-	// Check the player
-	for (SelectionWand s : wands) {
-	    if (s.owner.equals(p)) {
-		wand = s;
-		isValidPlayer = true;
-		break;
-	    }
-	}
+        // Makes sure the player is holding a registered wand, else this doesn't need to
+        // do anything
+        Player p = event.getPlayer();
+        boolean isValidPlayer = false;
+        SelectionWand wand = null;
+        // Check the player
+        for (SelectionWand s : wands) {
+            if (s.owner.equals(p)) {
+                wand = s;
+                isValidPlayer = true;
+                break;
+            }
+        }
 
-	// Check the wand
-	ItemStack itemStack = p.getInventory().getItemInMainHand();
-	ItemMeta itemMeta = itemStack.getItemMeta();
-	try {
-        isValidPlayer = itemMeta.getDisplayName().equals(SelectionWand.wandName)
-                && itemStack.getType().equals(Material.WOODEN_AXE)
-                && itemMeta.getEnchants().containsKey(Enchantment.MENDING);
-    }
-	catch (NullPointerException e) {
-	    isValidPlayer = false;
-	}
+        // Check the wand
+        ItemStack itemStack = p.getInventory().getItemInMainHand();
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        try {
+            isValidPlayer = itemMeta.getDisplayName().equals(SelectionWand.wandName)
+                    && itemStack.getType().equals(Material.WOODEN_AXE)
+                    && itemMeta.getEnchants().containsKey(Enchantment.MENDING);
+        } catch (NullPointerException e) {
+            isValidPlayer = false;
+        }
 
-	// If the player isn't holding a valid wand, return without further action
-	if (!isValidPlayer)
-	    return;
+        // If the player isn't holding a valid wand, return without further action
+        if (!isValidPlayer)
+            return;
 
-	// No manager, return with an error
-	if (wand == null || wand.manager == null) {
-	    Main.logError("Could not use wand. Did you get a new wand after relogging?", p, null);
-	    return;
-	}
+        // No manager, return with an error
+        if (wand == null || wand.manager == null) {
+            Main.logError("Could not use wand. Did you get a new wand after relogging?", p, null);
+            return;
+        }
 
-	// Player left clicked, update position one
-	if (event.getAction().equals(Action.LEFT_CLICK_BLOCK)) {
-	    Block b = event.getClickedBlock();
-	    wand.manager.updatePositionOne(b.getX(), b.getY(), b.getZ(), p);
-	    event.setCancelled(true);
-	}
+        // Player left clicked, update position one
+        if (event.getAction().equals(Action.LEFT_CLICK_BLOCK)) {
+            Block b = event.getClickedBlock();
+            wand.manager.updatePositionOne(b.getX(), b.getY(), b.getZ(), p);
+            event.setCancelled(true);
+        }
 
-	// Player right clicked, update position two
-	else if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
-	    EquipmentSlot e = event.getHand();
-	    // This if clause prevents the update from happening twice (due to off-hand
-	    // conflicts)
-	    if (e.equals(EquipmentSlot.HAND)) {
-		Block b = event.getClickedBlock();
-		wand.manager.updatePositionTwo(b.getX(), b.getY(), b.getZ(), p);
-		event.setCancelled(true);
-	    }
-	}
+        // Player right clicked, update position two
+        else if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+            EquipmentSlot e = event.getHand();
+            // This if clause prevents the update from happening twice (due to off-hand
+            // conflicts)
+            if (e.equals(EquipmentSlot.HAND)) {
+                Block b = event.getClickedBlock();
+                wand.manager.updatePositionTwo(b.getX(), b.getY(), b.getZ(), p);
+                event.setCancelled(true);
+            }
+        }
     }
 }

@@ -9,6 +9,6 @@ public class DecrementCommand extends InterpreterCommand {
 
     @Override
     public void run(List<String> args, Function function) {
-	function.setVariable(args.get(0), function.parseVariable(args.get(0)) - 1);
+        function.setVariable(args.get(0), function.parseVariable(args.get(0)) - 1);
     }
 }

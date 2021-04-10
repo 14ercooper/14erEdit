@@ -28,40 +28,39 @@ public class DiamondIterator extends BlockIterator {
             iterator.y = -iterator.radius;
             iterator.z = -iterator.radius;
             return iterator;
+        } catch (Exception e) {
+            Main.logError("Error creating diamond iterator. Please check your brush parameters.",
+                    Operator.currentPlayer, e);
+            return null;
         }
-	catch (Exception e) {
-	    Main.logError("Error creating diamond iterator. Please check your brush parameters.",
-		    Operator.currentPlayer, e);
-	    return null;
-	}
     }
 
     @Override
     public Block getNext() {
-	while (true) {
-        if (incrXYZ(radius, radius, radius, xC, yC, zC)) {
-            return null;
+        while (true) {
+            if (incrXYZ(radius, radius, radius, xC, yC, zC)) {
+                return null;
+            }
+
+            // Distance check
+            if (Math.abs(x) + Math.abs(y) + Math.abs(z) > radius) {
+                continue;
+            }
+
+            break;
         }
 
-	    // Distance check
-	    if (Math.abs(x) + Math.abs(y) + Math.abs(z) > radius) {
-		continue;
-	    }
-
-	    break;
-	}
-
-	return iterWorld.getBlockAt(x + xC, y + yC, z + zC);
+        return iterWorld.getBlockAt(x + xC, y + yC, z + zC);
     }
 
     @Override
     public long getTotalBlocks() {
-	return totalBlocks;
+        return totalBlocks;
     }
 
     @Override
     public long getRemainingBlocks() {
-	return totalBlocks - doneBlocks;
+        return totalBlocks - doneBlocks;
     }
 
 }

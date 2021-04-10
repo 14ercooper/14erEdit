@@ -28,29 +28,29 @@ public abstract class BlockIterator {
 
     public boolean incrXYZ(int radX, int radY, int radZ, int xOff, int yOff, int zOff) {
 
-	x++;
-	doneBlocks++;
-	if (x > radX || x + xOff > GlobalVars.maxEditX) {
-	    y++;
-	    x = -radX;
+        x++;
+        doneBlocks++;
+        if (x > radX || x + xOff > GlobalVars.maxEditX) {
+            y++;
+            x = -radX;
 
-	    if (x + xOff < GlobalVars.minEditX) {
-		x = (int) GlobalVars.minEditX - xOff;
-	    }
-	}
-	if (y > radY || y + yOff > GlobalVars.maxEditY) {
-	    z++;
+            if (x + xOff < GlobalVars.minEditX) {
+                x = (int) GlobalVars.minEditX - xOff;
+            }
+        }
+        if (y > radY || y + yOff > GlobalVars.maxEditY) {
+            z++;
 
-	    if (z + zOff < GlobalVars.minEditZ) {
-		z = (int) GlobalVars.minEditZ - zOff;
-	    }
+            if (z + zOff < GlobalVars.minEditZ) {
+                z = (int) GlobalVars.minEditZ - zOff;
+            }
 
-	    y = -radY;
-	    while (y + yOff < GlobalVars.minEditY) {
-		y++;
-		doneBlocks++;
-	    }
-	}
+            y = -radY;
+            while (y + yOff < GlobalVars.minEditY) {
+                y++;
+                doneBlocks++;
+            }
+        }
 
         return z > radZ || z + zOff > GlobalVars.maxEditZ;
     }

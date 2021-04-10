@@ -37,40 +37,39 @@ public class CylinderIterator extends BlockIterator {
                 iterator.y++;
             }
             return iterator;
+        } catch (Exception e) {
+            Main.logError("Error creating cylinder iterator. Please check your brush parameters.",
+                    Operator.currentPlayer, e);
+            return null;
         }
-	catch (Exception e) {
-	    Main.logError("Error creating cylinder iterator. Please check your brush parameters.",
-		    Operator.currentPlayer, e);
-	    return null;
-	}
     }
 
     @Override
     public Block getNext() {
-	while (true) {
-        if (incrXYZ(radMax, radMax, radMax, xC, yC, zC)) {
-            return null;
+        while (true) {
+            if (incrXYZ(radMax, radMax, radMax, xC, yC, zC)) {
+                return null;
+            }
+
+            // Max radius check
+            if ((x * x) * xS + (y * y) * yS + (z * z) * zS >= (radMax + radCorr) * (radMax + radCorr)) {
+                continue;
+            }
+
+            break;
         }
 
-	    // Max radius check
-	    if ((x * x) * xS + (y * y) * yS + (z * z) * zS >= (radMax + radCorr) * (radMax + radCorr)) {
-		continue;
-	    }
-
-	    break;
-	}
-
-	return iterWorld.getBlockAt(x + xC, y + yC, z + zC);
+        return iterWorld.getBlockAt(x + xC, y + yC, z + zC);
     }
 
     @Override
     public long getTotalBlocks() {
-	return totalBlocks;
+        return totalBlocks;
     }
 
     @Override
     public long getRemainingBlocks() {
-	return totalBlocks - doneBlocks;
+        return totalBlocks - doneBlocks;
     }
 
 }

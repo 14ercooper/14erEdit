@@ -11,34 +11,31 @@ public class CommandAsync implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-	if (sender instanceof Player) {
-        if (!sender.isOp()) {
-            sender.sendMessage("You must be opped to use 14erEdit");
+        if (sender instanceof Player) {
+            if (!sender.isOp()) {
+                sender.sendMessage("You must be opped to use 14erEdit");
+                return false;
+            }
+        }
+
+        try {
+            if (args[0].equalsIgnoreCase("drop")) {
+                GlobalVars.asyncManager.dropAsync();
+                sender.sendMessage("§aAsync queue dropped.");
+                return true;
+            } else if (args[0].equalsIgnoreCase("status") || args[0].equalsIgnoreCase("queue")) {
+                GlobalVars.asyncManager.asyncProgress(sender);
+                return true;
+            } else if (args[0].equalsIgnoreCase("dump")) {
+                GlobalVars.asyncManager.asyncDump(sender);
+                return true;
+            }
+
+            Main.logError("Async command not provided. Please provide either drop or status.", sender, null);
+            return false;
+        } catch (Exception e) {
+            Main.logError("Error performing async operation.", sender, e);
             return false;
         }
-    }
-
-	try {
-	    if (args[0].equalsIgnoreCase("drop")) {
-		GlobalVars.asyncManager.dropAsync();
-		sender.sendMessage("§aAsync queue dropped.");
-		return true;
-	    }
-	    else if (args[0].equalsIgnoreCase("status") || args[0].equalsIgnoreCase("queue")) {
-		GlobalVars.asyncManager.asyncProgress(sender);
-		return true;
-	    }
-	    else if (args[0].equalsIgnoreCase("dump")) {
-		GlobalVars.asyncManager.asyncDump(sender);
-		return true;
-	    }
-
-	    Main.logError("Async command not provided. Please provide either drop or status.", sender, null);
-	    return false;
-	}
-	catch (Exception e) {
-	    Main.logError("Error performing async operation.", sender, e);
-	    return false;
-	}
     }
 }

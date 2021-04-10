@@ -26,16 +26,15 @@ public class GrassMacro extends Macro {
 
     // Create a new macro
     private void SetupMacro(String[] args, Location loc) {
-	try {
-	    radius = Double.parseDouble(args[0]);
-	    blockMix = args[1];
-	    airSpaces = Double.parseDouble(args[2]);
-	    density = Double.parseDouble(args[3]);
-	}
-	catch (Exception e) {
-	    Main.logError("Could not parse grass macro. Did you provide all 4 arguments?", Operator.currentPlayer, e);
-	}
-	pos = loc;
+        try {
+            radius = Double.parseDouble(args[0]);
+            blockMix = args[1];
+            airSpaces = Double.parseDouble(args[2]);
+            density = Double.parseDouble(args[3]);
+        } catch (Exception e) {
+            Main.logError("Could not parse grass macro. Did you provide all 4 arguments?", Operator.currentPlayer, e);
+        }
+        pos = loc;
     }
 
     // Run this macro
@@ -93,48 +92,48 @@ public class GrassMacro extends Macro {
             // Check if it's on a solid block
             if (b.getRelative(BlockFace.DOWN).getType() == Material.AIR) {
                 Main.logDebug("Skip block, is floating");
-		continue;
-	    }
+                continue;
+            }
 
-	    // Check density
-	    if (GlobalVars.rand.nextDouble() >= density) {
-		Main.logDebug("Skip block, density not met");
-		continue;
-	    }
+            // Check density
+            if (GlobalVars.rand.nextDouble() >= density) {
+                Main.logDebug("Skip block, density not met");
+                continue;
+            }
 
-	    // Check air spaces
-	    boolean doCont = false;
-	    for (int i = 1; i <= airSpaces; i++) {
-		if (b.getRelative(BlockFace.UP, i).getType() != Material.AIR) {
-		    doCont = true;
-		}
-	    }
-	    if (doCont) {
-		Main.logDebug("Skip block, too little air above");
-		continue;
-	    }
+            // Check air spaces
+            boolean doCont = false;
+            for (int i = 1; i <= airSpaces; i++) {
+                if (b.getRelative(BlockFace.UP, i).getType() != Material.AIR) {
+                    doCont = true;
+                }
+            }
+            if (doCont) {
+                Main.logDebug("Skip block, too little air above");
+                continue;
+            }
 
-	    // Figure out which block to place
-	    Main.logDebug("Placing grass block");
-	    double randNum = GlobalVars.rand.nextDouble() * 100.0;
-	    double oddsChance = 0.0;
-	    int i = -1;
-	    do {
-		i++;
-		oddsChance += odds.get(i);
-	    }
-	    while (oddsChance <= randNum);
-	    String blockToPlace = blocks.get(i);
+            // Figure out which block to place
+            Main.logDebug("Placing grass block");
+            double randNum = GlobalVars.rand.nextDouble() * 100.0;
+            double oddsChance = 0.0;
+            int i = -1;
+            do {
+                i++;
+                oddsChance += odds.get(i);
+            }
+            while (oddsChance <= randNum);
+            String blockToPlace = blocks.get(i);
 
-	    // Place the block
-	    BlockState operated = b.getState();
-	    if (blockToPlace.contains("[")) {
-            String[] split = blockToPlace.split("\\[");
-            operated.setType(Material.matchMaterial(split[0]));
-            operated.setBlockData(Bukkit.getServer().createBlockData(blockToPlace));
-        } else {
-            operated.setType(Material.matchMaterial(blockToPlace));
-        }
+            // Place the block
+            BlockState operated = b.getState();
+            if (blockToPlace.contains("[")) {
+                String[] split = blockToPlace.split("\\[");
+                operated.setType(Material.matchMaterial(split[0]));
+                operated.setBlockData(Bukkit.getServer().createBlockData(blockToPlace));
+            } else {
+                operated.setType(Material.matchMaterial(blockToPlace));
+            }
             operatedBlocks.add(operated);
         }
 

@@ -31,28 +31,25 @@ public class Spike extends BrushShape {
 
     @Override
     public void addNewArgument(String argument) {
-	if (gotArgs == 0) {
-	    height = argument;
-	}
-	else if (gotArgs == 1) {
-	    baseSizeMax = argument;
-	}
-	else if (gotArgs == 2) {
-	    try {
-		Double.parseDouble(argument);
-		baseSizeMin = argument;
-	    }
-	    catch (NumberFormatException e) {
-		// This is fine *fire everywhere*
-		gotArgs++;
-	    }
-	}
-	gotArgs++;
+        if (gotArgs == 0) {
+            height = argument;
+        } else if (gotArgs == 1) {
+            baseSizeMax = argument;
+        } else if (gotArgs == 2) {
+            try {
+                Double.parseDouble(argument);
+                baseSizeMin = argument;
+            } catch (NumberFormatException e) {
+                // This is fine *fire everywhere*
+                gotArgs++;
+            }
+        }
+        gotArgs++;
     }
 
     @Override
     public boolean lastInputProcessed() {
-	return gotArgs < 4;
+        return gotArgs < 4;
     }
 
     @Override

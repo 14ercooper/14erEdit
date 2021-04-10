@@ -38,7 +38,7 @@ public class GlobalVars {
 
     // This may be useful
     public static boolean autoConfirm = false;
-    
+
     // Make macros not crash the server
     public static boolean countEdits = false;
 

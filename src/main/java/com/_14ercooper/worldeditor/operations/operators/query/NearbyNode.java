@@ -17,47 +17,46 @@ public class NearbyNode extends Node {
 
     @Override
     public NearbyNode newNode() {
-	try {
-	    NearbyNode node = new NearbyNode();
-	    node.blockMask = GlobalVars.operationParser.parsePart();
-	    node.distance = GlobalVars.operationParser.parseNumberNode();
-	    node.trueRange = GlobalVars.operationParser.parseRangeNode();
-	    if (node.trueRange == null) {
-		Main.logError(
-			"Could not create nearby node. Did you provide a block mask, a distance, and a range node?",
-			Operator.currentPlayer, null);
-		return null;
-	    }
-	    return node;
-	}
-	catch (Exception e) {
-	    Main.logError("Error parsing nearby node. Please check your syntax.", Operator.currentPlayer, e);
-	    return null;
-	}
+        try {
+            NearbyNode node = new NearbyNode();
+            node.blockMask = GlobalVars.operationParser.parsePart();
+            node.distance = GlobalVars.operationParser.parseNumberNode();
+            node.trueRange = GlobalVars.operationParser.parseRangeNode();
+            if (node.trueRange == null) {
+                Main.logError(
+                        "Could not create nearby node. Did you provide a block mask, a distance, and a range node?",
+                        Operator.currentPlayer, null);
+                return null;
+            }
+            return node;
+        } catch (Exception e) {
+            Main.logError("Error parsing nearby node. Please check your syntax.", Operator.currentPlayer, e);
+            return null;
+        }
     }
 
     @Override
     public boolean performNode() {
-	int dist = (int) distance.getValue();
-	int trueSeen = 0;
-	for (int x = -dist; x <= dist; x++) {
-	    for (int y = -dist; y <= dist; y++) {
-		for (int z = -dist; z <= dist; z++) {
-		    Block currBlock = Operator.currentBlock;
-		    Operator.currentBlock = currBlock.getRelative(x, y, z);
-		    boolean isTrue = blockMask.performNode();
-		    Operator.currentBlock = currBlock;
-		    if (isTrue)
-			trueSeen++;
-		}
-	    }
-	}
-	return trueRange.getMin() <= trueSeen && trueRange.getMax() >= trueSeen;
+        int dist = (int) distance.getValue();
+        int trueSeen = 0;
+        for (int x = -dist; x <= dist; x++) {
+            for (int y = -dist; y <= dist; y++) {
+                for (int z = -dist; z <= dist; z++) {
+                    Block currBlock = Operator.currentBlock;
+                    Operator.currentBlock = currBlock.getRelative(x, y, z);
+                    boolean isTrue = blockMask.performNode();
+                    Operator.currentBlock = currBlock;
+                    if (isTrue)
+                        trueSeen++;
+                }
+            }
+        }
+        return trueRange.getMin() <= trueSeen && trueRange.getMax() >= trueSeen;
     }
 
     @Override
     public int getArgCount() {
-	return 3;
+        return 3;
     }
 
 }

@@ -24,23 +24,22 @@ public class Multi extends BrushShape {
 
     @Override
     public BlockIterator GetBlocks(double x, double y, double z, World world) {
-	Main.logError("Multibrush used in a normal brush context. This is an error.", Operator.currentPlayer, null);
-	return null;
+        Main.logError("Multibrush used in a normal brush context. This is an error.", Operator.currentPlayer, null);
+        return null;
     }
 
     @Override
     public void addNewArgument(String argument) {
-	if (file.isEmpty()) {
-	    file = argument;
-	}
-	else {
-	    args.add(argument);
-	}
+        if (file.isEmpty()) {
+            file = argument;
+        } else {
+            args.add(argument);
+        }
     }
 
     @Override
     public boolean lastInputProcessed() {
-	return true;
+        return true;
     }
 
     @Override
@@ -49,12 +48,12 @@ public class Multi extends BrushShape {
     }
 
     public List<BlockIterator> getIters(double x, double y, double z, World world) {
-	genMultibrush(x, y, z, world);
-	return iters;
+        genMultibrush(x, y, z, world);
+        return iters;
     }
 
     public List<Operator> getOps(double x, double y, double z) {
-	return ops;
+        return ops;
     }
 
     @SuppressWarnings("unused")
@@ -93,58 +92,58 @@ public class Multi extends BrushShape {
         }
 
         // Parse each brush shape and operator
-	for (String s : brushes) {
-	    String[] rawData = s.split(" ");
-	    int brushOpOffset = 1; // Used to remove brush parameters from the operation
+        for (String s : brushes) {
+            String[] rawData = s.split(" ");
+            int brushOpOffset = 1; // Used to remove brush parameters from the operation
 
-	    // Get the shape generator, and store the args
-	    BrushShape shapeGenerator = Brush.GetBrushShape(rawData[0]);
-	    try {
-		do {
-		    if (rawData[brushOpOffset].equalsIgnoreCase("end")) {
-			brushOpOffset += 2;
-			break;
-		    }
-		    shapeGenerator.addNewArgument(rawData[brushOpOffset]);
-		    brushOpOffset++;
-		}
-        while (shapeGenerator.lastInputProcessed());
-            brushOpOffset--;
-        } catch (Exception e) {
-            Main.logError(
-                    "Could not parse brush arguments. Please check that you provided enough numerical arguments for the brush shape.",
-                    Brush.currentPlayer, e);
-            return;
+            // Get the shape generator, and store the args
+            BrushShape shapeGenerator = Brush.GetBrushShape(rawData[0]);
+            try {
+                do {
+                    if (rawData[brushOpOffset].equalsIgnoreCase("end")) {
+                        brushOpOffset += 2;
+                        break;
+                    }
+                    shapeGenerator.addNewArgument(rawData[brushOpOffset]);
+                    brushOpOffset++;
+                }
+                while (shapeGenerator.lastInputProcessed());
+                brushOpOffset--;
+            } catch (Exception e) {
+                Main.logError(
+                        "Could not parse brush arguments. Please check that you provided enough numerical arguments for the brush shape.",
+                        Brush.currentPlayer, e);
+                return;
+            }
+
+            if (shapeGenerator.gotEnoughArgs()) {
+                Main.logError("Not enough inputs to the brush shape were provided. Please provide enough inputs.",
+                        Brush.currentPlayer, null);
+            }
+
+            // Construct the operator
+            // Start by removing brush parameters
+            List<String> opArray = new LinkedList<>(Arrays.asList(rawData));
+            while (brushOpOffset > 0) {
+                opArray.remove(0);
+                brushOpOffset--;
+            }
+            // Construct the string
+            String opStr = "";
+            for (String str : opArray) {
+                opStr = opStr.concat(str).concat(" ");
+            }
+            // And then construct the operator
+            Operator operation = new Operator(opStr, Brush.currentPlayer);
+
+            // Invalid operator?
+            if (operation == null)
+                continue;
+
+            // Add to the lists
+            iters.add(shapeGenerator.GetBlocks(x, y, z, world));
+            ops.add(operation);
         }
-
-        if (shapeGenerator.gotEnoughArgs()) {
-            Main.logError("Not enough inputs to the brush shape were provided. Please provide enough inputs.",
-                    Brush.currentPlayer, null);
-        }
-
-        // Construct the operator
-        // Start by removing brush parameters
-        List<String> opArray = new LinkedList<>(Arrays.asList(rawData));
-        while (brushOpOffset > 0) {
-            opArray.remove(0);
-            brushOpOffset--;
-        }
-        // Construct the string
-        String opStr = "";
-        for (String str : opArray) {
-            opStr = opStr.concat(str).concat(" ");
-        }
-        // And then construct the operator
-	    Operator operation = new Operator(opStr, Brush.currentPlayer);
-
-	    // Invalid operator?
-	    if (operation == null)
-		continue;
-
-	    // Add to the lists
-	    iters.add(shapeGenerator.GetBlocks(x, y, z, world));
-	    ops.add(operation);
-	}
     }
 }
 

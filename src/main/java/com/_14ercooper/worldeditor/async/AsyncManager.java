@@ -58,138 +58,129 @@ public class AsyncManager {
 
     // How many blocks do we have less
     public long getRemainingBlocks() {
-	long remBlocks = 0;
-	for (AsyncOperation a : operations) {
-	    if (a.blocks != null) {
-		remBlocks += a.blocks.getRemainingBlocks();
-	    }
-	    else if (a.toOperate != null) {
-		remBlocks += a.toOperate.size();
-	    }
-	    else {
-		remBlocks += 100;
-	    }
-	}
-	for (AsyncOperation a : queuedOperations) {
-	    if (a.blocks != null) {
-		remBlocks += a.blocks.getRemainingBlocks();
-	    }
-	    else if (a.toOperate != null) {
-		remBlocks += a.toOperate.size();
-	    }
-	    else {
-		remBlocks += 100;
-	    }
-	}
-	return remBlocks;
+        long remBlocks = 0;
+        for (AsyncOperation a : operations) {
+            if (a.blocks != null) {
+                remBlocks += a.blocks.getRemainingBlocks();
+            } else if (a.toOperate != null) {
+                remBlocks += a.toOperate.size();
+            } else {
+                remBlocks += 100;
+            }
+        }
+        for (AsyncOperation a : queuedOperations) {
+            if (a.blocks != null) {
+                remBlocks += a.blocks.getRemainingBlocks();
+            } else if (a.toOperate != null) {
+                remBlocks += a.toOperate.size();
+            } else {
+                remBlocks += 100;
+            }
+        }
+        return remBlocks;
     }
 
     // About how big is the async queue?
     public void asyncProgress(CommandSender p) {
-	long remBlocks = getRemainingBlocks();
-	int remTime = (int) ((remBlocks) / (GlobalVars.blocksPerAsync * (20.0 / GlobalVars.ticksPerAsync)));
-	p.sendMessage("§aThere are " + remBlocks
-		+ " blocks in the async queue, for an estimated remaining time of less than " + remTime + " seconds.");
+        long remBlocks = getRemainingBlocks();
+        int remTime = (int) ((remBlocks) / (GlobalVars.blocksPerAsync * (20.0 / GlobalVars.ticksPerAsync)));
+        p.sendMessage("§aThere are " + remBlocks
+                + " blocks in the async queue, for an estimated remaining time of less than " + remTime + " seconds.");
     }
 
     // Dump some data about what's in the async queue
     public void asyncDump(CommandSender p) {
-	p.sendMessage("§aThere are currently " + (operations.size() + queuedOperations.size()) + " operations in the async queue for "
-		+ getRemainingBlocks() + " blocks.");
-	p.sendMessage("§aThe large edits confirm queue has " + largeOps.size() + " pending operations.");
-	p.sendMessage("§aPer Operation Stats:");
-	for (AsyncOperation a : queuedOperations) {
-	    p.sendMessage("§a[Queued] " + a.blocks.getRemainingBlocks() + " blocks remaining out of "
-		    + a.blocks.getTotalBlocks() + " total blocks. Undo? " + a.undoRunning + " " + a.blocks.toString());
-	}
-	for (AsyncOperation a : operations) {
-	    p.sendMessage("§a[Running] " + a.blocks.getRemainingBlocks() + " blocks remaining out of "
-		    + a.blocks.getTotalBlocks() + " total blocks. Undo? " + a.undoRunning + " " + a.blocks.toString());
-	}
-	for (AsyncOperation a : largeOps) {
-	    p.sendMessage("§a[Large Queue] " + a.blocks.getTotalBlocks() + " total blocks. " + a.blocks.toString());
-	}
+        p.sendMessage("§aThere are currently " + (operations.size() + queuedOperations.size()) + " operations in the async queue for "
+                + getRemainingBlocks() + " blocks.");
+        p.sendMessage("§aThe large edits confirm queue has " + largeOps.size() + " pending operations.");
+        p.sendMessage("§aPer Operation Stats:");
+        for (AsyncOperation a : queuedOperations) {
+            p.sendMessage("§a[Queued] " + a.blocks.getRemainingBlocks() + " blocks remaining out of "
+                    + a.blocks.getTotalBlocks() + " total blocks. Undo? " + a.undoRunning + " " + a.blocks.toString());
+        }
+        for (AsyncOperation a : operations) {
+            p.sendMessage("§a[Running] " + a.blocks.getRemainingBlocks() + " blocks remaining out of "
+                    + a.blocks.getTotalBlocks() + " total blocks. Undo? " + a.undoRunning + " " + a.blocks.toString());
+        }
+        for (AsyncOperation a : largeOps) {
+            p.sendMessage("§a[Large Queue] " + a.blocks.getTotalBlocks() + " total blocks. " + a.blocks.toString());
+        }
     }
 
     // Schedule a block iterator task
     public void scheduleEdit(Operator o, Player p, BlockIterator b) {
-	if (p == null) {
-	    queuedOperations.add(new AsyncOperation(o, b));
-	}
-	else if (b.getTotalBlocks() > GlobalVars.undoLimit) {
-	    largeOps.add(new AsyncOperation(o, p, b));
-	    if (!GlobalVars.autoConfirm) {
-		p.sendMessage("§aThis is a large edit that cannot be undone, and may stall 14erEdit for a while.");
-		p.sendMessage("§aPlease type §b/confirm §ato confirm or §b/cancel §a to cancel");
-	    }
+        if (p == null) {
+            queuedOperations.add(new AsyncOperation(o, b));
+        } else if (b.getTotalBlocks() > GlobalVars.undoLimit) {
+            largeOps.add(new AsyncOperation(o, p, b));
+            if (!GlobalVars.autoConfirm) {
+                p.sendMessage("§aThis is a large edit that cannot be undone, and may stall 14erEdit for a while.");
+                p.sendMessage("§aPlease type §b/confirm §ato confirm or §b/cancel §a to cancel");
+            }
 
-	}
-	else {
-	    AsyncOperation asyncOp = new AsyncOperation(o, p, b);
-	    asyncOp.undo = UndoManager.getUndo(p);
-	    queuedOperations.add(asyncOp);
-	}
+        } else {
+            AsyncOperation asyncOp = new AsyncOperation(o, p, b);
+            asyncOp.undo = UndoManager.getUndo(p);
+            queuedOperations.add(asyncOp);
+        }
     }
 
     // Schedule a nested block iterator task
     public void scheduleEdit(Operator o, Player p, BlockIterator b, boolean force) {
-	if (p == null)
-	    queuedOperations.add(new AsyncOperation(o, b));
-	else if (b.getTotalBlocks() > GlobalVars.undoLimit) {
-	    AsyncOperation asyncOp = new AsyncOperation(o, p, b);
-	    queuedOperations.add(asyncOp);
-	}
-	else {
-	    AsyncOperation asyncOp = new AsyncOperation(o, p, b);
-	    asyncOp.undo = UndoManager.getUndo(p);
-	    queuedOperations.add(asyncOp);
-	}
+        if (p == null)
+            queuedOperations.add(new AsyncOperation(o, b));
+        else if (b.getTotalBlocks() > GlobalVars.undoLimit) {
+            AsyncOperation asyncOp = new AsyncOperation(o, p, b);
+            queuedOperations.add(asyncOp);
+        } else {
+            AsyncOperation asyncOp = new AsyncOperation(o, p, b);
+            asyncOp.undo = UndoManager.getUndo(p);
+            queuedOperations.add(asyncOp);
+        }
     }
 
     public void scheduleEdit(Operator o, BlockIterator b) {
-	queuedOperations.add(new AsyncOperation(o, b));
+        queuedOperations.add(new AsyncOperation(o, b));
     }
 
     // Schedule a multibrush operation
     public void scheduleEdit(List<BlockIterator> iterators, List<Operator> operations, Player p) {
-	AsyncOperation asyncOp = new AsyncOperation(iterators, operations, p);
-	largeOps.add(asyncOp);
-	if (!GlobalVars.autoConfirm) {
-	    p.sendMessage("§aMultibrushes can only be run in large edit mode without undos.");
-	    p.sendMessage("§aPlease type §b/confirm §ato confirm or §b/cancel §a to cancel");
-	}
+        AsyncOperation asyncOp = new AsyncOperation(iterators, operations, p);
+        largeOps.add(asyncOp);
+        if (!GlobalVars.autoConfirm) {
+            p.sendMessage("§aMultibrushes can only be run in large edit mode without undos.");
+            p.sendMessage("§aPlease type §b/confirm §ato confirm or §b/cancel §a to cancel");
+        }
     }
 
     // Schedule a schematics operation
     public void scheduleEdit(SchemLite sl, boolean saveSchem, Player p, int[] origin) {
-	AsyncOperation asyncOp = new AsyncOperation(sl, saveSchem, origin, p);
-	if (asyncOp.blocks.getTotalBlocks() > GlobalVars.undoLimit) {
-	    largeOps.add(asyncOp);
-	    if (!GlobalVars.autoConfirm) {
-		p.sendMessage("§aThis is a large edit that cannot be undone, and may stall 14erEdit for a while.");
-		p.sendMessage("§aPlease type §b/confirm §ato confirm or §b/cancel §a to cancel");
-	    }
-	}
-	else {
-	    asyncOp.undo = UndoManager.getUndo(p);
-	    queuedOperations.add(asyncOp);
-	}
+        AsyncOperation asyncOp = new AsyncOperation(sl, saveSchem, origin, p);
+        if (asyncOp.blocks.getTotalBlocks() > GlobalVars.undoLimit) {
+            largeOps.add(asyncOp);
+            if (!GlobalVars.autoConfirm) {
+                p.sendMessage("§aThis is a large edit that cannot be undone, and may stall 14erEdit for a while.");
+                p.sendMessage("§aPlease type §b/confirm §ato confirm or §b/cancel §a to cancel");
+            }
+        } else {
+            asyncOp.undo = UndoManager.getUndo(p);
+            queuedOperations.add(asyncOp);
+        }
     }
 
     // Schedule a selection clone operation
     public void scheduleEdit(BlockIterator b, int[] offset, int times, boolean delOriginal, Player p) {
-	AsyncOperation asyncOp = new AsyncOperation(b, offset, times, delOriginal, p);
-	if (asyncOp.blocks.getTotalBlocks() * times > GlobalVars.undoLimit) {
-	    largeOps.add(asyncOp);
-	    if (!GlobalVars.autoConfirm) {
-		p.sendMessage("§aThis is a large edit that cannot be undone, and may stall 14erEdit for a while.");
-		p.sendMessage("§aPlease type §b/confirm §ato confirm or §b/cancel §a to cancel");
-	    }
-	}
-	else {
-	    asyncOp.undo = UndoManager.getUndo(p);
-	    queuedOperations.add(asyncOp);
-	}
+        AsyncOperation asyncOp = new AsyncOperation(b, offset, times, delOriginal, p);
+        if (asyncOp.blocks.getTotalBlocks() * times > GlobalVars.undoLimit) {
+            largeOps.add(asyncOp);
+            if (!GlobalVars.autoConfirm) {
+                p.sendMessage("§aThis is a large edit that cannot be undone, and may stall 14erEdit for a while.");
+                p.sendMessage("§aPlease type §b/confirm §ato confirm or §b/cancel §a to cancel");
+            }
+        } else {
+            asyncOp.undo = UndoManager.getUndo(p);
+            queuedOperations.add(asyncOp);
+        }
     }
 
     // Confirm large edits
@@ -209,322 +200,313 @@ public class AsyncManager {
             largeOps.remove();
         }
     }
-    
+
     public static long doneOperations = 0;
 
     // Scheduled task to operate
     public void performOperation() {
-	// Output building up debug
-	Main.outputDebug();
-	
-	// If in autoconfirm mode, do that
-	if (GlobalVars.autoConfirm) {
-	    confirmEdits(10);
-	}
-	
-	// Dispatch async edits
-	if (operations.size() < 10) {
-	    for (int i = 0; i < queuedOperations.size(); i++) {
-		if (queuedOperations.get(i).undo == null || queuedOperations.get(i).undo.canStartUndo(queuedOperations.get(i).blocks.getTotalBlocks())) {
-		    if (queuedOperations.get(i).undo != null) {
-			queuedOperations.get(i).undo.startTrackingUndo(queuedOperations.get(i).blocks.getTotalBlocks());
-		    }
-		    operations.add(queuedOperations.get(i));
-		    queuedOperations.remove(i);
-		    i--;
-		}
-		
-		if (operations.size() >= 10) {
-		    break;
-		}
-	    }
-	}
+        // Output building up debug
+        Main.outputDebug();
 
-	// If there isn't anything to do, return
-	if (operations.size() == 0)
-	    return;
+        // If in autoconfirm mode, do that
+        if (GlobalVars.autoConfirm) {
+            confirmEdits(10);
+        }
 
-	// Limit operations per run
-	doneOperations = 0;
+        // Dispatch async edits
+        if (operations.size() < 10) {
+            for (int i = 0; i < queuedOperations.size(); i++) {
+                if (queuedOperations.get(i).undo == null || queuedOperations.get(i).undo.canStartUndo(queuedOperations.get(i).blocks.getTotalBlocks())) {
+                    if (queuedOperations.get(i).undo != null) {
+                        queuedOperations.get(i).undo.startTrackingUndo(queuedOperations.get(i).blocks.getTotalBlocks());
+                    }
+                    operations.add(queuedOperations.get(i));
+                    queuedOperations.remove(i);
+                    i--;
+                }
 
-	if (queueDropped) {
-	    queueDropped = false;
-	}
+                if (operations.size() >= 10) {
+                    break;
+                }
+            }
+        }
 
-	GlobalVars.errorLogged = false;
+        // If there isn't anything to do, return
+        if (operations.size() == 0)
+            return;
 
-	// Loop until finished
-	while (doneOperations < GlobalVars.blocksPerAsync && operations.size() > 0) {
-	    if (queueDropped) {
-		queueDropped = false;
-		return;
-	    }
-	    int opSize = operations.size();
-	    for (int i = 0; i < opSize; i++) {
-		if (queueDropped) {
-		    queueDropped = false;
-		    return;
-		}
-		AsyncOperation currentAsyncOp = operations.get(i);
+        // Limit operations per run
+        doneOperations = 0;
 
-		if (currentAsyncOp.blocks != null && currentAsyncOp.blocks.getRemainingBlocks() == 0) {
-		    if (currentAsyncOp.undo != null) {
-			currentAsyncOp.undo.finishUndo();
-		    }
-		    if (currentAsyncOp.key.equalsIgnoreCase("saveschem")) {
-			currentAsyncOp.player.sendMessage("§aSelection saved");
-		    }
-		    if (currentAsyncOp.blocks instanceof SchemBrushIterator) {
-			((SchemBrushIterator) currentAsyncOp.blocks).cleanup();
-		    }
-		    operations.remove(i);
-		    i--;
-		    opSize--;
-		    continue;
-		}
+        if (queueDropped) {
+            queueDropped = false;
+        }
 
-		// Iterator edit
-		if (currentAsyncOp.key.equalsIgnoreCase("iteredit")) {
-		    Block b = null;
-		    b = currentAsyncOp.blocks.getNext();
-		    if (currentAsyncOp.undo != null) {
-			if (!currentAsyncOp.undoRunning)
-			    currentAsyncOp.undo.startUndo(currentAsyncOp.blocks.getTotalBlocks());
-			GlobalVars.currentUndo = currentAsyncOp.undo;
-			currentAsyncOp.undoRunning = true;
-		    }
-		    if (b == null) {
-			if (currentAsyncOp.undo != null) {
-			    currentAsyncOp.undo.finishUndo();
-			}
-			if (currentAsyncOp.blocks instanceof SchemBrushIterator) {
-			    ((SchemBrushIterator) currentAsyncOp.blocks).cleanup();
-			}
-			operations.remove(i);
-			i--;
-			opSize--;
-			continue;
-		    }
-		    currentAsyncOp.operation.operateOnBlock(b, currentAsyncOp.player);
-		    doneOperations++;
-		    GlobalVars.currentUndo = null;
-		}
+        GlobalVars.errorLogged = false;
 
-		// Raw iterator edit
-		else if (currentAsyncOp.key.equalsIgnoreCase("rawiteredit")) {
-		    Block b = null;
-		    b = currentAsyncOp.blocks.getNext();
-		    if (currentAsyncOp.undo != null) {
-			if (!currentAsyncOp.undoRunning)
-			    currentAsyncOp.undo.startUndo(currentAsyncOp.blocks.getTotalBlocks());
-			GlobalVars.currentUndo = currentAsyncOp.undo;
-			currentAsyncOp.undoRunning = true;
-		    }
-		    if (b == null) {
-			if (currentAsyncOp.undo != null) {
-			    currentAsyncOp.undo.finishUndo();
-			}
-			if (currentAsyncOp.blocks instanceof SchemBrushIterator) {
-			    ((SchemBrushIterator) currentAsyncOp.blocks).cleanup();
-			}
-			operations.remove(i);
-			i--;
-			opSize--;
-			continue;
-		    }
-		    currentAsyncOp.operation.operateOnBlock(b);
-		    doneOperations++;
-		    GlobalVars.currentUndo = null;
-		}
+        // Loop until finished
+        while (doneOperations < GlobalVars.blocksPerAsync && operations.size() > 0) {
+            if (queueDropped) {
+                queueDropped = false;
+                return;
+            }
+            int opSize = operations.size();
+            for (int i = 0; i < opSize; i++) {
+                if (queueDropped) {
+                    queueDropped = false;
+                    return;
+                }
+                AsyncOperation currentAsyncOp = operations.get(i);
 
-		// Multibrush
-		else if (currentAsyncOp.key.equalsIgnoreCase("multibrush")) {
-		    Block b = null;
-		    boolean doContinue = false;
-		    while (true) {
-			b = currentAsyncOp.iterators.get(0).getNext();
-			if (b != null) {
-			    break;
-			}
-			if (b == null && currentAsyncOp.iterators.size() > 1) {
-			    currentAsyncOp.iterators.remove(0);
-			    if (currentAsyncOp.iterators.get(0) instanceof SchemBrushIterator) {
-				((SchemBrushIterator) currentAsyncOp.iterators.get(0)).cleanup();
-			    }
-			    currentAsyncOp.operations.remove(0);
-			    if (currentAsyncOp.iterators.size() == 0 || currentAsyncOp.operations.size() == 0) {
-				doContinue = true;
-				break;
-			    }
-			}
-			else {
-			    doContinue = true;
-			    break;
-			}
-		    }
-		    if (doContinue) {
-			this.operations.remove(i);
-			i--;
-			opSize--;
-			continue;
-		    }
-		    currentAsyncOp.operations.get(0).operateOnBlock(b, currentAsyncOp.player);
-		    doneOperations++;
-		    GlobalVars.currentUndo = null;
-		}
+                if (currentAsyncOp.blocks != null && currentAsyncOp.blocks.getRemainingBlocks() == 0) {
+                    if (currentAsyncOp.undo != null) {
+                        currentAsyncOp.undo.finishUndo();
+                    }
+                    if (currentAsyncOp.key.equalsIgnoreCase("saveschem")) {
+                        currentAsyncOp.player.sendMessage("§aSelection saved");
+                    }
+                    if (currentAsyncOp.blocks instanceof SchemBrushIterator) {
+                        ((SchemBrushIterator) currentAsyncOp.blocks).cleanup();
+                    }
+                    operations.remove(i);
+                    i--;
+                    opSize--;
+                    continue;
+                }
 
-		else if (currentAsyncOp.key.equalsIgnoreCase("messyedit")) {
-		    operations.remove(i).operation.messyOperate();
-		    i--;
-		    opSize--;
-		    doneOperations += 100;
-		}
+                // Iterator edit
+                if (currentAsyncOp.key.equalsIgnoreCase("iteredit")) {
+                    Block b = null;
+                    b = currentAsyncOp.blocks.getNext();
+                    if (currentAsyncOp.undo != null) {
+                        if (!currentAsyncOp.undoRunning)
+                            currentAsyncOp.undo.startUndo(currentAsyncOp.blocks.getTotalBlocks());
+                        GlobalVars.currentUndo = currentAsyncOp.undo;
+                        currentAsyncOp.undoRunning = true;
+                    }
+                    if (b == null) {
+                        if (currentAsyncOp.undo != null) {
+                            currentAsyncOp.undo.finishUndo();
+                        }
+                        if (currentAsyncOp.blocks instanceof SchemBrushIterator) {
+                            ((SchemBrushIterator) currentAsyncOp.blocks).cleanup();
+                        }
+                        operations.remove(i);
+                        i--;
+                        opSize--;
+                        continue;
+                    }
+                    currentAsyncOp.operation.operateOnBlock(b, currentAsyncOp.player);
+                    doneOperations++;
+                    GlobalVars.currentUndo = null;
+                }
 
-		// Save schematic
-		else if (currentAsyncOp.key.equalsIgnoreCase("saveschem")) {
-		    Block b = null;
-		    b = currentAsyncOp.blocks.getNext();
-		    if (currentAsyncOp.undo != null) {
-			if (!currentAsyncOp.undoRunning) {
-			    currentAsyncOp.undo.startUndo(currentAsyncOp.blocks.getTotalBlocks());
-			    try {
-				currentAsyncOp.schem.resetWrite();
-			    }
-			    catch (IOException e) {
-				Main.logError("Could not write to schematic file", currentAsyncOp.player, e);
-			    }
-			}
-			GlobalVars.currentUndo = currentAsyncOp.undo;
-			currentAsyncOp.undoRunning = true;
-		    }
-		    if (b == null) {
-			if (currentAsyncOp.undo != null) {
-			    currentAsyncOp.undo.finishUndo();
-			}
-			operations.remove(i);
-			i--;
-			opSize--;
-			currentAsyncOp.player.sendMessage("§aSelection saved");
-			continue;
-		    }
-		    String material = b.getType().toString();
-		    String data = b.getBlockData().getAsString();
-		    NBTExtractor nbtE = new NBTExtractor();
-		    String nbt = nbtE.getNBT(b);
-		    try {
-			currentAsyncOp.schem.writeBlock(material, data, nbt);
-		    }
-		    catch (IOException e) {
-			// Don't need to do anything
-		    }
-		    doneOperations++;
-		    GlobalVars.currentUndo = null;
-		}
+                // Raw iterator edit
+                else if (currentAsyncOp.key.equalsIgnoreCase("rawiteredit")) {
+                    Block b = null;
+                    b = currentAsyncOp.blocks.getNext();
+                    if (currentAsyncOp.undo != null) {
+                        if (!currentAsyncOp.undoRunning)
+                            currentAsyncOp.undo.startUndo(currentAsyncOp.blocks.getTotalBlocks());
+                        GlobalVars.currentUndo = currentAsyncOp.undo;
+                        currentAsyncOp.undoRunning = true;
+                    }
+                    if (b == null) {
+                        if (currentAsyncOp.undo != null) {
+                            currentAsyncOp.undo.finishUndo();
+                        }
+                        if (currentAsyncOp.blocks instanceof SchemBrushIterator) {
+                            ((SchemBrushIterator) currentAsyncOp.blocks).cleanup();
+                        }
+                        operations.remove(i);
+                        i--;
+                        opSize--;
+                        continue;
+                    }
+                    currentAsyncOp.operation.operateOnBlock(b);
+                    doneOperations++;
+                    GlobalVars.currentUndo = null;
+                }
 
-		// Load schematic
-		else if (currentAsyncOp.key.equalsIgnoreCase("loadschem")) {
-		    Block b = null;
-		    b = currentAsyncOp.blocks.getNext();
-		    if (currentAsyncOp.undo != null) {
-			if (!currentAsyncOp.undoRunning) {
-			    currentAsyncOp.undo.startUndo(currentAsyncOp.blocks.getTotalBlocks());
-			}
-			GlobalVars.currentUndo = currentAsyncOp.undo;
-			currentAsyncOp.undoRunning = true;
-		    }
-		    if (b == null) {
-			if (currentAsyncOp.undo != null) {
-			    currentAsyncOp.undo.finishUndo();
-			}
-			operations.remove(i);
-			i--;
-			opSize--;
-			try {
-			    currentAsyncOp.schem.closeRead();
-			}
-			catch (IOException e) {
-			    // Don't need to do anything
-			}
-			currentAsyncOp.player.sendMessage("§aData loaded");
-			continue;
-		    }
-		    String[] results = {};
-		    try {
-			results = currentAsyncOp.schem.readNext();
-		    }
-		    catch (IOException e) {
-			// Don't need to do anything
-		    }
-		    if (!Material.matchMaterial(results[0]).isAir() || currentAsyncOp.schem.setAir()) {
-			SetBlock.setMaterial(b, Material.matchMaterial(results[0]), false);
-			b.setBlockData(Bukkit.getServer().createBlockData(results[1]));
-			if (!results[2].isEmpty()) {
-			    String command = "data merge block " + b.getX() + " " + b.getY() + " " + b.getZ() + " "
-				    + results[2];
-			    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
-			}
-		    }
-		    doneOperations++;
-		    GlobalVars.currentUndo = null;
-		}
+                // Multibrush
+                else if (currentAsyncOp.key.equalsIgnoreCase("multibrush")) {
+                    Block b = null;
+                    boolean doContinue = false;
+                    while (true) {
+                        b = currentAsyncOp.iterators.get(0).getNext();
+                        if (b != null) {
+                            break;
+                        }
+                        if (b == null && currentAsyncOp.iterators.size() > 1) {
+                            currentAsyncOp.iterators.remove(0);
+                            if (currentAsyncOp.iterators.get(0) instanceof SchemBrushIterator) {
+                                ((SchemBrushIterator) currentAsyncOp.iterators.get(0)).cleanup();
+                            }
+                            currentAsyncOp.operations.remove(0);
+                            if (currentAsyncOp.iterators.size() == 0 || currentAsyncOp.operations.size() == 0) {
+                                doContinue = true;
+                                break;
+                            }
+                        } else {
+                            doContinue = true;
+                            break;
+                        }
+                    }
+                    if (doContinue) {
+                        this.operations.remove(i);
+                        i--;
+                        opSize--;
+                        continue;
+                    }
+                    currentAsyncOp.operations.get(0).operateOnBlock(b, currentAsyncOp.player);
+                    doneOperations++;
+                    GlobalVars.currentUndo = null;
+                } else if (currentAsyncOp.key.equalsIgnoreCase("messyedit")) {
+                    operations.remove(i).operation.messyOperate();
+                    i--;
+                    opSize--;
+                    doneOperations += 100;
+                }
 
-		// Selection move/stack
-		else if (currentAsyncOp.key.equalsIgnoreCase("selclone")) {
-		    Player tempPlayer = Operator.currentPlayer;
-		    Operator.currentPlayer = currentAsyncOp.player;
-		    Block b = currentAsyncOp.blocks.getNext();
-		    Operator.currentPlayer = tempPlayer;
-		    if (currentAsyncOp.undo != null) {
-			if (!currentAsyncOp.undoRunning) {
-			    currentAsyncOp.undo.startUndo(currentAsyncOp.blocks.getTotalBlocks());
-			}
-			GlobalVars.currentUndo = currentAsyncOp.undo;
-			currentAsyncOp.undoRunning = true;
-		    }
-		    if (b == null) {
-			if (currentAsyncOp.undo != null) {
-			    currentAsyncOp.undo.finishUndo();
-			}
-			operations.remove(i);
-			i--;
-			opSize--;
-			continue;
-		    }
-		    // Actually do the clone
-		    for (int timesDone = 0; timesDone < currentAsyncOp.times; timesDone++) {
-			Block toEdit = b.getRelative(currentAsyncOp.offset[0] * (1 + timesDone),
-				currentAsyncOp.offset[1] * (1 + timesDone), currentAsyncOp.offset[2] * (1 + timesDone));
-			SetBlock.setMaterial(toEdit, b.getType(), false);
-			toEdit.setBlockData(b.getBlockData(), false);
-			NBTExtractor nbt = new NBTExtractor();
-			String nbtStr = nbt.getNBT(b);
-			if (nbtStr.length() > 2) {
-			    String command = "data merge block " + toEdit.getX() + " " + toEdit.getY() + " "
-				    + toEdit.getZ() + " " + nbtStr;
-			    Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), command);
-			    doneOperations++;
-			}
-		    }
-		    if (currentAsyncOp.delOriginal) {
-			SetBlock.setMaterial(b, Material.AIR, false);
-			doneOperations++;
-		    }
-		    doneOperations += currentAsyncOp.times;
-		    GlobalVars.currentUndo = null;
-		}
+                // Save schematic
+                else if (currentAsyncOp.key.equalsIgnoreCase("saveschem")) {
+                    Block b = null;
+                    b = currentAsyncOp.blocks.getNext();
+                    if (currentAsyncOp.undo != null) {
+                        if (!currentAsyncOp.undoRunning) {
+                            currentAsyncOp.undo.startUndo(currentAsyncOp.blocks.getTotalBlocks());
+                            try {
+                                currentAsyncOp.schem.resetWrite();
+                            } catch (IOException e) {
+                                Main.logError("Could not write to schematic file", currentAsyncOp.player, e);
+                            }
+                        }
+                        GlobalVars.currentUndo = currentAsyncOp.undo;
+                        currentAsyncOp.undoRunning = true;
+                    }
+                    if (b == null) {
+                        if (currentAsyncOp.undo != null) {
+                            currentAsyncOp.undo.finishUndo();
+                        }
+                        operations.remove(i);
+                        i--;
+                        opSize--;
+                        currentAsyncOp.player.sendMessage("§aSelection saved");
+                        continue;
+                    }
+                    String material = b.getType().toString();
+                    String data = b.getBlockData().getAsString();
+                    NBTExtractor nbtE = new NBTExtractor();
+                    String nbt = nbtE.getNBT(b);
+                    try {
+                        currentAsyncOp.schem.writeBlock(material, data, nbt);
+                    } catch (IOException e) {
+                        // Don't need to do anything
+                    }
+                    doneOperations++;
+                    GlobalVars.currentUndo = null;
+                }
 
-		else {
-		    Main.logError("Invalid operation in async queue. Removing operation.", Bukkit.getConsoleSender(), null);
-		    operations.remove(i);
-		    i--;
-		    opSize--;
-		}
-	    }
-	}
+                // Load schematic
+                else if (currentAsyncOp.key.equalsIgnoreCase("loadschem")) {
+                    Block b = null;
+                    b = currentAsyncOp.blocks.getNext();
+                    if (currentAsyncOp.undo != null) {
+                        if (!currentAsyncOp.undoRunning) {
+                            currentAsyncOp.undo.startUndo(currentAsyncOp.blocks.getTotalBlocks());
+                        }
+                        GlobalVars.currentUndo = currentAsyncOp.undo;
+                        currentAsyncOp.undoRunning = true;
+                    }
+                    if (b == null) {
+                        if (currentAsyncOp.undo != null) {
+                            currentAsyncOp.undo.finishUndo();
+                        }
+                        operations.remove(i);
+                        i--;
+                        opSize--;
+                        try {
+                            currentAsyncOp.schem.closeRead();
+                        } catch (IOException e) {
+                            // Don't need to do anything
+                        }
+                        currentAsyncOp.player.sendMessage("§aData loaded");
+                        continue;
+                    }
+                    String[] results = {};
+                    try {
+                        results = currentAsyncOp.schem.readNext();
+                    } catch (IOException e) {
+                        // Don't need to do anything
+                    }
+                    if (!Material.matchMaterial(results[0]).isAir() || currentAsyncOp.schem.setAir()) {
+                        SetBlock.setMaterial(b, Material.matchMaterial(results[0]), false);
+                        b.setBlockData(Bukkit.getServer().createBlockData(results[1]));
+                        if (!results[2].isEmpty()) {
+                            String command = "data merge block " + b.getX() + " " + b.getY() + " " + b.getZ() + " "
+                                    + results[2];
+                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+                        }
+                    }
+                    doneOperations++;
+                    GlobalVars.currentUndo = null;
+                }
 
-	// Debug message
-	if (doneOperations > 0) {
-	    Main.logDebug("Performed " + doneOperations + " async operations");
-	}
+                // Selection move/stack
+                else if (currentAsyncOp.key.equalsIgnoreCase("selclone")) {
+                    Player tempPlayer = Operator.currentPlayer;
+                    Operator.currentPlayer = currentAsyncOp.player;
+                    Block b = currentAsyncOp.blocks.getNext();
+                    Operator.currentPlayer = tempPlayer;
+                    if (currentAsyncOp.undo != null) {
+                        if (!currentAsyncOp.undoRunning) {
+                            currentAsyncOp.undo.startUndo(currentAsyncOp.blocks.getTotalBlocks());
+                        }
+                        GlobalVars.currentUndo = currentAsyncOp.undo;
+                        currentAsyncOp.undoRunning = true;
+                    }
+                    if (b == null) {
+                        if (currentAsyncOp.undo != null) {
+                            currentAsyncOp.undo.finishUndo();
+                        }
+                        operations.remove(i);
+                        i--;
+                        opSize--;
+                        continue;
+                    }
+                    // Actually do the clone
+                    for (int timesDone = 0; timesDone < currentAsyncOp.times; timesDone++) {
+                        Block toEdit = b.getRelative(currentAsyncOp.offset[0] * (1 + timesDone),
+                                currentAsyncOp.offset[1] * (1 + timesDone), currentAsyncOp.offset[2] * (1 + timesDone));
+                        SetBlock.setMaterial(toEdit, b.getType(), false);
+                        toEdit.setBlockData(b.getBlockData(), false);
+                        NBTExtractor nbt = new NBTExtractor();
+                        String nbtStr = nbt.getNBT(b);
+                        if (nbtStr.length() > 2) {
+                            String command = "data merge block " + toEdit.getX() + " " + toEdit.getY() + " "
+                                    + toEdit.getZ() + " " + nbtStr;
+                            Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), command);
+                            doneOperations++;
+                        }
+                    }
+                    if (currentAsyncOp.delOriginal) {
+                        SetBlock.setMaterial(b, Material.AIR, false);
+                        doneOperations++;
+                    }
+                    doneOperations += currentAsyncOp.times;
+                    GlobalVars.currentUndo = null;
+                } else {
+                    Main.logError("Invalid operation in async queue. Removing operation.", Bukkit.getConsoleSender(), null);
+                    operations.remove(i);
+                    i--;
+                    opSize--;
+                }
+            }
+        }
+
+        // Debug message
+        if (doneOperations > 0) {
+            Main.logDebug("Performed " + doneOperations + " async operations");
+        }
     }
 }

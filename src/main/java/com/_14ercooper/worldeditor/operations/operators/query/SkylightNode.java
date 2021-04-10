@@ -13,27 +13,27 @@ public class SkylightNode extends Node {
 
     @Override
     public SkylightNode newNode() {
-	SkylightNode node = new SkylightNode();
-	node.arg = GlobalVars.operationParser.parseNumberNode();
-	return node;
+        SkylightNode node = new SkylightNode();
+        node.arg = GlobalVars.operationParser.parseNumberNode();
+        return node;
     }
 
     @Override
     public boolean performNode() {
-	BlockFace[] faces = { BlockFace.UP, BlockFace.DOWN, BlockFace.NORTH, BlockFace.SOUTH, BlockFace.EAST,
-		BlockFace.WEST };
-	int light = Operator.currentBlock.getLightFromSky();
-	for (BlockFace face : faces) {
-	    int l = Operator.currentBlock.getRelative(face).getLightFromSky();
-	    if (l > light)
-		light = l;
-	}
-	return light >= arg.getValue();
+        BlockFace[] faces = {BlockFace.UP, BlockFace.DOWN, BlockFace.NORTH, BlockFace.SOUTH, BlockFace.EAST,
+                BlockFace.WEST};
+        int light = Operator.currentBlock.getLightFromSky();
+        for (BlockFace face : faces) {
+            int l = Operator.currentBlock.getRelative(face).getLightFromSky();
+            if (l > light)
+                light = l;
+        }
+        return light >= arg.getValue();
     }
 
     @Override
     public int getArgCount() {
-	return 1;
+        return 1;
     }
 
 }

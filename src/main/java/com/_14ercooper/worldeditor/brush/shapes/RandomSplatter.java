@@ -43,45 +43,38 @@ public class RandomSplatter extends BrushShape {
                 spheres.add(GlobalVars.iteratorManager.getIterator("sphere").newIterator(argList, world));
                 spheresGenerated++;
             }
-	}
-	return ((MultiIterator) GlobalVars.iteratorManager.getIterator("multi")).newIterator(spheres);
+        }
+        return ((MultiIterator) GlobalVars.iteratorManager.getIterator("multi")).newIterator(spheres);
     }
 
     @Override
     public void addNewArgument(String argument) {
-	if (gotArgs == 0) {
-	    splatterRadiusMin = Integer.parseInt(argument);
-	}
-	else if (gotArgs == 1) {
-	    splatterRadiusMax = Integer.parseInt(argument);
-	}
-	else if (gotArgs == 2) {
-	    sphereCountMin = Integer.parseInt(argument);
-	}
-	else if (gotArgs == 3) {
-	    sphereCountMax = Integer.parseInt(argument);
-	}
-	else if (gotArgs == 4) {
-	    sphereRadiusMin = Integer.parseInt(argument);
-	}
-	else if (gotArgs == 5) {
-	    sphereRadiusMax = Integer.parseInt(argument);
-	}
-	else if (gotArgs == 6) {
-	    try {
-		Double.parseDouble(argument);
-		correction = argument;
-	    }
-	    catch (NumberFormatException e) {
-		gotArgs++;
-	    }
-	}
-	gotArgs++;
+        if (gotArgs == 0) {
+            splatterRadiusMin = Integer.parseInt(argument);
+        } else if (gotArgs == 1) {
+            splatterRadiusMax = Integer.parseInt(argument);
+        } else if (gotArgs == 2) {
+            sphereCountMin = Integer.parseInt(argument);
+        } else if (gotArgs == 3) {
+            sphereCountMax = Integer.parseInt(argument);
+        } else if (gotArgs == 4) {
+            sphereRadiusMin = Integer.parseInt(argument);
+        } else if (gotArgs == 5) {
+            sphereRadiusMax = Integer.parseInt(argument);
+        } else if (gotArgs == 6) {
+            try {
+                Double.parseDouble(argument);
+                correction = argument;
+            } catch (NumberFormatException e) {
+                gotArgs++;
+            }
+        }
+        gotArgs++;
     }
 
     @Override
     public boolean lastInputProcessed() {
-	return gotArgs < 8;
+        return gotArgs < 8;
     }
 
     @Override

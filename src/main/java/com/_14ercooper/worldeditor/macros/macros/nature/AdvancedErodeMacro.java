@@ -21,41 +21,39 @@ public class AdvancedErodeMacro extends Macro {
     public Location erodeCenter;
 
     private void SetupMacro(String[] args, Location loc) {
-	try {
-	    erodeRadius = Integer.parseInt(args[0]);
-	}
-	catch (Exception e) {
-	    Main.logError("Could not parse advanced erode macro. Is your radius a valid number?",
-		    Operator.currentPlayer, e);
-	}
-	erodeCenter = loc;
+        try {
+            erodeRadius = Integer.parseInt(args[0]);
+        } catch (Exception e) {
+            Main.logError("Could not parse advanced erode macro. Is your radius a valid number?",
+                    Operator.currentPlayer, e);
+        }
+        erodeCenter = loc;
 
-	try {
-	    solidCut = Integer.parseInt(args[1]);
-	    airCut = Integer.parseInt(args[2]);
-	}
-	catch (Exception e) {
-	    Main.logError("Could not parse advanced erode macro. Did you provide integers for both solid and air cut?",
-		    Operator.currentPlayer, e);
-	}
+        try {
+            solidCut = Integer.parseInt(args[1]);
+            airCut = Integer.parseInt(args[2]);
+        } catch (Exception e) {
+            Main.logError("Could not parse advanced erode macro. Did you provide integers for both solid and air cut?",
+                    Operator.currentPlayer, e);
+        }
     }
 
     @Override
     public boolean performMacro(String[] args, Location loc) {
-	SetupMacro(args, loc);
+        SetupMacro(args, loc);
 
-	// Location of the brush
-	double x = erodeCenter.getX();
-	double y = erodeCenter.getY();
-	double z = erodeCenter.getZ();
+        // Location of the brush
+        double x = erodeCenter.getX();
+        double y = erodeCenter.getY();
+        double z = erodeCenter.getZ();
 
-	List<BlockState> snapshotArray = generateSnapshotArray(x, y, z);
+        List<BlockState> snapshotArray = generateSnapshotArray(x, y, z);
 
-	snapshotArray = doErosion(snapshotArray);
+        snapshotArray = doErosion(snapshotArray);
 
-	// Apply the snapshot to the world, thus completing the erosion
-	applyToWorld(snapshotArray);
-	return true;
+        // Apply the snapshot to the world, thus completing the erosion
+        applyToWorld(snapshotArray);
+        return true;
     }
 
     private List<BlockState> generateSnapshotArray(double x, double y, double z) {
@@ -84,12 +82,12 @@ public class AdvancedErodeMacro extends Macro {
     }
 
     private void applyToWorld(List<BlockState> snapshotArray) {
-	for (BlockState b : snapshotArray) {
-	    Location l = b.getLocation();
-	    Block block = Operator.currentPlayer.getWorld().getBlockAt(l);
-	    SetBlock.setMaterial(block, b.getType());
-	    block.setBlockData(b.getBlockData());
-	}
+        for (BlockState b : snapshotArray) {
+            Location l = b.getLocation();
+            Block block = Operator.currentPlayer.getWorld().getBlockAt(l);
+            SetBlock.setMaterial(block, b.getType());
+            block.setBlockData(b.getBlockData());
+        }
     }
 
     private List<BlockState> doErosion(List<BlockState> snapshotArray) {
@@ -110,13 +108,13 @@ public class AdvancedErodeMacro extends Macro {
             // Logic for non-air blocks
             if (b.getType() != Material.AIR) {
                 // Count how many adjacent blocks are air
-		int airCount = 0;
-		for (Block adjBlock : adjBlocks) {
-		    if (adjBlock == null)
-                continue;
-            if (adjBlock.getType() == Material.AIR)
-                airCount++;
-        }
+                int airCount = 0;
+                for (Block adjBlock : adjBlocks) {
+                    if (adjBlock == null)
+                        continue;
+                    if (adjBlock.getType() == Material.AIR)
+                        airCount++;
+                }
 
                 // If air count is large, make this air
                 if (airCount >= airCut) {
@@ -126,18 +124,18 @@ public class AdvancedErodeMacro extends Macro {
                 snapshotCopy.add(b);
             }
 
-	    // Logic for air blocks
-	    else {
-		int blockCount = 0;
-		Material adjMaterial = Material.AIR;
-		for (Block adjBlock : adjBlocks) {
-		    if (adjBlock == null)
-			continue;
-		    if (adjBlock.getType() != Material.AIR) {
-			blockCount++;
-                adjMaterial = adjBlock.getType();
-            }
-        }
+            // Logic for air blocks
+            else {
+                int blockCount = 0;
+                Material adjMaterial = Material.AIR;
+                for (Block adjBlock : adjBlocks) {
+                    if (adjBlock == null)
+                        continue;
+                    if (adjBlock.getType() != Material.AIR) {
+                        blockCount++;
+                        adjMaterial = adjBlock.getType();
+                    }
+                }
 
                 // If there are a lot of blocks nearby, make this solid
                 if (blockCount >= solidCut) {
@@ -147,7 +145,7 @@ public class AdvancedErodeMacro extends Macro {
                 // Otherwise return in place
                 snapshotCopy.add(b);
             }
-	}
-	return snapshotCopy;
+        }
+        return snapshotCopy;
     }
 }

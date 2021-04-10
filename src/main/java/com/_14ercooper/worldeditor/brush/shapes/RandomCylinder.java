@@ -28,44 +28,41 @@ public class RandomCylinder extends BrushShape {
         if (dimension.equalsIgnoreCase("x")) {
             argList.add("0");
             argList.add("1");
-	    argList.add("1");
-	}
-	// Axis Y
-	if (dimension.equalsIgnoreCase("y")) {
-	    argList.add("1");
-	    argList.add("0");
-	    argList.add("1");
-	}
-	// Axis Z
-	if (dimension.equalsIgnoreCase("z")) {
-	    argList.add("1");
-	    argList.add("1");
-	    argList.add("0");
-	}
-	return GlobalVars.iteratorManager.getIterator("cylinder").newIterator(argList, world);
+            argList.add("1");
+        }
+        // Axis Y
+        if (dimension.equalsIgnoreCase("y")) {
+            argList.add("1");
+            argList.add("0");
+            argList.add("1");
+        }
+        // Axis Z
+        if (dimension.equalsIgnoreCase("z")) {
+            argList.add("1");
+            argList.add("1");
+            argList.add("0");
+        }
+        return GlobalVars.iteratorManager.getIterator("cylinder").newIterator(argList, world);
     }
 
     @Override
     public void addNewArgument(String argument) {
-	if (argsGot == 0) {
-	    radiusMax = Integer.parseInt(argument);
-	}
-	else if (argsGot == 1) {
-	    radiusMax = Integer.parseInt(argument);
-	}
-	else if (argsGot == 2) {
-	    correction = argument;
-	}
-	else if (argsGot == 3) {
-	    dimension = argument;
-	}
+        if (argsGot == 0) {
+            radiusMax = Integer.parseInt(argument);
+        } else if (argsGot == 1) {
+            radiusMax = Integer.parseInt(argument);
+        } else if (argsGot == 2) {
+            correction = argument;
+        } else if (argsGot == 3) {
+            dimension = argument;
+        }
 
-	argsGot++;
+        argsGot++;
     }
 
     @Override
     public boolean lastInputProcessed() {
-	return argsGot < 5;
+        return argsGot < 5;
     }
 
     @Override

@@ -27,63 +27,58 @@ public class CommandRunat implements CommandExecutor {
         try {
             double x = 0, y = 0, z = 0;
             // X with relative
-	    if (args[0].contains("~")) {
-		if (sender instanceof BlockCommandSender) {
-		    x = Double.parseDouble(args[0].replaceAll("~", ""))
-			    + ((BlockCommandSender) sender).getBlock().getX();
-		}
-		if (sender instanceof Entity) {
-		    x = Double.parseDouble(args[0].replaceAll("~", "")) + ((Entity) sender).getLocation().getX();
-		}
-	    }
-	    else {
-		x = Double.parseDouble(args[0]);
-	    }
-	    // Y with relative
-	    if (args[1].contains("~")) {
-		if (sender instanceof BlockCommandSender) {
-		    y = Double.parseDouble(args[1].replaceAll("~", ""))
-			    + ((BlockCommandSender) sender).getBlock().getY();
-		}
-		if (sender instanceof Entity) {
-		    y = Double.parseDouble(args[1].replaceAll("~", "")) + ((Entity) sender).getLocation().getY();
-		}
-	    }
-	    else {
-		y = Double.parseDouble(args[1]);
-	    }
-	    // Z with relative
-	    if (args[0].contains("~")) {
-		if (sender instanceof BlockCommandSender) {
-		    z = Double.parseDouble(args[2].replaceAll("~", ""))
-			    + ((BlockCommandSender) sender).getBlock().getZ();
-		}
-		if (sender instanceof Entity) {
-		    z = Double.parseDouble(args[2].replaceAll("~", "")) + ((Entity) sender).getLocation().getZ();
-		}
-	    }
-	    else {
-		z = Double.parseDouble(args[2]);
-	    }
-
-	    try {
-            BrushShape shape = new Voxel();
-            StringBuilder opStr = new StringBuilder();
-            for (int i = 3; i < args.length; i++) {
-                opStr.append(args[i]).append(" ");
+            if (args[0].contains("~")) {
+                if (sender instanceof BlockCommandSender) {
+                    x = Double.parseDouble(args[0].replaceAll("~", ""))
+                            + ((BlockCommandSender) sender).getBlock().getX();
+                }
+                if (sender instanceof Entity) {
+                    x = Double.parseDouble(args[0].replaceAll("~", "")) + ((Entity) sender).getLocation().getX();
+                }
+            } else {
+                x = Double.parseDouble(args[0]);
             }
-            Operator op = new Operator(opStr.toString(), (Player) sender);
-            GlobalVars.asyncManager.scheduleEdit(op, null, shape.GetBlocks(x, y, z, sender instanceof Player ? ((Player) sender).getWorld() : Bukkit.getWorlds().get(0)));
-            return true;
+            // Y with relative
+            if (args[1].contains("~")) {
+                if (sender instanceof BlockCommandSender) {
+                    y = Double.parseDouble(args[1].replaceAll("~", ""))
+                            + ((BlockCommandSender) sender).getBlock().getY();
+                }
+                if (sender instanceof Entity) {
+                    y = Double.parseDouble(args[1].replaceAll("~", "")) + ((Entity) sender).getLocation().getY();
+                }
+            } else {
+                y = Double.parseDouble(args[1]);
+            }
+            // Z with relative
+            if (args[0].contains("~")) {
+                if (sender instanceof BlockCommandSender) {
+                    z = Double.parseDouble(args[2].replaceAll("~", ""))
+                            + ((BlockCommandSender) sender).getBlock().getZ();
+                }
+                if (sender instanceof Entity) {
+                    z = Double.parseDouble(args[2].replaceAll("~", "")) + ((Entity) sender).getLocation().getZ();
+                }
+            } else {
+                z = Double.parseDouble(args[2]);
+            }
+
+            try {
+                BrushShape shape = new Voxel();
+                StringBuilder opStr = new StringBuilder();
+                for (int i = 3; i < args.length; i++) {
+                    opStr.append(args[i]).append(" ");
+                }
+                Operator op = new Operator(opStr.toString(), (Player) sender);
+                GlobalVars.asyncManager.scheduleEdit(op, null, shape.GetBlocks(x, y, z, sender instanceof Player ? ((Player) sender).getWorld() : Bukkit.getWorlds().get(0)));
+                return true;
+            } catch (Exception e) {
+                Main.logError("Error in runat. Please check your syntax.", sender, e);
+                return false;
+            }
+        } catch (Exception e) {
+            Main.logError("Could not parse runat command. Please check your syntax.", sender, e);
+            return false;
         }
-	    catch (Exception e) {
-		Main.logError("Error in runat. Please check your syntax.", sender, e);
-		return false;
-	    }
-	}
-	catch (Exception e) {
-	    Main.logError("Could not parse runat command. Please check your syntax.", sender, e);
-	    return false;
-	}
     }
 }

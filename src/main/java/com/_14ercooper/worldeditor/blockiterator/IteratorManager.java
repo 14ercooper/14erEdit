@@ -14,6 +14,6 @@ public class IteratorManager {
 
     // Get the referenced block iterator
     public BlockIterator getIterator(String key) {
-	return iterators.get(key);
+        return iterators.get(key);
     }
 }

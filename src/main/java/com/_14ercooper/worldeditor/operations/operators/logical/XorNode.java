@@ -11,37 +11,35 @@ public class XorNode extends Node {
 
     @Override
     public XorNode newNode() {
-	XorNode node = new XorNode();
-	try {
-	    node.arg1 = GlobalVars.operationParser.parsePart();
-	    node.arg2 = GlobalVars.operationParser.parsePart();
-	}
-	catch (Exception e) {
-	    Main.logError("Error creating xor node. Please check your syntax.", Operator.currentPlayer, e);
-	    return null;
-	}
-	if (node.arg2 == null) {
-	    Main.logError("Error creating xor node. Requires 2 arguments, but these were not provided.",
-		    Operator.currentPlayer, null);
-	}
-	return node;
+        XorNode node = new XorNode();
+        try {
+            node.arg1 = GlobalVars.operationParser.parsePart();
+            node.arg2 = GlobalVars.operationParser.parsePart();
+        } catch (Exception e) {
+            Main.logError("Error creating xor node. Please check your syntax.", Operator.currentPlayer, e);
+            return null;
+        }
+        if (node.arg2 == null) {
+            Main.logError("Error creating xor node. Requires 2 arguments, but these were not provided.",
+                    Operator.currentPlayer, null);
+        }
+        return node;
     }
 
     @Override
     public boolean performNode() {
-	try {
-	    boolean x = arg1.performNode();
-	    boolean y = arg2.performNode();
-	    return ((x || y) && !(x && y));
-	}
-	catch (Exception e) {
-	    Main.logError("Error performing xor node. Please check your syntax.", Operator.currentPlayer, e);
-	    return false;
-	}
+        try {
+            boolean x = arg1.performNode();
+            boolean y = arg2.performNode();
+            return ((x || y) && !(x && y));
+        } catch (Exception e) {
+            Main.logError("Error performing xor node. Please check your syntax.", Operator.currentPlayer, e);
+            return false;
+        }
     }
 
     @Override
     public int getArgCount() {
-	return 2;
+        return 2;
     }
 }

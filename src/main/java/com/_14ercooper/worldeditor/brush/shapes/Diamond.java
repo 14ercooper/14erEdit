@@ -26,15 +26,15 @@ public class Diamond extends BrushShape {
 
     @Override
     public void addNewArgument(String argument) {
-	if (gotArgs == 0) {
-	    radius = Integer.parseInt(argument);
-	}
-	gotArgs++;
+        if (gotArgs == 0) {
+            radius = Integer.parseInt(argument);
+        }
+        gotArgs++;
     }
 
     @Override
     public boolean lastInputProcessed() {
-	return gotArgs < 2;
+        return gotArgs < 2;
     }
 
     @Override

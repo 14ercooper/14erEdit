@@ -34,144 +34,144 @@ public class ItemVar implements Serializable {
         if (damage > 0) {
             s.append(",Damage:").append(damage);
         }
-	// Display tags
-	if (!name.getText().isEmpty() || lore.size() > 0) {
-        s.append(",display:{");
-        // Name
-        if (!name.getText().isEmpty()) {
-            s.append("Name:");
-            s.append(name.asNBT());
-            if (lore.size() > 0) {
-                s.append(",");
-            }
-        }
-        // Lore
-        if (lore.size() > 0) {
-            s.append("Lore:[");
-            for (int i = 0; i < lore.size(); i++) {
-                s.append(lore.get(i).asNBT());
-                if (i != lore.size() - 1) {
+        // Display tags
+        if (!name.getText().isEmpty() || lore.size() > 0) {
+            s.append(",display:{");
+            // Name
+            if (!name.getText().isEmpty()) {
+                s.append("Name:");
+                s.append(name.asNBT());
+                if (lore.size() > 0) {
                     s.append(",");
                 }
             }
+            // Lore
+            if (lore.size() > 0) {
+                s.append("Lore:[");
+                for (int i = 0; i < lore.size(); i++) {
+                    s.append(lore.get(i).asNBT());
+                    if (i != lore.size() - 1) {
+                        s.append(",");
+                    }
+                }
+                s.append("]");
+            }
+            s.append("}");
+        }
+        // Flags
+        if (flags != 0) {
+            s.append(",HideFlags:").append(flags);
+        }
+        // Enchants
+        if (enchants.size() > 0) {
+            s.append(",Enchantments:[");
+            for (Map.Entry<String, Integer> entry : enchants.entrySet()) {
+                s.append("{id:\"minecraft:");
+                s.append(entry.getKey().toLowerCase());
+                s.append("\",lvl:").append(entry.getValue()).append("s},");
+            }
+            s = new StringBuilder(s.substring(0, s.length() - 1));
             s.append("]");
         }
-        s.append("}");
-    }
-	// Flags
-	if (flags != 0) {
-        s.append(",HideFlags:").append(flags);
-    }
-	// Enchants
-	if (enchants.size() > 0) {
-        s.append(",Enchantments:[");
-        for (Map.Entry<String, Integer> entry : enchants.entrySet()) {
-            s.append("{id:\"minecraft:");
-            s.append(entry.getKey().toLowerCase());
-            s.append("\",lvl:").append(entry.getValue()).append("s},");
+        // Attributes
+        if (attributes.size() > 0) {
+            s.append(",AttributeModifiers:[");
+            for (Map.Entry<String, String> entry : attributes.entrySet()) {
+                String[] mods = entry.getValue().split(",");
+                s.append("{AttributeName:\"").append(entry.getKey()).append("\",");
+                s.append("Name:\"").append(entry.getKey()).append("\",");
+                s.append("Amount:").append(mods[2]).append(",");
+                s.append("Operation:").append(mods[0]).append(",");
+                s.append("UUIDLeast:").append(GlobalVars.rand.nextInt() % 1000000 + 1).append(",UUIDMost:").append(GlobalVars.rand.nextInt() % 1000000 + 1).append(",");
+                s.append("Slot:\"").append(mods[1]).append("\"");
+                s.append("},");
+            }
+            s = new StringBuilder(s.substring(0, s.length() - 1));
+            s.append("]");
         }
-        s = new StringBuilder(s.substring(0, s.length() - 1));
-        s.append("]");
-    }
-	// Attributes
-	if (attributes.size() > 0) {
-        s.append(",AttributeModifiers:[");
-        for (Map.Entry<String, String> entry : attributes.entrySet()) {
-            String[] mods = entry.getValue().split(",");
-            s.append("{AttributeName:\"").append(entry.getKey()).append("\",");
-            s.append("Name:\"").append(entry.getKey()).append("\",");
-            s.append("Amount:").append(mods[2]).append(",");
-            s.append("Operation:").append(mods[0]).append(",");
-            s.append("UUIDLeast:").append(GlobalVars.rand.nextInt() % 1000000 + 1).append(",UUIDMost:").append(GlobalVars.rand.nextInt() % 1000000 + 1).append(",");
-            s.append("Slot:\"").append(mods[1]).append("\"");
-            s.append("},");
-        }
-        s = new StringBuilder(s.substring(0, s.length() - 1));
-        s.append("]");
-    }
         s.append("}");
         return s.toString();
     }
 
     // Get the item as NBT (e.g. for nesting in other NBT)
     public String asNBT() {
-	String s = "{";
-	s += "id:\"minecraft:" + type.toLowerCase() + "\"";
-	s += ",Count:" + count + "b";
-	s += ",tag:" + getNBT();
-	s += "}";
-	return s;
+        String s = "{";
+        s += "id:\"minecraft:" + type.toLowerCase() + "\"";
+        s += ",Count:" + count + "b";
+        s += ",tag:" + getNBT();
+        s += "}";
+        return s;
     }
 
     public String getType() {
-	return type;
+        return type;
     }
 
     public ColorText getName() {
-	return name;
+        return name;
     }
 
     public List<ColorText> getLore() {
-	return lore;
+        return lore;
     }
 
     public Map<String, Integer> getEnchants() {
-	return enchants;
+        return enchants;
     }
 
     public Map<String, String> getAttributes() {
-	return attributes;
+        return attributes;
     }
 
     public int getCount() {
-	return count;
+        return count;
     }
 
     public int getFlags() {
-	return flags;
+        return flags;
     }
 
     public boolean getUnbreakable() {
-	return unbreakable;
+        return unbreakable;
     }
 
     public int getDamage() {
-	return damage;
+        return damage;
     }
 
     public void setType(String newVal) {
-	type = newVal;
+        type = newVal;
     }
 
     public void setName(ColorText newVal) {
-	name = newVal;
+        name = newVal;
     }
 
     public void setLore(List<ColorText> newVal) {
-	lore = newVal;
+        lore = newVal;
     }
 
     public void setEnchants(Map<String, Integer> newVal) {
-	enchants = newVal;
+        enchants = newVal;
     }
 
     public void setAttributes(Map<String, String> newVal) {
-	attributes = newVal;
+        attributes = newVal;
     }
 
     public void setCount(int newVal) {
-	count = newVal;
+        count = newVal;
     }
 
     public void setFlags(int newVal) {
-	flags = newVal;
+        flags = newVal;
     }
 
     public void setUnbreakable(boolean newVal) {
-	unbreakable = newVal;
+        unbreakable = newVal;
     }
 
     public void setDamage(int newVal) {
-	damage = newVal;
+        damage = newVal;
     }
 }

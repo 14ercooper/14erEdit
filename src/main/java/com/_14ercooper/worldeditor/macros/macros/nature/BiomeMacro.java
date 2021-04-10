@@ -20,19 +20,17 @@ public class BiomeMacro extends Macro {
 
     // Create a new macro
     private void SetupMacro(String[] args, Location loc) {
-	try {
-	    radius = Double.parseDouble(args[0]);
-	}
-	catch (Exception e) {
-	    Main.logError("Could not parse biome macro. " + args[0] + " is not a number.", Operator.currentPlayer, e);
-	}
-	try {
-	    biome = Biome.valueOf(args[1].toUpperCase(Locale.ROOT));
-	}
-	catch (Exception e) {
-	    Main.logError("Could not parse biome macro. " + args[1] + " is not a known biome.", Operator.currentPlayer, e);
-	}
-	pos = loc;
+        try {
+            radius = Double.parseDouble(args[0]);
+        } catch (Exception e) {
+            Main.logError("Could not parse biome macro. " + args[0] + " is not a number.", Operator.currentPlayer, e);
+        }
+        try {
+            biome = Biome.valueOf(args[1].toUpperCase(Locale.ROOT));
+        } catch (Exception e) {
+            Main.logError("Could not parse biome macro. " + args[1] + " is not a known biome.", Operator.currentPlayer, e);
+        }
+        pos = loc;
     }
 
     // Run this macro

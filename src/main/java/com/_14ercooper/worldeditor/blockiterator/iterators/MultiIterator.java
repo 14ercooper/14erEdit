@@ -16,48 +16,48 @@ public class MultiIterator extends BlockIterator {
 
     @Override
     public BlockIterator newIterator(List<String> args, World world) {
-	Main.logError("MultiIterator does not support the standard constructor", Operator.currentPlayer, null);
-	return null;
+        Main.logError("MultiIterator does not support the standard constructor", Operator.currentPlayer, null);
+        return null;
     }
 
     public BlockIterator newIterator(Set<BlockIterator> children) {
-	MultiIterator iter = new MultiIterator();
-	iter.childIterators.addAll(children);
-	return iter;
+        MultiIterator iter = new MultiIterator();
+        iter.childIterators.addAll(children);
+        return iter;
     }
 
     @Override
     public Block getNext() {
-	Block next = null;
-	while (next == null) {
-	    if (childIterators.isEmpty())
-		return null;
-	    next = childIterators.get(0).getNext();
-	    if (next == null) {
-		if (childIterators.isEmpty())
-		    return null;
-		childIterators.remove(0);
-	    }
-	}
-	return next;
+        Block next = null;
+        while (next == null) {
+            if (childIterators.isEmpty())
+                return null;
+            next = childIterators.get(0).getNext();
+            if (next == null) {
+                if (childIterators.isEmpty())
+                    return null;
+                childIterators.remove(0);
+            }
+        }
+        return next;
     }
 
     @Override
     public long getTotalBlocks() {
-	long total = 0;
-	for (BlockIterator b : childIterators) {
-	    total += b.getTotalBlocks();
-	}
-	return total;
+        long total = 0;
+        for (BlockIterator b : childIterators) {
+            total += b.getTotalBlocks();
+        }
+        return total;
     }
 
     @Override
     public long getRemainingBlocks() {
-	long total = 0;
-	for (BlockIterator b : childIterators) {
-	    total += b.getRemainingBlocks();
-	}
-	return total;
+        long total = 0;
+        for (BlockIterator b : childIterators) {
+            total += b.getRemainingBlocks();
+        }
+        return total;
     }
 
 }

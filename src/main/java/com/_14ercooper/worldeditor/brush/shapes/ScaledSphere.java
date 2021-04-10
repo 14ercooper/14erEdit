@@ -29,16 +29,16 @@ public class ScaledSphere extends BrushShape {
 
     @Override
     public void addNewArgument(String argument) {
-	lastProcessed = false;
-	if (args.size() < 5) {
-	    args.add(argument);
-	    lastProcessed = true;
-	}
+        lastProcessed = false;
+        if (args.size() < 5) {
+            args.add(argument);
+            lastProcessed = true;
+        }
     }
 
     @Override
     public boolean lastInputProcessed() {
-	return lastProcessed;
+        return lastProcessed;
     }
 
     @Override

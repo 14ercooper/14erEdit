@@ -39,78 +39,76 @@ public class ScriptGrass extends Craftscript {
                 return;
             }
 
-	    // [AirSpaces]
-	    int airSpaces = Integer.parseInt(args.get(1));
-	    opToRun = opToRun.concat("? ^ - 1 " + airSpaces + " air ");
+            // [AirSpaces]
+            int airSpaces = Integer.parseInt(args.get(1));
+            opToRun = opToRun.concat("? ^ - 1 " + airSpaces + " air ");
 
-	    // [Density]
-	    double density = Double.parseDouble(args.get(2));
-	    opToRun = opToRun.concat("? % " + (density * 100.0) + " ");
+            // [Density]
+            double density = Double.parseDouble(args.get(2));
+            opToRun = opToRun.concat("? % " + (density * 100.0) + " ");
 
-	    // Spot below is solid?
-	    opToRun = opToRun.concat("? _ - 1 1 ~ air ");
+            // Spot below is solid?
+            opToRun = opToRun.concat("? _ - 1 1 ~ air ");
 
-	    // [Mixture]
-	    String blocksToSet = args.get(0);
-	    String[] individualBlocks = blocksToSet.split(",");
-	    if (individualBlocks.length == 1) {
-		// Parse if it needs block data
-		if (individualBlocks[0].contains("[")) {
-            opToRun = ">> ";
-            if (!individualBlocks[0].contains("mineacraft:")) {
-                opToRun = opToRun.concat("minecraft:");
-            }
-            opToRun = opToRun.concat(individualBlocks[0]);
-        }
-		// Parse if no block data
-		else {
-		    opToRun = "> " + individualBlocks[0];
-		}
-	    }
-	    else {
-            // First calculate the odds
-            List<Double> oddsList = new ArrayList<>();
-            double oddsRemaining = 1.0;
-            for (String s : individualBlocks) {
-                double oddsToUse = Double.parseDouble(s.split("%")[0]);
-                oddsList.add(oddsToUse / oddsRemaining);
-                oddsRemaining -= (oddsToUse / 100.0);
-            }
-            // Then construct the operation
-            for (int i = 0; i < individualBlocks.length; i++) {
-                opToRun = opToRun.concat("? % " + oddsList.get(i) + " ");
-                String parsedBlock = "", parseText = individualBlocks[i].split("%")[1];
-		    // Parse if it needs block data
-		    if (parseText.contains("[")) {
-                parsedBlock = ">> ";
-                if (!parseText.contains("mineacraft:")) {
-                    parsedBlock = parsedBlock.concat("minecraft:");
+            // [Mixture]
+            String blocksToSet = args.get(0);
+            String[] individualBlocks = blocksToSet.split(",");
+            if (individualBlocks.length == 1) {
+                // Parse if it needs block data
+                if (individualBlocks[0].contains("[")) {
+                    opToRun = ">> ";
+                    if (!individualBlocks[0].contains("mineacraft:")) {
+                        opToRun = opToRun.concat("minecraft:");
+                    }
+                    opToRun = opToRun.concat(individualBlocks[0]);
                 }
-                parsedBlock = parsedBlock.concat(parseText);
+                // Parse if no block data
+                else {
+                    opToRun = "> " + individualBlocks[0];
+                }
+            } else {
+                // First calculate the odds
+                List<Double> oddsList = new ArrayList<>();
+                double oddsRemaining = 1.0;
+                for (String s : individualBlocks) {
+                    double oddsToUse = Double.parseDouble(s.split("%")[0]);
+                    oddsList.add(oddsToUse / oddsRemaining);
+                    oddsRemaining -= (oddsToUse / 100.0);
+                }
+                // Then construct the operation
+                for (int i = 0; i < individualBlocks.length; i++) {
+                    opToRun = opToRun.concat("? % " + oddsList.get(i) + " ");
+                    String parsedBlock = "", parseText = individualBlocks[i].split("%")[1];
+                    // Parse if it needs block data
+                    if (parseText.contains("[")) {
+                        parsedBlock = ">> ";
+                        if (!parseText.contains("mineacraft:")) {
+                            parsedBlock = parsedBlock.concat("minecraft:");
+                        }
+                        parsedBlock = parsedBlock.concat(parseText);
+                    }
+                    // Parse if no block data
+                    else {
+                        parsedBlock = "> " + parseText;
+                    }
+                    // Add to the operator
+                    opToRun = opToRun.concat(parsedBlock + " ");
+                }
+                opToRun = opToRun.concat("false ");
             }
-		    // Parse if no block data
-		    else {
-			parsedBlock = "> " + parseText;
-		    }
-		    // Add to the operator
-		    opToRun = opToRun.concat(parsedBlock + " ");
-		}
-		opToRun = opToRun.concat("false ");
-	    }
-	    // Closing for below block
-	    opToRun = opToRun.concat("false ");
-	    // Closing false statement for [density] IF node
-	    opToRun = opToRun.concat("false ");
-	    // Closing false statement for [airSpaces] IF node
-	    opToRun = opToRun.concat("false");
+            // Closing for below block
+            opToRun = opToRun.concat("false ");
+            // Closing false statement for [density] IF node
+            opToRun = opToRun.concat("false ");
+            // Closing false statement for [airSpaces] IF node
+            opToRun = opToRun.concat("false");
 
-	    // Perform the set command
-	    player.sendRawMessage("fx sel op " + opToRun);
-	    player.performCommand("fx sel op " + opToRun);
+            // Perform the set command
+            player.sendRawMessage("fx sel op " + opToRun);
+            player.performCommand("fx sel op " + opToRun);
+        } catch (Exception e) {
+            Main.logError("Error performing grass script. Did you pass in the correct parameters?",
+                    Operator.currentPlayer, e);
         }
-	catch (Exception e) {
-	    Main.logError("Error performing grass script. Did you pass in the correct parameters?",
-		    Operator.currentPlayer, e);
-    }
     }
 }

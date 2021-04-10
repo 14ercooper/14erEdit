@@ -24,129 +24,118 @@ public class ErodeMacro extends Macro {
     public Location erodeCenter;
 
     private void SetupMacro(String[] args, Location loc) {
-	try {
-	    erodeRadius = Integer.parseInt(args[0]);
-	}
-	catch (Exception e) {
-	    Main.logError("Could not parse erode macro. Is your radius a number?", Operator.currentPlayer, e);
-	}
-	erodeCenter = loc;
+        try {
+            erodeRadius = Integer.parseInt(args[0]);
+        } catch (Exception e) {
+            Main.logError("Could not parse erode macro. Is your radius a number?", Operator.currentPlayer, e);
+        }
+        erodeCenter = loc;
 
-	// Determine the type of the erode brush
-	try {
-	    if (args[1].equalsIgnoreCase("melt")) {
-		erodeType = 0;
-	    }
-	    else if (args[1].equalsIgnoreCase("blend")) {
-		erodeType = 1;
-		erodeSubtype = Integer.parseInt(args[2]);
-		targetAir = Boolean.parseBoolean(args[3]);
-	    }
-	    else if (args[1].equalsIgnoreCase("mix")) {
-		erodeType = 2;
-	    }
-	    else if (args[1].equalsIgnoreCase("blockblend")) {
-		erodeType = 3;
-	    }
+        // Determine the type of the erode brush
+        try {
+            if (args[1].equalsIgnoreCase("melt")) {
+                erodeType = 0;
+            } else if (args[1].equalsIgnoreCase("blend")) {
+                erodeType = 1;
+                erodeSubtype = Integer.parseInt(args[2]);
+                targetAir = Boolean.parseBoolean(args[3]);
+            } else if (args[1].equalsIgnoreCase("mix")) {
+                erodeType = 2;
+            } else if (args[1].equalsIgnoreCase("blockblend")) {
+                erodeType = 3;
+            }
 
-	    // Cut or raise melt?
-	    if (erodeType == 0) {
-		if (args[2].equalsIgnoreCase("cut")) {
-		    erodeSubtype = 0;
-		}
-		else if (args[2].equalsIgnoreCase("raise")) {
-		    erodeSubtype = 1;
-		}
-		else if (args[2].equalsIgnoreCase("smooth")) {
-		    erodeSubtype = 2;
-		}
-		else if (args[2].equalsIgnoreCase("lift")) {
-		    erodeSubtype = 3;
-		}
-		else if (args[2].equalsIgnoreCase("carve")) {
-		    erodeSubtype = 4;
-		}
-	    }
+            // Cut or raise melt?
+            if (erodeType == 0) {
+                if (args[2].equalsIgnoreCase("cut")) {
+                    erodeSubtype = 0;
+                } else if (args[2].equalsIgnoreCase("raise")) {
+                    erodeSubtype = 1;
+                } else if (args[2].equalsIgnoreCase("smooth")) {
+                    erodeSubtype = 2;
+                } else if (args[2].equalsIgnoreCase("lift")) {
+                    erodeSubtype = 3;
+                } else if (args[2].equalsIgnoreCase("carve")) {
+                    erodeSubtype = 4;
+                }
+            }
 
-	    if (erodeType == 2) {
-		if (args[2].equalsIgnoreCase("add")) {
-		    erodeSubtype = 0;
-		}
-		else if (args[2].equalsIgnoreCase("subtract")) {
-		    erodeSubtype = 1;
-		}
-		else if (args[2].equalsIgnoreCase("blend")) {
-		    erodeSubtype = 2;
-		}
-	    }
-	}
-	catch (Exception e) {
-	    Main.logError("Could not parse erode macro. Did you provide a valid mode?", Operator.currentPlayer, e);
-	}
+            if (erodeType == 2) {
+                if (args[2].equalsIgnoreCase("add")) {
+                    erodeSubtype = 0;
+                } else if (args[2].equalsIgnoreCase("subtract")) {
+                    erodeSubtype = 1;
+                } else if (args[2].equalsIgnoreCase("blend")) {
+                    erodeSubtype = 2;
+                }
+            }
+        } catch (Exception e) {
+            Main.logError("Could not parse erode macro. Did you provide a valid mode?", Operator.currentPlayer, e);
+        }
     }
 
     @Override
     public boolean performMacro(String[] args, Location loc) {
-	SetupMacro(args, loc);
+        SetupMacro(args, loc);
 
-	// Location of the brush
-	double x = erodeCenter.getX();
-	double y = erodeCenter.getY();
-	double z = erodeCenter.getZ();
+        // Location of the brush
+        double x = erodeCenter.getX();
+        double y = erodeCenter.getY();
+        double z = erodeCenter.getZ();
 
-	List<BlockState> snapshotArray = generateSnapshotArray(x, y, z);
+        List<BlockState> snapshotArray = generateSnapshotArray(x, y, z);
 
-	// Melt cut erosion
-	if (erodeType == 0 && erodeSubtype == 0) {
-	    snapshotArray = meltCutErosion(snapshotArray);
-	}
+        // Melt cut erosion
+        if (erodeType == 0 && erodeSubtype == 0) {
+            snapshotArray = meltCutErosion(snapshotArray);
+        }
 
-	// Melt raise erosion
-	if (erodeType == 0 && erodeSubtype == 1) {
-	    snapshotArray = meltRaiseErosion(snapshotArray);
-	}
+        // Melt raise erosion
+        if (erodeType == 0 && erodeSubtype == 1) {
+            snapshotArray = meltRaiseErosion(snapshotArray);
+        }
 
-	// Melt smooth erosion
-	if (erodeType == 0 && erodeSubtype == 2) {
-	    snapshotArray = meltSmoothErosion(snapshotArray);
-	}
+        // Melt smooth erosion
+        if (erodeType == 0 && erodeSubtype == 2) {
+            snapshotArray = meltSmoothErosion(snapshotArray);
+        }
 
-	// Melt lift erosion
-	if (erodeType == 0 && erodeSubtype == 3) {
-	    snapshotArray = meltLiftErosion(snapshotArray);
-	}
+        // Melt lift erosion
+        if (erodeType == 0 && erodeSubtype == 3) {
+            snapshotArray = meltLiftErosion(snapshotArray);
+        }
 
-	// Melt carve erosion
-	if (erodeType == 0 && erodeSubtype == 4) {
-	    snapshotArray = meltCarveErosion(snapshotArray);
-	}
+        // Melt carve erosion
+        if (erodeType == 0 && erodeSubtype == 4) {
+            snapshotArray = meltCarveErosion(snapshotArray);
+        }
 
-	// Blend erosion
-	if (erodeType == 1) {
-	    snapshotArray = blendErode(snapshotArray);
-	}
+        // Blend erosion
+        if (erodeType == 1) {
+            snapshotArray = blendErode(snapshotArray);
+        }
 
-	// Mix erosion
-	if (erodeType == 2 && erodeSubtype == 0) {
-	    snapshotArray = mixErosionAdd(snapshotArray, x, y, z);
-	}
+        // Mix erosion
+        if (erodeType == 2 && erodeSubtype == 0) {
+            snapshotArray = mixErosionAdd(snapshotArray, x, y, z);
+        }
 
-	if (erodeType == 2 && erodeSubtype == 1) {
-	    snapshotArray = mixErosionSubtract(snapshotArray, x, y, z);
-	}
+        if (erodeType == 2 && erodeSubtype == 1) {
+            snapshotArray = mixErosionSubtract(snapshotArray, x, y, z);
+        }
 
-	if (erodeType == 2 && erodeSubtype == 2) {
-	    snapshotArray = mixErosionBlend(snapshotArray, x, y, z);
-	}
+        if (erodeType == 2 && erodeSubtype == 2) {
+            snapshotArray = mixErosionBlend(snapshotArray, x, y, z);
+        }
 
-	// Blockblend erosion
-	if (erodeType == 3) {
-	    snapshotArray = blendBlockErode(snapshotArray);
-	}
+        // Blockblend erosion
+        if (erodeType == 3) {
+            snapshotArray = blendBlockErode(snapshotArray);
+        }
 
-	// Apply the snapshot to the world, thus completing the erosion
-	applyToWorld(snapshotArray);
-	return true;
+        // Apply the snapshot to the world, thus completing the erosion
+        applyToWorld(snapshotArray);
+        return true;
     }
 
     private List<BlockState> blendBlockErode(List<BlockState> snapshotArray) {
@@ -198,10 +187,10 @@ public class ErodeMacro extends Macro {
             // Pick a random one and update
             BlockState setMat = adjBlocks.get(GlobalVars.rand.nextInt(adjBlocks.size())).getState();
             b.setType(setMat.getType());
-	    b.setBlockData(setMat.getBlockData());
-	    snapshotCopy.add(b);
-	}
-	return snapshotCopy;
+            b.setBlockData(setMat.getBlockData());
+            snapshotCopy.add(b);
+        }
+        return snapshotCopy;
     }
 
     private List<BlockState> generateSnapshotArray(double x, double y, double z) {
@@ -230,63 +219,63 @@ public class ErodeMacro extends Macro {
     }
 
     private List<BlockState> mixErosionSubtract(List<BlockState> snapshotArray, double x, double y, double z) {
-	snapshotArray = meltCarveErosion(snapshotArray);
-	applyToWorld(snapshotArray);
-	snapshotArray = generateSnapshotArray(x, y, z);
-	snapshotArray = meltCarveErosion(snapshotArray);
-	applyToWorld(snapshotArray);
-	snapshotArray = generateSnapshotArray(x, y, z);
-	snapshotArray = meltRaiseErosion(snapshotArray);
-	applyToWorld(snapshotArray);
-	snapshotArray = generateSnapshotArray(x, y, z);
-	snapshotArray = meltRaiseErosion(snapshotArray);
-	applyToWorld(snapshotArray);
-	snapshotArray = generateSnapshotArray(x, y, z);
-	snapshotArray = meltSmoothErosion(snapshotArray);
-	applyToWorld(snapshotArray);
-	snapshotArray = generateSnapshotArray(x, y, z);
-	snapshotArray = meltSmoothErosion(snapshotArray);
-	return snapshotArray;
+        snapshotArray = meltCarveErosion(snapshotArray);
+        applyToWorld(snapshotArray);
+        snapshotArray = generateSnapshotArray(x, y, z);
+        snapshotArray = meltCarveErosion(snapshotArray);
+        applyToWorld(snapshotArray);
+        snapshotArray = generateSnapshotArray(x, y, z);
+        snapshotArray = meltRaiseErosion(snapshotArray);
+        applyToWorld(snapshotArray);
+        snapshotArray = generateSnapshotArray(x, y, z);
+        snapshotArray = meltRaiseErosion(snapshotArray);
+        applyToWorld(snapshotArray);
+        snapshotArray = generateSnapshotArray(x, y, z);
+        snapshotArray = meltSmoothErosion(snapshotArray);
+        applyToWorld(snapshotArray);
+        snapshotArray = generateSnapshotArray(x, y, z);
+        snapshotArray = meltSmoothErosion(snapshotArray);
+        return snapshotArray;
     }
 
     private List<BlockState> mixErosionBlend(List<BlockState> snapshotArray, double x, double y, double z) {
-	snapshotArray = meltCarveErosion(snapshotArray);
-	applyToWorld(snapshotArray);
-	snapshotArray = generateSnapshotArray(x, y, z);
-	snapshotArray = meltRaiseErosion(snapshotArray);
-	applyToWorld(snapshotArray);
-	snapshotArray = generateSnapshotArray(x, y, z);
-	snapshotArray = meltRaiseErosion(snapshotArray);
-	applyToWorld(snapshotArray);
-	snapshotArray = generateSnapshotArray(x, y, z);
-	snapshotArray = meltSmoothErosion(snapshotArray);
-	applyToWorld(snapshotArray);
-	snapshotArray = generateSnapshotArray(x, y, z);
-	snapshotArray = meltSmoothErosion(snapshotArray);
-	return snapshotArray;
+        snapshotArray = meltCarveErosion(snapshotArray);
+        applyToWorld(snapshotArray);
+        snapshotArray = generateSnapshotArray(x, y, z);
+        snapshotArray = meltRaiseErosion(snapshotArray);
+        applyToWorld(snapshotArray);
+        snapshotArray = generateSnapshotArray(x, y, z);
+        snapshotArray = meltRaiseErosion(snapshotArray);
+        applyToWorld(snapshotArray);
+        snapshotArray = generateSnapshotArray(x, y, z);
+        snapshotArray = meltSmoothErosion(snapshotArray);
+        applyToWorld(snapshotArray);
+        snapshotArray = generateSnapshotArray(x, y, z);
+        snapshotArray = meltSmoothErosion(snapshotArray);
+        return snapshotArray;
     }
 
     private List<BlockState> mixErosionAdd(List<BlockState> snapshotArray, double x, double y, double z) {
-	snapshotArray = meltRaiseErosion(snapshotArray);
-	applyToWorld(snapshotArray);
-	snapshotArray = generateSnapshotArray(x, y, z);
-	snapshotArray = meltRaiseErosion(snapshotArray);
-	applyToWorld(snapshotArray);
-	snapshotArray = generateSnapshotArray(x, y, z);
-	snapshotArray = meltSmoothErosion(snapshotArray);
-	applyToWorld(snapshotArray);
-	snapshotArray = generateSnapshotArray(x, y, z);
-	snapshotArray = meltSmoothErosion(snapshotArray);
-	return snapshotArray;
+        snapshotArray = meltRaiseErosion(snapshotArray);
+        applyToWorld(snapshotArray);
+        snapshotArray = generateSnapshotArray(x, y, z);
+        snapshotArray = meltRaiseErosion(snapshotArray);
+        applyToWorld(snapshotArray);
+        snapshotArray = generateSnapshotArray(x, y, z);
+        snapshotArray = meltSmoothErosion(snapshotArray);
+        applyToWorld(snapshotArray);
+        snapshotArray = generateSnapshotArray(x, y, z);
+        snapshotArray = meltSmoothErosion(snapshotArray);
+        return snapshotArray;
     }
 
     private void applyToWorld(List<BlockState> snapshotArray) {
-	for (BlockState b : snapshotArray) {
-	    Location l = b.getLocation();
-	    Block block = Operator.currentPlayer.getWorld().getBlockAt(l);
-	    SetBlock.setMaterial(block, b.getType());
-	    block.setBlockData(b.getBlockData());
-	}
+        for (BlockState b : snapshotArray) {
+            Location l = b.getLocation();
+            Block block = Operator.currentPlayer.getWorld().getBlockAt(l);
+            SetBlock.setMaterial(block, b.getType());
+            block.setBlockData(b.getBlockData());
+        }
     }
 
     private List<BlockState> meltSmoothErosion(List<BlockState> snapshotArray) {
@@ -309,13 +298,13 @@ public class ErodeMacro extends Macro {
             // Logic for non-air blocks
             if (b.getType() != Material.AIR) {
                 // Count how many adjacent blocks are air
-		int airCount = 0;
-		for (Block adjBlock : adjBlocks) {
-		    if (adjBlock == null)
-                continue;
-            if (adjBlock.getType() == Material.AIR)
-                airCount++;
-        }
+                int airCount = 0;
+                for (Block adjBlock : adjBlocks) {
+                    if (adjBlock == null)
+                        continue;
+                    if (adjBlock.getType() == Material.AIR)
+                        airCount++;
+                }
 
                 // If air count is large, make this air
                 if (airCount >= airCut) {
@@ -325,18 +314,18 @@ public class ErodeMacro extends Macro {
                 snapshotCopy.add(b);
             }
 
-	    // Logic for air blocks
-	    else {
-		int blockCount = 0;
-		Material adjMaterial = Material.AIR;
-		for (Block adjBlock : adjBlocks) {
-		    if (adjBlock == null)
-			continue;
-		    if (adjBlock.getType() != Material.AIR) {
-			blockCount++;
-                adjMaterial = adjBlock.getType();
-            }
-        }
+            // Logic for air blocks
+            else {
+                int blockCount = 0;
+                Material adjMaterial = Material.AIR;
+                for (Block adjBlock : adjBlocks) {
+                    if (adjBlock == null)
+                        continue;
+                    if (adjBlock.getType() != Material.AIR) {
+                        blockCount++;
+                        adjMaterial = adjBlock.getType();
+                    }
+                }
 
                 // If there are a lot of blocks nearby, make this solid
                 if (blockCount >= solidCut) {
@@ -346,8 +335,8 @@ public class ErodeMacro extends Macro {
                 // Otherwise return in place
                 snapshotCopy.add(b);
             }
-	}
-	return snapshotCopy;
+        }
+        return snapshotCopy;
     }
 
     private List<BlockState> meltRaiseErosion(List<BlockState> snapshotArray) {
@@ -370,13 +359,13 @@ public class ErodeMacro extends Macro {
             // Logic for non-air blocks
             if (b.getType() != Material.AIR) {
                 // Count how many adjacent blocks are air
-		int airCount = 0;
-		for (Block adjBlock : adjBlocks) {
-		    if (adjBlock == null)
-                continue;
-            if (adjBlock.getType() == Material.AIR)
-                airCount++;
-        }
+                int airCount = 0;
+                for (Block adjBlock : adjBlocks) {
+                    if (adjBlock == null)
+                        continue;
+                    if (adjBlock.getType() == Material.AIR)
+                        airCount++;
+                }
 
                 // If air count is large, make this air
                 if (airCount >= airCut) {
@@ -386,18 +375,18 @@ public class ErodeMacro extends Macro {
                 snapshotCopy.add(b);
             }
 
-	    // Logic for air blocks
-	    else {
-		int blockCount = 0;
-		Material adjMaterial = Material.AIR;
-		for (Block adjBlock : adjBlocks) {
-		    if (adjBlock == null)
-			continue;
-		    if (adjBlock.getType() != Material.AIR) {
-			blockCount++;
-                adjMaterial = adjBlock.getType();
-            }
-        }
+            // Logic for air blocks
+            else {
+                int blockCount = 0;
+                Material adjMaterial = Material.AIR;
+                for (Block adjBlock : adjBlocks) {
+                    if (adjBlock == null)
+                        continue;
+                    if (adjBlock.getType() != Material.AIR) {
+                        blockCount++;
+                        adjMaterial = adjBlock.getType();
+                    }
+                }
 
                 // If there are a lot of blocks nearby, make this solid
                 if (blockCount >= solidCut) {
@@ -407,8 +396,8 @@ public class ErodeMacro extends Macro {
                 // Otherwise return in place
                 snapshotCopy.add(b);
             }
-	}
-	return snapshotCopy;
+        }
+        return snapshotCopy;
     }
 
     private List<BlockState> meltLiftErosion(List<BlockState> snapshotArray) {
@@ -431,13 +420,13 @@ public class ErodeMacro extends Macro {
             // Logic for non-air blocks
             if (b.getType() != Material.AIR) {
                 // Count how many adjacent blocks are air
-		int airCount = 0;
-		for (Block adjBlock : adjBlocks) {
-		    if (adjBlock == null)
-                continue;
-            if (adjBlock.getType() == Material.AIR)
-                airCount++;
-        }
+                int airCount = 0;
+                for (Block adjBlock : adjBlocks) {
+                    if (adjBlock == null)
+                        continue;
+                    if (adjBlock.getType() == Material.AIR)
+                        airCount++;
+                }
 
                 // If air count is large, make this air
                 if (airCount >= airCut) {
@@ -447,18 +436,18 @@ public class ErodeMacro extends Macro {
                 snapshotCopy.add(b);
             }
 
-	    // Logic for air blocks
-	    else {
-		int blockCount = 0;
-		Material adjMaterial = Material.AIR;
-		for (Block adjBlock : adjBlocks) {
-		    if (adjBlock == null)
-			continue;
-		    if (adjBlock.getType() != Material.AIR) {
-			blockCount++;
-                adjMaterial = adjBlock.getType();
-            }
-        }
+            // Logic for air blocks
+            else {
+                int blockCount = 0;
+                Material adjMaterial = Material.AIR;
+                for (Block adjBlock : adjBlocks) {
+                    if (adjBlock == null)
+                        continue;
+                    if (adjBlock.getType() != Material.AIR) {
+                        blockCount++;
+                        adjMaterial = adjBlock.getType();
+                    }
+                }
 
                 // If there are a lot of blocks nearby, make this solid
                 if (blockCount >= solidCut) {
@@ -468,8 +457,8 @@ public class ErodeMacro extends Macro {
                 // Otherwise return in place
                 snapshotCopy.add(b);
             }
-	}
-	return snapshotCopy;
+        }
+        return snapshotCopy;
     }
 
     private List<BlockState> meltCutErosion(List<BlockState> snapshotArray) {
@@ -492,13 +481,13 @@ public class ErodeMacro extends Macro {
             // Logic for non-air blocks
             if (b.getType() != Material.AIR) {
                 // Count how many adjacent blocks are air
-		int airCount = 0;
-		for (Block adjBlock : adjBlocks) {
-		    if (adjBlock == null)
-                continue;
-            if (adjBlock.getType() == Material.AIR)
-                airCount++;
-        }
+                int airCount = 0;
+                for (Block adjBlock : adjBlocks) {
+                    if (adjBlock == null)
+                        continue;
+                    if (adjBlock.getType() == Material.AIR)
+                        airCount++;
+                }
 
                 // If air count is large, make this air
                 if (airCount >= airCut) {
@@ -508,18 +497,18 @@ public class ErodeMacro extends Macro {
                 snapshotCopy.add(b);
             }
 
-	    // Logic for air blocks
-	    else {
-		int blockCount = 0;
-		Material adjMaterial = Material.AIR;
-		for (Block adjBlock : adjBlocks) {
-		    if (adjBlock == null)
-			continue;
-		    if (adjBlock.getType() != Material.AIR) {
-			blockCount++;
-                adjMaterial = adjBlock.getType();
-            }
-        }
+            // Logic for air blocks
+            else {
+                int blockCount = 0;
+                Material adjMaterial = Material.AIR;
+                for (Block adjBlock : adjBlocks) {
+                    if (adjBlock == null)
+                        continue;
+                    if (adjBlock.getType() != Material.AIR) {
+                        blockCount++;
+                        adjMaterial = adjBlock.getType();
+                    }
+                }
 
                 // If there are a lot of blocks nearby, make this solid
                 if (blockCount >= solidCut) {
@@ -529,8 +518,8 @@ public class ErodeMacro extends Macro {
                 // Otherwise return in place
                 snapshotCopy.add(b);
             }
-	}
-	return snapshotCopy;
+        }
+        return snapshotCopy;
     }
 
     private List<BlockState> meltCarveErosion(List<BlockState> snapshotArray) {
@@ -553,13 +542,13 @@ public class ErodeMacro extends Macro {
             // Logic for non-air blocks
             if (b.getType() != Material.AIR) {
                 // Count how many adjacent blocks are air
-		int airCount = 0;
-		for (Block adjBlock : adjBlocks) {
-		    if (adjBlock == null)
-                continue;
-            if (adjBlock.getType() == Material.AIR)
-                airCount++;
-        }
+                int airCount = 0;
+                for (Block adjBlock : adjBlocks) {
+                    if (adjBlock == null)
+                        continue;
+                    if (adjBlock.getType() == Material.AIR)
+                        airCount++;
+                }
 
                 // If air count is large, make this air
                 if (airCount >= airCut) {
@@ -569,18 +558,18 @@ public class ErodeMacro extends Macro {
                 snapshotCopy.add(b);
             }
 
-	    // Logic for air blocks
-	    else {
-		int blockCount = 0;
-		Material adjMaterial = Material.AIR;
-		for (Block adjBlock : adjBlocks) {
-		    if (adjBlock == null)
-			continue;
-		    if (adjBlock.getType() != Material.AIR) {
-			blockCount++;
-                adjMaterial = adjBlock.getType();
-            }
-        }
+            // Logic for air blocks
+            else {
+                int blockCount = 0;
+                Material adjMaterial = Material.AIR;
+                for (Block adjBlock : adjBlocks) {
+                    if (adjBlock == null)
+                        continue;
+                    if (adjBlock.getType() != Material.AIR) {
+                        blockCount++;
+                        adjMaterial = adjBlock.getType();
+                    }
+                }
 
                 // If there are a lot of blocks nearby, make this solid
                 if (blockCount >= solidCut) {
@@ -590,7 +579,7 @@ public class ErodeMacro extends Macro {
                 // Otherwise return in place
                 snapshotCopy.add(b);
             }
-	}
-	return snapshotCopy;
+        }
+        return snapshotCopy;
     }
 }

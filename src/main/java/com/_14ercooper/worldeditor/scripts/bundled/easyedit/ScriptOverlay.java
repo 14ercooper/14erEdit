@@ -31,10 +31,9 @@ public class ScriptOverlay extends Craftscript {
             Main.logDebug("Overlay command: " + command);
 
             player.performCommand(command.toString());
+        } catch (Exception e) {
+            Main.logError("Could not parse overlay macro. Did you provide the correct arguments?",
+                    Operator.currentPlayer, e);
         }
-	catch (Exception e) {
-	    Main.logError("Could not parse overlay macro. Did you provide the correct arguments?",
-		    Operator.currentPlayer, e);
-    }
     }
 }

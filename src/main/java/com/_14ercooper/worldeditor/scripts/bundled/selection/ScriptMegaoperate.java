@@ -22,18 +22,17 @@ public class ScriptMegaoperate extends Craftscript {
             String op = args.get(6);
             Operator operator = new Operator(op, Operator.currentPlayer);
             Bukkit.getServer().broadcastMessage("Starting operation...");
-	    for (int x = xMin; x <= xMax; x++) {
-		for (int y = yMin; y <= yMax; y++) {
-		    for (int z = zMin; z <= zMax; z++) {
-			operator.operateOnBlock(Operator.currentPlayer.getWorld().getBlockAt(x, y, z));
-		    }
-		}
-	    }
-	    Bukkit.getServer().broadcastMessage("Operation finished...");
+            for (int x = xMin; x <= xMax; x++) {
+                for (int y = yMin; y <= yMax; y++) {
+                    for (int z = zMin; z <= zMax; z++) {
+                        operator.operateOnBlock(Operator.currentPlayer.getWorld().getBlockAt(x, y, z));
+                    }
+                }
+            }
+            Bukkit.getServer().broadcastMessage("Operation finished...");
+        } catch (Exception e) {
+            Main.logError("Error performing megaoperate script. Did you provide the correct arguments?",
+                    Operator.currentPlayer, e);
         }
-	catch (Exception e) {
-	    Main.logError("Error performing megaoperate script. Did you provide the correct arguments?",
-		    Operator.currentPlayer, e);
-    }
     }
 }

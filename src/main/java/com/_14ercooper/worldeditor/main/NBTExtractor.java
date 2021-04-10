@@ -7,19 +7,18 @@ import org.bukkit.craftbukkit.v1_16_R3.block.CraftBlockEntityState;
 
 public class NBTExtractor {
     public String getNBT(BlockState bs) {
-	if (!bs.getClass().getName().endsWith("CraftBlockState")) {
-        @SuppressWarnings("rawtypes")
-        CraftBlockEntityState cb = (CraftBlockEntityState) bs;
-        NBTTagCompound ntc = cb.getSnapshotNBT();
-        return ntc.asString();
-    }
-	else {
-	    return "";
-	}
+        if (!bs.getClass().getName().endsWith("CraftBlockState")) {
+            @SuppressWarnings("rawtypes")
+            CraftBlockEntityState cb = (CraftBlockEntityState) bs;
+            NBTTagCompound ntc = cb.getSnapshotNBT();
+            return ntc.asString();
+        } else {
+            return "";
+        }
 //	return "";
     }
 
     public String getNBT(Block b) {
-	return getNBT(b.getState());
+        return getNBT(b.getState());
     }
 }

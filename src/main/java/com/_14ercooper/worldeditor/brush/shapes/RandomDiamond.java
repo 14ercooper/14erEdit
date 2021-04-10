@@ -28,18 +28,17 @@ public class RandomDiamond extends BrushShape {
 
     @Override
     public void addNewArgument(String argument) {
-	if (gotArgs == 0) {
-	    radiusMin = Integer.parseInt(argument);
-	}
-	else if (gotArgs == 1) {
-	    radiusMax = Integer.parseInt(argument);
-	}
-	gotArgs++;
+        if (gotArgs == 0) {
+            radiusMin = Integer.parseInt(argument);
+        } else if (gotArgs == 1) {
+            radiusMax = Integer.parseInt(argument);
+        }
+        gotArgs++;
     }
 
     @Override
     public boolean lastInputProcessed() {
-	return gotArgs < 3;
+        return gotArgs < 3;
     }
 
     @Override

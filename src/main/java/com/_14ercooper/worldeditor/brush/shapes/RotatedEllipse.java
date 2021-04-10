@@ -25,45 +25,39 @@ public class RotatedEllipse extends BrushShape {
             args.add(Double.toString((GlobalVars.rand.nextDouble() * 2) - 1));
             args.add(Double.toString((GlobalVars.rand.nextDouble() * 2) - 1));
             args.add(Double.toString((GlobalVars.rand.nextDouble() * 2) - 1));
+        } else {
+            args.add(dX);
+            args.add(dY);
+            args.add(dZ);
         }
-	else {
-	    args.add(dX);
-	    args.add(dY);
-	    args.add(dZ);
-	}
-	return GlobalVars.iteratorManager.getIterator("rotatedellipse").newIterator(args, world);
+        return GlobalVars.iteratorManager.getIterator("rotatedellipse").newIterator(args, world);
     }
 
     @Override
     public void addNewArgument(String argument) {
-	if (gotArgs == 0) {
-	    hFD = argument;
-	}
-	else if (gotArgs == 1) {
-	    strL = argument;
-	}
-	else if (gotArgs == 2) {
-	    try {
-		Double.parseDouble(argument);
-		dX = argument;
-	    }
-	    catch (NumberFormatException e) {
-		// This is okay
-		gotArgs = 99;
-	    }
-	}
-	else if (gotArgs == 3) {
-	    dY = argument;
-	}
-	else if (gotArgs == 4) {
-	    dZ = argument;
-	}
-	gotArgs++;
+        if (gotArgs == 0) {
+            hFD = argument;
+        } else if (gotArgs == 1) {
+            strL = argument;
+        } else if (gotArgs == 2) {
+            try {
+                Double.parseDouble(argument);
+                dX = argument;
+            } catch (NumberFormatException e) {
+                // This is okay
+                gotArgs = 99;
+            }
+        } else if (gotArgs == 3) {
+            dY = argument;
+        } else if (gotArgs == 4) {
+            dZ = argument;
+        }
+        gotArgs++;
     }
 
     @Override
     public boolean lastInputProcessed() {
-	return gotArgs < 6;
+        return gotArgs < 6;
     }
 
     @Override

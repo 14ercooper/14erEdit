@@ -10,24 +10,24 @@ public class GetNBTNode extends StringNode {
 
     @Override
     public GetNBTNode newNode() {
-	return new GetNBTNode();
+        return new GetNBTNode();
     }
 
     @Override
     public boolean performNode() {
-	String s = (new NBTExtractor()).getNBT(Operator.currentBlock);
-	contents = s;
-	return s.length() > 2;
+        String s = (new NBTExtractor()).getNBT(Operator.currentBlock);
+        contents = s;
+        return s.length() > 2;
     }
 
     @Override
     public String getText() {
-	return contents;
+        return contents;
     }
 
     @Override
     public int getArgCount() {
-	return 0;
+        return 0;
     }
 
 }

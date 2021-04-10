@@ -31,33 +31,27 @@ public class RandomEllipse extends BrushShape {
 
     @Override
     public void addNewArgument(String argument) {
-	if (argsGot == 0) {
-	    xMin = Integer.parseInt(argument);
-	}
-	else if (argsGot == 1) {
-	    xMax = Integer.parseInt(argument);
-	}
-	else if (argsGot == 2) {
-	    yMin = Integer.parseInt(argument);
-	}
-	else if (argsGot == 3) {
-	    yMax = Integer.parseInt(argument);
-	}
-	else if (argsGot == 4) {
-	    zMin = Integer.parseInt(argument);
-	}
-	else if (argsGot == 5) {
-	    zMax = Integer.parseInt(argument);
-	}
-	else if (argsGot == 6) {
-	    correction = argument;
-	}
-	argsGot++;
+        if (argsGot == 0) {
+            xMin = Integer.parseInt(argument);
+        } else if (argsGot == 1) {
+            xMax = Integer.parseInt(argument);
+        } else if (argsGot == 2) {
+            yMin = Integer.parseInt(argument);
+        } else if (argsGot == 3) {
+            yMax = Integer.parseInt(argument);
+        } else if (argsGot == 4) {
+            zMin = Integer.parseInt(argument);
+        } else if (argsGot == 5) {
+            zMax = Integer.parseInt(argument);
+        } else if (argsGot == 6) {
+            correction = argument;
+        }
+        argsGot++;
     }
 
     @Override
     public boolean lastInputProcessed() {
-	return argsGot < 8;
+        return argsGot < 8;
     }
 
     @Override

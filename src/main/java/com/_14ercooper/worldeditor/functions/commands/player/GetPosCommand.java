@@ -13,19 +13,16 @@ public class GetPosCommand extends InterpreterCommand {
 
     @Override
     public void run(List<String> args, Function function) {
-	int dim = (int) function.parseVariable(args.get(1));
-	Location loc = function.isOperator ? Operator.currentBlock.getLocation() : function.player.getLocation();
-	if (dim == 0) {
-	    function.setVariable(args.get(0), loc.getX());
-	}
-	else if (dim == 1) {
-	    function.setVariable(args.get(0), loc.getY());
-	}
-	else if (dim == 2) {
-	    function.setVariable(args.get(0), loc.getZ());
-	}
-	else {
-	    Main.logError("Invalid dimension provided: " + dim, function.player, null);
-	}
+        int dim = (int) function.parseVariable(args.get(1));
+        Location loc = function.isOperator ? Operator.currentBlock.getLocation() : function.player.getLocation();
+        if (dim == 0) {
+            function.setVariable(args.get(0), loc.getX());
+        } else if (dim == 1) {
+            function.setVariable(args.get(0), loc.getY());
+        } else if (dim == 2) {
+            function.setVariable(args.get(0), loc.getZ());
+        } else {
+            Main.logError("Invalid dimension provided: " + dim, function.player, null);
+        }
     }
 }

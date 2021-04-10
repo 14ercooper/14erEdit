@@ -28,25 +28,23 @@ public class Sphere extends BrushShape {
 
     @Override
     public void addNewArgument(String argument) {
-	if (numArgsProcessed == 0) {
-	    radius = argument;
-	}
-	else if (numArgsProcessed == 1) {
-	    try {
-		Double.parseDouble(argument);
-		correction = argument;
-	    }
-	    catch (NumberFormatException e) {
-		// This isn't a number, so start the operation parser
-		numArgsProcessed++;
-	    }
-	}
-	numArgsProcessed++;
+        if (numArgsProcessed == 0) {
+            radius = argument;
+        } else if (numArgsProcessed == 1) {
+            try {
+                Double.parseDouble(argument);
+                correction = argument;
+            } catch (NumberFormatException e) {
+                // This isn't a number, so start the operation parser
+                numArgsProcessed++;
+            }
+        }
+        numArgsProcessed++;
     }
 
     @Override
     public boolean lastInputProcessed() {
-	return numArgsProcessed < 3;
+        return numArgsProcessed < 3;
     }
 
     @Override

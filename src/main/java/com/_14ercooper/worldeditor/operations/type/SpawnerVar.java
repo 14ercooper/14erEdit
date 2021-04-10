@@ -45,35 +45,35 @@ public class SpawnerVar implements Serializable {
     }
 
     public void setCount(String cnt) {
-	spawnCount = cnt;
+        spawnCount = cnt;
     }
 
     public void setRange(String rng) {
-	spawnRange = rng;
+        spawnRange = rng;
     }
 
     public void setDelay(String del) {
-	delay = del;
+        delay = del;
     }
 
     public void setMinDelay(String minDel) {
-	minDelay = minDel;
+        minDelay = minDel;
     }
 
     public void setMaxDelay(String maxDel) {
-	maxDelay = maxDel;
+        maxDelay = maxDel;
     }
 
     public void setMaxNearby(String nearby) {
-	maxNearby = nearby;
+        maxNearby = nearby;
     }
 
     public void setRequiredRange(String range) {
-	requiredRange = range;
+        requiredRange = range;
     }
 
     public void addMob(String name, String weight) {
-	mobs.put(name, weight);
-	firstName = name;
+        mobs.put(name, weight);
+        firstName = name;
     }
 }

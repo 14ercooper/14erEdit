@@ -23,18 +23,17 @@ public class SetBlock {
                 Leaves leafData = (Leaves) b.getBlockData();
                 leafData.setPersistent(true);
                 b.setBlockData(leafData);
-	    }
-	}
-	catch (Exception e) {
-	    GlobalVars.asyncManager.dropAsync();
-	    if (mat == null) {
-		Main.logError("Invalid block ID NULL provided. The async queue has been dropped.",
-			    Operator.currentPlayer, e);
-	    }
-	    Main.logError("Invalid block ID " + mat == null ? "NULL" : mat.toString() + " provided. The async queue has been dropped.",
-		    Operator.currentPlayer, e);
+            }
+        } catch (Exception e) {
+            GlobalVars.asyncManager.dropAsync();
+            if (mat == null) {
+                Main.logError("Invalid block ID NULL provided. The async queue has been dropped.",
+                        Operator.currentPlayer, e);
+            }
+            Main.logError("Invalid block ID " + mat == null ? "NULL" : mat.toString() + " provided. The async queue has been dropped.",
+                    Operator.currentPlayer, e);
 //	    e.printStackTrace();
-    }
+        }
     }
 
     public static void setMaterial(Block b, Material mat, boolean physics) {
@@ -52,18 +51,17 @@ public class SetBlock {
                 Leaves leafData = (Leaves) b.getBlockData();
                 leafData.setPersistent(true);
                 b.setBlockData(leafData);
-	    }
-	}
-	catch (Exception e) {
-	    GlobalVars.asyncManager.dropAsync();
-	    if (mat == null) {
-		Main.logError("Invalid block ID NULL provided. The async queue has been dropped.",
-			    Operator.currentPlayer, e);
-	    }
-	    Main.logError("Invalid block ID " + mat == null ? "NULL" : mat.toString() + " provided. The async queue has been dropped.",
-		    Operator.currentPlayer, e);
+            }
+        } catch (Exception e) {
+            GlobalVars.asyncManager.dropAsync();
+            if (mat == null) {
+                Main.logError("Invalid block ID NULL provided. The async queue has been dropped.",
+                        Operator.currentPlayer, e);
+            }
+            Main.logError("Invalid block ID " + mat == null ? "NULL" : mat.toString() + " provided. The async queue has been dropped.",
+                    Operator.currentPlayer, e);
 //	    e.printStackTrace();
-    }
+        }
     }
 
     public static void setMaterial(BlockState b, Material mat) {
@@ -81,17 +79,16 @@ public class SetBlock {
                 Leaves leafData = (Leaves) b.getBlockData();
                 leafData.setPersistent(true);
                 b.setBlockData(leafData);
-	    }
-	}
-	catch (Exception e) {
-	    GlobalVars.asyncManager.dropAsync();
-	    if (mat == null) {
-		Main.logError("Invalid block ID NULL provided. The async queue has been dropped.",
-			    Operator.currentPlayer, e);
-	    }
-	    Main.logError("Invalid block ID " + mat == null ? "NULL" : mat.toString() + " provided. The async queue has been dropped.",
-		    Operator.currentPlayer, e);
+            }
+        } catch (Exception e) {
+            GlobalVars.asyncManager.dropAsync();
+            if (mat == null) {
+                Main.logError("Invalid block ID NULL provided. The async queue has been dropped.",
+                        Operator.currentPlayer, e);
+            }
+            Main.logError("Invalid block ID " + mat == null ? "NULL" : mat.toString() + " provided. The async queue has been dropped.",
+                    Operator.currentPlayer, e);
 //	    e.printStackTrace();
-    }
+        }
     }
 }

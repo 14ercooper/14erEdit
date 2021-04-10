@@ -27,15 +27,15 @@ public class SchemShape extends BrushShape {
 
     @Override
     public void addNewArgument(String argument) {
-	if (gotArgs == 0) {
-	    fileName = argument;
-	}
-	gotArgs++;
+        if (gotArgs == 0) {
+            fileName = argument;
+        }
+        gotArgs++;
     }
 
     @Override
     public boolean lastInputProcessed() {
-	return gotArgs < 2;
+        return gotArgs < 2;
     }
 
     @Override

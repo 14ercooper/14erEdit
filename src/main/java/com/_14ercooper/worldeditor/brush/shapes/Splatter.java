@@ -37,36 +37,35 @@ public class Splatter extends BrushShape {
                 spheresGenerated++;
             }
 
-	}
-	return ((MultiIterator) GlobalVars.iteratorManager.getIterator("multi")).newIterator(spheres);
+        }
+        return ((MultiIterator) GlobalVars.iteratorManager.getIterator("multi")).newIterator(spheres);
     }
 
     @Override
     public void addNewArgument(String argument) {
-	if (argsSeen == 0) {
-	    splatterRadius = Integer.parseInt(argument);
-	}
-	if (argsSeen == 1) {
-	    sphereCount = Integer.parseInt(argument);
-	}
-	if (argsSeen == 2) {
-	    sphereRadius = Integer.parseInt(argument);
-	}
-	if (argsSeen == 3) {
-	    try {
-		Double.parseDouble(argument);
-		correction = argument;
-	    }
-	    catch (NumberFormatException e) {
-		argsSeen++;
-	    }
-	}
-	argsSeen++;
+        if (argsSeen == 0) {
+            splatterRadius = Integer.parseInt(argument);
+        }
+        if (argsSeen == 1) {
+            sphereCount = Integer.parseInt(argument);
+        }
+        if (argsSeen == 2) {
+            sphereRadius = Integer.parseInt(argument);
+        }
+        if (argsSeen == 3) {
+            try {
+                Double.parseDouble(argument);
+                correction = argument;
+            } catch (NumberFormatException e) {
+                argsSeen++;
+            }
+        }
+        argsSeen++;
     }
 
     @Override
     public boolean lastInputProcessed() {
-	return argsSeen < 5;
+        return argsSeen < 5;
     }
 
     @Override

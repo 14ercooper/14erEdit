@@ -6,16 +6,16 @@ public class FalseNode extends Node {
 
     @Override
     public FalseNode newNode() {
-	return new FalseNode();
+        return new FalseNode();
     }
 
     @Override
     public boolean performNode() {
-	return false;
+        return false;
     }
 
     @Override
     public int getArgCount() {
-	return 0;
+        return 0;
     }
 }
