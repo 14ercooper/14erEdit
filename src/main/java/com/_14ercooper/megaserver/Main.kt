@@ -125,6 +125,7 @@ object Main {
                 val eighthRam = (ramAmt.toInt() / 8).toString()
                 val command = (javaPath + " -jar -DIReallyKnowWhatIAmDoingISwear=true -Xmx" + ramAmt + "M -Xms" + ramAmt
                         + "M -Xss" + eighthRam + "M -Xmn" + quarterRam + "M -XX:+UseParallelGC server.jar nogui")
+                clearConsole()
                 val p = runProcess(command, "profiles/$profile")
                 while (p.isAlive) {
                     Thread.sleep(5000)

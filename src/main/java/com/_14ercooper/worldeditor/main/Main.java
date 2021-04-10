@@ -150,6 +150,11 @@ public class Main extends JavaPlugin {
             }
         }
 
+        String ver = getServer().getVersion().split("MC: ")[1];
+        GlobalVars.majorVer = Integer.parseInt(ver.split("\\.")[1].replaceAll("[^\\d.]", ""));
+        GlobalVars.minorVer = Integer.parseInt(ver.split("\\.")[2].replaceAll("[^\\d.]", ""));
+        System.out.println("Using version " + getServer().getVersion() + ": " + GlobalVars.majorVer + "/" + GlobalVars.minorVer);
+
         // Create folders as needed
         try {
             Files.createDirectories(Paths.get("plugins/14erEdit/schematics"));
