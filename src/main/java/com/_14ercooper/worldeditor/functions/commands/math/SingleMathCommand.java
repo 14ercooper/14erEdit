@@ -15,7 +15,7 @@ public class SingleMathCommand extends InterpreterCommand {
         double num2 = function.parseVariable(args.get(1));
         double result = 0;
         try {
-            result = (double) Math.class.getMethod(funct, Double.class).invoke(num2);
+            result = (double) Math.class.getMethod(funct, Double.class).invoke(Math.class, num2);
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         } catch (InvocationTargetException | IllegalAccessException e) {
