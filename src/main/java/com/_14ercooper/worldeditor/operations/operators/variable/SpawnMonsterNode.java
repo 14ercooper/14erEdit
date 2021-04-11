@@ -5,6 +5,7 @@ import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.operations.operators.Node;
 import com._14ercooper.worldeditor.operations.type.MonsterVar;
+import org.bukkit.Bukkit;
 
 public class SpawnMonsterNode extends Node {
 
@@ -29,7 +30,7 @@ public class SpawnMonsterNode extends Node {
         command += " ~ ~ ~ ";
         command += var.getNBT();
         Main.logDebug("Command: " + command);
-        Operator.currentPlayer.performCommand(command);
+        Bukkit.getServer().dispatchCommand(Operator.currentPlayer, command);
         return true;
     }
 

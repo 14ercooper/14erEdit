@@ -38,7 +38,7 @@ public class BlocksAdjacentNode extends Node {
         // Check if any adjacent blocks match arg1
         // Set up some variables
         int numAdjacentBlocks = 0;
-        Block curBlock = Operator.currentPlayer.getWorld().getBlockAt(Operator.currentBlock.getLocation());
+        Block curBlock = Operator.currentWorld.getBlockAt(Operator.currentBlock.getLocation());
 
         // Check each direction
         Block blockAdj = curBlock.getRelative(BlockFace.NORTH);

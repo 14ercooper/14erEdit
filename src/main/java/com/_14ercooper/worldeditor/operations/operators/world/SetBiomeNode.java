@@ -30,7 +30,7 @@ public class SetBiomeNode extends Node {
     @Override
     public boolean performNode() {
         try {
-            Operator.currentPlayer.getWorld().setBiome(Operator.currentBlock.getX(), Operator.currentBlock.getY(),
+            Operator.currentWorld.setBiome(Operator.currentBlock.getX(), Operator.currentBlock.getY(),
                     Operator.currentBlock.getZ(), Biome.valueOf(biome.getText()));
             return true;
         } catch (Exception e) {

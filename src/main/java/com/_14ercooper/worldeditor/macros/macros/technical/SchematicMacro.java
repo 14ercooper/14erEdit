@@ -6,6 +6,7 @@ import com._14ercooper.worldeditor.macros.macros.Macro;
 import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.selection.SchematicHandler;
+import org.bukkit.entity.Player;
 
 public class SchematicMacro extends Macro {
 
@@ -67,7 +68,7 @@ public class SchematicMacro extends Macro {
                 mirrorOpts = mirrorOpts + "z";
             }
         }
-        return SchematicHandler.loadSchematic(useSchem, origin, mirrorOpts, setAir, Operator.currentPlayer,
+        return SchematicHandler.loadSchematic(useSchem, origin, mirrorOpts, setAir, (Player) Operator.currentPlayer,
                 executionOrder, loc);
     }
 }

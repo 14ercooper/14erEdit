@@ -3,6 +3,7 @@ package com._14ercooper.worldeditor.scripts;
 import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.undo.UndoManager;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -25,14 +26,14 @@ public class CraftscriptManager {
     }
 
     // Run the Craftscript label, with arguments args, and player player
-    public boolean runCraftscript(String label, LinkedList<String> args, Player player) {
+    public boolean runCraftscript(String label, LinkedList<String> args, CommandSender player) {
         Main.logDebug("Calling Craftsript: " + label);
 
-        GlobalVars.currentUndo = UndoManager.getUndo(player);
+        GlobalVars.currentUndo = UndoManager.getUndo((Player) player);
         GlobalVars.currentUndo.startUndo(GlobalVars.undoLimit);
 
         try {
-            registeredScripts.get(label).perform(args, player, label);
+            registeredScripts.get(label).perform(args, (Player) player, label);
         } catch (Exception e) {
             Main.logError("Error performing CraftScript. Check your syntax?", player, e);
             e.printStackTrace();

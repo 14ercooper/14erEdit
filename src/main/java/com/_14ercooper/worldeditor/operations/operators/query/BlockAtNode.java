@@ -50,7 +50,7 @@ public class BlockAtNode extends BlockNode {
             xA = x.isAbsolute;
             yA = y.isAbsolute;
             zA = z.isAbsolute;
-            Operator.currentBlock = Operator.currentPlayer.getWorld().getBlockAt(
+            Operator.currentBlock = Operator.currentWorld.getBlockAt(
                     x.getInt() + (xA ? 0 : currBlock.getX()), y.getInt() + (yA ? 0 : currBlock.getY()),
                     z.getInt() + (zA ? 0 : currBlock.getZ()));
             boolean matches = node.performNode();
@@ -73,8 +73,7 @@ public class BlockAtNode extends BlockNode {
         xA = x.isAbsolute;
         yA = y.isAbsolute;
         zA = z.isAbsolute;
-        return Operator.currentPlayer
-                .getWorld().getBlockAt(xV + (xA ? 0 : Operator.currentBlock.getX()),
+        return Operator.currentWorld.getBlockAt(xV + (xA ? 0 : Operator.currentBlock.getX()),
                         yV + (yA ? 0 : Operator.currentBlock.getY()), zV + (zA ? 0 : Operator.currentBlock.getZ()))
                 .toString();
     }
@@ -82,8 +81,7 @@ public class BlockAtNode extends BlockNode {
     // Get the data of this block
     @Override
     public String getData() {
-        return Operator.currentPlayer
-                .getWorld().getBlockAt(xV + (xA ? 0 : Operator.currentBlock.getX()),
+        return Operator.currentWorld.getBlockAt(xV + (xA ? 0 : Operator.currentBlock.getX()),
                         yV + (yA ? 0 : Operator.currentBlock.getY()), zV + (zA ? 0 : Operator.currentBlock.getZ()))
                 .toString();
     }
@@ -92,7 +90,7 @@ public class BlockAtNode extends BlockNode {
     @Override
     public String getNBT() {
         NBTExtractor nbt = new NBTExtractor();
-        return nbt.getNBT(Operator.currentPlayer.getWorld().getBlockAt(xV + (xA ? 0 : Operator.currentBlock.getX()),
+        return nbt.getNBT(Operator.currentWorld.getBlockAt(xV + (xA ? 0 : Operator.currentBlock.getX()),
                 yV + (yA ? 0 : Operator.currentBlock.getY()), zV + (zA ? 0 : Operator.currentBlock.getZ())));
     }
 

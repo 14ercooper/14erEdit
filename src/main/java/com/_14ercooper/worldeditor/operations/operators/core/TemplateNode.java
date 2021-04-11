@@ -6,6 +6,7 @@ import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.operations.operators.Node;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.io.IOException;
@@ -34,7 +35,7 @@ public class TemplateNode extends Node {
 
     @Override
     public boolean performNode() {
-        Player player = Operator.currentPlayer;
+        CommandSender player = Operator.currentPlayer;
 
         // Extension expansion
         if (Files.exists(Paths.get(filename))) {
@@ -69,11 +70,15 @@ public class TemplateNode extends Node {
 
         // Run the command
         try {
-            Location loc = player.getLocation();
-            player.teleport(Operator.currentBlock.getLocation());
-            boolean retVal = Bukkit.dispatchCommand(player, command);
-            player.teleport(loc);
-            return retVal;
+            if (player instanceof Player) {
+                Player plyr = (Player) player;
+                Location loc = plyr.getLocation();
+                plyr.teleport(Operator.currentBlock.getLocation());
+                boolean retVal = Bukkit.dispatchCommand(player, command);
+                plyr.teleport(loc);
+                return retVal;
+            }
+            return false;
         } catch (Exception e) {
             Main.logError("Could not run command in template.", player, e);
             return false;

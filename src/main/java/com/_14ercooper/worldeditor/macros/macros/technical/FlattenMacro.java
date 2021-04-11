@@ -59,7 +59,7 @@ public class FlattenMacro extends Macro {
         Main.logDebug("Operated on and now placing " + operatedBlocks.size() + " blocks");
         // Apply the changes to the world
         for (BlockState bs : operatedBlocks) {
-            Block b = Operator.currentPlayer.getWorld().getBlockAt(bs.getLocation());
+            Block b = Operator.currentWorld.getBlockAt(bs.getLocation());
             SetBlock.setMaterial(b, bs.getType());
             b.setBlockData(bs.getBlockData());
         }
@@ -75,7 +75,7 @@ public class FlattenMacro extends Macro {
             for (int rz = -radiusInt; rz <= radiusInt; rz++) {
                 for (int ry = 0; ry <= 255; ry++) {
                     if (rx * rx + rz * rz <= (radius + 0.5) * (radius + 0.5)) {
-                        blockArray.add(Operator.currentPlayer.getWorld().getBlockAt((int) x + rx, ry, (int) z + rz));
+                        blockArray.add(Operator.currentWorld.getBlockAt((int) x + rx, ry, (int) z + rz));
                     }
                 }
             }
@@ -91,7 +91,7 @@ public class FlattenMacro extends Macro {
         Main.logDebug(snapshotArray.size() + " blocks in snapshot array");
 
         for (BlockState bs : snapshotArray) {
-            Block b = Operator.currentPlayer.getWorld().getBlockAt(bs.getLocation());
+            Block b = Operator.currentWorld.getBlockAt(bs.getLocation());
             int yB = bs.getY();
 
             if (yB <= Math.round(height)) {
@@ -115,12 +115,12 @@ public class FlattenMacro extends Macro {
                 for (int ry = -radiusInt; ry <= radiusInt; ry++) {
                     if (rx * rx + ry * ry + rz * rz <= (radius + 0.5) * (radius + 0.5)) {
                         blockArray.add(
-                                Operator.currentPlayer.getWorld().getBlockAt((int) x + rx, (int) y + ry, (int) z + rz));
+                                Operator.currentWorld.getBlockAt((int) x + rx, (int) y + ry, (int) z + rz));
                     }
                 }
             }
         }
-        blockArray.add(Operator.currentPlayer.getWorld().getBlockAt((int) x, (int) y, (int) z));
+        blockArray.add(Operator.currentWorld.getBlockAt((int) x, (int) y, (int) z));
         Main.logDebug("Block array size: " + blockArray.size()); // ----
 
         // Create a snapshot array
@@ -132,7 +132,7 @@ public class FlattenMacro extends Macro {
         Main.logDebug(snapshotArray.size() + " blocks in snapshot array");
 
         for (BlockState bs : snapshotArray) {
-            Block b = Operator.currentPlayer.getWorld().getBlockAt(bs.getLocation());
+            Block b = Operator.currentWorld.getBlockAt(bs.getLocation());
             int yB = bs.getY();
 
             if (yB <= Math.round(height)) {

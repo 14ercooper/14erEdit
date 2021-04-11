@@ -28,8 +28,8 @@ public class ScriptClone extends Craftscript {
             for (int x = xMin; x <= xMax; x++) {
                 for (int y = yMin; y <= yMax; y++) {
                     for (int z = zMin; z <= zMax; z++) {
-                        Material m = Operator.currentPlayer.getWorld().getBlockAt(x, y, z).getType();
-                        Block b = Operator.currentPlayer.getWorld().getBlockAt(x + xOff, y + yOff, z + zOff);
+                        Material m = Operator.currentWorld.getBlockAt(x, y, z).getType();
+                        Block b = Operator.currentWorld.getBlockAt(x + xOff, y + yOff, z + zOff);
                         b.setType(m);
                     }
                 }

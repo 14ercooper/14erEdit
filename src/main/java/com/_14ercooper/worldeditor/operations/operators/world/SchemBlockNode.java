@@ -58,11 +58,11 @@ public class SchemBlockNode extends BlockNode {
     @Override
     public boolean performNode() {
         if (!isInSet) {
-            BlockState state = Operator.currentPlayer.getWorld().getBlockAt(14, 0, 14).getState();
+            BlockState state = Operator.currentWorld.getBlockAt(14, 0, 14).getState();
             Block currBlock = Operator.currentBlock;
             boolean retVal = false;
             try {
-                Operator.currentBlock = Operator.currentPlayer.getWorld().getBlockAt(14, 0, 14);
+                Operator.currentBlock = Operator.currentWorld.getBlockAt(14, 0, 14);
                 Operator.currentBlock.setType(Material.matchMaterial(SchemBrushIterator.blockType));
                 Operator.currentBlock.setBlockData(Bukkit.getServer().createBlockData(SchemBrushIterator.blockData));
                 retVal = arg.performNode();

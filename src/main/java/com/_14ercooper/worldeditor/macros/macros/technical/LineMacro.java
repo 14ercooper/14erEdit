@@ -37,7 +37,7 @@ public class LineMacro extends Macro {
 
         double x = x1, y = y1, z = z1;
         for (int i = 0; i < 1000; i++) {
-            Block b = Operator.currentPlayer.getWorld().getBlockAt((int) x, (int) y, (int) z);
+            Block b = Operator.currentWorld.getBlockAt((int) x, (int) y, (int) z);
             SetBlock.setMaterial(b, mat);
             x += dx;
             y += dy;

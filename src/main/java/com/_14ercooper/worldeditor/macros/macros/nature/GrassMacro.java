@@ -55,7 +55,7 @@ public class GrassMacro extends Macro {
                 for (int ry = -radiusInt; ry <= radiusInt; ry++) {
                     if (rx * rx + ry * ry + rz * rz <= (radius + 0.5) * (radius + 0.5)) {
                         blockArray.add(
-                                Operator.currentPlayer.getWorld().getBlockAt((int) x + rx, (int) y + ry, (int) z + rz));
+                                Operator.currentWorld.getBlockAt((int) x + rx, (int) y + ry, (int) z + rz));
                     }
                 }
             }
@@ -88,7 +88,7 @@ public class GrassMacro extends Macro {
                 continue;
             }
 
-            Block b = Operator.currentPlayer.getWorld().getBlockAt(bs.getLocation());
+            Block b = Operator.currentWorld.getBlockAt(bs.getLocation());
             // Check if it's on a solid block
             if (b.getRelative(BlockFace.DOWN).getType() == Material.AIR) {
                 Main.logDebug("Skip block, is floating");
@@ -140,7 +140,7 @@ public class GrassMacro extends Macro {
         Main.logDebug("Operated on and now placing " + operatedBlocks.size() + " blocks");
         // Apply the changes to the world
         for (BlockState bs : operatedBlocks) {
-            Block b = Operator.currentPlayer.getWorld().getBlockAt(bs.getLocation());
+            Block b = Operator.currentWorld.getBlockAt(bs.getLocation());
             SetBlock.setMaterial(b, bs.getType());
             b.setBlockData(bs.getBlockData());
         }

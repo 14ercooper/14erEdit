@@ -5,6 +5,7 @@ import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.operations.operators.Node;
 import com._14ercooper.worldeditor.operations.type.MonsterVar;
+import org.bukkit.Bukkit;
 
 public class GetMonsterItemNode extends Node {
 
@@ -31,7 +32,7 @@ public class GetMonsterItemNode extends Node {
         command += var.asNBT();
         command += "}";
         Main.logDebug("Command: " + command);
-        Operator.currentPlayer.performCommand(command);
+        Bukkit.getServer().dispatchCommand(Operator.currentPlayer, command);
         return true;
     }
 

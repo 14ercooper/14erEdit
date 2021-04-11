@@ -5,6 +5,7 @@ import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.operations.operators.Node;
 import com._14ercooper.worldeditor.operations.type.SpawnerVar;
+import org.bukkit.Bukkit;
 
 public class GetSpawnerItemNode extends Node {
 
@@ -30,7 +31,7 @@ public class GetSpawnerItemNode extends Node {
         command += var.getNBT();
         command += "}";
         Main.logDebug("Command: " + command);
-        Operator.currentPlayer.performCommand(command);
+        Bukkit.getServer().dispatchCommand(Operator.currentPlayer, command);
         return true;
     }
 

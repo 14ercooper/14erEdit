@@ -5,22 +5,29 @@ import com._14ercooper.worldeditor.main.Main.Companion.logError
 import com._14ercooper.worldeditor.operations.operators.core.EntryNode
 import com._14ercooper.worldeditor.operations.type.*
 import org.bukkit.Bukkit
+import org.bukkit.World
 import org.bukkit.block.Block
+import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
 class Operator {
     private val entryNode: EntryNode?
-    fun operateOnBlock(block: Block?, p: Player?) {
+    fun operateOnBlock(block: Block?, p: CommandSender?) {
         try {
             // Set global operator variables
             currentOperator = this
             currentBlock = block
             currentPlayer = p
-            if (currentPlayer == null) {
-                if (firstPlayer == null) {
-                    firstPlayer = Bukkit.getOnlinePlayers().toTypedArray()[0] as Player
+                ?: if (Bukkit.getOnlinePlayers().isNotEmpty()) {
+                    Bukkit.getOnlinePlayers().toTypedArray()[0]
+                } else {
+                    GlobalVars.plugin.server.consoleSender
                 }
-                currentPlayer = firstPlayer
+            currentWorld = if (p != null && p is Player) {
+                p.world
+            }
+            else {
+                GlobalVars.plugin.server.worlds[0]
             }
 
             // Perform the operation
@@ -36,11 +43,13 @@ class Operator {
             // Set global operator variables
             currentOperator = this
             currentBlock = block
-            currentPlayer = null
-            if (firstPlayer == null) {
-                firstPlayer = Bukkit.getOnlinePlayers().toTypedArray()[0] as Player
-            }
-            currentPlayer = firstPlayer
+            currentPlayer = (if (Bukkit.getOnlinePlayers().isNotEmpty()) {
+                Bukkit.getOnlinePlayers().toTypedArray()[0]
+            } else {
+                null
+            }) ?: GlobalVars.plugin.server.consoleSender
+            val p = if (Bukkit.getOnlinePlayers().isNotEmpty()) Bukkit.getOnlinePlayers().toTypedArray()[0] else null
+            currentWorld = p?.world ?: GlobalVars.plugin.server.worlds[0]
 
             // Perform the operation
             entryNode!!.performNode()
@@ -60,13 +69,25 @@ class Operator {
         }
     }
 
-    constructor(op: String, p: Player?) {
-        currentPlayer = p // Used to show errors in the parse process
+    constructor(op: String, p: CommandSender?) {
+        currentPlayer = p ?: GlobalVars.plugin.server.consoleSender
+        currentWorld = if (p != null && p is Player) {
+            p.world
+        }
+        else {
+            GlobalVars.plugin.server.worlds[0]
+        }
         entryNode = GlobalVars.operationParser.parseOperation(op)
     }
 
-    constructor(e: EntryNode, p: Player?) {
-        currentPlayer = p
+    constructor(e: EntryNode, p: CommandSender?) {
+        currentPlayer = p ?: GlobalVars.plugin.server.consoleSender
+        currentWorld = if (p != null && p is Player) {
+            p.world
+        }
+        else {
+            GlobalVars.plugin.server.worlds[0]
+        }
         entryNode = e
     }
 
@@ -75,8 +96,10 @@ class Operator {
         @JvmField
         var currentBlock: Block? = null
         @JvmField
-        var currentPlayer: Player? = null
-        private var firstPlayer: Player? = null
+        var currentPlayer: CommandSender = GlobalVars.plugin.server.consoleSender
+        @JvmField
+        var currentWorld: World = GlobalVars.plugin.server.worlds[0]
+//        private var firstPlayer: Player? = null
         @JvmField
         var ignoringPhysics = false // False to ignore physics, true to perform physics 'cause Minecraft
         @JvmField

@@ -4,6 +4,7 @@ import com._14ercooper.worldeditor.functions.commands.InterpreterCommand;
 import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
 import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.io.IOException;
@@ -22,7 +23,7 @@ public class Function {
     public final List<String> dataSegment = new LinkedList<>();
     public final Map<String, Integer> labelsMap = new HashMap<>();
     public final List<String> templateArgs = new LinkedList<>();
-    public final Player player;
+    public final CommandSender player;
     public final boolean isOperator;
     public double ra, cmpres;
     public int waitDelay = 0;
@@ -31,7 +32,7 @@ public class Function {
     public double exitVal = 1;
     long iters = 0;
 
-    public Function(String filename, List<String> args, Player player, boolean isOperator) {
+    public Function(String filename, List<String> args, CommandSender player, boolean isOperator) {
         // Set constant variables
         templateArgs.addAll(args);
         this.player = player;

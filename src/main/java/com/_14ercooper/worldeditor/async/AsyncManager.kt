@@ -135,7 +135,7 @@ class AsyncManager {
     }
 
     // Schedule a multibrush operation
-    fun scheduleEdit(iterators: List<BlockIterator>, operations: List<Operator>, p: Player) {
+    fun scheduleEdit(iterators: MutableList<out BlockIterator>, operations: MutableList<Operator>, p: CommandSender) {
         val asyncOp = AsyncOperation(iterators, operations, p)
         largeOps.add(asyncOp)
         if (!GlobalVars.autoConfirm) {
@@ -400,7 +400,7 @@ class AsyncManager {
                     GlobalVars.currentUndo = null
                 } else if (currentAsyncOp.key.equals("selclone", ignoreCase = true)) {
                     val tempPlayer = Operator.currentPlayer
-                    Operator.currentPlayer = currentAsyncOp.player
+                    Operator.currentPlayer = currentAsyncOp.player ?: GlobalVars.plugin.server.consoleSender
                     assert(currentAsyncOp.blocks != null)
                     val b = currentAsyncOp.blocks!!.next
                     Operator.currentPlayer = tempPlayer

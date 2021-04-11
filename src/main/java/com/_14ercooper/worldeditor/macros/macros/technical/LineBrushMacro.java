@@ -15,7 +15,7 @@ public class LineBrushMacro extends Macro {
     @Override
     public boolean performMacro(String[] args, Location loc) {
         // Parse args
-        Player p = Operator.currentPlayer;
+        Player p = (Player) Operator.currentPlayer;
         Material m = Material.matchMaterial(args[0]);
         if (m == null) {
             Main.logError("Could not parse line brush macro. " + args[0] + " does not match a known block.", p, null);
@@ -52,7 +52,7 @@ public class LineBrushMacro extends Macro {
             int xPos = (int) (xStart - (xStep * t));
             int yPos = (int) (yStart - (yStep * t));
             int zPos = (int) (zStart - (zStep * t));
-            Block b = Operator.currentPlayer.getWorld().getBlockAt(xPos, yPos, zPos);
+            Block b = Operator.currentWorld.getBlockAt(xPos, yPos, zPos);
             SetBlock.setMaterial(b, m);
         }
 

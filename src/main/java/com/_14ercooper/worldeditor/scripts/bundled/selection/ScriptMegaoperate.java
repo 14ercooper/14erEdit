@@ -25,7 +25,7 @@ public class ScriptMegaoperate extends Craftscript {
             for (int x = xMin; x <= xMax; x++) {
                 for (int y = yMin; y <= yMax; y++) {
                     for (int z = zMin; z <= zMax; z++) {
-                        operator.operateOnBlock(Operator.currentPlayer.getWorld().getBlockAt(x, y, z));
+                        operator.operateOnBlock(Operator.currentWorld.getBlockAt(x, y, z));
                     }
                 }
             }

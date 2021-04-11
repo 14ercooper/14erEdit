@@ -31,7 +31,7 @@ public class CatenaryMacro extends Macro {
                 int y = (int) (y0 + (t * dy) + (t * t * dy2));
                 int z = (int) (z0 + (t * dz));
                 Main.logDebug(x + "," + y + "," + z);
-                Block b = Operator.currentPlayer.getWorld().getBlockAt(x, y, z);
+                Block b = Operator.currentWorld.getBlockAt(x, y, z);
                 SetBlock.setMaterial(b, Material.matchMaterial(block));
             }
         } catch (Exception e) {

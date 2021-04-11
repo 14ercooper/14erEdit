@@ -5,6 +5,7 @@ import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.operations.operators.Node;
 import com._14ercooper.worldeditor.operations.type.ItemVar;
+import org.bukkit.Bukkit;
 
 public class GetItemVarNode extends Node {
 
@@ -31,7 +32,7 @@ public class GetItemVarNode extends Node {
         command += iv.getNBT() + " ";
         command += iv.getCount();
         Main.logDebug("Command: " + command);
-        Operator.currentPlayer.performCommand(command);
+        Bukkit.getServer().dispatchCommand(Operator.currentPlayer, command);
         return true;
     }
 
