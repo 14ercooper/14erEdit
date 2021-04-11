@@ -22,51 +22,43 @@ public class BlockNode extends Node {
     @Override
     public BlockNode newNode() {
         BlockNode node = new BlockNode();
+        String[] data = GlobalVars.operationParser.parseStringNode().getText().split(";");
         try {
-            String[] data = GlobalVars.operationParser.parseStringNode().getText().split(";");
-            node.blockList = new LinkedList<>();
-            node.textMasks = new LinkedList<>();
-            for (String s : data) {
-                if (s.contains("#")) {
-                    Main.logDebug("Created text mask");
-                    node.textMasks.add(s.replaceAll("#", ""));
-                } else {
-                    Main.logDebug("Created block instance");
-                    node.blockList.add(new BlockInstance(s));
-                }
-            }
-            if (node.blockList.isEmpty() && node.textMasks.isEmpty()) {
-                Main.logError("Error creating block node. No blocks were provided.", Operator.currentPlayer, null);
-                return null;
-            }
+            if (loadBlockList(node, data)) return null;
         } catch (Exception e) {
-            Main.logError("Could not parse block node. Block name required, but not found.", Operator.currentPlayer, e);
+            Main.logError("Could not parse block node. Block name required, but not found: " + data, Operator.currentPlayer, e);
             return null;
         }
         return node;
+    }
+
+    private boolean loadBlockList(BlockNode node, String[] data) {
+        node.blockList = new LinkedList<>();
+        node.textMasks = new LinkedList<>();
+        for (String s : data) {
+            if (s.contains("#")) {
+                Main.logDebug("Created text mask");
+                node.textMasks.add(s.replaceAll("#", ""));
+            } else {
+                Main.logDebug("Created block instance");
+                if (!s.isBlank())
+                node.blockList.add(new BlockInstance(s));
+            }
+        }
+        if (node.blockList.isEmpty() && node.textMasks.isEmpty()) {
+            Main.logError("Error creating block node. No blocks were provided.", Operator.currentPlayer, null);
+            return true;
+        }
+        return false;
     }
 
     public BlockNode newNode(String input) {
         BlockNode node = new BlockNode();
         try {
             String[] data = input.split(";");
-            node.blockList = new LinkedList<>();
-            node.textMasks = new LinkedList<>();
-            for (String s : data) {
-                if (s.contains("#")) {
-                    Main.logDebug("Created text mask");
-                    node.textMasks.add(s.replaceAll("#", ""));
-                } else {
-                    Main.logDebug("Created block instance");
-                    node.blockList.add(new BlockInstance(s));
-                }
-            }
-            if (node.blockList.isEmpty() && node.textMasks.isEmpty()) {
-                Main.logError("Error creating block node. No blocks were provided.", Operator.currentPlayer, null);
-                return null;
-            }
+            if (loadBlockList(node, data)) return null;
         } catch (Exception e) {
-            Main.logError("Could not parse block node. Block name required, but not found.", Operator.currentPlayer, e);
+            Main.logError("Could not parse block node from input. Block name required, but not found: " + input, Operator.currentPlayer, e);
             return null;
         }
         return node;

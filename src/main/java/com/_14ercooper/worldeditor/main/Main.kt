@@ -162,7 +162,10 @@ class Main : JavaPlugin() {
                     $sw
                     """.trimIndent()
             }
-            player.sendMessage("§6[ERROR] $message$stackTrace")
+            if (!GlobalVars.logErrors)
+                player.sendMessage("§6[ERROR] $message$stackTrace")
+            else
+                GlobalVars.plugin.server.broadcastMessage("§6[ERROR] $message$stackTrace")
             if (GlobalVars.logErrors) {
                 try {
                     var errMessage = ""
