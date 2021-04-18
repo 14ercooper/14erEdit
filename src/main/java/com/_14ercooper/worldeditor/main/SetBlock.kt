@@ -3,6 +3,7 @@ package com._14ercooper.worldeditor.main
 import com._14ercooper.worldeditor.async.AsyncManager
 import com._14ercooper.worldeditor.operations.Operator
 import com._14ercooper.worldeditor.undo.UndoElement
+import com._14ercooper.worldeditor.undo.UndoMode
 import org.bukkit.Material
 import org.bukkit.block.Block
 import org.bukkit.block.BlockState
@@ -20,7 +21,8 @@ object SetBlock {
         try {
             val bs = b.state
             b.setType(mat!!, false)
-            undo.addBlock(bs, b.state)
+            if (undo.currentState != UndoMode.PERFORMING_UNDO && undo.currentState != UndoMode.PERFORMING_REDO)
+                undo.addBlock(bs, b.state)
             updateLeafData(mat, b)
         } catch (e: Exception) {
             invalidMaterial(mat, e)
@@ -38,7 +40,8 @@ object SetBlock {
         try {
             val bs = b.state
             b.setType(mat!!, physics)
-            undo.addBlock(bs, b.state)
+            if (undo.currentState != UndoMode.PERFORMING_UNDO && undo.currentState != UndoMode.PERFORMING_REDO)
+                undo.addBlock(bs, b.state)
             updateLeafData(mat, b)
         } catch (e: Exception) {
             invalidMaterial(mat, e)
@@ -64,7 +67,8 @@ object SetBlock {
         try {
             val bs = b.block.state
             b.type = mat!!
-            undo.addBlock(bs, b)
+            if (undo.currentState != UndoMode.PERFORMING_UNDO && undo.currentState != UndoMode.PERFORMING_REDO)
+                undo.addBlock(bs, b)
             updateLeafDataState(mat, b)
         } catch (e: Exception) {
             invalidMaterial(mat, e)
