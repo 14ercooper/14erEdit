@@ -6,14 +6,16 @@ import org.bukkit.block.BlockState
 class UndoElement {
 
     // Create an undo element if the ID doesn't exist, otherwise load the existing undo
-    constructor(id : String? = null) {
-
+    constructor(id : String, parent : UserUndo) {
+        name = id
+        userUndo = parent
     }
 
     // What's our state?
     var currentState = UndoMode.IDLE
         private set
-    var userUndo : UserUndo = UserUndo()
+    var userUndo : UserUndo
+    val name : String
 
     // Add a block to the undo
     fun addBlock(blockFrom : BlockState, blockTo : BlockState) : Boolean {

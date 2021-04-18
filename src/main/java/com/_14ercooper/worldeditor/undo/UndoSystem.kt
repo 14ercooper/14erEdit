@@ -6,7 +6,7 @@ import org.bukkit.entity.Player
 object UndoSystem {
 
     // What user undos do we currently have loaded?
-    var userUndos : MutableMap<String, UserUndo> = HashMap()
+    private var userUndos : MutableMap<String, UserUndo> = HashMap()
 
     // Find a user's undo using the name of their undo (either UUID or "console")
     @JvmStatic
@@ -15,7 +15,7 @@ object UndoSystem {
             userUndos[name]!!
         }
         else {
-            userUndos.put(name, UserUndo())
+            userUndos[name] = UserUndo(name)
             userUndos[name]!!
         }
     }
@@ -29,7 +29,7 @@ object UndoSystem {
     // Flush the entire undo system to disk
     @JvmStatic
     fun flush() : Boolean {
-        userUndos.forEach { (s, userUndo) -> userUndo.flush() }
+        userUndos.forEach { (_, userUndo) -> userUndo.flush() }
         userUndos = HashMap()
         return true
     }

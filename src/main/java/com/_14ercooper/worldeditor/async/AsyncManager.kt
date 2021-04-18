@@ -149,6 +149,10 @@ class AsyncManager {
         queuedOperations.add(AsyncOperation(b, offset, times, delOriginal, p, startUndo(p)))
     }
 
+    fun scheduleEdit(undos : MutableList<UndoElement>) {
+        queuedOperations.add(AsyncOperation(undos))
+    }
+
     // Confirm large edits
 //    fun confirmEdits(number: Int) {
 //        var numberConfirm = number
@@ -272,7 +276,7 @@ class AsyncManager {
                             operations.removeAt(i)
                             i--
                             opSize--
-                            currentAsyncOp.player.sendMessage("§aUndo finished")
+                            currentAsyncOp.player.sendMessage("§aUndo operation finished")
                             i++
                         }
                     }
