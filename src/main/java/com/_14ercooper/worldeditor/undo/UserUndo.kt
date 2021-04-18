@@ -2,6 +2,8 @@ package com._14ercooper.worldeditor.undo
 
 class UserUndo {
 
+    var undoElements : HashMap<String, UndoElement> = HashMap()
+
     // Set up this user undo (including loading from disk if needed)
     constructor() {
 
@@ -49,6 +51,9 @@ class UserUndo {
 
     // Flush all data to disk
     fun flush() : Boolean {
-        return false
+        saveUndoList()
+        undoElements.forEach { (s, undoElement) -> undoElement.flush() }
+        undoElements = HashMap()
+        return true
     }
 }

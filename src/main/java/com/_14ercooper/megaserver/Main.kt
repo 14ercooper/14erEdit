@@ -264,6 +264,7 @@ object Main {
         FileIO.makePath("14erEdit/templates")
         FileIO.makePath("14erEdit/multibrushes")
         FileIO.makePath("14erEdit/functions")
+        FileIO.makePath("14erEdit/undo")
         println("Downloading artifacts (this could take a LONG time)...")
         Artifacts.updateArtifacts()
         FileIO.writeToFile("init.mms", false, "")

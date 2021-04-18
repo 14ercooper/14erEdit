@@ -29,6 +29,8 @@ object UndoSystem {
     // Flush the entire undo system to disk
     @JvmStatic
     fun flush() : Boolean {
-        return false;
+        userUndos.forEach { (s, userUndo) -> userUndo.flush() }
+        userUndos = HashMap()
+        return true
     }
 }

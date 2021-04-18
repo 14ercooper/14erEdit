@@ -81,6 +81,7 @@ class Main : JavaPlugin() {
             Files.createDirectories(Paths.get("plugins/14erEdit/templates"))
             Files.createDirectories(Paths.get("plugins/14erEdit/multibrushes"))
             Files.createDirectories(Paths.get("plugins/14erEdit/functions"))
+            Files.createDirectories(Paths.get("plugins/14erEdit/undo"))
         } catch (e: IOException) {
             logDebug("Error creating directory structure. 14erEdit may not work properly until this is resolved.")
         }

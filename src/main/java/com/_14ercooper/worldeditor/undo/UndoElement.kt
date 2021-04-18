@@ -35,15 +35,9 @@ class UndoElement {
         return false
     }
 
-    // Check if this redo is finished being applied
-    // If it is done, before returning true, clean up
-    fun finalizeUndo() : Boolean {
-        return false
-    }
-
     // Check if this undo is finished being applied
-    // If it is done, before returning true, clean up
-    fun isApplyUndoDone() : Boolean {
+    // If it is done, before returning true, clean up, else return false
+    fun finalizeUndo() : Boolean {
         return false
     }
 
@@ -58,13 +52,21 @@ class UndoElement {
     }
 
     // Check if this redo is finished being applied
-    // If it is done, before returning true, clean up
+    // If it is done, before returning true, clean up, else return false
     fun finalizeRedo() : Boolean {
         return false
     }
 
     // Flush all data to disk
     fun flush() : Boolean {
-        return false
+        if (currentState == UndoMode.PERFORMING_UNDO) {
+            applyUndo(Long.MAX_VALUE)
+            finalizeUndo()
+        }
+        if (currentState == UndoMode.PERFORMING_REDO) {
+            applyRedo(Long.MAX_VALUE)
+            finalizeRedo()
+        }
+        return serialize()
     }
 }
