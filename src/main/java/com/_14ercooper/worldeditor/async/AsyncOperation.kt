@@ -32,13 +32,6 @@ class AsyncOperation {
         undo = undos[0]
     }
 
-//    constructor(o: Operator?, b: BlockIterator?, thisUndo : UndoElement) {
-//        key = "rawiteredit"
-//        operation = o
-//        blocks = b
-//        undo = thisUndo
-//    }
-
     // New schematics system
     var schem: SchemLite? = null
     private var origin = intArrayOf()

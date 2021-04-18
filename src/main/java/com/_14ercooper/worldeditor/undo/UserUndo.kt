@@ -10,7 +10,7 @@ import kotlin.collections.HashMap
 class UserUndo
     (thisName: String) {
 
-    private var undoElements : HashMap<String, UndoElement>
+    var undoElements : HashMap<String, UndoElement>
     private var undoList : MutableList<String>
     private var redoList : MutableList<String>
     var name : String = thisName
@@ -47,7 +47,7 @@ class UserUndo
     // Undo a number of changes (undo elements)
     fun undoChanges(count : Int) : Boolean {
         flush()
-        undoList.removeIf(String::isBlank)
+        undoList = undoList.filter { it.isNotBlank() } as MutableList<String>
         var undoCount = count
         if (undoCount > undoList.size)
             undoCount = undoList.size
@@ -68,7 +68,7 @@ class UserUndo
     // Redo a number of changes (undo elements)
     fun redoChanges(count : Int) : Boolean {
         flush()
-        redoList.removeIf(String::isBlank)
+        redoList = redoList.filter { it.isNotBlank() } as MutableList<String>
         var redoCount = count
         if (redoCount > redoList.size)
             redoCount = redoList.size
@@ -114,11 +114,11 @@ class UserUndo
         val fileName = "plugins/14erEdit/undo/$name/"
         if (Files.exists(Path.of(fileName + "undoList"))) {
             undoList = Files.readString(Path.of(fileName + "undoList")).lines() as MutableList<String>
-            undoList.removeIf(String::isBlank)
+            undoList = undoList.filter { it.isNotBlank() } as MutableList<String>
         }
         if (Files.exists(Path.of(fileName + "redoList"))) {
             redoList = Files.readString(Path.of(fileName + "redoList")).lines() as MutableList<String>
-            redoList.removeIf(String::isBlank)
+            redoList = redoList.filter { it.isNotBlank() } as MutableList<String>
         }
         Main.logDebug("Loaded undo and redo lists for $name from disk")
         return true

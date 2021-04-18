@@ -35,7 +35,7 @@ public class CommandUndo implements CommandExecutor {
             } catch (Exception e) {
                 numToRedo = 1;
             }
-            return UndoSystem.findUserUndo(sender).undoChanges(numToRedo);
+            return UndoSystem.findUserUndo(sender).redoChanges(numToRedo);
         }
         return false;
     }

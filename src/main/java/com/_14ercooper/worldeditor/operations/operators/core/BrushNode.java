@@ -65,7 +65,7 @@ public class BrushNode extends Node {
 
             Main.logDebug("Block array size is " + blockArray.getTotalBlocks()); // -----
 
-            GlobalVars.asyncManager.scheduleEdit(operation, Operator.currentPlayer, blockArray);
+            GlobalVars.asyncManager.scheduleEdit(operation, Operator.currentPlayer, blockArray, GlobalVars.asyncManager.currentAsyncOp.getUndo());
 
         } else {
             // It's a multi-operator
@@ -73,7 +73,7 @@ public class BrushNode extends Node {
             List<BlockIterator> iters = multiShape.getIters(x, y, z, Operator.currentBlock.getWorld());
             List<Operator> ops = multiShape.getOps(x, y, z);
 
-            GlobalVars.asyncManager.scheduleEdit(iters, ops, Operator.currentPlayer);
+            GlobalVars.asyncManager.scheduleEdit(iters, ops, Operator.currentPlayer, GlobalVars.asyncManager.currentAsyncOp.getUndo());
 
         }
         return true;

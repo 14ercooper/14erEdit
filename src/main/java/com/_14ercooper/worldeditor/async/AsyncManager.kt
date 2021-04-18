@@ -17,7 +17,6 @@ import org.bukkit.block.Block
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import java.io.IOException
-import java.util.*
 
 class AsyncManager {
     // Flag queue dropped
@@ -27,8 +26,6 @@ class AsyncManager {
     private var operations : MutableList<AsyncOperation> = mutableListOf()
     private var queuedOperations : MutableList<AsyncOperation> = mutableListOf()
 
-    // Store large operations
-//    private var largeOps: Queue<AsyncOperation> = ArrayDeque()
 
     // Get undo for commandsender
     private fun startUndo(sender : CommandSender?) : UndoElement {
@@ -113,10 +110,16 @@ class AsyncManager {
     fun scheduleEdit(o: Operator?, p: CommandSender, b: BlockIterator) {
         queuedOperations.add(AsyncOperation(o, p, b, startUndo(p)))
     }
+    fun scheduleEdit(o: Operator?, p: CommandSender, b: BlockIterator, ue : UndoElement) {
+        queuedOperations.add(AsyncOperation(o, p, b, ue))
+    }
 
     // Schedule a multibrush operation
     fun scheduleEdit(iterators: MutableList<out BlockIterator>, operations: MutableList<Operator>, p: CommandSender) {
         queuedOperations.add(AsyncOperation(iterators, operations, p, startUndo(p)))
+    }
+    fun scheduleEdit(iterators: MutableList<out BlockIterator>, operations: MutableList<Operator>, p: CommandSender, ue : UndoElement) {
+        queuedOperations.add(AsyncOperation(iterators, operations, p, ue))
     }
 
     // Schedule a schematics operation
@@ -129,6 +132,7 @@ class AsyncManager {
         queuedOperations.add(AsyncOperation(b, offset, times, delOriginal, p, startUndo(p)))
     }
 
+    // Scheule an undo operation
     fun scheduleEdit(undos : MutableList<UndoElement>) {
         queuedOperations.add(AsyncOperation(undos))
     }
@@ -141,19 +145,23 @@ class AsyncManager {
 
         // Dispatch async edits
         if (operations.size < 10) {
-            var i = 0
+            val i = 0
             while (i < queuedOperations.size) {
                 if (operations.size >= 10) {
                     break
                 }
                 operations.add(queuedOperations[i])
                 queuedOperations.removeAt(i)
-                i
             }
         }
 
         // If there isn't anything to do, return
-        if (operations.size == 0) return
+        if (operations.size == 0) {
+            if (!UndoSystem.isFlushed()) {
+                UndoSystem.flush()
+            }
+            return
+        }
 
         // Limit operations per run
         doneOperations = 0
@@ -211,7 +219,9 @@ class AsyncManager {
                     }
                     currentAsyncOp.operation!!.operateOnBlock(b, currentAsyncOp.player)
                     doneOperations++
-                } else if (currentAsyncOp.key.equals("undoedit", ignoreCase = true)) {
+                }
+
+                else if (currentAsyncOp.key.equals("undoedit", ignoreCase = true)) {
                     val undoBatchSize = 32L
                     // If undo or redo finished, handle it
                     if (currentAsyncOp.undoList!!.isEmpty()) {
@@ -256,7 +266,9 @@ class AsyncManager {
 
                     }
 
-                } else if (currentAsyncOp.key.equals("multibrush", ignoreCase = true)) {
+                }
+
+                else if (currentAsyncOp.key.equals("multibrush", ignoreCase = true)) {
                     var b: Block?
                     var doContinue = false
                     while (true) {
@@ -280,6 +292,7 @@ class AsyncManager {
                         }
                     }
                     if (doContinue) {
+                        finishUndo(currentAsyncOp.undo)
                         operations.removeAt(i)
                         i--
                         opSize--
@@ -288,12 +301,16 @@ class AsyncManager {
                     }
                     currentAsyncOp.operations[0].operateOnBlock(b, currentAsyncOp.player)
                     doneOperations++
-                } else if (currentAsyncOp.key.equals("messyedit", ignoreCase = true)) {
-                    operations.removeAt(i).operation!!.messyOperate()
-                    i--
-                    opSize--
-                    doneOperations += 100
-                } else if (currentAsyncOp.key.equals("saveschem", ignoreCase = true)) {
+                }
+
+//                else if (currentAsyncOp.key.equals("messyedit", ignoreCase = true)) {
+//                    operations.removeAt(i).operation!!.messyOperate()
+//                    i--
+//                    opSize--
+//                    doneOperations += 100
+//                }
+
+                else if (currentAsyncOp.key.equals("saveschem", ignoreCase = true)) {
                     assert(currentAsyncOp.blocks != null)
                     val b = currentAsyncOp.blocks!!.next
                     if (!currentAsyncOp.startedWrite) {
@@ -322,7 +339,9 @@ class AsyncManager {
                         // Don't need to do anything
                     }
                     doneOperations++
-                } else if (currentAsyncOp.key.equals("loadschem", ignoreCase = true)) {
+                }
+
+                else if (currentAsyncOp.key.equals("loadschem", ignoreCase = true)) {
                     val b = getBlock(currentAsyncOp)
                     if (b == null) {
                         finishUndo(currentAsyncOp.undo)
@@ -355,7 +374,9 @@ class AsyncManager {
                         }
                     }
                     doneOperations++
-                } else if (currentAsyncOp.key.equals("selclone", ignoreCase = true)) {
+                }
+
+                else if (currentAsyncOp.key.equals("selclone", ignoreCase = true)) {
                     val tempPlayer = Operator.currentPlayer
                     Operator.currentPlayer = currentAsyncOp.player
                     assert(currentAsyncOp.blocks != null)
@@ -391,7 +412,10 @@ class AsyncManager {
                         doneOperations++
                     }
                     doneOperations += currentAsyncOp.times.toLong()
-                } else {
+                }
+
+                else {
+                    finishUndo(currentAsyncOp.undo)
                     Main.logError(
                         "Invalid operation in async queue. Removing operation.",
                         Bukkit.getConsoleSender(),
@@ -414,14 +438,6 @@ class AsyncManager {
     private fun getBlock(currentAsyncOp: AsyncOperation): Block? {
         assert(currentAsyncOp.blocks != null)
         return currentAsyncOp.blocks!!.next
-//        if (currentAsyncOp.undo != null) {
-//            if (!currentAsyncOp.undoRunning) {
-//                currentAsyncOp.undo!!.startUndo(currentAsyncOp.blocks!!.totalBlocks)
-//            }
-//            GlobalVars.currentUndo = currentAsyncOp.undo
-//            currentAsyncOp.undoRunning = true
-//        }
-//        return b
     }
 
     companion object {

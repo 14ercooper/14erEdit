@@ -37,4 +37,13 @@ object UndoSystem {
         Main.logDebug("Flushed undo system")
         return true
     }
+
+    @JvmStatic
+    fun isFlushed() : Boolean {
+        var userUndosEmpty = true
+        for ((_, userUndo) in userUndos) {
+            userUndosEmpty && userUndo.undoElements.isEmpty()
+        }
+        return userUndos.isEmpty() && userUndosEmpty
+    }
 }
