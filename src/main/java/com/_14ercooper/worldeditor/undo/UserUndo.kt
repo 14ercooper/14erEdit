@@ -125,7 +125,7 @@ class UserUndo
         saveUndoList()
         undoElements.forEach { (_, undoElement) -> undoElement.flush() }
         undoElements = HashMap()
-        Main.logDebug("Flushed user under for $name")
+        Main.logDebug("Flushed user undo for $name")
         return true
     }
 }

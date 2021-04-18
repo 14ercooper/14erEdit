@@ -119,11 +119,17 @@ class UndoElement
                     currentState = UndoMode.UNDO_FINISHED
                     return true
                 }
-                loadBlock(currBlock)
+                currData = mutableListOf()
+                currData.addAll(loadBlock(currBlock))
             }
             // Pull data from block and set into world
-            val nextBlockData = currData.removeLast().split("\t")
-            if (nextBlockData.isNotEmpty())
+            if (currData.isEmpty()) {
+                Main.logDebug("Data in block $currBlock is empty, continuing")
+                continue
+            }
+            val s = currData.removeAt(currData.lastIndex)
+            val nextBlockData = s.split("\t")
+            if (s.length >= 10)
                 setBlock(nextBlockData[0], nextBlockData[1].toInt(), nextBlockData[2].toInt(), nextBlockData[3].toInt(), nextBlockData[4], nextBlockData[5], nextBlockData[6])
             remBlocks--
         }
@@ -160,11 +166,17 @@ class UndoElement
                     currentState = UndoMode.REDO_FINISHED
                     return true
                 }
-                loadBlock(currBlock)
+                currData = mutableListOf()
+                currData.addAll(loadBlock(currBlock))
             }
             // Pull data from block and set into world
-            val nextBlockData = currData.removeLast().split("\t")
-            if (nextBlockData.isNotEmpty())
+            if (currData.isEmpty()) {
+                Main.logDebug("Data in block $currBlock is empty, continuing")
+                continue
+            }
+            val s = currData.removeAt(currData.lastIndex)
+            val nextBlockData = s.split("\t")
+            if (s.length >= 10)
                 setBlock(nextBlockData[0], nextBlockData[1].toInt(), nextBlockData[2].toInt(), nextBlockData[3].toInt(), nextBlockData[7], nextBlockData[8], nextBlockData[9])
             remBlocks--
         }

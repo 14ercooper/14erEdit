@@ -45,7 +45,7 @@ commands:
         usage: "Usage: /14erEdit"
     async:
         description: Used to manage the async system
-        usage: "Usage: /async <drop|status>"
+        usage: "Usage: /async <drop|status|dump>"
     make:
         description: Make different things using 14erEdit
         usage: "Usage: /make <type> [tags ...]"

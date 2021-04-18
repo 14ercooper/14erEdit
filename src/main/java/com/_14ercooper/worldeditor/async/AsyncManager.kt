@@ -24,8 +24,8 @@ class AsyncManager {
     private var queueDropped = false
 
     // Store operations
-    private var operations = ArrayList<AsyncOperation>()
-    private var queuedOperations = ArrayList<AsyncOperation>()
+    private var operations : MutableList<AsyncOperation> = mutableListOf()
+    private var queuedOperations : MutableList<AsyncOperation> = mutableListOf()
 
     // Store large operations
 //    private var largeOps: Queue<AsyncOperation> = ArrayDeque()
@@ -51,8 +51,8 @@ class AsyncManager {
         for (asyncOp in queuedOperations) {
             if (asyncOp.undo.currentState == UndoMode.WAITING_FOR_BLOCKS) finishUndo(asyncOp.undo)
         }
-        operations = ArrayList()
-        queuedOperations = ArrayList()
+        operations = mutableListOf()
+        queuedOperations = mutableListOf()
         queueDropped = true
         doneOperations += (Int.MAX_VALUE / 2).toLong()
     }
@@ -97,14 +97,14 @@ class AsyncManager {
         p.sendMessage("§aPer Operation Stats:")
         for (a in queuedOperations) {
             p.sendMessage(
-                "§a[Queued] " + a.blocks!!.remainingBlocks + " blocks remaining out of "
-                        + a.blocks!!.totalBlocks + " total blocks. Undo? " + a.undo.currentState + " " + a.blocks.toString()
+                "§a[Queued] " + a.blocks?.remainingBlocks + " blocks remaining out of "
+                        + a.blocks?.totalBlocks + " total blocks. Undo? " + a.undo.currentState + " " + a.blocks.toString()
             )
         }
         for (a in operations) {
             p.sendMessage(
-                "§a[Running] " + a.blocks!!.remainingBlocks + " blocks remaining out of "
-                        + a.blocks!!.totalBlocks + " total blocks. Undo? " + a.undo.currentState + " " + a.blocks.toString()
+                "§a[Running] " + a.blocks?.remainingBlocks + " blocks remaining out of "
+                        + a.blocks?.totalBlocks + " total blocks. Undo? " + a.undo.currentState + " " + a.blocks.toString()
             )
         }
     }
@@ -113,26 +113,6 @@ class AsyncManager {
     fun scheduleEdit(o: Operator?, p: CommandSender, b: BlockIterator) {
         queuedOperations.add(AsyncOperation(o, p, b, startUndo(p)))
     }
-
-    // Schedule a nested block iterator task
-//    fun scheduleEdit(o: Operator?, p: Player?, b: BlockIterator, force: Boolean) {
-//        if (!force) {
-//            scheduleEdit(o, p, b)
-//            return
-//        }
-//        when {
-//            p == null -> queuedOperations.add(AsyncOperation(o, b))
-//            b.totalBlocks > GlobalVars.undoLimit -> {
-//                val asyncOp = AsyncOperation(o, p, b)
-//                queuedOperations.add(asyncOp)
-//            }
-//            else -> {
-//                val asyncOp = AsyncOperation(o, p, b)
-//                asyncOp.undo = UndoManager.getUndo(p)
-//                queuedOperations.add(asyncOp)
-//            }
-//        }
-//    }
 
     // Schedule a multibrush operation
     fun scheduleEdit(iterators: MutableList<out BlockIterator>, operations: MutableList<Operator>, p: CommandSender) {
@@ -153,54 +133,22 @@ class AsyncManager {
         queuedOperations.add(AsyncOperation(undos))
     }
 
-    // Confirm large edits
-//    fun confirmEdits(number: Int) {
-//        var numberConfirm = number
-//        numberConfirm = if (numberConfirm < 1) 1 else numberConfirm.coerceAtMost(largeOps.size)
-//        Main.logDebug("Confirming $numberConfirm large edits.")
-//        while (numberConfirm-- > 0) {
-//            queuedOperations.add(largeOps.remove())
-//        }
-//    }
-
-    // Cancel large edits
-//    fun cancelEdits(number: Int) {
-//        var numberCancel = number
-//        numberCancel = if (numberCancel < 1) 1 else numberCancel.coerceAtMost(largeOps.size)
-//        Main.logDebug("Cancelling $numberCancel large edits.")
-//        while (numberCancel-- > 0) {
-//            largeOps.remove()
-//        }
-//    }
-
     // Scheduled task to operate
     lateinit var currentAsyncOp : AsyncOperation
     private fun performOperation() {
         // Output building up debug
         Main.outputDebug()
 
-        // If in autoconfirm mode, do that
-//        if (GlobalVars.autoConfirm) {
-//            confirmEdits(10)
-//        }
-
         // Dispatch async edits
         if (operations.size < 10) {
             var i = 0
             while (i < queuedOperations.size) {
-//                if (queuedOperations[i].undo == null || queuedOperations[i].undo!!.canStartUndo(queuedOperations[i].blocks!!.totalBlocks)) {
-//                    if (queuedOperations[i].undo != null) {
-//                        queuedOperations[i].undo!!.startTrackingUndo(queuedOperations[i].blocks!!.totalBlocks)
-//                    }
-//                    operations.add(queuedOperations[i])
-//                    queuedOperations.removeAt(i)
-//                    i--
-//                }
                 if (operations.size >= 10) {
                     break
                 }
                 operations.add(queuedOperations[i])
-                i++
+                queuedOperations.removeAt(i)
+                i
             }
         }
 
@@ -266,6 +214,13 @@ class AsyncManager {
                 } else if (currentAsyncOp.key.equals("undoedit", ignoreCase = true)) {
                     val undoBatchSize = 32L
                     // If undo or redo finished, handle it
+                    if (currentAsyncOp.undoList!!.isEmpty()) {
+                        operations.removeAt(i)
+                        i--
+                        opSize--
+                        i++
+                        continue
+                    }
                     if (currentAsyncOp.undoList!![0].currentState == UndoMode.UNDO_FINISHED || currentAsyncOp.undoList!![0].currentState == UndoMode.REDO_FINISHED) {
                         if (currentAsyncOp.undoList!![0].currentState == UndoMode.UNDO_FINISHED) {
                             currentAsyncOp.undoList!![0].finalizeUndo()
@@ -285,6 +240,7 @@ class AsyncManager {
                             currentAsyncOp.player.sendMessage("§aUndo operation finished")
                             Main.logDebug("All undos in set finished")
                             i++
+                            continue
                         }
                     }
                     // If undo running, handle it
