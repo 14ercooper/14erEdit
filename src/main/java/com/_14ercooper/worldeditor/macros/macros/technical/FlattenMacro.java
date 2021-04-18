@@ -1,6 +1,7 @@
 package com._14ercooper.worldeditor.macros.macros.technical;
 
 import com._14ercooper.worldeditor.macros.macros.Macro;
+import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.main.SetBlock;
 import com._14ercooper.worldeditor.operations.Operator;
@@ -60,7 +61,7 @@ public class FlattenMacro extends Macro {
         // Apply the changes to the world
         for (BlockState bs : operatedBlocks) {
             Block b = Operator.currentWorld.getBlockAt(bs.getLocation());
-            SetBlock.setMaterial(b, bs.getType());
+            SetBlock.setMaterial(b, bs.getType(), GlobalVars.asyncManager.currentAsyncOp.getUndo());
             b.setBlockData(bs.getBlockData());
         }
 

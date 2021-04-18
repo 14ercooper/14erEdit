@@ -8,7 +8,9 @@ import com._14ercooper.worldeditor.main.Main
 import com._14ercooper.worldeditor.main.NBTExtractor
 import com._14ercooper.worldeditor.main.SetBlock.setMaterial
 import com._14ercooper.worldeditor.operations.Operator
-import com._14ercooper.worldeditor.undo.UndoManager
+import com._14ercooper.worldeditor.undo.UndoElement
+import com._14ercooper.worldeditor.undo.UndoMode
+import com._14ercooper.worldeditor.undo.UndoSystem
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.block.Block
@@ -26,17 +28,31 @@ class AsyncManager {
     private var queuedOperations = ArrayList<AsyncOperation>()
 
     // Store large operations
-    private var largeOps: Queue<AsyncOperation> = ArrayDeque()
+//    private var largeOps: Queue<AsyncOperation> = ArrayDeque()
+
+    // Get undo for commandsender
+    private fun startUndo(sender : CommandSender?) : UndoElement {
+        return UndoSystem.findUserUndo(sender).getNewUndoElement()
+    }
+
+    // Finish an undo element
+    private fun finishUndo(undo : UndoElement) : Boolean {
+        return if (undo.currentState == UndoMode.WAITING_FOR_BLOCKS)
+            undo.userUndo.finalizeUndo(undo)
+        else true
+    }
 
     // Drops the async queue
     fun dropAsync() {
         Main.logDebug("Async queue dropped.")
         for (asyncOp in operations) {
-            if (asyncOp.undo != null && asyncOp.undoRunning) asyncOp.undo!!.finishUndo()
+            if (asyncOp.undo.currentState == UndoMode.WAITING_FOR_BLOCKS) finishUndo(asyncOp.undo)
+        }
+        for (asyncOp in queuedOperations) {
+            if (asyncOp.undo.currentState == UndoMode.WAITING_FOR_BLOCKS) finishUndo(asyncOp.undo)
         }
         operations = ArrayList()
         queuedOperations = ArrayList()
-        largeOps = ArrayDeque()
         queueDropped = true
         doneOperations += (Int.MAX_VALUE / 2).toLong()
     }
@@ -78,147 +94,108 @@ class AsyncManager {
             "§aThere are currently " + (operations.size + queuedOperations.size) + " operations in the async queue for "
                     + remainingBlocks + " blocks."
         )
-        p.sendMessage("§aThe large edits confirm queue has " + largeOps.size + " pending operations.")
         p.sendMessage("§aPer Operation Stats:")
         for (a in queuedOperations) {
             p.sendMessage(
                 "§a[Queued] " + a.blocks!!.remainingBlocks + " blocks remaining out of "
-                        + a.blocks!!.totalBlocks + " total blocks. Undo? " + a.undoRunning + " " + a.blocks.toString()
+                        + a.blocks!!.totalBlocks + " total blocks. Undo? " + a.undo.currentState + " " + a.blocks.toString()
             )
         }
         for (a in operations) {
             p.sendMessage(
                 "§a[Running] " + a.blocks!!.remainingBlocks + " blocks remaining out of "
-                        + a.blocks!!.totalBlocks + " total blocks. Undo? " + a.undoRunning + " " + a.blocks.toString()
+                        + a.blocks!!.totalBlocks + " total blocks. Undo? " + a.undo.currentState + " " + a.blocks.toString()
             )
-        }
-        for (a in largeOps) {
-            p.sendMessage("§a[Large Queue] " + a.blocks!!.totalBlocks + " total blocks. " + a.blocks.toString())
         }
     }
 
     // Schedule a block iterator task
-    fun scheduleEdit(o: Operator?, p: Player?, b: BlockIterator) {
-        if (p == null) {
-            queuedOperations.add(AsyncOperation(o, b))
-        } else if (b.totalBlocks > GlobalVars.undoLimit) {
-            largeOps.add(AsyncOperation(o, p, b))
-            if (!GlobalVars.autoConfirm) {
-                p.sendMessage("§aThis is a large edit that cannot be undone, and may stall 14erEdit for a while.")
-                p.sendMessage("§aPlease type §b/confirm §ato confirm or §b/cancel §a to cancel")
-            }
-        } else {
-            val asyncOp = AsyncOperation(o, p, b)
-            asyncOp.undo = UndoManager.getUndo(p)
-            queuedOperations.add(asyncOp)
-        }
+    fun scheduleEdit(o: Operator?, p: CommandSender, b: BlockIterator) {
+        queuedOperations.add(AsyncOperation(o, p, b, startUndo(p)))
     }
 
     // Schedule a nested block iterator task
-    fun scheduleEdit(o: Operator?, p: Player?, b: BlockIterator, force: Boolean) {
-        if (!force) {
-            scheduleEdit(o, p, b)
-            return
-        }
-        when {
-            p == null -> queuedOperations.add(AsyncOperation(o, b))
-            b.totalBlocks > GlobalVars.undoLimit -> {
-                val asyncOp = AsyncOperation(o, p, b)
-                queuedOperations.add(asyncOp)
-            }
-            else -> {
-                val asyncOp = AsyncOperation(o, p, b)
-                asyncOp.undo = UndoManager.getUndo(p)
-                queuedOperations.add(asyncOp)
-            }
-        }
-    }
+//    fun scheduleEdit(o: Operator?, p: Player?, b: BlockIterator, force: Boolean) {
+//        if (!force) {
+//            scheduleEdit(o, p, b)
+//            return
+//        }
+//        when {
+//            p == null -> queuedOperations.add(AsyncOperation(o, b))
+//            b.totalBlocks > GlobalVars.undoLimit -> {
+//                val asyncOp = AsyncOperation(o, p, b)
+//                queuedOperations.add(asyncOp)
+//            }
+//            else -> {
+//                val asyncOp = AsyncOperation(o, p, b)
+//                asyncOp.undo = UndoManager.getUndo(p)
+//                queuedOperations.add(asyncOp)
+//            }
+//        }
+//    }
 
     // Schedule a multibrush operation
     fun scheduleEdit(iterators: MutableList<out BlockIterator>, operations: MutableList<Operator>, p: CommandSender) {
-        val asyncOp = AsyncOperation(iterators, operations, p)
-        largeOps.add(asyncOp)
-        if (!GlobalVars.autoConfirm) {
-            p.sendMessage("§aMultibrushes can only be run in large edit mode without undos.")
-            p.sendMessage("§aPlease type §b/confirm §ato confirm or §b/cancel §a to cancel")
-        }
+        queuedOperations.add(AsyncOperation(iterators, operations, p, startUndo(p)))
     }
 
     // Schedule a schematics operation
     fun scheduleEdit(sl: SchemLite?, saveSchem: Boolean, p: Player, origin: IntArray) {
-        val asyncOp = AsyncOperation(sl, saveSchem, origin, p)
-        if (asyncOp.blocks!!.totalBlocks > GlobalVars.undoLimit) {
-            largeOps.add(asyncOp)
-            if (!GlobalVars.autoConfirm) {
-                p.sendMessage("§aThis is a large edit that cannot be undone, and may stall 14erEdit for a while.")
-                p.sendMessage("§aPlease type §b/confirm §ato confirm or §b/cancel §a to cancel")
-            }
-        } else {
-            asyncOp.undo = UndoManager.getUndo(p)
-            queuedOperations.add(asyncOp)
-        }
+        queuedOperations.add(AsyncOperation(sl, saveSchem, origin, p, startUndo(p)))
     }
 
     // Schedule a selection clone operation
     fun scheduleEdit(b: BlockIterator?, offset: IntArray, times: Int, delOriginal: Boolean, p: Player) {
-        val asyncOp = AsyncOperation(b, offset, times, delOriginal, p)
-        if (asyncOp.blocks!!.totalBlocks * times > GlobalVars.undoLimit) {
-            largeOps.add(asyncOp)
-            if (!GlobalVars.autoConfirm) {
-                p.sendMessage("§aThis is a large edit that cannot be undone, and may stall 14erEdit for a while.")
-                p.sendMessage("§aPlease type §b/confirm §ato confirm or §b/cancel §a to cancel")
-            }
-        } else {
-            asyncOp.undo = UndoManager.getUndo(p)
-            queuedOperations.add(asyncOp)
-        }
+        queuedOperations.add(AsyncOperation(b, offset, times, delOriginal, p, startUndo(p)))
     }
 
     // Confirm large edits
-    fun confirmEdits(number: Int) {
-        var numberConfirm = number
-        numberConfirm = if (numberConfirm < 1) 1 else numberConfirm.coerceAtMost(largeOps.size)
-        Main.logDebug("Confirming $numberConfirm large edits.")
-        while (numberConfirm-- > 0) {
-            queuedOperations.add(largeOps.remove())
-        }
-    }
+//    fun confirmEdits(number: Int) {
+//        var numberConfirm = number
+//        numberConfirm = if (numberConfirm < 1) 1 else numberConfirm.coerceAtMost(largeOps.size)
+//        Main.logDebug("Confirming $numberConfirm large edits.")
+//        while (numberConfirm-- > 0) {
+//            queuedOperations.add(largeOps.remove())
+//        }
+//    }
 
     // Cancel large edits
-    fun cancelEdits(number: Int) {
-        var numberCancel = number
-        numberCancel = if (numberCancel < 1) 1 else numberCancel.coerceAtMost(largeOps.size)
-        Main.logDebug("Cancelling $numberCancel large edits.")
-        while (numberCancel-- > 0) {
-            largeOps.remove()
-        }
-    }
+//    fun cancelEdits(number: Int) {
+//        var numberCancel = number
+//        numberCancel = if (numberCancel < 1) 1 else numberCancel.coerceAtMost(largeOps.size)
+//        Main.logDebug("Cancelling $numberCancel large edits.")
+//        while (numberCancel-- > 0) {
+//            largeOps.remove()
+//        }
+//    }
 
     // Scheduled task to operate
+    lateinit var currentAsyncOp : AsyncOperation
     private fun performOperation() {
         // Output building up debug
         Main.outputDebug()
 
         // If in autoconfirm mode, do that
-        if (GlobalVars.autoConfirm) {
-            confirmEdits(10)
-        }
+//        if (GlobalVars.autoConfirm) {
+//            confirmEdits(10)
+//        }
 
         // Dispatch async edits
         if (operations.size < 10) {
             var i = 0
             while (i < queuedOperations.size) {
-                if (queuedOperations[i].undo == null || queuedOperations[i].undo!!.canStartUndo(queuedOperations[i].blocks!!.totalBlocks)) {
-                    if (queuedOperations[i].undo != null) {
-                        queuedOperations[i].undo!!.startTrackingUndo(queuedOperations[i].blocks!!.totalBlocks)
-                    }
-                    operations.add(queuedOperations[i])
-                    queuedOperations.removeAt(i)
-                    i--
-                }
+//                if (queuedOperations[i].undo == null || queuedOperations[i].undo!!.canStartUndo(queuedOperations[i].blocks!!.totalBlocks)) {
+//                    if (queuedOperations[i].undo != null) {
+//                        queuedOperations[i].undo!!.startTrackingUndo(queuedOperations[i].blocks!!.totalBlocks)
+//                    }
+//                    operations.add(queuedOperations[i])
+//                    queuedOperations.removeAt(i)
+//                    i--
+//                }
                 if (operations.size >= 10) {
                     break
                 }
+                operations.add(queuedOperations[i])
                 i++
             }
         }
@@ -246,13 +223,11 @@ class AsyncManager {
                     queueDropped = false
                     return
                 }
-                val currentAsyncOp = operations[i]
+                currentAsyncOp = operations[i]
                 if (currentAsyncOp.blocks != null && currentAsyncOp.blocks!!.remainingBlocks == 0L) {
-                    if (currentAsyncOp.undo != null) {
-                        currentAsyncOp.undo!!.finishUndo()
-                    }
+                    finishUndo(currentAsyncOp.undo)
                     if (currentAsyncOp.key.equals("saveschem", ignoreCase = true)) {
-                        currentAsyncOp.player!!.sendMessage("§aSelection saved")
+                        currentAsyncOp.player.sendMessage("§aSelection saved")
                     }
                     if (currentAsyncOp.blocks is SchemBrushIterator) {
                         (currentAsyncOp.blocks as SchemBrushIterator).cleanup()
@@ -272,9 +247,7 @@ class AsyncManager {
                 ) {
                     val b = getBlock(currentAsyncOp)
                     if (b == null) {
-                        if (currentAsyncOp.undo != null) {
-                            currentAsyncOp.undo!!.finishUndo()
-                        }
+                        finishUndo(currentAsyncOp.undo)
                         if (currentAsyncOp.blocks is SchemBrushIterator) {
                             (currentAsyncOp.blocks as SchemBrushIterator).cleanup()
                         }
@@ -286,7 +259,36 @@ class AsyncManager {
                     }
                     currentAsyncOp.operation!!.operateOnBlock(b, currentAsyncOp.player)
                     doneOperations++
-                    GlobalVars.currentUndo = null
+                } else if (currentAsyncOp.key.equals("undoedit", ignoreCase = true)) {
+                    val undoBatchSize = 32L
+                    // If undo or redo finished, handle it
+                    if (currentAsyncOp.undoList!![0].currentState == UndoMode.UNDO_FINISHED || currentAsyncOp.undoList!![0].currentState == UndoMode.REDO_FINISHED) {
+                        if (currentAsyncOp.undoList!![0].currentState == UndoMode.UNDO_FINISHED)
+                            currentAsyncOp.undoList!![0].finalizeUndo()
+                        else
+                            currentAsyncOp.undoList!![0].finalizeRedo()
+                        currentAsyncOp.undoList!!.removeAt(0)
+                        if (currentAsyncOp.undoList!!.size == 0) {
+                            operations.removeAt(i)
+                            i--
+                            opSize--
+                            currentAsyncOp.player.sendMessage("§aUndo finished")
+                            i++
+                        }
+                    }
+                    // If undo running, handle it
+                    else if (currentAsyncOp.undoList!![0].currentState == UndoMode.PERFORMING_UNDO) {
+                        currentAsyncOp.undoList!![0].applyUndo(undoBatchSize)
+                        doneOperations += undoBatchSize
+
+                    }
+                    // If redo running, handle it
+                    else if (currentAsyncOp.undoList!![0].currentState == UndoMode.PERFORMING_REDO) {
+                        currentAsyncOp.undoList!![0].applyRedo(undoBatchSize)
+                        doneOperations += undoBatchSize
+
+                    }
+
                 } else if (currentAsyncOp.key.equals("multibrush", ignoreCase = true)) {
                     var b: Block?
                     var doContinue = false
@@ -319,7 +321,6 @@ class AsyncManager {
                     }
                     currentAsyncOp.operations[0].operateOnBlock(b, currentAsyncOp.player)
                     doneOperations++
-                    GlobalVars.currentUndo = null
                 } else if (currentAsyncOp.key.equals("messyedit", ignoreCase = true)) {
                     operations.removeAt(i).operation!!.messyOperate()
                     i--
@@ -328,26 +329,19 @@ class AsyncManager {
                 } else if (currentAsyncOp.key.equals("saveschem", ignoreCase = true)) {
                     assert(currentAsyncOp.blocks != null)
                     val b = currentAsyncOp.blocks!!.next
-                    if (currentAsyncOp.undo != null) {
-                        if (!currentAsyncOp.undoRunning) {
-                            currentAsyncOp.undo!!.startUndo(currentAsyncOp.blocks!!.totalBlocks)
-                            try {
-                                currentAsyncOp.schem!!.resetWrite()
-                            } catch (e: IOException) {
-                                Main.logError("Could not write to schematic file", currentAsyncOp.player, e)
-                            }
+                    if (!currentAsyncOp.startedWrite) {
+                        try {
+                            currentAsyncOp.schem!!.resetWrite()
+                        } catch (e: IOException) {
+                            Main.logError("Could not write to schematic file", currentAsyncOp.player, e)
                         }
-                        GlobalVars.currentUndo = currentAsyncOp.undo
-                        currentAsyncOp.undoRunning = true
                     }
                     if (b == null) {
-                        if (currentAsyncOp.undo != null) {
-                            currentAsyncOp.undo!!.finishUndo()
-                        }
+                        finishUndo(currentAsyncOp.undo)
                         operations.removeAt(i)
                         i--
                         opSize--
-                        currentAsyncOp.player!!.sendMessage("§aSelection saved")
+                        currentAsyncOp.player.sendMessage("§aSelection saved")
                         i++
                         continue
                     }
@@ -361,13 +355,10 @@ class AsyncManager {
                         // Don't need to do anything
                     }
                     doneOperations++
-                    GlobalVars.currentUndo = null
                 } else if (currentAsyncOp.key.equals("loadschem", ignoreCase = true)) {
                     val b = getBlock(currentAsyncOp)
                     if (b == null) {
-                        if (currentAsyncOp.undo != null) {
-                            currentAsyncOp.undo!!.finishUndo()
-                        }
+                        finishUndo(currentAsyncOp.undo)
                         operations.removeAt(i)
                         i--
                         opSize--
@@ -376,7 +367,7 @@ class AsyncManager {
                         } catch (e: IOException) {
                             // Don't need to do anything
                         }
-                        currentAsyncOp.player!!.sendMessage("§aData loaded")
+                        currentAsyncOp.player.sendMessage("§aData loaded")
                         i++
                         continue
                     }
@@ -388,7 +379,7 @@ class AsyncManager {
                     }
                     val m = Material.matchMaterial(results[0])
                     if (m != null && !m.isAir || currentAsyncOp.schem!!.setAir()) {
-                        setMaterial(b, Material.matchMaterial(results[0]), false)
+                        setMaterial(b, Material.matchMaterial(results[0]), false, currentAsyncOp.undo)
                         b.blockData = Bukkit.getServer().createBlockData(results[1])
                         if (results[2].isNotEmpty()) {
                             val command = ("data merge block " + b.x + " " + b.y + " " + b.z + " "
@@ -397,24 +388,14 @@ class AsyncManager {
                         }
                     }
                     doneOperations++
-                    GlobalVars.currentUndo = null
                 } else if (currentAsyncOp.key.equals("selclone", ignoreCase = true)) {
                     val tempPlayer = Operator.currentPlayer
-                    Operator.currentPlayer = currentAsyncOp.player ?: GlobalVars.plugin.server.consoleSender
+                    Operator.currentPlayer = currentAsyncOp.player
                     assert(currentAsyncOp.blocks != null)
                     val b = currentAsyncOp.blocks!!.next
                     Operator.currentPlayer = tempPlayer
-                    if (currentAsyncOp.undo != null) {
-                        if (!currentAsyncOp.undoRunning) {
-                            currentAsyncOp.undo!!.startUndo(currentAsyncOp.blocks!!.totalBlocks)
-                        }
-                        GlobalVars.currentUndo = currentAsyncOp.undo
-                        currentAsyncOp.undoRunning = true
-                    }
                     if (b == null) {
-                        if (currentAsyncOp.undo != null) {
-                            currentAsyncOp.undo!!.finishUndo()
-                        }
+                        finishUndo(currentAsyncOp.undo)
                         operations.removeAt(i)
                         i--
                         opSize--
@@ -427,7 +408,7 @@ class AsyncManager {
                             currentAsyncOp.offset[0] * (1 + timesDone),
                             currentAsyncOp.offset[1] * (1 + timesDone), currentAsyncOp.offset[2] * (1 + timesDone)
                         )
-                        setMaterial(toEdit, b.type, false)
+                        setMaterial(toEdit, b.type, false, currentAsyncOp.undo)
                         toEdit.setBlockData(b.blockData, false)
                         val nbt = NBTExtractor()
                         val nbtStr = nbt.getNBT(b)
@@ -439,11 +420,10 @@ class AsyncManager {
                         }
                     }
                     if (currentAsyncOp.delOriginal) {
-                        setMaterial(b, Material.AIR, false)
+                        setMaterial(b, Material.AIR, false, currentAsyncOp.undo)
                         doneOperations++
                     }
                     doneOperations += currentAsyncOp.times.toLong()
-                    GlobalVars.currentUndo = null
                 } else {
                     Main.logError(
                         "Invalid operation in async queue. Removing operation.",
@@ -466,15 +446,15 @@ class AsyncManager {
 
     private fun getBlock(currentAsyncOp: AsyncOperation): Block? {
         assert(currentAsyncOp.blocks != null)
-        val b = currentAsyncOp.blocks!!.next
-        if (currentAsyncOp.undo != null) {
-            if (!currentAsyncOp.undoRunning) {
-                currentAsyncOp.undo!!.startUndo(currentAsyncOp.blocks!!.totalBlocks)
-            }
-            GlobalVars.currentUndo = currentAsyncOp.undo
-            currentAsyncOp.undoRunning = true
-        }
-        return b
+        return currentAsyncOp.blocks!!.next
+//        if (currentAsyncOp.undo != null) {
+//            if (!currentAsyncOp.undoRunning) {
+//                currentAsyncOp.undo!!.startUndo(currentAsyncOp.blocks!!.totalBlocks)
+//            }
+//            GlobalVars.currentUndo = currentAsyncOp.undo
+//            currentAsyncOp.undoRunning = true
+//        }
+//        return b
     }
 
     companion object {

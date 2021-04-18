@@ -141,7 +141,7 @@ public class GrassMacro extends Macro {
         // Apply the changes to the world
         for (BlockState bs : operatedBlocks) {
             Block b = Operator.currentWorld.getBlockAt(bs.getLocation());
-            SetBlock.setMaterial(b, bs.getType());
+            SetBlock.setMaterial(b, bs.getType(), GlobalVars.asyncManager.currentAsyncOp.getUndo());
             b.setBlockData(bs.getBlockData());
         }
 

@@ -7,7 +7,6 @@ import java.nio.file.Paths
 import java.io.IOException
 import com._14ercooper.worldeditor.commands.CommandFx
 import com._14ercooper.worldeditor.commands.CommandUndo
-import com._14ercooper.worldeditor.commands.CommandConfirm
 import com._14ercooper.worldeditor.commands.CommandScript
 import com._14ercooper.worldeditor.commands.CommandRun
 import com._14ercooper.worldeditor.commands.CommandRunat
@@ -35,6 +34,7 @@ import com._14ercooper.worldeditor.blockiterator.IteratorLoader
 import com._14ercooper.worldeditor.compat.WorldEditCompat
 import com._14ercooper.worldeditor.functions.Function
 import com._14ercooper.worldeditor.operations.Parser
+import com._14ercooper.worldeditor.undo.UndoSystem
 import org.bukkit.command.CommandSender
 import java.io.PrintWriter
 import java.io.StringWriter
@@ -44,7 +44,8 @@ import java.nio.file.StandardOpenOption
 
 class Main : JavaPlugin() {
     override fun onDisable() {
-        // We don't need to do anything on disable
+        // Flush the undo system to disk (make sure nothing's still in RAM)
+        UndoSystem.flush()
     }
 
     override fun onEnable() {
@@ -89,9 +90,6 @@ class Main : JavaPlugin() {
         val undoCmd = CommandUndo()
         getCommand("un")!!.setExecutor(undoCmd)
         getCommand("re")!!.setExecutor(undoCmd)
-        val confirmCmd = CommandConfirm()
-        getCommand("confirm")!!.setExecutor(confirmCmd)
-        getCommand("cancel")!!.setExecutor(confirmCmd)
         getCommand("script")!!.setExecutor(CommandScript())
         getCommand("run")!!.setExecutor(CommandRun())
         getCommand("runat")!!.setExecutor(CommandRunat())

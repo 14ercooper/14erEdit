@@ -1,5 +1,6 @@
 package com._14ercooper.worldeditor.macros.macros.technical;
 
+import com._14ercooper.worldeditor.main.GlobalVars;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -38,7 +39,7 @@ public class LineMacro extends Macro {
         double x = x1, y = y1, z = z1;
         for (int i = 0; i < 1000; i++) {
             Block b = Operator.currentWorld.getBlockAt((int) x, (int) y, (int) z);
-            SetBlock.setMaterial(b, mat);
+            SetBlock.setMaterial(b, mat, GlobalVars.asyncManager.currentAsyncOp.getUndo());
             x += dx;
             y += dy;
             z += dz;

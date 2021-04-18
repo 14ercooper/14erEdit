@@ -267,14 +267,14 @@ public class BasicTreeMacro extends Macro {
         // Place the trunk blocks
         for (Block b : trunkBlocks) {
             if (b.getType() == Material.AIR) {
-                SetBlock.setMaterial(b, trunk);
+                SetBlock.setMaterial(b, trunk, GlobalVars.asyncManager.currentAsyncOp.getUndo());
             }
         }
 
         // Place the leaf blocks
         for (Block b : leafBlocks) {
             if (b.getType() == Material.AIR) {
-                SetBlock.setMaterial(b, leaves);
+                SetBlock.setMaterial(b, leaves, GlobalVars.asyncManager.currentAsyncOp.getUndo());
             }
         }
     }
@@ -355,7 +355,7 @@ public class BasicTreeMacro extends Macro {
 
             // Place the current block
             if (currentBlock.getType() == Material.AIR) {
-                SetBlock.setMaterial(currentBlock, trunk);
+                SetBlock.setMaterial(currentBlock, trunk, GlobalVars.asyncManager.currentAsyncOp.getUndo());
             }
         }
         currentBlock = currentBlock.getRelative(BlockFace.UP);
@@ -434,7 +434,7 @@ public class BasicTreeMacro extends Macro {
         Main.logDebug("Placing cap blocks"); // -----
         for (Block bl : capBlocks) {
             if (bl.getType() == Material.AIR) {
-                SetBlock.setMaterial(bl, leaves);
+                SetBlock.setMaterial(bl, leaves, GlobalVars.asyncManager.currentAsyncOp.getUndo());
             }
         }
     }
@@ -476,7 +476,7 @@ public class BasicTreeMacro extends Macro {
 
             // Place the current block
             if (currentBlock.getType() == Material.AIR) {
-                SetBlock.setMaterial(currentBlock, trunk);
+                SetBlock.setMaterial(currentBlock, trunk, GlobalVars.asyncManager.currentAsyncOp.getUndo());
             }
         }
 
@@ -530,7 +530,7 @@ public class BasicTreeMacro extends Macro {
         // Place the cap
         for (Block b : leafList) {
             if (b.getType() == Material.AIR) {
-                SetBlock.setMaterial(b, leaves);
+                SetBlock.setMaterial(b, leaves, GlobalVars.asyncManager.currentAsyncOp.getUndo());
             }
         }
     }
@@ -606,7 +606,7 @@ public class BasicTreeMacro extends Macro {
                 blockList.add(currentBlock.getRelative(BlockFace.EAST));
                 blockList.add(currentBlock.getRelative(BlockFace.NORTH_EAST));
                 for (Block b : blockList) {
-                    SetBlock.setMaterial(b, trunk);
+                    SetBlock.setMaterial(b, trunk, GlobalVars.asyncManager.currentAsyncOp.getUndo());
                 }
             }
             if (trunkSize == 3) {
@@ -620,7 +620,7 @@ public class BasicTreeMacro extends Macro {
                 blockList.add(currentBlock.getRelative(BlockFace.NORTH_EAST).getRelative(BlockFace.NORTH));
                 blockList.add(currentBlock.getRelative(BlockFace.NORTH_EAST).getRelative(BlockFace.EAST));
                 for (Block b : blockList) {
-                    SetBlock.setMaterial(b, trunk);
+                    SetBlock.setMaterial(b, trunk, GlobalVars.asyncManager.currentAsyncOp.getUndo());
                 }
             }
         }
@@ -638,7 +638,7 @@ public class BasicTreeMacro extends Macro {
                         Block toPlace = Operator.currentWorld.getBlockAt((int) (x + rx), (int) (y + ry),
                                 (int) (z + rz));
                         if (toPlace.getType() == Material.AIR) {
-                            SetBlock.setMaterial(toPlace, leaves);
+                            SetBlock.setMaterial(toPlace, leaves, GlobalVars.asyncManager.currentAsyncOp.getUndo());
                         }
                     }
                 }
@@ -654,7 +654,7 @@ public class BasicTreeMacro extends Macro {
         for (int i = 1; i <= treeSize; i++) {
             currentBlock = currentBlock.getRelative(BlockFace.UP);
             if (currentBlock.getType() == Material.AIR) {
-                SetBlock.setMaterial(currentBlock, trunk);
+                SetBlock.setMaterial(currentBlock, trunk, GlobalVars.asyncManager.currentAsyncOp.getUndo());
             }
         }
 
@@ -776,7 +776,7 @@ public class BasicTreeMacro extends Macro {
         // Then place the leaf blocks
         for (Block b : leafList) {
             if (b.getType() == Material.AIR) {
-                SetBlock.setMaterial(b, leaves);
+                SetBlock.setMaterial(b, leaves, GlobalVars.asyncManager.currentAsyncOp.getUndo());
             }
         }
     }
@@ -785,7 +785,7 @@ public class BasicTreeMacro extends Macro {
         // Place the log block
         Block baseBlock = Operator.currentWorld.getBlockAt(plantOn).getRelative(BlockFace.UP);
         if (baseBlock.getType() == Material.AIR) {
-            SetBlock.setMaterial(baseBlock, trunk);
+            SetBlock.setMaterial(baseBlock, trunk, GlobalVars.asyncManager.currentAsyncOp.getUndo());
         }
 
         // Generate the ellipsoid of leaves
@@ -807,7 +807,7 @@ public class BasicTreeMacro extends Macro {
                             continue;
                         }
                         if (toPlace.getType() == Material.AIR) {
-                            SetBlock.setMaterial(toPlace, leaves);
+                            SetBlock.setMaterial(toPlace, leaves, GlobalVars.asyncManager.currentAsyncOp.getUndo());
                         }
                     }
                 }
@@ -888,7 +888,7 @@ public class BasicTreeMacro extends Macro {
                         branchThickness -= branchTaper;
                         // Place the central block
                         if (currentBlock.getType() == Material.AIR) {
-                            SetBlock.setMaterial(currentBlock, trunk);
+                            SetBlock.setMaterial(currentBlock, trunk, GlobalVars.asyncManager.currentAsyncOp.getUndo());
                         }
 
                         // Build the disk
@@ -900,7 +900,7 @@ public class BasicTreeMacro extends Macro {
                                 if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
                                     Block b = Operator.currentWorld.getBlockAt(x + rx, y, z + rz);
                                     if (b.getType() == Material.AIR) {
-                                        SetBlock.setMaterial(b, trunk);
+                                        SetBlock.setMaterial(b, trunk, GlobalVars.asyncManager.currentAsyncOp.getUndo());
                                     }
                                 }
                             }
@@ -951,7 +951,7 @@ public class BasicTreeMacro extends Macro {
                             branchThickness -= branchTaper;
                             // Place the central block
                             if (currentBlock.getType() == Material.AIR) {
-                                SetBlock.setMaterial(currentBlock, trunk);
+                                SetBlock.setMaterial(currentBlock, trunk, GlobalVars.asyncManager.currentAsyncOp.getUndo());
                             }
 
                             // Build the disk
@@ -964,7 +964,7 @@ public class BasicTreeMacro extends Macro {
                                     if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
                                         Block b = Operator.currentWorld.getBlockAt(x + rx, y, z + rz);
                                         if (b.getType() == Material.AIR) {
-                                            SetBlock.setMaterial(b, trunk);
+                                            SetBlock.setMaterial(b, trunk, GlobalVars.asyncManager.currentAsyncOp.getUndo());
                                         }
                                     }
                                 }
@@ -993,7 +993,7 @@ public class BasicTreeMacro extends Macro {
                             branchThickness -= branchTaper;
                             // Place the central block
                             if (currentBlock.getType() == Material.AIR) {
-                                SetBlock.setMaterial(currentBlock, trunk);
+                                SetBlock.setMaterial(currentBlock, trunk, GlobalVars.asyncManager.currentAsyncOp.getUndo());
                             }
 
                             // Build the disk
@@ -1006,7 +1006,7 @@ public class BasicTreeMacro extends Macro {
                                     if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
                                         Block b = Operator.currentWorld.getBlockAt(x + rx, y, z + rz);
                                         if (b.getType() == Material.AIR) {
-                                            SetBlock.setMaterial(b, trunk);
+                                            SetBlock.setMaterial(b, trunk, GlobalVars.asyncManager.currentAsyncOp.getUndo());
                                         }
                                     }
                                 }
@@ -1037,7 +1037,7 @@ public class BasicTreeMacro extends Macro {
                             branchThickness -= branchTaper;
                             // Place the central block
                             if (currentBlock.getType() == Material.AIR) {
-                                SetBlock.setMaterial(currentBlock, trunk);
+                                SetBlock.setMaterial(currentBlock, trunk, GlobalVars.asyncManager.currentAsyncOp.getUndo());
                             }
 
                             // Build the disk
@@ -1050,7 +1050,7 @@ public class BasicTreeMacro extends Macro {
                                     if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
                                         Block b = Operator.currentWorld.getBlockAt(x + rx, y, z + rz);
                                         if (b.getType() == Material.AIR) {
-                                            SetBlock.setMaterial(b, trunk);
+                                            SetBlock.setMaterial(b, trunk, GlobalVars.asyncManager.currentAsyncOp.getUndo());
                                         }
                                     }
                                 }
@@ -1079,7 +1079,7 @@ public class BasicTreeMacro extends Macro {
                             branchThickness -= branchTaper;
                             // Place the central block
                             if (currentBlock.getType() == Material.AIR) {
-                                SetBlock.setMaterial(currentBlock, trunk);
+                                SetBlock.setMaterial(currentBlock, trunk, GlobalVars.asyncManager.currentAsyncOp.getUndo());
                             }
 
                             // Build the disk
@@ -1092,7 +1092,7 @@ public class BasicTreeMacro extends Macro {
                                     if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
                                         Block b = Operator.currentWorld.getBlockAt(x + rx, y, z + rz);
                                         if (b.getType() == Material.AIR) {
-                                            SetBlock.setMaterial(b, trunk);
+                                            SetBlock.setMaterial(b, trunk, GlobalVars.asyncManager.currentAsyncOp.getUndo());
                                         }
                                     }
                                 }
@@ -1131,7 +1131,7 @@ public class BasicTreeMacro extends Macro {
                                 branchThickness -= branchTaper;
                                 // Place the central block
                                 if (currentBlock.getType() == Material.AIR) {
-                                    SetBlock.setMaterial(currentBlock, trunk);
+                                    SetBlock.setMaterial(currentBlock, trunk, GlobalVars.asyncManager.currentAsyncOp.getUndo());
                                 }
 
                                 // Build the disk
@@ -1144,7 +1144,7 @@ public class BasicTreeMacro extends Macro {
                                         if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
                                             Block b = Operator.currentWorld.getBlockAt(x + rx, y, z + rz);
                                             if (b.getType() == Material.AIR) {
-                                                SetBlock.setMaterial(b, trunk);
+                                                SetBlock.setMaterial(b, trunk, GlobalVars.asyncManager.currentAsyncOp.getUndo());
                                             }
                                         }
                                     }
@@ -1173,7 +1173,7 @@ public class BasicTreeMacro extends Macro {
                                 branchThickness -= branchTaper;
                                 // Place the central block
                                 if (currentBlock.getType() == Material.AIR) {
-                                    SetBlock.setMaterial(currentBlock, trunk);
+                                    SetBlock.setMaterial(currentBlock, trunk, GlobalVars.asyncManager.currentAsyncOp.getUndo());
                                 }
 
                                 // Build the disk
@@ -1186,7 +1186,7 @@ public class BasicTreeMacro extends Macro {
                                         if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
                                             Block b = Operator.currentWorld.getBlockAt(x + rx, y, z + rz);
                                             if (b.getType() == Material.AIR) {
-                                                SetBlock.setMaterial(b, trunk);
+                                                SetBlock.setMaterial(b, trunk, GlobalVars.asyncManager.currentAsyncOp.getUndo());
                                             }
                                         }
                                     }
@@ -1216,7 +1216,7 @@ public class BasicTreeMacro extends Macro {
                                 branchThickness -= branchTaper;
                                 // Place the central block
                                 if (currentBlock.getType() == Material.AIR) {
-                                    SetBlock.setMaterial(currentBlock, trunk);
+                                    SetBlock.setMaterial(currentBlock, trunk, GlobalVars.asyncManager.currentAsyncOp.getUndo());
                                 }
 
                                 // Build the disk
@@ -1229,7 +1229,7 @@ public class BasicTreeMacro extends Macro {
                                         if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
                                             Block b = Operator.currentWorld.getBlockAt(x + rx, y, z + rz);
                                             if (b.getType() == Material.AIR) {
-                                                SetBlock.setMaterial(b, trunk);
+                                                SetBlock.setMaterial(b, trunk, GlobalVars.asyncManager.currentAsyncOp.getUndo());
                                             }
                                         }
                                     }
@@ -1261,7 +1261,7 @@ public class BasicTreeMacro extends Macro {
                                 branchThickness -= branchTaper;
                                 // Place the central block
                                 if (currentBlock.getType() == Material.AIR) {
-                                    SetBlock.setMaterial(currentBlock, trunk);
+                                    SetBlock.setMaterial(currentBlock, trunk, GlobalVars.asyncManager.currentAsyncOp.getUndo());
                                 }
 
                                 // Build the disk
@@ -1274,7 +1274,7 @@ public class BasicTreeMacro extends Macro {
                                         if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
                                             Block b = Operator.currentWorld.getBlockAt(x + rx, y, z + rz);
                                             if (b.getType() == Material.AIR) {
-                                                SetBlock.setMaterial(b, trunk);
+                                                SetBlock.setMaterial(b, trunk, GlobalVars.asyncManager.currentAsyncOp.getUndo());
                                             }
                                         }
                                     }
@@ -1303,7 +1303,7 @@ public class BasicTreeMacro extends Macro {
                                 branchThickness -= branchTaper;
                                 // Place the central block
                                 if (currentBlock.getType() == Material.AIR) {
-                                    SetBlock.setMaterial(currentBlock, trunk);
+                                    SetBlock.setMaterial(currentBlock, trunk, GlobalVars.asyncManager.currentAsyncOp.getUndo());
                                 }
 
                                 // Build the disk
@@ -1316,7 +1316,7 @@ public class BasicTreeMacro extends Macro {
                                         if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
                                             Block b = Operator.currentWorld.getBlockAt(x + rx, y, z + rz);
                                             if (b.getType() == Material.AIR) {
-                                                SetBlock.setMaterial(b, trunk);
+                                                SetBlock.setMaterial(b, trunk, GlobalVars.asyncManager.currentAsyncOp.getUndo());
                                             }
                                         }
                                     }
@@ -1346,7 +1346,7 @@ public class BasicTreeMacro extends Macro {
                                 branchThickness -= branchTaper;
                                 // Place the central block
                                 if (currentBlock.getType() == Material.AIR) {
-                                    SetBlock.setMaterial(currentBlock, trunk);
+                                    SetBlock.setMaterial(currentBlock, trunk, GlobalVars.asyncManager.currentAsyncOp.getUndo());
                                 }
 
                                 // Build the disk
@@ -1359,7 +1359,7 @@ public class BasicTreeMacro extends Macro {
                                         if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
                                             Block b = Operator.currentWorld.getBlockAt(x + rx, y, z + rz);
                                             if (b.getType() == Material.AIR) {
-                                                SetBlock.setMaterial(b, trunk);
+                                                SetBlock.setMaterial(b, trunk, GlobalVars.asyncManager.currentAsyncOp.getUndo());
                                             }
                                         }
                                     }
@@ -1391,7 +1391,7 @@ public class BasicTreeMacro extends Macro {
                                 branchThickness -= branchTaper;
                                 // Place the central block
                                 if (currentBlock.getType() == Material.AIR) {
-                                    SetBlock.setMaterial(currentBlock, trunk);
+                                    SetBlock.setMaterial(currentBlock, trunk, GlobalVars.asyncManager.currentAsyncOp.getUndo());
                                 }
 
                                 // Build the disk
@@ -1404,7 +1404,7 @@ public class BasicTreeMacro extends Macro {
                                         if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
                                             Block b = Operator.currentWorld.getBlockAt(x + rx, y, z + rz);
                                             if (b.getType() == Material.AIR) {
-                                                SetBlock.setMaterial(b, trunk);
+                                                SetBlock.setMaterial(b, trunk, GlobalVars.asyncManager.currentAsyncOp.getUndo());
                                             }
                                         }
                                     }
@@ -1433,7 +1433,7 @@ public class BasicTreeMacro extends Macro {
                                 branchThickness -= branchTaper;
                                 // Place the central block
                                 if (currentBlock.getType() == Material.AIR) {
-                                    SetBlock.setMaterial(currentBlock, trunk);
+                                    SetBlock.setMaterial(currentBlock, trunk, GlobalVars.asyncManager.currentAsyncOp.getUndo());
                                 }
 
                                 // Build the disk
@@ -1446,7 +1446,7 @@ public class BasicTreeMacro extends Macro {
                                         if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
                                             Block b = Operator.currentWorld.getBlockAt(x + rx, y, z + rz);
                                             if (b.getType() == Material.AIR) {
-                                                SetBlock.setMaterial(b, trunk);
+                                                SetBlock.setMaterial(b, trunk, GlobalVars.asyncManager.currentAsyncOp.getUndo());
                                             }
                                         }
                                     }
@@ -1476,7 +1476,7 @@ public class BasicTreeMacro extends Macro {
                                 branchThickness -= branchTaper;
                                 // Place the central block
                                 if (currentBlock.getType() == Material.AIR) {
-                                    SetBlock.setMaterial(currentBlock, trunk);
+                                    SetBlock.setMaterial(currentBlock, trunk, GlobalVars.asyncManager.currentAsyncOp.getUndo());
                                 }
 
                                 // Build the disk
@@ -1489,7 +1489,7 @@ public class BasicTreeMacro extends Macro {
                                         if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
                                             Block b = Operator.currentWorld.getBlockAt(x + rx, y, z + rz);
                                             if (b.getType() == Material.AIR) {
-                                                SetBlock.setMaterial(b, trunk);
+                                                SetBlock.setMaterial(b, trunk, GlobalVars.asyncManager.currentAsyncOp.getUndo());
                                             }
                                         }
                                     }
@@ -1521,7 +1521,7 @@ public class BasicTreeMacro extends Macro {
                                 branchThickness -= branchTaper;
                                 // Place the central block
                                 if (currentBlock.getType() == Material.AIR) {
-                                    SetBlock.setMaterial(currentBlock, trunk);
+                                    SetBlock.setMaterial(currentBlock, trunk, GlobalVars.asyncManager.currentAsyncOp.getUndo());
                                 }
 
                                 // Build the disk
@@ -1534,7 +1534,7 @@ public class BasicTreeMacro extends Macro {
                                         if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
                                             Block b = Operator.currentWorld.getBlockAt(x + rx, y, z + rz);
                                             if (b.getType() == Material.AIR) {
-                                                SetBlock.setMaterial(b, trunk);
+                                                SetBlock.setMaterial(b, trunk, GlobalVars.asyncManager.currentAsyncOp.getUndo());
                                             }
                                         }
                                     }
@@ -1563,7 +1563,7 @@ public class BasicTreeMacro extends Macro {
                                 branchThickness -= branchTaper;
                                 // Place the central block
                                 if (currentBlock.getType() == Material.AIR) {
-                                    SetBlock.setMaterial(currentBlock, trunk);
+                                    SetBlock.setMaterial(currentBlock, trunk, GlobalVars.asyncManager.currentAsyncOp.getUndo());
                                 }
 
                                 // Build the disk
@@ -1576,7 +1576,7 @@ public class BasicTreeMacro extends Macro {
                                         if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
                                             Block b = Operator.currentWorld.getBlockAt(x + rx, y, z + rz);
                                             if (b.getType() == Material.AIR) {
-                                                SetBlock.setMaterial(b, trunk);
+                                                SetBlock.setMaterial(b, trunk, GlobalVars.asyncManager.currentAsyncOp.getUndo());
                                             }
                                         }
                                     }
@@ -1606,7 +1606,7 @@ public class BasicTreeMacro extends Macro {
                                 branchThickness -= branchTaper;
                                 // Place the central block
                                 if (currentBlock.getType() == Material.AIR) {
-                                    SetBlock.setMaterial(currentBlock, trunk);
+                                    SetBlock.setMaterial(currentBlock, trunk, GlobalVars.asyncManager.currentAsyncOp.getUndo());
                                 }
 
                                 // Build the disk
@@ -1619,7 +1619,7 @@ public class BasicTreeMacro extends Macro {
                                         if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
                                             Block b = Operator.currentWorld.getBlockAt(x + rx, y, z + rz);
                                             if (b.getType() == Material.AIR) {
-                                                SetBlock.setMaterial(b, trunk);
+                                                SetBlock.setMaterial(b, trunk, GlobalVars.asyncManager.currentAsyncOp.getUndo());
                                             }
                                         }
                                     }
@@ -1677,7 +1677,7 @@ public class BasicTreeMacro extends Macro {
                             // Set leaves
                             Block toSet = Operator.currentWorld.getBlockAt(x + rx, y + ry, z + rz);
                             if (toSet.getType() == Material.AIR) {
-                                SetBlock.setMaterial(toSet, leaves);
+                                SetBlock.setMaterial(toSet, leaves, GlobalVars.asyncManager.currentAsyncOp.getUndo());
                             }
                         }
                     }
@@ -1719,7 +1719,7 @@ public class BasicTreeMacro extends Macro {
                 branch2Starts.add(currentBlock.getLocation());
             }
             if (currentBlock.getType() == Material.AIR) {
-                SetBlock.setMaterial(currentBlock, trunk);
+                SetBlock.setMaterial(currentBlock, trunk, GlobalVars.asyncManager.currentAsyncOp.getUndo());
             }
         }
         branch1Ends.add(currentBlock.getLocation());
@@ -1764,7 +1764,7 @@ public class BasicTreeMacro extends Macro {
                     branch3Starts.add(currentBlock.getLocation());
                 }
                 if (currentBlock.getType() == Material.AIR) {
-                    SetBlock.setMaterial(currentBlock, trunk);
+                    SetBlock.setMaterial(currentBlock, trunk, GlobalVars.asyncManager.currentAsyncOp.getUndo());
                 }
             }
             branch2Ends.add(currentBlock.getLocation());
@@ -1807,7 +1807,7 @@ public class BasicTreeMacro extends Macro {
                 // Grow there
                 currentBlock = currentBlock.getRelative(dir);
                 if (currentBlock.getType() == Material.AIR) {
-                    SetBlock.setMaterial(currentBlock, trunk);
+                    SetBlock.setMaterial(currentBlock, trunk, GlobalVars.asyncManager.currentAsyncOp.getUndo());
                 }
             }
             branch3Ends.add(currentBlock.getLocation());
@@ -1836,7 +1836,7 @@ public class BasicTreeMacro extends Macro {
                             // Set leaves
                             Block toSet = Operator.currentWorld.getBlockAt(x + rx, y + ry, z + rz);
                             if (toSet.getType() == Material.AIR) {
-                                SetBlock.setMaterial(toSet, leaves);
+                                SetBlock.setMaterial(toSet, leaves, GlobalVars.asyncManager.currentAsyncOp.getUndo());
                             }
                         }
                     }
@@ -1867,7 +1867,7 @@ public class BasicTreeMacro extends Macro {
                             // Set leaves
                             Block toSet = Operator.currentWorld.getBlockAt(x + rx, y + ry, z + rz);
                             if (toSet.getType() == Material.AIR) {
-                                SetBlock.setMaterial(toSet, leaves);
+                                SetBlock.setMaterial(toSet, leaves, GlobalVars.asyncManager.currentAsyncOp.getUndo());
                             }
                         }
                     }
@@ -1898,7 +1898,7 @@ public class BasicTreeMacro extends Macro {
                             // Set leaves
                             Block toSet = Operator.currentWorld.getBlockAt(x + rx, y + ry, z + rz);
                             if (toSet.getType() == Material.AIR) {
-                                SetBlock.setMaterial(toSet, leaves);
+                                SetBlock.setMaterial(toSet, leaves, GlobalVars.asyncManager.currentAsyncOp.getUndo());
                             }
                         }
                     }
@@ -1921,7 +1921,7 @@ public class BasicTreeMacro extends Macro {
         for (int i = 0; i < treeHeight; i++) {
             currentBlock = currentBlock.getRelative(BlockFace.UP);
             if (currentBlock.getType() == Material.AIR) {
-                SetBlock.setMaterial(currentBlock, trunk);
+                SetBlock.setMaterial(currentBlock, trunk, GlobalVars.asyncManager.currentAsyncOp.getUndo());
             }
         }
         // Populate the leaf sphere
@@ -1947,7 +1947,7 @@ public class BasicTreeMacro extends Macro {
                         // Set leaves
                         Block toSet = Operator.currentWorld.getBlockAt(x + rx, y + ry, z + rz);
                         if (toSet.getType() == Material.AIR) {
-                            SetBlock.setMaterial(toSet, leaves);
+                            SetBlock.setMaterial(toSet, leaves, GlobalVars.asyncManager.currentAsyncOp.getUndo());
                         }
                     }
                 }

@@ -6,6 +6,7 @@ import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.operations.operators.Node;
 import com._14ercooper.worldeditor.operations.type.SpawnerVar;
 import org.bukkit.Bukkit;
+import org.bukkit.block.BlockState;
 
 public class SetSpawnerNode extends Node {
 
@@ -26,7 +27,7 @@ public class SetSpawnerNode extends Node {
             return false;
         }
         SpawnerVar var = Operator.spawnerVars.get(name);
-        GlobalVars.currentUndo.storeBlock(Operator.currentBlock);
+        BlockState oldBS = Operator.currentBlock.getState();
         String command = "setblock " + Operator.currentBlock.getX();
         command += " " + Operator.currentBlock.getY();
         command += " " + Operator.currentBlock.getZ();
@@ -35,6 +36,7 @@ public class SetSpawnerNode extends Node {
         command += " replace";
         Main.logDebug("Command: " + command);
         Bukkit.getServer().dispatchCommand(Operator.currentPlayer, command);
+        GlobalVars.asyncManager.currentAsyncOp.getUndo().addBlock(oldBS, Operator.currentBlock.getState());
         return true;
     }
 

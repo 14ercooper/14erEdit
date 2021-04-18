@@ -2,6 +2,7 @@ package com._14ercooper.worldeditor.main
 
 import com._14ercooper.worldeditor.async.AsyncManager
 import com._14ercooper.worldeditor.operations.Operator
+import com._14ercooper.worldeditor.undo.UndoElement
 import org.bukkit.Material
 import org.bukkit.block.Block
 import org.bukkit.block.BlockState
@@ -9,7 +10,7 @@ import org.bukkit.block.data.type.Leaves
 
 object SetBlock {
     @JvmStatic
-    fun setMaterial(b: Block, mat: Material?) {
+    fun setMaterial(b: Block, mat: Material?, undo : UndoElement) {
         if (GlobalVars.countEdits) {
             ++AsyncManager.doneOperations
         }
@@ -17,8 +18,9 @@ object SetBlock {
             return
         }
         try {
-            if (GlobalVars.currentUndo != null) GlobalVars.currentUndo.storeBlock(b)
+            val bs = b.state
             b.setType(mat!!, false)
+            undo.addBlock(bs, b.state)
             updateLeafData(mat, b)
         } catch (e: Exception) {
             invalidMaterial(mat, e)
@@ -26,7 +28,7 @@ object SetBlock {
     }
 
     @JvmStatic
-    fun setMaterial(b: Block, mat: Material?, physics: Boolean) {
+    fun setMaterial(b: Block, mat: Material?, physics: Boolean, undo : UndoElement) {
         if (GlobalVars.countEdits) {
             ++AsyncManager.doneOperations
         }
@@ -34,8 +36,9 @@ object SetBlock {
             return
         }
         try {
-            if (GlobalVars.currentUndo != null) GlobalVars.currentUndo.storeBlock(b)
+            val bs = b.state
             b.setType(mat!!, physics)
+            undo.addBlock(bs, b.state)
             updateLeafData(mat, b)
         } catch (e: Exception) {
             invalidMaterial(mat, e)
@@ -51,7 +54,7 @@ object SetBlock {
     }
 
     @JvmStatic
-    fun setMaterial(b: BlockState, mat: Material?) {
+    fun setMaterial(b: BlockState, mat: Material?, undo : UndoElement) {
         if (GlobalVars.countEdits) {
             ++AsyncManager.doneOperations
         }
@@ -59,8 +62,9 @@ object SetBlock {
             return
         }
         try {
-            if (GlobalVars.currentUndo != null) GlobalVars.currentUndo.storeBlock(b.block)
+            val bs = b.block.state
             b.type = mat!!
+            undo.addBlock(bs, b)
             updateLeafDataState(mat, b)
         } catch (e: Exception) {
             invalidMaterial(mat, e)

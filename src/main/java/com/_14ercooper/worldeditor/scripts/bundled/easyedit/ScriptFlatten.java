@@ -1,5 +1,6 @@
 package com._14ercooper.worldeditor.scripts.bundled.easyedit;
 
+import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.main.SetBlock;
 import com._14ercooper.worldeditor.operations.Operator;
@@ -55,10 +56,10 @@ public class ScriptFlatten extends Craftscript {
                     for (int ry = (int) negCorner[1]; ry <= posCorner[1]; ry++) {
                         if (ry <= Math.round(height)) {
                             Block b = Operator.currentWorld.getBlockAt(rx, ry, rz);
-                            SetBlock.setMaterial(b, block);
+                            SetBlock.setMaterial(b, block, GlobalVars.asyncManager.currentAsyncOp.getUndo());
                         } else {
                             Block b = Operator.currentWorld.getBlockAt(rx, ry, rz);
-                            SetBlock.setMaterial(b, Material.AIR);
+                            SetBlock.setMaterial(b, Material.AIR, GlobalVars.asyncManager.currentAsyncOp.getUndo());
                         }
                     }
                 }
@@ -80,10 +81,10 @@ public class ScriptFlatten extends Craftscript {
                     for (int ry = 0; ry <= 255; ry++) {
                         if (ry <= Math.round(height)) {
                             Block b = Operator.currentWorld.getBlockAt(rx, ry, rz);
-                            SetBlock.setMaterial(b, block);
+                            SetBlock.setMaterial(b, block, GlobalVars.asyncManager.currentAsyncOp.getUndo());
                         } else {
                             Block b = Operator.currentWorld.getBlockAt(rx, ry, rz);
-                            SetBlock.setMaterial(b, Material.AIR);
+                            SetBlock.setMaterial(b, Material.AIR, GlobalVars.asyncManager.currentAsyncOp.getUndo());
                         }
                     }
                 }

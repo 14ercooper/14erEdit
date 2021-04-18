@@ -65,7 +65,7 @@ public class BrushNode extends Node {
 
             Main.logDebug("Block array size is " + blockArray.getTotalBlocks()); // -----
 
-            GlobalVars.asyncManager.scheduleEdit(operation, null, blockArray, true);
+            GlobalVars.asyncManager.scheduleEdit(operation, Operator.currentPlayer, blockArray);
 
         } else {
             // It's a multi-operator

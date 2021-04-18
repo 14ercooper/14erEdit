@@ -1,5 +1,6 @@
 package com._14ercooper.worldeditor.macros.macros.technical;
 
+import com._14ercooper.worldeditor.main.GlobalVars;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -32,7 +33,7 @@ public class CatenaryMacro extends Macro {
                 int z = (int) (z0 + (t * dz));
                 Main.logDebug(x + "," + y + "," + z);
                 Block b = Operator.currentWorld.getBlockAt(x, y, z);
-                SetBlock.setMaterial(b, Material.matchMaterial(block));
+                SetBlock.setMaterial(b, Material.matchMaterial(block), GlobalVars.asyncManager.currentAsyncOp.getUndo());
             }
         } catch (Exception e) {
             Main.logError(

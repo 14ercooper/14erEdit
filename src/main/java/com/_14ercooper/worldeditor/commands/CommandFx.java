@@ -6,7 +6,7 @@ import com._14ercooper.worldeditor.selection.SchematicHandler;
 import com._14ercooper.worldeditor.selection.SelectionCommand;
 import com._14ercooper.worldeditor.selection.SelectionWand;
 import com._14ercooper.worldeditor.selection.SelectionWandListener;
-import com._14ercooper.worldeditor.undo.UndoManager;
+import com._14ercooper.worldeditor.undo.UndoSystem;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -57,8 +57,9 @@ public class CommandFx implements CommandExecutor {
                     }
                     // Create a new brush as requested
                     else {
-                        return !(new Brush(args[argOffset + 1], args[argOffset + 2], args, argOffset,
-                                (Player) sender) == null);
+                        new Brush(args[argOffset + 1], args[argOffset + 2], args, argOffset,
+                                (Player) sender);
+                        return true;
                     }
                 }
 
@@ -69,9 +70,9 @@ public class CommandFx implements CommandExecutor {
 
                 // Undo and redo commands
                 else if (args[argOffset].equalsIgnoreCase("undo")) {
-                    return UndoManager.getUndo((Player) sender).undoChanges(Integer.parseInt(args[argOffset + 1])) > 0;
+                    return UndoSystem.findUserUndo(sender).undoChanges(Integer.parseInt(args[argOffset + 1]));
                 } else if (args[argOffset].equalsIgnoreCase("redo")) {
-                    return UndoManager.getUndo((Player) sender).redoChanges(Integer.parseInt(args[argOffset + 1])) > 0;
+                    return UndoSystem.findUserUndo(sender).redoChanges(Integer.parseInt(args[argOffset + 1]));
                 }
 
                 // Save and load schematics

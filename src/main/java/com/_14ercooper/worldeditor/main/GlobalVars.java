@@ -5,7 +5,6 @@ import com._14ercooper.worldeditor.blockiterator.IteratorManager;
 import com._14ercooper.worldeditor.macros.MacroLauncher;
 import com._14ercooper.worldeditor.operations.Parser;
 import com._14ercooper.worldeditor.scripts.CraftscriptManager;
-import com._14ercooper.worldeditor.undo.Undo;
 import org.bukkit.Material;
 import org.bukkit.plugin.Plugin;
 
@@ -21,9 +20,6 @@ public class GlobalVars {
     public static final Random rand = new Random();
     public static int majorVer = 0;
     public static int minorVer = 0;
-
-    // Used to track undos
-    public static Undo currentUndo = null;
 
     // What blocks should be targeted?
     public static Set<Material> brushMask;

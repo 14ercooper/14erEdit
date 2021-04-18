@@ -1,5 +1,6 @@
 package com._14ercooper.worldeditor.macros.macros.technical;
 
+import com._14ercooper.worldeditor.main.GlobalVars;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -53,7 +54,7 @@ public class LineBrushMacro extends Macro {
             int yPos = (int) (yStart - (yStep * t));
             int zPos = (int) (zStart - (zStep * t));
             Block b = Operator.currentWorld.getBlockAt(xPos, yPos, zPos);
-            SetBlock.setMaterial(b, m);
+            SetBlock.setMaterial(b, m, GlobalVars.asyncManager.currentAsyncOp.getUndo());
         }
 
         // Return success

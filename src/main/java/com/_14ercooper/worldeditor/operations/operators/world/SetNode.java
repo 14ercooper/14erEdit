@@ -8,6 +8,7 @@ import com._14ercooper.worldeditor.operations.operators.Node;
 import com._14ercooper.worldeditor.operations.operators.query.BlockAtNode;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.data.BlockData;
 
 import java.util.HashMap;
@@ -49,7 +50,7 @@ public class SetNode extends Node {
             if (arg instanceof BlockAtNode) {
                 // Set material
                 SetBlock.setMaterial(Operator.currentBlock, Material.matchMaterial(arg.getBlock()),
-                        Operator.ignoringPhysics);
+                        Operator.ignoringPhysics, GlobalVars.asyncManager.currentAsyncOp.getUndo());
                 // Set data
                 Operator.currentBlock.setBlockData(Bukkit.getServer().createBlockData(arg.getData()),
                         Operator.ignoringPhysics);
@@ -73,6 +74,7 @@ public class SetNode extends Node {
             }
             // Case only data to set, do the data merge
             if (setMaterial.equalsIgnoreCase("dataonly")) {
+                BlockState oldBS = Operator.currentBlock.getState();
                 // Step 1, convert the old data into a map
                 Map<String, String> oldData = new HashMap<>();
                 if (storedData.split("\\[").length < 2) {
@@ -96,6 +98,7 @@ public class SetNode extends Node {
                 newData.append("]");
                 Operator.currentBlock.setBlockData(Bukkit.getServer().createBlockData(newData.toString()),
                         Operator.ignoringPhysics);
+                GlobalVars.asyncManager.currentAsyncOp.getUndo().addBlock(oldBS, Operator.currentBlock.getState());
                 return storedMaterial == Material.matchMaterial(setMaterial) && !storedData.equalsIgnoreCase(setData);
             }
             // Case NBT only, merge nbt
@@ -110,7 +113,7 @@ public class SetNode extends Node {
             else if (setData == null) {
                 // Try carry over data
                 SetBlock.setMaterial(Operator.currentBlock, Material.matchMaterial(setMaterial),
-                        Operator.ignoringPhysics);
+                        Operator.ignoringPhysics, GlobalVars.asyncManager.currentAsyncOp.getUndo());
                 try {
                     if (!setMaterial.contains("minecraft:"))
                         setMaterial = "minecraft:" + setMaterial;
@@ -134,7 +137,7 @@ public class SetNode extends Node {
                 // Case materials don't match (set all)
                 else {
                     SetBlock.setMaterial(Operator.currentBlock, Material.matchMaterial(setMaterial),
-                            Operator.ignoringPhysics);
+                            Operator.ignoringPhysics, GlobalVars.asyncManager.currentAsyncOp.getUndo());
                     Operator.currentBlock.setBlockData(Bukkit.getServer().createBlockData(setData),
                             Operator.ignoringPhysics);
                     return storedMaterial == Material.matchMaterial(setMaterial)
