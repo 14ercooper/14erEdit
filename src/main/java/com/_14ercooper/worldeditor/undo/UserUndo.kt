@@ -1,6 +1,7 @@
 package com._14ercooper.worldeditor.undo
 
 import com._14ercooper.worldeditor.main.GlobalVars
+import com._14ercooper.worldeditor.main.Main
 import java.nio.file.Files
 import java.nio.file.Path
 import java.util.*
@@ -27,6 +28,7 @@ class UserUndo
         val uuid : String = UUID.randomUUID().toString()
         val undoElement = UndoElement(uuid, this)
         undoElements[uuid] = undoElement
+        Main.logDebug("New undo for user $name created with ID $uuid")
         return undoElement
     }
 
@@ -36,6 +38,7 @@ class UserUndo
             undo.flush()
             undoList.add(undo.name)
             undoElements.remove(undo.name)
+            Main.logDebug("Undo with id ${undo.name} finalized")
             return true
         }
         return false
@@ -57,6 +60,7 @@ class UserUndo
             undoList.removeAt(undoList.size - 1)
         }
         GlobalVars.asyncManager.scheduleEdit(undoSet)
+        Main.logDebug("Undoing $count changes for $name")
         return true
     }
 
@@ -76,6 +80,7 @@ class UserUndo
             redoList.removeAt(redoList.size - 1)
         }
         GlobalVars.asyncManager.scheduleEdit(redoSet)
+        Main.logDebug("Redoing $count changes for $name")
         return true
     }
 
@@ -98,6 +103,7 @@ class UserUndo
             }
             Files.writeString(Path.of(fileName + "redoList"), str)
         }
+        Main.logDebug("Undo and redo lists for $name saved to disk")
         return true
     }
 
@@ -110,6 +116,7 @@ class UserUndo
         if (Files.exists(Path.of(fileName + "redoList"))) {
             redoList = Files.readString(Path.of(fileName + "redoList")).lines() as MutableList<String>
         }
+        Main.logDebug("Loaded undo and redo lists for $name from disk")
         return true
     }
 
@@ -118,6 +125,7 @@ class UserUndo
         saveUndoList()
         undoElements.forEach { (_, undoElement) -> undoElement.flush() }
         undoElements = HashMap()
+        Main.logDebug("Flushed user under for $name")
         return true
     }
 }

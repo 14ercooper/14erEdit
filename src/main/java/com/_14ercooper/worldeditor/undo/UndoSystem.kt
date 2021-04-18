@@ -1,5 +1,6 @@
 package com._14ercooper.worldeditor.undo
 
+import com._14ercooper.worldeditor.main.Main
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
@@ -12,9 +13,11 @@ object UndoSystem {
     @JvmStatic
     fun findUserUndo(name : String) : UserUndo {
         return if (userUndos.containsKey(name)) {
+            Main.logDebug("Found undo for user $name")
             userUndos[name]!!
         }
         else {
+            Main.logDebug("Loading new undo for user $name")
             userUndos[name] = UserUndo(name)
             userUndos[name]!!
         }
@@ -31,6 +34,7 @@ object UndoSystem {
     fun flush() : Boolean {
         userUndos.forEach { (_, userUndo) -> userUndo.flush() }
         userUndos = HashMap()
+        Main.logDebug("Flushed undo system")
         return true
     }
 }

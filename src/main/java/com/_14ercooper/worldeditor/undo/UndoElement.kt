@@ -1,5 +1,6 @@
 package com._14ercooper.worldeditor.undo
 
+import com._14ercooper.worldeditor.main.Main
 import com._14ercooper.worldeditor.main.NBTExtractor
 import com._14ercooper.worldeditor.main.SetBlock.setMaterial
 import net.jpountz.lz4.LZ4Factory
@@ -28,10 +29,12 @@ class UndoElement
     init {
         if (Files.exists(Path.of("plugins/14erEdit/undo/${parent.name}/$name"))) {
             loadFromDisk()
+            Main.logDebug("Loaded undo element $name from disk for user ${parent.name}")
         }
         else {
             Files.createDirectories(Path.of("plugins/14erEdit/undo/${parent.name}/$name"))
             serialize()
+            Main.logDebug("Created new undo element $name for user ${parent.name}")
         }
     }
 
@@ -56,7 +59,8 @@ class UndoElement
         val compressor = factory.highCompressor(compressionLevel)
         val compressed = compressor.compress(toSerialize)
         Files.write(Path.of("plugins/14erEdit/undo/${userUndo.name}/$name/$blockId"), compressed)
-        return false
+        Main.logDebug("Serialized undo block $blockId for undo $name for user ${userUndo.name} with length $serializeLength")
+        return true
     }
 
     // Load a block of data from disk
@@ -66,6 +70,7 @@ class UndoElement
         val decompressor = factory.fastDecompressor()
         val decompBytes = decompressor.decompress(compressedBytes, decompLen)
         val decompStr = decompBytes.toString(Charsets.UTF_8)
+        Main.logDebug("Loaded undo block $id for undo $name for user ${userUndo.name} with length $decompLen")
         return decompStr.lines()
     }
 
@@ -73,12 +78,16 @@ class UndoElement
     private fun serialize() : Boolean {
         serializeBlock()
         Files.writeString(Path.of("plugins/14erEdit/undo/${userUndo.name}/$name/blockSizes"), blockSizes.joinToString("\\"))
+        val numBlocks = blockSizes.size
+        Main.logDebug("Serialized undo element $name for user ${userUndo.name} to disk with $numBlocks blocks")
         return true
     }
 
     // Load this undo from disk
     private fun loadFromDisk() : Boolean {
         blockSizes = Files.readString(Path.of("plugins/14erEdit/undo/${userUndo.name}/$name/blockSizes")).split("\\") as MutableList<String>
+        val numBlocks = blockSizes.size
+        Main.logDebug("Loaded undo element $name for user ${userUndo.name} from disk with $numBlocks blocks")
         return true
     }
 
@@ -93,6 +102,7 @@ class UndoElement
         dataBlockCount = blockSizes.size
         currData = mutableListOf()
         currentState = UndoMode.PERFORMING_UNDO
+        Main.logDebug("Started applying undo $name for user ${userUndo.name}")
         return true
     }
 
@@ -123,6 +133,7 @@ class UndoElement
     // Check if this undo is finished being applied
     // If it is done, before returning true, clean up, else return false
     fun finalizeUndo() : Boolean {
+        Main.logDebug("Finalized applying undo $name for user ${userUndo.name}")
         return currentState == UndoMode.UNDO_FINISHED
     }
 
@@ -132,6 +143,7 @@ class UndoElement
         dataBlockCount = blockSizes.size
         currData = mutableListOf()
         currentState = UndoMode.PERFORMING_REDO
+        Main.logDebug("Started applying redo $name for user ${userUndo.name}")
         return true
     }
 
@@ -162,6 +174,7 @@ class UndoElement
     // Check if this redo is finished being applied
     // If it is done, before returning true, clean up, else return false
     fun finalizeRedo() : Boolean {
+        Main.logDebug("Finalized applying redo $name for user ${userUndo.name}")
         return currentState == UndoMode.REDO_FINISHED
     }
 
@@ -192,7 +205,9 @@ class UndoElement
             applyRedo(Long.MAX_VALUE)
             finalizeRedo()
         }
-        return serialize()
+        serialize()
+        Main.logDebug("Flushed undo element $name for user ${userUndo.name}")
+        return true
     }
 
     // Static vars

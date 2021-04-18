@@ -267,16 +267,23 @@ class AsyncManager {
                     val undoBatchSize = 32L
                     // If undo or redo finished, handle it
                     if (currentAsyncOp.undoList!![0].currentState == UndoMode.UNDO_FINISHED || currentAsyncOp.undoList!![0].currentState == UndoMode.REDO_FINISHED) {
-                        if (currentAsyncOp.undoList!![0].currentState == UndoMode.UNDO_FINISHED)
+                        if (currentAsyncOp.undoList!![0].currentState == UndoMode.UNDO_FINISHED) {
                             currentAsyncOp.undoList!![0].finalizeUndo()
-                        else
+                            val name = if (currentAsyncOp.undoList == null) "null" else currentAsyncOp.undoList!![0].name
+                            Main.logDebug("Undo $name finalized")
+                        }
+                        else {
                             currentAsyncOp.undoList!![0].finalizeRedo()
+                            val name = if (currentAsyncOp.undoList == null) "null" else currentAsyncOp.undoList!![0].name
+                            Main.logDebug("Redo $name finalized")
+                        }
                         currentAsyncOp.undoList!!.removeAt(0)
                         if (currentAsyncOp.undoList!!.size == 0) {
                             operations.removeAt(i)
                             i--
                             opSize--
                             currentAsyncOp.player.sendMessage("§aUndo operation finished")
+                            Main.logDebug("All undos in set finished")
                             i++
                         }
                     }
