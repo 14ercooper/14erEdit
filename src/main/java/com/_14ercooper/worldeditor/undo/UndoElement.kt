@@ -60,6 +60,7 @@ class UndoElement
         val compressed = compressor.compress(toSerialize)
         Files.write(Path.of("plugins/14erEdit/undo/${userUndo.name}/$name/$blockId"), compressed)
         Main.logDebug("Serialized undo block $blockId for undo $name for user ${userUndo.name} with length $serializeLength")
+        data = mutableListOf()
         return true
     }
 
@@ -76,7 +77,8 @@ class UndoElement
 
     // Serialize this undo to disk
     private fun serialize() : Boolean {
-        serializeBlock()
+        if (data.isNotEmpty())
+            serializeBlock()
         Files.writeString(Path.of("plugins/14erEdit/undo/${userUndo.name}/$name/blockSizes"), blockSizes.joinToString("\\"))
         val numBlocks = blockSizes.size
         Main.logDebug("Serialized undo element $name for user ${userUndo.name} to disk with $numBlocks blocks")

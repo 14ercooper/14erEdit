@@ -47,12 +47,13 @@ class UserUndo
     // Undo a number of changes (undo elements)
     fun undoChanges(count : Int) : Boolean {
         flush()
+        undoList.removeIf(String::isBlank)
         var undoCount = count
         if (undoCount > undoList.size)
             undoCount = undoList.size
         val undoSet : MutableList<UndoElement> = mutableListOf()
         for (i in 1..undoCount) {
-            val s = undoList[undoList.size - i]
+            val s = undoList[undoList.size - 1]
             val ue = UndoElement(s, this)
             ue.startApplyUndo()
             undoSet.add(ue)
@@ -67,12 +68,13 @@ class UserUndo
     // Redo a number of changes (undo elements)
     fun redoChanges(count : Int) : Boolean {
         flush()
+        redoList.removeIf(String::isBlank)
         var redoCount = count
         if (redoCount > redoList.size)
             redoCount = redoList.size
         val redoSet : MutableList<UndoElement> = mutableListOf()
         for (i in 1..redoCount) {
-            val s = redoList[redoList.size - i]
+            val s = redoList[redoList.size - 1]
             val ue = UndoElement(s, this)
             ue.startApplyRedo()
             redoSet.add(ue)
@@ -112,9 +114,11 @@ class UserUndo
         val fileName = "plugins/14erEdit/undo/$name/"
         if (Files.exists(Path.of(fileName + "undoList"))) {
             undoList = Files.readString(Path.of(fileName + "undoList")).lines() as MutableList<String>
+            undoList.removeIf(String::isBlank)
         }
         if (Files.exists(Path.of(fileName + "redoList"))) {
             redoList = Files.readString(Path.of(fileName + "redoList")).lines() as MutableList<String>
+            redoList.removeIf(String::isBlank)
         }
         Main.logDebug("Loaded undo and redo lists for $name from disk")
         return true
