@@ -68,8 +68,8 @@ class Main : JavaPlugin() {
         }
 
         val ver = server.version.split("MC: ").toTypedArray()[1]
-        GlobalVars.majorVer = ver.split(".").toTypedArray()[1].replace("[^\\d.]".toRegex(), "").toInt()
-        GlobalVars.minorVer = ver.split(".").toTypedArray()[2].replace("[^\\d.]".toRegex(), "").toInt()
+        ver.split(".").toTypedArray()[1].replace("[^\\d.]".toRegex(), "").toInt().also { GlobalVars.majorVer = it }
+        ver.split(".").toTypedArray()[2].replace("[^\\d.]".toRegex(), "").toInt().also { GlobalVars.minorVer = it }
         println("Using version " + server.version + ": " + GlobalVars.majorVer + "/" + GlobalVars.minorVer)
 
         // Create folders as needed
