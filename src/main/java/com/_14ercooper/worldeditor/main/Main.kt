@@ -232,8 +232,7 @@ class Main : JavaPlugin() {
                         logDebugs: false
                         logErrors: true
                         
-                        # Should debug/autoconfirm be on by default?
-                        defaultAutoConfirm: false
+                        # Should debug be on by default?
                         defaultDebug: false
                         
                         """.trimIndent()
@@ -263,7 +262,6 @@ class Main : JavaPlugin() {
             GlobalVars.maxFunctionIters = GlobalVars.plugin.config.getLong("maxFunctionIters")
             GlobalVars.logDebugs = GlobalVars.plugin.config.getBoolean("logDebugs")
             GlobalVars.logErrors = GlobalVars.plugin.config.getBoolean("logErrors")
-            GlobalVars.autoConfirm = GlobalVars.plugin.config.getBoolean("defaultAutoConfirm")
             GlobalVars.isDebug = GlobalVars.plugin.config.getBoolean("defaultDebug")
         }
 

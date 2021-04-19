@@ -2,6 +2,7 @@ package com._14ercooper.worldeditor.undo
 
 import com._14ercooper.worldeditor.main.GlobalVars
 import com._14ercooper.worldeditor.main.Main
+import java.io.File
 import java.nio.file.Files
 import java.nio.file.Path
 import java.util.*
@@ -89,6 +90,18 @@ class UserUndo
     // Save the undo and redo element lists to disk
     private fun saveUndoList() : Boolean {
         val fileName = "plugins/14erEdit/undo/$name/"
+        // Size limit the lists
+        if (GlobalVars.undoLimit > 0) {
+            while (undoList.size > GlobalVars.undoLimit) {
+                val undoName = undoList.removeFirst()
+                File(fileName + undoName).deleteRecursively()
+            }
+            while (redoList.size > GlobalVars.undoLimit) {
+                val redoName = redoList.removeFirst()
+                File(fileName + redoName).deleteRecursively()
+            }
+        }
+        // Save the lists
         run {
             Files.deleteIfExists(Path.of(fileName + "undoList"))
             var str = ""
