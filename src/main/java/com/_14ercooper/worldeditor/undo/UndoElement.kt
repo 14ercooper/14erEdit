@@ -9,6 +9,10 @@ import org.bukkit.Material
 import org.bukkit.block.BlockState
 import java.nio.file.Files
 import java.nio.file.Path
+import kotlinx.coroutines.*
+import java.nio.ByteBuffer
+import java.nio.channels.AsynchronousFileChannel
+import java.nio.file.StandardOpenOption
 
 class UndoElement
     (id: String, parent: UserUndo) {
@@ -18,6 +22,10 @@ class UndoElement
         private set
     var userUndo : UserUndo = parent
     val name : String = id
+
+    // Track serialization jobs
+    private var jobsRunning : MutableList<Job> = mutableListOf()
+    private var asyncFiles : MutableList<AsynchronousFileChannel> = mutableListOf()
 
     // Track blocks
     private var blockSizes : MutableList<String> = mutableListOf()
@@ -54,13 +62,18 @@ class UndoElement
     private fun serializeBlock() : Boolean {
         val blockId = blockSizes.size
         val toSerialize = data.joinToString("\n").toByteArray(Charsets.UTF_8)
+        data = mutableListOf()
         val serializeLength = toSerialize.size
         blockSizes.add(serializeLength.toString())
         val compressor = factory.highCompressor(compressionLevel)
-        val compressed = compressor.compress(toSerialize)
-        Files.write(Path.of("plugins/14erEdit/undo/${userUndo.name}/$name/$blockId"), compressed)
-        Main.logDebug("Serialized undo block $blockId for undo $name for user ${userUndo.name} with length $serializeLength")
-        data = mutableListOf()
+        val asyncFile : AsynchronousFileChannel = AsynchronousFileChannel.open(Path.of("plugins/14erEdit/undo/${userUndo.name}/$name/$blockId"), StandardOpenOption.WRITE, StandardOpenOption.CREATE)
+
+        jobsRunning.add(GlobalScope.launch {
+            val compressed = compressor.compress(toSerialize)
+            asyncFile.write(ByteBuffer.wrap(compressed), 0)
+            Main.logDebug("Serialized undo block $blockId for undo $name for user ${userUndo.name} with length $serializeLength")
+        })
+
         return true
     }
 
@@ -210,7 +223,17 @@ class UndoElement
     }
 
     // Flush all data to disk
-    fun flush() : Boolean {
+    @Suppress("BlockingMethodInNonBlockingContext")
+    suspend fun flush() : Boolean {
+        for (j in jobsRunning) {
+            j.join()
+        }
+        for (a in asyncFiles) {
+            if (a.isOpen)
+                a.close()
+        }
+        jobsRunning = mutableListOf()
+        asyncFiles = mutableListOf()
         if (currentState == UndoMode.PERFORMING_UNDO) {
             applyUndo(Long.MAX_VALUE)
             finalizeUndo()
@@ -227,7 +250,7 @@ class UndoElement
     // Static vars
     companion object {
         const val blockSize = 1 shl 16
-        const val compressionLevel = 12
+        const val compressionLevel = 16
         val factory: LZ4Factory = LZ4Factory.fastestInstance()
         val nbtE = NBTExtractor()
     }

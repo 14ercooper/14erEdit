@@ -42,7 +42,7 @@ object UndoSystem {
     fun isFlushed() : Boolean {
         var userUndosEmpty = true
         for ((_, userUndo) in userUndos) {
-            userUndosEmpty && userUndo.undoElements.isEmpty()
+            userUndosEmpty = userUndosEmpty && userUndo.undoElements.isEmpty()
         }
         return userUndos.isEmpty() && userUndosEmpty
     }

@@ -2,6 +2,7 @@ package com._14ercooper.worldeditor.undo
 
 import com._14ercooper.worldeditor.main.GlobalVars
 import com._14ercooper.worldeditor.main.Main
+import kotlinx.coroutines.runBlocking
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.Path
@@ -36,7 +37,9 @@ class UserUndo
     // Finalize an undo after it's done
     fun finalizeUndo(undo : UndoElement) : Boolean {
         if (undoElements.containsKey(undo.name)) {
-            undo.flush()
+            runBlocking {
+                undo.flush()
+            }
             undoList.add(undo.name)
             undoElements.remove(undo.name)
             Main.logDebug("Undo with id ${undo.name} finalized")
@@ -49,9 +52,7 @@ class UserUndo
     fun undoChanges(count : Int) : Boolean {
         flush()
         undoList = undoList.filter { it.isNotBlank() } as MutableList<String>
-        var undoCount = count
-        if (undoCount > undoList.size)
-            undoCount = undoList.size
+        val undoCount = count.coerceAtMost(undoList.size)
         val undoSet : MutableList<UndoElement> = mutableListOf()
         for (i in 1..undoCount) {
             val s = undoList[undoList.size - 1]
@@ -70,9 +71,7 @@ class UserUndo
     fun redoChanges(count : Int) : Boolean {
         flush()
         redoList = redoList.filter { it.isNotBlank() } as MutableList<String>
-        var redoCount = count
-        if (redoCount > redoList.size)
-            redoCount = redoList.size
+        val redoCount = count.coerceAtMost(redoList.size)
         val redoSet : MutableList<UndoElement> = mutableListOf()
         for (i in 1..redoCount) {
             val s = redoList[redoList.size - 1]
@@ -140,7 +139,9 @@ class UserUndo
     // Flush all data to disk
     fun flush() : Boolean {
         saveUndoList()
-        undoElements.forEach { (_, undoElement) -> undoElement.flush() }
+        runBlocking {
+            undoElements.forEach { (_, undoElement) -> undoElement.flush() }
+        }
         undoElements = HashMap()
         Main.logDebug("Flushed user undo for $name")
         return true
