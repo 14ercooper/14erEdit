@@ -29,24 +29,18 @@
         </configuration>
       </plugin>
       <plugin>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.22.1</version>
-      </plugin>
-      <plugin>
         <groupId>org.jetbrains.kotlin</groupId>
         <artifactId>kotlin-maven-plugin</artifactId>
         <version>${kotlin.version}</version>
         <executions>
           <execution>
             <id>compile</id>
-            <phase>compile</phase>
             <goals>
               <goal>compile</goal>
             </goals>
           </execution>
           <execution>
             <id>test-compile</id>
-            <phase>test-compile</phase>
             <goals>
               <goal>test-compile</goal>
             </goals>
@@ -58,23 +52,35 @@
       </plugin>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>2.3.2</version>
+        <version>3.5.1</version>
         <executions>
           <execution>
-            <id>compile</id>
+            <id>default-compile</id>
+            <phase>none</phase>
+          </execution>
+          <execution>
+            <id>default-testCompile</id>
+            <phase>none</phase>
+          </execution>
+          <execution>
+            <id>java-compile</id>
             <phase>compile</phase>
             <goals>
               <goal>compile</goal>
             </goals>
           </execution>
           <execution>
-            <id>testCompile</id>
+            <id>java-test-compile</id>
             <phase>test-compile</phase>
             <goals>
               <goal>testCompile</goal>
             </goals>
           </execution>
         </executions>
+        <configuration>
+          <source>11</source>
+          <target>11</target>
+        </configuration>
       </plugin>
       <plugin>
         <artifactId>maven-shade-plugin</artifactId>
