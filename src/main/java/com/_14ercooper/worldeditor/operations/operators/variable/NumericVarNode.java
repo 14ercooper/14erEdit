@@ -12,23 +12,23 @@ public class NumericVarNode extends Node {
 
     @Override
     public NumericVarNode newNode() {
-	NumericVarNode node = new NumericVarNode();
-	node.name = GlobalVars.operationParser.parseStringNode().contents;
-	return node;
+        NumericVarNode node = new NumericVarNode();
+        node.name = GlobalVars.operationParser.parseStringNode().contents;
+        return node;
     }
 
     @Override
     public boolean performNode() {
-	if (Operator.numericVars.containsKey(name)) {
-	    Main.logError("Could not create numeric variable. Does it already exist?", Operator.currentPlayer);
-	    return false;
-	}
-	Operator.numericVars.put(name, new NumericVar());
-	return true;
+        if (Operator.numericVars.containsKey(name)) {
+            Main.logError("Could not create numeric variable. Does it already exist?", Operator.currentPlayer, null);
+            return false;
+        }
+        Operator.numericVars.put(name, new NumericVar());
+        return true;
     }
 
     @Override
     public int getArgCount() {
-	return 1;
+        return 1;
     }
 }

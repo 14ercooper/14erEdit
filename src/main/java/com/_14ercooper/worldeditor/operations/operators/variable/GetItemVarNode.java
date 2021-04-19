@@ -5,6 +5,7 @@ import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.operations.operators.Node;
 import com._14ercooper.worldeditor.operations.type.ItemVar;
+import org.bukkit.Bukkit;
 
 public class GetItemVarNode extends Node {
 
@@ -12,31 +13,31 @@ public class GetItemVarNode extends Node {
 
     @Override
     public GetItemVarNode newNode() {
-	GetItemVarNode node = new GetItemVarNode();
-	node.name = GlobalVars.operationParser.parseStringNode().contents;
-	return node;
+        GetItemVarNode node = new GetItemVarNode();
+        node.name = GlobalVars.operationParser.parseStringNode().contents;
+        return node;
     }
 
     @Override
     public boolean performNode() {
-	if (!Operator.itemVars.containsKey(name)) {
-	    Main.logError(
-		    "Error performing get item variable node. Please check your syntax (does the variable exist?).",
-		    Operator.currentPlayer);
-	    return false;
-	}
-	ItemVar iv = Operator.itemVars.get(name);
-	String command = "give @s ";
-	command += iv.getType().toLowerCase();
-	command += iv.getNBT() + " ";
-	command += iv.getCount();
-	Main.logDebug("Command: " + command);
-	Operator.currentPlayer.performCommand(command);
-	return true;
+        if (!Operator.itemVars.containsKey(name)) {
+            Main.logError(
+                    "Error performing get item variable node. Please check your syntax (does the variable exist?).",
+                    Operator.currentPlayer, null);
+            return false;
+        }
+        ItemVar iv = Operator.itemVars.get(name);
+        String command = "give @s ";
+        command += iv.getType().toLowerCase();
+        command += iv.getNBT() + " ";
+        command += iv.getCount();
+        Main.logDebug("Command: " + command);
+        Bukkit.getServer().dispatchCommand(Operator.currentPlayer, command);
+        return true;
     }
 
     @Override
     public int getArgCount() {
-	return 1;
+        return 1;
     }
 }

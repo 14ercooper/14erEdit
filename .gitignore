@@ -3,6 +3,7 @@ bin/
 .project
 .settings/
 target/
+.idea/
 *.iml
 bash.exe.stackdump
 MovePlugin.bat

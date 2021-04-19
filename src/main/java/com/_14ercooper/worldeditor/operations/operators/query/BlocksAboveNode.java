@@ -15,44 +15,43 @@ public class BlocksAboveNode extends Node {
 
     @Override
     public BlocksAboveNode newNode() {
-	BlocksAboveNode node = new BlocksAboveNode();
-	try {
-	    node.arg1 = GlobalVars.operationParser.parseRangeNode();
-	    node.arg2 = GlobalVars.operationParser.parsePart();
-	}
-	catch (Exception e) {
-	    Main.logError("Error treating blocks above node. Please check your syntax.", Operator.currentPlayer);
-	    return null;
-	}
-	if (node.arg2 == null) {
-	    Main.logError("Could not parse blocks above node. Range node and a block are required, but not given.",
-		    Operator.currentPlayer);
-	}
-	return node;
+        BlocksAboveNode node = new BlocksAboveNode();
+        try {
+            node.arg1 = GlobalVars.operationParser.parseRangeNode();
+            node.arg2 = GlobalVars.operationParser.parsePart();
+        } catch (Exception e) {
+            Main.logError("Error creating blocks above node. Please check your syntax.", Operator.currentPlayer, e);
+            return null;
+        }
+        if (node.arg2 == null) {
+            Main.logError("Could not parse blocks above node. Range node and a block are required, but not given.",
+                    Operator.currentPlayer, null);
+        }
+        return node;
     }
 
     @Override
     public boolean performNode() {
-	Block currBlock = Operator.currentPlayer.getWorld().getBlockAt(Operator.currentBlock.getLocation());
-	int x = currBlock.getX();
-	int y = currBlock.getY();
-	int z = currBlock.getZ();
-	int min = (int) arg1.getMin();
-	int max = (int) arg1.getMax();
-	boolean blockRangeMet = true;
+        Block currBlock = Operator.currentWorld.getBlockAt(Operator.currentBlock.getLocation());
+        int x = currBlock.getX();
+        int y = currBlock.getY();
+        int z = currBlock.getZ();
+        int min = (int) arg1.getMin();
+        int max = (int) arg1.getMax();
+        boolean blockRangeMet = true;
 
-	for (int dy = y + min; dy <= y + max; dy++) {
-	    Operator.currentBlock = Operator.currentPlayer.getWorld().getBlockAt(x, dy, z);
-	    if (!(arg2.performNode()))
-		blockRangeMet = false;
-	}
+        for (int dy = y + min; dy <= y + max; dy++) {
+            Operator.currentBlock = Operator.currentWorld.getBlockAt(x, dy, z);
+            if (!(arg2.performNode()))
+                blockRangeMet = false;
+        }
 
-	Operator.currentBlock = currBlock;
-	return blockRangeMet;
+        Operator.currentBlock = currBlock;
+        return blockRangeMet;
     }
 
     @Override
     public int getArgCount() {
-	return 2;
+        return 2;
     }
 }

@@ -1,17 +1,15 @@
 package com._14ercooper.worldeditor.main;
 
-import java.util.Random;
-import java.util.Set;
-
-import org.bukkit.Material;
-import org.bukkit.plugin.Plugin;
-
 import com._14ercooper.worldeditor.async.AsyncManager;
 import com._14ercooper.worldeditor.blockiterator.IteratorManager;
 import com._14ercooper.worldeditor.macros.MacroLauncher;
 import com._14ercooper.worldeditor.operations.Parser;
 import com._14ercooper.worldeditor.scripts.CraftscriptManager;
-import com._14ercooper.worldeditor.undo.Undo;
+import org.bukkit.Material;
+import org.bukkit.plugin.Plugin;
+
+import java.util.Random;
+import java.util.Set;
 
 public class GlobalVars {
 
@@ -19,10 +17,9 @@ public class GlobalVars {
     public static int noiseSeed;
     public static SimplexNoise simplexNoise;
     public static Plugin plugin;
-    public static Random rand = new Random();
-
-    // Used to track undos
-    public static Undo currentUndo = null;
+    public static final Random rand = new Random();
+    public static int majorVer = 0;
+    public static int minorVer = 0;
 
     // What blocks should be targeted?
     public static Set<Material> brushMask;
@@ -37,8 +34,8 @@ public class GlobalVars {
     // For debugging
     public static boolean isDebug = false;
 
-    // This may be useful
-    public static boolean autoConfirm = false;
+    // Make macros not crash the server
+    public static boolean countEdits = false;
 
     // Configs
     public static long undoLimit = 250000;
@@ -51,12 +48,13 @@ public class GlobalVars {
 
     // No error spam
     public static boolean errorLogged = false;
+    public static boolean outputStacktrace = false;
 
     // Caps for edits
     public static long minEditX = Long.MIN_VALUE;
     public static long minEditY = -1;
     public static long minEditZ = Long.MIN_VALUE;
     public static long maxEditX = Long.MAX_VALUE;
-    public static long maxEditY = 255;
+    public static long maxEditY = 256;
     public static long maxEditZ = Long.MAX_VALUE;
 }

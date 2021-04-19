@@ -10,10 +10,10 @@ public class RandCommand extends InterpreterCommand {
 
     @Override
     public void run(List<String> args, Function function) {
-	int min = (int) function.parseVariable(args.get(1));
-	int max = (int) function.parseVariable(args.get(2));
+        int min = (int) function.parseVariable(args.get(1));
+        int max = (int) function.parseVariable(args.get(2));
 //	function.setVariable(args.get(0), rand.nextInt(max - min) + min);
-	function.setVariable(args.get(0), Main.randRange(min, max));
+        function.setVariable(args.get(0), Main.randRange(min, max));
 
     }
 }

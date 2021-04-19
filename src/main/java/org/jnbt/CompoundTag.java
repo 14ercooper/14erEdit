@@ -74,18 +74,18 @@ public final class CompoundTag extends Tag {
     @Override
     public String toString() {
 
-	final String name = getName();
-	String append = "";
-	if ((name != null) && !name.equals("")) {
-	    append = "(\"" + getName() + "\")";
-	}
-	final StringBuilder bldr = new StringBuilder();
-	bldr.append("TAG_Compound" + append + ": " + value.size() + " entries\r\n{\r\n");
-	for (final Map.Entry<String, Tag> entry : value.entrySet()) {
-	    bldr.append("   " + entry.getValue().toString().replaceAll("\r\n", "\r\n   ") + "\r\n");
-	}
-	bldr.append("}");
-	return bldr.toString();
+        final String name = getName();
+        String append = "";
+        if ((name != null) && !name.equals("")) {
+            append = "(\"" + getName() + "\")";
+        }
+        final StringBuilder bldr = new StringBuilder();
+        bldr.append("TAG_Compound").append(append).append(": ").append(value.size()).append(" entries\r\n{\r\n");
+        for (final Map.Entry<String, Tag> entry : value.entrySet()) {
+            bldr.append("   ").append(entry.getValue().toString().replaceAll("\r\n", "\r\n   ")).append("\r\n");
+        }
+        bldr.append("}");
+        return bldr.toString();
     }
 
     /*
@@ -120,15 +120,9 @@ public final class CompoundTag extends Tag {
 	    return false;
 	}
 	final CompoundTag other = (CompoundTag) obj;
-	if (value == null) {
-	    if (other.value != null) {
-		return false;
-	    }
-	}
-	else if (!value.equals(other.value)) {
-	    return false;
-	}
-	return true;
+        if (value == null) {
+            return other.value == null;
+        } else return value.equals(other.value);
     }
 
 }

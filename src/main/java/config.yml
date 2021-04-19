@@ -1,4 +1,4 @@
-# Number of blocks to store as an undo
+# Number of undos to store per place
 undoLimit: 250000
 
 # Number of blocks to process per async tick
@@ -15,6 +15,5 @@ maxFunctionIters: 100000
 logDebugs: false
 logErrors: true
 
-# Should debug/autoconfirm be on by default?
-defaultAutoConfirm: false
+# Should debug be on by default?
 defaultDebug: false

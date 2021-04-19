@@ -12,23 +12,23 @@ public class SpawnerVarNode extends Node {
 
     @Override
     public SpawnerVarNode newNode() {
-	SpawnerVarNode node = new SpawnerVarNode();
-	node.name = GlobalVars.operationParser.parseStringNode().contents;
-	return node;
+        SpawnerVarNode node = new SpawnerVarNode();
+        node.name = GlobalVars.operationParser.parseStringNode().contents;
+        return node;
     }
 
     @Override
     public boolean performNode() {
-	if (Operator.spawnerVars.containsKey(name)) {
-	    Main.logError("Could not create new spawner variable. Does it already exist?", Operator.currentPlayer);
-	    return false;
-	}
-	Operator.spawnerVars.put(name, new SpawnerVar());
-	return true;
+        if (Operator.spawnerVars.containsKey(name)) {
+            Main.logError("Could not create new spawner variable. Does it already exist?", Operator.currentPlayer, null);
+            return false;
+        }
+        Operator.spawnerVars.put(name, new SpawnerVar());
+        return true;
     }
 
     @Override
     public int getArgCount() {
-	return 1;
+        return 1;
     }
 }

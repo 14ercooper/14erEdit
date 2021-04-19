@@ -12,23 +12,23 @@ public class ItemVarNode extends Node {
 
     @Override
     public ItemVarNode newNode() {
-	ItemVarNode node = new ItemVarNode();
-	node.name = GlobalVars.operationParser.parseStringNode().contents;
-	return node;
+        ItemVarNode node = new ItemVarNode();
+        node.name = GlobalVars.operationParser.parseStringNode().contents;
+        return node;
     }
 
     @Override
     public boolean performNode() {
-	if (Operator.itemVars.containsKey(name)) {
-	    Main.logError("Could not create item variable. Does it already exist?", Operator.currentPlayer);
-	    return false;
-	}
-	Operator.itemVars.put(name, new ItemVar());
-	return true;
+        if (Operator.itemVars.containsKey(name)) {
+            Main.logError("Could not create item variable. Does it already exist?", Operator.currentPlayer, null);
+            return false;
+        }
+        Operator.itemVars.put(name, new ItemVar());
+        return true;
     }
 
     @Override
     public int getArgCount() {
-	return 1;
+        return 1;
     }
 }

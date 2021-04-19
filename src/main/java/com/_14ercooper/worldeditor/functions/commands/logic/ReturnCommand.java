@@ -9,6 +9,6 @@ public class ReturnCommand extends InterpreterCommand {
 
     @Override
     public void run(List<String> args, Function function) {
-	function.currentLine = (int) function.ra;
+        function.currentLine = (int) function.ra;
     }
 }

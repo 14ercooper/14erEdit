@@ -11,35 +11,33 @@ public class ElseNode extends Node {
 
     @Override
     public ElseNode newNode() {
-	ElseNode node = new ElseNode();
-	try {
-	    node.subNode = GlobalVars.operationParser.parsePart();
-	}
-	catch (Exception e) {
-	    Main.logError("Error creating else node. Please check your syntax.", Operator.currentPlayer);
-	    return null;
-	}
-	if (node.subNode == null) {
-	    Main.logError("Could not create else node. An argument is required but not provided.",
-		    Operator.currentPlayer);
-	}
-	return node;
+        ElseNode node = new ElseNode();
+        try {
+            node.subNode = GlobalVars.operationParser.parsePart();
+        } catch (Exception e) {
+            Main.logError("Error creating else node. Please check your syntax.", Operator.currentPlayer, e);
+            return null;
+        }
+        if (node.subNode == null) {
+            Main.logError("Could not create else node. An argument is required but not provided.",
+                    Operator.currentPlayer, null);
+        }
+        return node;
     }
 
     @Override
     public boolean performNode() {
-	try {
-	    return subNode.performNode();
-	}
-	catch (Exception e) {
-	    Main.logError("Error performing else node. Please check your syntax.", Operator.currentPlayer);
-	    return false;
-	}
+        try {
+            return subNode.performNode();
+        } catch (Exception e) {
+            Main.logError("Error performing else node. Please check your syntax.", Operator.currentPlayer, e);
+            return false;
+        }
     }
 
     @Override
     public int getArgCount() {
-	return 1;
+        return 1;
     }
 
 }

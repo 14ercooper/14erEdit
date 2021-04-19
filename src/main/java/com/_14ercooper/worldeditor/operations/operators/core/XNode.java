@@ -7,19 +7,19 @@ public class XNode extends NumberNode {
     // Returns a new node
     @Override
     public XNode newNode() {
-	return new XNode();
+        return new XNode();
     }
 
     // Return the number
     @Override
     public double getValue() {
-	return Operator.currentBlock.getX();
+        return Operator.currentBlock.getX();
     }
 
     // Get how many arguments this type of node takes
     @Override
     public int getArgCount() {
-	return 0;
+        return 0;
     }
 
 }

@@ -111,10 +111,7 @@ public final class ShortTag extends Tag {
 	    return false;
 	}
 	final ShortTag other = (ShortTag) obj;
-	if (value != other.value) {
-	    return false;
-	}
-	return true;
+        return value == other.value;
     }
 
 }

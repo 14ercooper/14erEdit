@@ -113,10 +113,7 @@ public final class DoubleTag extends Tag {
 	    return false;
 	}
 	final DoubleTag other = (DoubleTag) obj;
-	if (Double.doubleToLongBits(value) != Double.doubleToLongBits(other.value)) {
-	    return false;
-	}
-	return true;
+        return Double.doubleToLongBits(value) == Double.doubleToLongBits(other.value);
     }
 
 }

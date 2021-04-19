@@ -91,19 +91,18 @@ public final class ListTag extends Tag {
     @Override
     public String toString() {
 
-	final String name = getName();
-	String append = "";
-	if ((name != null) && !name.equals("")) {
-	    append = "(\"" + getName() + "\")";
-	}
-	final StringBuilder bldr = new StringBuilder();
-	bldr.append("TAG_List" + append + ": " + value.size() + " entries of type " + NBTUtils.getTypeName(type)
-		+ "\r\n{\r\n");
-	for (final Tag t : value) {
-	    bldr.append("   " + t.toString().replaceAll("\r\n", "\r\n   ") + "\r\n");
-	}
-	bldr.append("}");
-	return bldr.toString();
+        final String name = getName();
+        String append = "";
+        if ((name != null) && !name.equals("")) {
+            append = "(\"" + getName() + "\")";
+        }
+        final StringBuilder bldr = new StringBuilder();
+        bldr.append("TAG_List").append(append).append(": ").append(value.size()).append(" entries of type ").append(NBTUtils.getTypeName(type)).append("\r\n{\r\n");
+        for (final Tag t : value) {
+            bldr.append("   ").append(t.toString().replaceAll("\r\n", "\r\n   ")).append("\r\n");
+        }
+        bldr.append("}");
+        return bldr.toString();
     }
 
     /*
@@ -138,15 +137,9 @@ public final class ListTag extends Tag {
 	    return false;
 	}
 	final ListTag other = (ListTag) obj;
-	if (value == null) {
-	    if (other.value != null) {
-		return false;
-	    }
-	}
-	else if (!value.equals(other.value)) {
-	    return false;
-	}
-	return true;
+        if (value == null) {
+            return other.value == null;
+        } else return value.equals(other.value);
     }
 
 }

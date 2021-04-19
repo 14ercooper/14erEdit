@@ -6,26 +6,26 @@ public class BlockVar {
     String nbt = "";
 
     public String getType() {
-	return type;
+        return type;
     }
 
     public String getData() {
-	return data;
+        return data;
     }
 
     public String getNBT() {
-	return nbt;
+        return nbt;
     }
 
     public void setType(String newVal) {
-	type = newVal;
+        type = newVal;
     }
 
     public void setData(String newVal) {
-	data = newVal;
+        data = newVal;
     }
 
     public void setNbt(String newVal) {
-	nbt = newVal;
+        nbt = newVal;
     }
 }

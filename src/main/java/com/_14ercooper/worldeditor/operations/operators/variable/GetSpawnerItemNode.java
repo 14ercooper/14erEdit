@@ -5,6 +5,7 @@ import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.operations.operators.Node;
 import com._14ercooper.worldeditor.operations.type.SpawnerVar;
+import org.bukkit.Bukkit;
 
 public class GetSpawnerItemNode extends Node {
 
@@ -12,30 +13,30 @@ public class GetSpawnerItemNode extends Node {
 
     @Override
     public GetSpawnerItemNode newNode() {
-	GetSpawnerItemNode node = new GetSpawnerItemNode();
-	node.name = GlobalVars.operationParser.parseStringNode().contents;
-	return node;
+        GetSpawnerItemNode node = new GetSpawnerItemNode();
+        node.name = GlobalVars.operationParser.parseStringNode().contents;
+        return node;
     }
 
     @Override
     public boolean performNode() {
-	if (!Operator.spawnerVars.containsKey(name)) {
-	    Main.logError(
-		    "Error performing get spawner item node. Please check your syntax (does the variable exist?).",
-		    Operator.currentPlayer);
-	    return false;
-	}
-	SpawnerVar var = Operator.spawnerVars.get(name);
-	String command = "give @s minecraft:spawner{BlockEntityTag:";
-	command += var.getNBT();
-	command += "}";
-	Main.logDebug("Command: " + command);
-	Operator.currentPlayer.performCommand(command);
-	return true;
+        if (!Operator.spawnerVars.containsKey(name)) {
+            Main.logError(
+                    "Error performing get spawner item node. Please check your syntax (does the variable exist?).",
+                    Operator.currentPlayer, null);
+            return false;
+        }
+        SpawnerVar var = Operator.spawnerVars.get(name);
+        String command = "give @s minecraft:spawner{BlockEntityTag:";
+        command += var.getNBT();
+        command += "}";
+        Main.logDebug("Command: " + command);
+        Bukkit.getServer().dispatchCommand(Operator.currentPlayer, command);
+        return true;
     }
 
     @Override
     public int getArgCount() {
-	return 1;
+        return 1;
     }
 }

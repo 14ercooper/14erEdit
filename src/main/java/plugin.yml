@@ -1,6 +1,6 @@
 main: com._14ercooper.worldeditor.main.Main
 name: 14erEdit
-version: 1.7.0-SNAPSHOT
+version: 1.8.0-SNAPSHOT
 api-version: 1.14
 description: A world editor created by 14er for use by the Minecraft mapmaking community, including the CTMC.
 load: POSTWORLD
@@ -37,18 +37,15 @@ commands:
     debug:
         description: Toggle debug messages globally
         usage: "Usage: /debug"
+    error:
+        description: Toggle verbose error messages globally
+        usage: "Usage: /error"
     14erEdit:
         description: Display plugin information
         usage: "Usage: /14erEdit"
-    confirm:
-        description: Confirm large edits
-        usage: "Usage: /confirm [number]"
-    cancel:
-        description: Cancel large edits
-        usage: "Usage: /cancel [number]"
     async:
         description: Used to manage the async system
-        usage: "Usage: /async <drop|status>"
+        usage: "Usage: /async <drop|status|dump>"
     make:
         description: Make different things using 14erEdit
         usage: "Usage: /make <type> [tags ...]"

@@ -111,10 +111,7 @@ public final class LongTag extends Tag {
 	    return false;
 	}
 	final LongTag other = (LongTag) obj;
-	if (value != other.value) {
-	    return false;
-	}
-	return true;
+        return value == other.value;
     }
 
 }

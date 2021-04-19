@@ -9,10 +9,10 @@ public class CompareTextCommand extends InterpreterCommand {
 
     @Override
     public void run(List<String> args, Function function) {
-	boolean isTrue = args.get(0).equalsIgnoreCase(args.get(1));
-	if (isTrue)
-	    function.cmpres = 1;
-	else
-	    function.cmpres = 0;
+        boolean isTrue = args.get(0).equalsIgnoreCase(args.get(1));
+        if (isTrue)
+            function.cmpres = 1;
+        else
+            function.cmpres = 0;
     }
 }
