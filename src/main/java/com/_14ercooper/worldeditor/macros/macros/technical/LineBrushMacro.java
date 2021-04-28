@@ -50,9 +50,9 @@ public class LineBrushMacro extends Macro {
 
         // Place blocks
         for (int t = 0; t < blockCount; t++) {
-            int xPos = (int) (xStart - (xStep * t));
-            int yPos = (int) (yStart - (yStep * t));
-            int zPos = (int) (zStart - (zStep * t));
+            int xPos = (int) ((int) (xStart - (xStep * t)) + 0.5);
+            int yPos = (int) ((int) (yStart - (yStep * t)) + 0.5);
+            int zPos = (int) ((int) (zStart - (zStep * t)) + 0.5);
             Block b = Operator.currentWorld.getBlockAt(xPos, yPos, zPos);
             SetBlock.setMaterial(b, m, GlobalVars.asyncManager.currentAsyncOp.getUndo());
         }
