@@ -31,7 +31,7 @@ public class CommandAsync implements CommandExecutor {
                 return true;
             }
 
-            Main.logError("Async command not provided. Please provide either drop or status.", sender, null);
+            Main.logError("Async command not provided. Please provide one of drop, status, dump.", sender, null);
             return false;
         } catch (Exception e) {
             Main.logError("Error performing async operation.", sender, e);

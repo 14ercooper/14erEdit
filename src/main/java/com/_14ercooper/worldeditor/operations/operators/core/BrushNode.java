@@ -38,8 +38,6 @@ public class BrushNode extends Node {
             if (!(node.shape instanceof Multi))
                 node.op = GlobalVars.operationParser.parsePart();
 
-            Operator.currentPlayer.sendMessage(
-                    "§aNOTE: Nested brushes run in large edit mode, so no undo will be registered. Please be careful.");
             return node;
         } catch (Exception e) {
             Main.logError("Could not create brush node. Did you provide the correct number of arguments?",
