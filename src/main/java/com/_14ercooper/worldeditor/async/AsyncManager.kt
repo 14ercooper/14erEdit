@@ -303,32 +303,18 @@ class AsyncManager {
                     doneOperations++
                 }
 
-//                else if (currentAsyncOp.key.equals("messyedit", ignoreCase = true)) {
-//                    operations.removeAt(i).operation!!.messyOperate()
-//                    i--
-//                    opSize--
-//                    doneOperations += 100
-//                }
-
                 else if (currentAsyncOp.key.equals("saveschem", ignoreCase = true)) {
                     assert(currentAsyncOp.blocks != null)
                     val b = currentAsyncOp.blocks!!.next
                     if (!currentAsyncOp.startedWrite) {
                         try {
                             currentAsyncOp.schem!!.resetWrite()
+                            currentAsyncOp.startedWrite = true
                         } catch (e: IOException) {
                             Main.logError("Could not write to schematic file", currentAsyncOp.player, e)
                         }
                     }
-                    if (b == null) {
-                        finishUndo(currentAsyncOp.undo)
-                        operations.removeAt(i)
-                        i--
-                        opSize--
-                        currentAsyncOp.player.sendMessage("§aSelection saved")
-                        i++
-                        continue
-                    }
+
                     val material = b.type.toString()
                     val data = b.blockData.asString
                     val nbtE = NBTExtractor()
