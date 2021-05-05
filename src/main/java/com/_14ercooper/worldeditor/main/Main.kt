@@ -255,7 +255,7 @@ class Main : JavaPlugin() {
                     }
                 }
             }
-            GlobalVars.undoLimit = GlobalVars.plugin.config.getLong("undoLimit")
+            GlobalVars.undoLimit = GlobalVars.plugin.config.getLong("undoLimit") / 100
             GlobalVars.blocksPerAsync = GlobalVars.plugin.config.getLong("blocksPerAsync")
             GlobalVars.ticksPerAsync = GlobalVars.plugin.config.getLong("ticksPerAsync")
             GlobalVars.maxLoopLength = GlobalVars.plugin.config.getLong("maxLoopLength")
