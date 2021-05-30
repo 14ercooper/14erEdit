@@ -77,5 +77,10 @@ public class RegisterFunctions {
         Function.commands.put("round", new RoundCommand());
         Function.commands.put("single", new SingleMathCommand());
         Function.commands.put("double", new DoubleMathCommand());
+        Function.commands.put("log", new LogCommand());
+        Function.commands.put("asin", new ArcsineCommand());
+        Function.commands.put("acos", new ArccosineCommand());
+        Function.commands.put("asinh", new HyperbolicSineCommand());
+        Function.commands.put("acosh", new HyperbolicCosineCommand());
     }
 }
