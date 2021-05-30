@@ -286,10 +286,7 @@ public class CommandFx implements CommandExecutor {
                 }
                 String lastArg = args[args.length - initOffset];
                 if (OperatorLoader.nextRange.contains(lastArg)) {
-                    tabArgs.addAll(OperatorLoader.numberNodeNames);
-                }
-                else if (args.length > initOffset && OperatorLoader.nextRange.contains(args[args.length-initOffset-1])) {
-                    tabArgs.addAll(OperatorLoader.numberNodeNames);
+                    tabArgs.addAll(OperatorLoader.rangeNodeNames);
                 }
                 else if (OperatorLoader.nextBlock.contains(lastArg)) {
                     tabArgs.addAll(OperatorLoader.blockNodeNames);
