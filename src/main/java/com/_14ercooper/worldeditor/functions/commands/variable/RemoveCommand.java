@@ -9,6 +9,6 @@ public class RemoveCommand extends InterpreterCommand {
 
     @Override
     public void run(List<String> args, Function function) {
-        function.variableStack.remove(function.variables.size() - 1);
+        function.variableStack.remove(function.variableStack.size() - 1);
     }
 }

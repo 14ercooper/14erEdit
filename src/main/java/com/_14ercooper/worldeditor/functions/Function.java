@@ -38,7 +38,7 @@ public class Function {
         this.player = player;
         this.isOperator = isOperator;
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 1000; i++) {
             variables.add(0.0);
         }
 
