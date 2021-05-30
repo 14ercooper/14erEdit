@@ -73,4 +73,9 @@ public class Splatter extends BrushShape {
         return argsSeen <= 2;
     }
 
+    @Override
+    public int minArgCount() {
+        return 3;
+    }
+
 }

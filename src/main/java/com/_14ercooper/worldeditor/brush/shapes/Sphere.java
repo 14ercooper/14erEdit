@@ -52,4 +52,9 @@ public class Sphere extends BrushShape {
         return numArgsProcessed <= 0;
     }
 
+    @Override
+    public int minArgCount() {
+        return 1;
+    }
+
 }

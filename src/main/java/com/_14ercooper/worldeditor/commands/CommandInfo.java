@@ -5,7 +5,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CommandInfo implements CommandExecutor {
 
@@ -27,6 +31,13 @@ public class CommandInfo implements CommandExecutor {
                     "It's obviously doing something wrong. If you ever see this, tell 14er. This should be unreachable code.",
                     sender, e);
             return false;
+        }
+    }
+
+    public static class TabComplete implements TabCompleter {
+        @Override
+        public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
+            return new ArrayList<>();
         }
     }
 }

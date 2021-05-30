@@ -15,6 +15,11 @@ public class BlocksAdjacentVerticalNode extends Node {
     public RangeNode arg2;
 
     @Override
+    public boolean isNextNodeRange() {
+        return true;
+    }
+
+    @Override
     public BlocksAdjacentVerticalNode newNode() {
         BlocksAdjacentVerticalNode node = new BlocksAdjacentVerticalNode();
         try {

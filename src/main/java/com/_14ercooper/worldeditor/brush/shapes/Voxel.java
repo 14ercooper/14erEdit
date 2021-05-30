@@ -37,4 +37,9 @@ public class Voxel extends BrushShape {
         return false;
     }
 
+    @Override
+    public int minArgCount() {
+        return 0;
+    }
+
 }

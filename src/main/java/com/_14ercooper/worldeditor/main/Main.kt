@@ -68,8 +68,8 @@ class Main : JavaPlugin() {
         }
 
         val ver = server.version.split("MC: ").toTypedArray()[1]
-        GlobalVars.majorVer = ver.split(".").toTypedArray()[1].replace("[^\\d.]".toRegex(), "").toInt()
-        GlobalVars.minorVer = ver.split(".").toTypedArray()[2].replace("[^\\d.]".toRegex(), "").toInt()
+        ver.split(".").toTypedArray()[1].replace("[^\\d.]".toRegex(), "").toInt().also { GlobalVars.majorVer = it }
+        ver.split(".").toTypedArray()[2].replace("[^\\d.]".toRegex(), "").toInt().also { GlobalVars.minorVer = it }
         println("Using version " + server.version + ": " + GlobalVars.majorVer + "/" + GlobalVars.minorVer)
 
         // Create folders as needed
@@ -88,20 +88,34 @@ class Main : JavaPlugin() {
 
         // Register commands with the server
         getCommand("fx")!!.setExecutor(CommandFx())
+        getCommand("fx")!!.tabCompleter = CommandFx.TabComplete()
         val undoCmd = CommandUndo()
         getCommand("un")!!.setExecutor(undoCmd)
+        getCommand("un")!!.tabCompleter = CommandUndo.TabComplete()
         getCommand("re")!!.setExecutor(undoCmd)
+        getCommand("re")!!.tabCompleter = CommandUndo.TabComplete()
         getCommand("script")!!.setExecutor(CommandScript())
+        getCommand("script")!!.tabCompleter = CommandScript.TabComplete()
         getCommand("run")!!.setExecutor(CommandRun())
+        getCommand("run")!!.tabCompleter = CommandRun.TabComplete()
         getCommand("runat")!!.setExecutor(CommandRunat())
+        getCommand("runat")!!.tabCompleter = CommandRunat.TabComplete()
         getCommand("debug")!!.setExecutor(CommandDebug())
+        getCommand("debug")!!.tabCompleter = CommandDebug.TabComplete()
         getCommand("error")!!.setExecutor(CommandError())
+        getCommand("error")!!.tabCompleter = CommandError.TabComplete()
         getCommand("14erEdit")!!.setExecutor(CommandInfo())
+        getCommand("14erEdit")!!.tabCompleter = CommandInfo.TabComplete()
         getCommand("async")!!.setExecutor(CommandAsync())
+        getCommand("async")!!.tabCompleter = CommandAsync.TabComplete()
         getCommand("brmask")!!.setExecutor(CommandBrmask())
+        getCommand("brmask")!!.tabCompleter = CommandBrmask.TabComplete()
         getCommand("template")!!.setExecutor(CommandTemplate())
+        getCommand("template")!!.tabCompleter = CommandTemplate.TabComplete()
         getCommand("funct")!!.setExecutor(CommandFunction())
+        getCommand("funct")!!.tabCompleter = CommandFunction.TabComplete()
         getCommand("limit")!!.setExecutor(CommandLimit())
+        getCommand("limit")!!.tabCompleter = CommandLimit.TabComplete()
 
         // Set up brush mask
         GlobalVars.brushMask = HashSet()
@@ -256,6 +270,8 @@ class Main : JavaPlugin() {
                 }
             }
             GlobalVars.undoLimit = GlobalVars.plugin.config.getLong("undoLimit")
+            if (GlobalVars.undoLimit >= 0)
+                GlobalVars.undoLimit /= 250
             GlobalVars.blocksPerAsync = GlobalVars.plugin.config.getLong("blocksPerAsync")
             GlobalVars.ticksPerAsync = GlobalVars.plugin.config.getLong("ticksPerAsync")
             GlobalVars.maxLoopLength = GlobalVars.plugin.config.getLong("maxLoopLength")

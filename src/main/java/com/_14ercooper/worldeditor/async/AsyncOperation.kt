@@ -5,6 +5,7 @@ import com._14ercooper.worldeditor.blockiterator.BlockIterator
 import com._14ercooper.worldeditor.operations.Operator
 import com._14ercooper.worldeditor.undo.UndoElement
 import org.bukkit.Bukkit
+import org.bukkit.block.Block
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 

@@ -38,4 +38,9 @@ public class Column extends BrushShape {
         return false;
     }
 
+    @Override
+    public int minArgCount() {
+        return 0;
+    }
+
 }

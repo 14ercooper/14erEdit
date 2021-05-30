@@ -88,6 +88,11 @@ class UndoElement
         return decompStr.lines()
     }
 
+    private fun loadBlockLast(idFromLast : Int) : List<String> {
+        val id = blockSizes.size - idFromLast - 1;
+        return loadBlock(id)
+    }
+
     // Serialize this undo to disk
     private fun serialize() : Boolean {
         if (data.isNotEmpty())
@@ -135,7 +140,7 @@ class UndoElement
                     return true
                 }
                 currData = mutableListOf()
-                currData.addAll(loadBlock(currBlock))
+                currData.addAll(loadBlockLast(currBlock))
             }
             // Pull data from block and set into world
             if (currData.isEmpty()) {
@@ -189,7 +194,7 @@ class UndoElement
                 Main.logDebug("Data in block $currBlock is empty, continuing")
                 continue
             }
-            val s = currData.removeAt(currData.lastIndex)
+            val s = currData.removeAt(0)
             val nextBlockData = s.split("\t")
             if (s.length >= 10)
                 setBlock(nextBlockData[0], nextBlockData[1].toInt(), nextBlockData[2].toInt(), nextBlockData[3].toInt(), nextBlockData[7], nextBlockData[8], nextBlockData[9])

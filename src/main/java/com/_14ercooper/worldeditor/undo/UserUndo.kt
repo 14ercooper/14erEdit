@@ -62,6 +62,10 @@ class UserUndo
             redoList.add(s)
             undoList.removeAt(undoList.size - 1)
         }
+        if (undoSet.isEmpty()) {
+            Main.logDebug("Nothing to undo for $name")
+            return true
+        }
         GlobalVars.asyncManager.scheduleEdit(undoSet)
         Main.logDebug("Undoing $count changes for $name")
         return true
@@ -80,6 +84,10 @@ class UserUndo
             redoSet.add(ue)
             undoList.add(s)
             redoList.removeAt(redoList.size - 1)
+        }
+        if (redoSet.isEmpty()) {
+            Main.logDebug("Nothing to redo for $name")
+            return true
         }
         GlobalVars.asyncManager.scheduleEdit(redoSet)
         Main.logDebug("Redoing $count changes for $name")

@@ -4,7 +4,7 @@
   <groupId>fourteener</groupId>
   <artifactId>14erEdit</artifactId>
   <name>worldeditor</name>
-  <version>1.8.0-SNAPSHOT</version>
+  <version>1.8.0</version>
   <url>https://14ercooper.com/edit</url>
   <build>
     <resources>

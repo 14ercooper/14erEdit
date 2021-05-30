@@ -30,6 +30,9 @@ public class SetBiomeNode extends Node {
     @Override
     public boolean performNode() {
         try {
+            if (!(Operator.currentBlock.getChunk().isLoaded())) {
+                Operator.currentBlock.getChunk().load(true);
+            }
             Operator.currentWorld.setBiome(Operator.currentBlock.getX(), Operator.currentBlock.getY(),
                     Operator.currentBlock.getZ(), Biome.valueOf(biome.getText()));
             return true;

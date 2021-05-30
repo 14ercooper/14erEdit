@@ -45,7 +45,7 @@ public class ScriptFlatten extends Craftscript {
     }
 
     private boolean selectionFlatten(Player player, double height, Material block) {
-        SelectionManager sm = SelectionManager.getSelectionManager(player);
+        SelectionManager sm = SelectionManager.getSelectionManager(player.getUniqueId());
         if (sm != null) {
             double[] negCorner = sm.getMostNegativeCorner();
             double[] posCorner = sm.getMostPositiveCorner();
@@ -70,7 +70,7 @@ public class ScriptFlatten extends Craftscript {
     }
 
     private boolean absoluteSelectionFlatten(Player player, double height, Material block) {
-        SelectionManager sm = SelectionManager.getSelectionManager(player);
+        SelectionManager sm = SelectionManager.getSelectionManager(player.getUniqueId());
         if (sm != null) {
             double[] negCorner = sm.getMostNegativeCorner();
             double[] posCorner = sm.getMostPositiveCorner();

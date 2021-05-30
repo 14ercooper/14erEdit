@@ -16,6 +16,11 @@ public class AngleNode extends Node {
     NumberNode distance = null;
 
     @Override
+    public boolean isNextNodeRange() {
+        return true;
+    }
+
+    @Override
     public Node newNode() {
         try {
             AngleNode node = new AngleNode();

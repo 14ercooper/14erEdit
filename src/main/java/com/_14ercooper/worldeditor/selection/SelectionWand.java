@@ -1,13 +1,16 @@
 package com._14ercooper.worldeditor.selection;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.UUID;
+
 public class SelectionWand {
-    public Player owner; // Store the owner so people can have different selections
+    public UUID owner; // Store the owner so people can have different selections
     public SelectionManager manager; // Same reason as above
 
     public static final String wandName = "Selection Wand";
@@ -24,7 +27,7 @@ public class SelectionWand {
         }
         // Player needs a new wand
         SelectionWand wand = new SelectionWand();
-        wand.owner = player;
+        wand.owner = player.getUniqueId();
         wand.manager = new SelectionManager();
         wand.givePlayerWand();
         return wand;
@@ -37,6 +40,10 @@ public class SelectionWand {
         meta.setDisplayName(wandName); // Checked by the wand listener
         item.setItemMeta(meta);
         item.addUnsafeEnchantment(Enchantment.MENDING, 1); // Checked by the wand listener (though not the level)
-        owner.getInventory().addItem(item);
+        getOwner().getInventory().addItem(item);
+    }
+
+    public Player getOwner(){
+        return Bukkit.getServer().getPlayer(owner);
     }
 }

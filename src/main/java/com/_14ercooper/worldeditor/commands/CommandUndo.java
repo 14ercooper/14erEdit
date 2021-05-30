@@ -4,9 +4,12 @@ import com._14ercooper.worldeditor.undo.UndoSystem;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
 import javax.swing.undo.UndoManager;
+import java.util.ArrayList;
+import java.util.List;
 
 // These are dedicated versions of the undo and redo commands
 public class CommandUndo implements CommandExecutor {
@@ -38,5 +41,18 @@ public class CommandUndo implements CommandExecutor {
             return UndoSystem.findUserUndo(sender).redoChanges(numToRedo);
         }
         return false;
+    }
+
+    public static class TabComplete implements TabCompleter {
+        @Override
+        public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
+            List<String> tabArgs = new ArrayList<>();
+
+            if (args.length == 1) {
+                tabArgs.add("[number]");
+            }
+
+            return tabArgs;
+        }
     }
 }

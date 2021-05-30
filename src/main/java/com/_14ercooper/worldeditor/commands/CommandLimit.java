@@ -6,6 +6,10 @@ import org.bukkit.command.CommandSender;
 
 import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
+import org.bukkit.command.TabCompleter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CommandLimit implements CommandExecutor {
 
@@ -53,6 +57,27 @@ public class CommandLimit implements CommandExecutor {
         } else {
             Main.logError("Invalid limiter provided: " + arg3[0], arg0, null);
             return false;
+        }
+    }
+
+    public static class TabComplete implements TabCompleter {
+        @Override
+        public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
+            List<String> tabArgs = new ArrayList<>();
+
+            if (args.length == 1) {
+                tabArgs.add("px");
+                tabArgs.add("py");
+                tabArgs.add("pz");
+                tabArgs.add("nx");
+                tabArgs.add("ny");
+                tabArgs.add("nz");
+            }
+            if (args.length == 2) {
+                tabArgs.add("<value>");
+            }
+
+            return tabArgs;
         }
     }
 

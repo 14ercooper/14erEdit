@@ -46,4 +46,9 @@ public class ScaledSphere extends BrushShape {
         return args.size() <= 4;
     }
 
+    @Override
+    public int minArgCount() {
+        return 5;
+    }
+
 }

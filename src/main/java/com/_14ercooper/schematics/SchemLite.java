@@ -131,10 +131,6 @@ public class SchemLite {
     public void openRead() throws IOException {
         // Reload the file buffer
         reader = Files.newBufferedReader(Paths.get(outPath));
-        if (reader == null) {
-            Main.logDebug("Schematic not found");
-            return;
-        }
         // Refresh the metadata
         xSize = Integer.parseInt(reader.readLine());
         ySize = Integer.parseInt(reader.readLine());

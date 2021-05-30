@@ -37,4 +37,9 @@ public class Below extends BrushShape {
         return false;
     }
 
+    @Override
+    public int minArgCount() {
+        return 0;
+    }
+
 }

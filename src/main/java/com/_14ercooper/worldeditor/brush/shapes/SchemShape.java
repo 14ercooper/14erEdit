@@ -42,4 +42,9 @@ public class SchemShape extends BrushShape {
     public boolean gotEnoughArgs() {
         return gotArgs <= 0;
     }
+
+    @Override
+    public int minArgCount() {
+        return 1;
+    }
 }

@@ -16,6 +16,11 @@ public class NearbyNode extends Node {
     RangeNode trueRange = null;
 
     @Override
+    public boolean isNextNodeRange() {
+        return true;
+    }
+
+    @Override
     public NearbyNode newNode() {
         try {
             NearbyNode node = new NearbyNode();

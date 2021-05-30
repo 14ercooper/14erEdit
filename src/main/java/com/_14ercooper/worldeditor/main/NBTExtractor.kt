@@ -31,6 +31,9 @@ class NBTExtractor {
                     "1_16_R3"
                 }
             }
+            else if (GlobalVars.majorVer == 17) {
+                "1_17_R1"
+            }
             else {
                 "1_16_R3"
             }

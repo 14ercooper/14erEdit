@@ -1,9 +1,11 @@
 package com._14ercooper.worldeditor.functions;
 
+import com._14ercooper.worldeditor.brush.BrushListener;
 import com._14ercooper.worldeditor.functions.commands.InterpreterCommand;
 import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
 import org.bukkit.Bukkit;
+import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -19,11 +21,13 @@ public class Function {
     public static final List<Function> waitingFunctions = new LinkedList<>();
     // Function-specific variables
     public final List<Double> variables = new ArrayList<>();
+    public static final List<Double> globalVariables = new ArrayList<>();
     public final List<Double> variableStack = new ArrayList<>();
     public final List<String> dataSegment = new LinkedList<>();
     public final Map<String, Integer> labelsMap = new HashMap<>();
     public final List<String> templateArgs = new LinkedList<>();
     public final CommandSender player;
+    public final Block target;
     public final boolean isOperator;
     public double ra, cmpres;
     public int waitDelay = 0;
@@ -38,8 +42,21 @@ public class Function {
         this.player = player;
         this.isOperator = isOperator;
 
-        for (int i = 0; i < 10; i++) {
+        if (player instanceof Player) {
+            target = BrushListener.getTargetBlock((Player) player);
+        }
+        else {
+            target = Bukkit.getServer().getWorlds().get(0).getBlockAt(0, 0,0 );
+        }
+
+        for (int i = 0; i < 1000; i++) {
             variables.add(0.0);
+        }
+
+        if (globalVariables.size() == 0) {
+            for (int i = 0; i < 100; i++) {
+                globalVariables.add(0.0);
+            }
         }
 
         // Load data from file
@@ -81,7 +98,7 @@ public class Function {
     public static void SetupFunctions() {
         RegisterFunctions.RegisterAll();
 
-        Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(GlobalVars.plugin, () -> Function.CheckWaitingFunctions(), 1L, 1L);
+        Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(GlobalVars.plugin, Function::CheckWaitingFunctions, 1L, 1L);
     }
 
     // See if any waiting functions are ready to keep running
@@ -124,8 +141,7 @@ public class Function {
                 }
 
                 // Split into list
-                List<String> lineContents = new ArrayList<>();
-                lineContents.addAll(Arrays.asList(line.split("\\s")));
+                List<String> lineContents = new ArrayList<>(Arrays.asList(line.split("\\s")));
 
                 // If blank line
                 if (lineContents.get(0).isEmpty()) {
@@ -180,6 +196,15 @@ public class Function {
                 return 0;
             }
         }
+        if (var.contains("$gv")) {
+            String s = var.substring(2);
+            try {
+                return globalVariables.get(Integer.parseInt(s));
+            } catch (Exception e) {
+                Main.logError("Invalid variable: " + var, player, e);
+                return 0;
+            }
+        }
         if (var.equalsIgnoreCase("$ra")) {
             return ra;
         }
@@ -199,6 +224,15 @@ public class Function {
             String s = var.substring(2);
             try {
                 variables.set(Integer.parseInt(s), num);
+            } catch (Exception e) {
+                Main.logError("Invalid variable: " + var, player, e);
+            }
+            return;
+        }
+        if (var.contains("$gv")) {
+            String s = var.substring(2);
+            try {
+                globalVariables.set(Integer.parseInt(s), num);
             } catch (Exception e) {
                 Main.logError("Invalid variable: " + var, player, e);
             }

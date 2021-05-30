@@ -20,8 +20,8 @@ public class ScriptCaternary extends Craftscript {
                 step = Double.parseDouble(args.get(2));
             }
 
-            double[] negativeCorner = SelectionManager.getSelectionManager(player).getPositionOne();
-            double[] positiveCorner = SelectionManager.getSelectionManager(player).getPositionTwo();
+            double[] negativeCorner = SelectionManager.getSelectionManager(player.getUniqueId()).getPositionOne();
+            double[] positiveCorner = SelectionManager.getSelectionManager(player.getUniqueId()).getPositionTwo();
             double midpointY = ((positiveCorner[1] + negativeCorner[1]) * 0.5) - droop;
 
             double x0 = negativeCorner[0];

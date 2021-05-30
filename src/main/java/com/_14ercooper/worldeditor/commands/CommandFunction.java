@@ -5,11 +5,16 @@ import com._14ercooper.worldeditor.main.Main;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class CommandFunction implements CommandExecutor {
 
@@ -40,5 +45,33 @@ public class CommandFunction implements CommandExecutor {
         Function fx = new Function(filename, args, player, false);
         fx.run();
         return true;
+    }
+
+    public static List<String> getFunctionsList() {
+        try {
+            Stream<Path> files = Files.list(Paths.get("plugins/14erEdit/functions"));
+            List<String> functions = files.map(path -> path.getFileName().toString()).collect(Collectors.toList());
+            files.close();
+            return functions;
+        }
+        catch (IOException e) {
+            return new ArrayList<>(Collections.singleton("<function_name>"));
+        }
+    }
+
+    public static class TabComplete implements TabCompleter {
+        @Override
+        public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
+            List<String> tabArgs = new ArrayList<>();
+
+            if (args.length == 1) {
+                tabArgs.addAll(CommandFunction.getFunctionsList());
+            }
+            if (args.length > 1) {
+                tabArgs.add("[function_arg_" + (args.length-2) + "]");
+            }
+
+            return tabArgs;
+        }
     }
 }

@@ -70,4 +70,9 @@ public class RandomCylinder extends BrushShape {
         return argsGot <= 3;
     }
 
+    @Override
+    public int minArgCount() {
+        return 4;
+    }
+
 }

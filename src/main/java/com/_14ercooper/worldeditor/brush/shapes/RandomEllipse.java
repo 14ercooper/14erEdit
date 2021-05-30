@@ -59,4 +59,9 @@ public class RandomEllipse extends BrushShape {
         return argsGot <= 6;
     }
 
+    @Override
+    public int minArgCount() {
+        return 7;
+    }
+
 }

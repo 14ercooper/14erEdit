@@ -12,7 +12,7 @@ import java.util.Map;
 public class CraftscriptManager {
 
     // Stores registered scripts
-    final Map<String, Craftscript> registeredScripts = new HashMap<>();
+    public final Map<String, Craftscript> registeredScripts = new HashMap<>();
 
     // Create a new manager
     public CraftscriptManager() {

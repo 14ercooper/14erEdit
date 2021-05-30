@@ -1,15 +1,8 @@
 package com._14ercooper.worldeditor.operations;
 
 import com._14ercooper.worldeditor.main.GlobalVars;
-import com._14ercooper.worldeditor.operations.operators.core.BrushNode;
-import com._14ercooper.worldeditor.operations.operators.core.CraftscriptNode;
-import com._14ercooper.worldeditor.operations.operators.core.LinkerNode;
-import com._14ercooper.worldeditor.operations.operators.core.LoadFromFileNode;
-import com._14ercooper.worldeditor.operations.operators.core.MacroNode;
-import com._14ercooper.worldeditor.operations.operators.core.TemplateNode;
-import com._14ercooper.worldeditor.operations.operators.core.XNode;
-import com._14ercooper.worldeditor.operations.operators.core.YNode;
-import com._14ercooper.worldeditor.operations.operators.core.ZNode;
+import com._14ercooper.worldeditor.operations.operators.Node;
+import com._14ercooper.worldeditor.operations.operators.core.*;
 import com._14ercooper.worldeditor.operations.operators.fun.SmallRuinNode;
 import com._14ercooper.worldeditor.operations.operators.function.EveryXNode;
 import com._14ercooper.worldeditor.operations.operators.function.FunctionNode;
@@ -67,16 +60,12 @@ import com._14ercooper.worldeditor.operations.operators.variable.SetBlockVarNode
 import com._14ercooper.worldeditor.operations.operators.variable.SetSpawnerNode;
 import com._14ercooper.worldeditor.operations.operators.variable.SpawnMonsterNode;
 import com._14ercooper.worldeditor.operations.operators.variable.SpawnerVarNode;
-import com._14ercooper.worldeditor.operations.operators.world.FacingNode;
-import com._14ercooper.worldeditor.operations.operators.world.GetBlockDataNode;
-import com._14ercooper.worldeditor.operations.operators.world.GravityNode;
-import com._14ercooper.worldeditor.operations.operators.world.IgnorePhysicsNode;
-import com._14ercooper.worldeditor.operations.operators.world.ReplaceNode;
-import com._14ercooper.worldeditor.operations.operators.world.SameNode;
-import com._14ercooper.worldeditor.operations.operators.world.SchemBlockNode;
-import com._14ercooper.worldeditor.operations.operators.world.SetBiomeNode;
-import com._14ercooper.worldeditor.operations.operators.world.SetNBTNode;
-import com._14ercooper.worldeditor.operations.operators.world.SetNode;
+import com._14ercooper.worldeditor.operations.operators.world.*;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class OperatorLoader {
     public static void LoadOperators() {
@@ -90,195 +79,222 @@ public class OperatorLoader {
         LoadFun();
     }
 
+    public static List<String> nodeNames = new ArrayList<>();
+    public static List<String> blockNodeNames = new ArrayList<>();
+    public static List<String> numberNodeNames = new ArrayList<>();
+    public static List<String> rangeNodeNames = new ArrayList<>();
+    public static List<String> nextRange = new ArrayList<>();
+    public static List<String> nextBlock = new ArrayList<>();
+
+    private static void loadNode(String name, Node node) {
+        nodeNames.add(name);
+        if (node instanceof BlockNode) {
+            blockNodeNames.add(name);
+        }
+        if (node instanceof NumberNode) {
+            numberNodeNames.add(name);
+        }
+        if (node instanceof RangeNode) {
+            rangeNodeNames.add(name);
+        }
+        if (node.isNextNodeRange()) {
+            nextRange.add(name);
+        }
+        if (node.isNextNodeBlock()) {
+            nextBlock.add(name);
+        }
+        GlobalVars.operationParser.addOperator(name, node);
+    }
+
     private static void LoadCore() {
-        GlobalVars.operationParser.addOperator("$$", new CraftscriptNode());
-        GlobalVars.operationParser.addOperator("craftscript", GlobalVars.operationParser.getOperator("$$"));
-        GlobalVars.operationParser.addOperator("script", GlobalVars.operationParser.getOperator("$$"));
-        GlobalVars.operationParser.addOperator("/", new LinkerNode());
-        GlobalVars.operationParser.addOperator("link", GlobalVars.operationParser.getOperator("/"));
-        GlobalVars.operationParser.addOperator(">f", new LoadFromFileNode());
-        GlobalVars.operationParser.addOperator("file", GlobalVars.operationParser.getOperator(">f"));
-        GlobalVars.operationParser.addOperator("$", new MacroNode());
-        GlobalVars.operationParser.addOperator("macro", GlobalVars.operationParser.getOperator("$"));
-        GlobalVars.operationParser.addOperator("x", new XNode());
-        GlobalVars.operationParser.addOperator("y", new YNode());
-        GlobalVars.operationParser.addOperator("z", new ZNode());
-        GlobalVars.operationParser.addOperator("br", new BrushNode());
-        GlobalVars.operationParser.addOperator("brush", GlobalVars.operationParser.getOperator("br"));
+        loadNode("$$", new CraftscriptNode());
+        loadNode("craftscript", GlobalVars.operationParser.getOperator("$$"));
+        loadNode("script", GlobalVars.operationParser.getOperator("$$"));
+        loadNode("/", new LinkerNode());
+        loadNode("link", GlobalVars.operationParser.getOperator("/"));
+        loadNode(">f", new LoadFromFileNode());
+        loadNode("file", GlobalVars.operationParser.getOperator(">f"));
+        loadNode("$", new MacroNode());
+        loadNode("macro", GlobalVars.operationParser.getOperator("$"));
+        loadNode("x", new XNode());
+        loadNode("y", new YNode());
+        loadNode("z", new ZNode());
+        loadNode("br", new BrushNode());
+        loadNode("brush", GlobalVars.operationParser.getOperator("br"));
     }
 
     private static void LoadFunction() {
-        GlobalVars.operationParser.addOperator("%", new OddsNode());
-        GlobalVars.operationParser.addOperator("odds", GlobalVars.operationParser.getOperator("%"));
-        GlobalVars.operationParser.addOperator("chance", GlobalVars.operationParser.getOperator("%"));
-        GlobalVars.operationParser.addOperator("-", new RangeNode());
-        GlobalVars.operationParser.addOperator("range", GlobalVars.operationParser.getOperator("-"));
-        GlobalVars.operationParser.addOperator("inrange", GlobalVars.operationParser.getOperator("-"));
-        GlobalVars.operationParser.addOperator("in_range", GlobalVars.operationParser.getOperator("-"));
-        GlobalVars.operationParser.addOperator(";", new RemainderNode());
-        GlobalVars.operationParser.addOperator("rem", GlobalVars.operationParser.getOperator(";"));
-        GlobalVars.operationParser.addOperator("remainder", GlobalVars.operationParser.getOperator(";"));
-        GlobalVars.operationParser.addOperator("-con", new StringContainsNode());
-        GlobalVars.operationParser.addOperator(";;", new EveryXNode());
-        GlobalVars.operationParser.addOperator("every", GlobalVars.operationParser.getOperator(";;"));
-        GlobalVars.operationParser.addOperator("step", GlobalVars.operationParser.getOperator(";;"));
-        GlobalVars.operationParser.addOperator("#", new SimplexNode());
-        GlobalVars.operationParser.addOperator("simplex", GlobalVars.operationParser.getOperator("#"));
-        GlobalVars.operationParser.addOperator("##", new NoiseNode());
-        GlobalVars.operationParser.addOperator("noise", GlobalVars.operationParser.getOperator("##"));
-        GlobalVars.operationParser.addOperator("#a", new NoiseAtNode());
-        GlobalVars.operationParser.addOperator("noiseat", GlobalVars.operationParser.getOperator("#a"));
-        GlobalVars.operationParser.addOperator("fx", new FunctionNode());
-        GlobalVars.operationParser.addOperator("function", GlobalVars.operationParser.getOperator("fx"));
-        GlobalVars.operationParser.addOperator("m#", new MultiNoiseNode());
-        GlobalVars.operationParser.addOperator("multinoise", GlobalVars.operationParser.getOperator("m#"));
+        loadNode("%", new OddsNode());
+        loadNode("odds", GlobalVars.operationParser.getOperator("%"));
+        loadNode("chance", GlobalVars.operationParser.getOperator("%"));
+        loadNode("-", new RangeNode());
+        loadNode("range", GlobalVars.operationParser.getOperator("-"));
+        loadNode("inrange", GlobalVars.operationParser.getOperator("-"));
+        loadNode("in_range", GlobalVars.operationParser.getOperator("-"));
+        loadNode(";", new RemainderNode());
+        loadNode("rem", GlobalVars.operationParser.getOperator(";"));
+        loadNode("remainder", GlobalVars.operationParser.getOperator(";"));
+        loadNode("-con", new StringContainsNode());
+        loadNode(";;", new EveryXNode());
+        loadNode("every", GlobalVars.operationParser.getOperator(";;"));
+        loadNode("step", GlobalVars.operationParser.getOperator(";;"));
+        loadNode("#", new SimplexNode());
+        loadNode("simplex", GlobalVars.operationParser.getOperator("#"));
+        loadNode("##", new NoiseNode());
+        loadNode("noise", GlobalVars.operationParser.getOperator("##"));
+        loadNode("#a", new NoiseAtNode());
+        loadNode("noiseat", GlobalVars.operationParser.getOperator("#a"));
+        loadNode("fx", new FunctionNode());
+        loadNode("function", GlobalVars.operationParser.getOperator("fx"));
+        loadNode("m#", new MultiNoiseNode());
+        loadNode("multinoise", GlobalVars.operationParser.getOperator("m#"));
     }
 
     private static void LoadLogical() {
-        GlobalVars.operationParser.addOperator("&", new AndNode());
-        GlobalVars.operationParser.addOperator("and", GlobalVars.operationParser.getOperator("&"));
-        GlobalVars.operationParser.addOperator("both", GlobalVars.operationParser.getOperator("&"));
-        GlobalVars.operationParser.addOperator("false", new FalseNode());
-        GlobalVars.operationParser.addOperator("?", new IfNode());
-        GlobalVars.operationParser.addOperator("if", GlobalVars.operationParser.getOperator("?"));
-        GlobalVars.operationParser.addOperator(":", new ElseNode());
-        GlobalVars.operationParser.addOperator("else", GlobalVars.operationParser.getOperator(":"));
-        GlobalVars.operationParser.addOperator("~", new NotNode());
-        GlobalVars.operationParser.addOperator("not", GlobalVars.operationParser.getOperator("~"));
-        GlobalVars.operationParser.addOperator("|", new OrNode());
-        GlobalVars.operationParser.addOperator("or", GlobalVars.operationParser.getOperator("|"));
-        GlobalVars.operationParser.addOperator("either", GlobalVars.operationParser.getOperator("|"));
-        GlobalVars.operationParser.addOperator("true", new TrueNode());
-        GlobalVars.operationParser.addOperator("<", new XorNode());
-        GlobalVars.operationParser.addOperator("xor", GlobalVars.operationParser.getOperator("<"));
-        GlobalVars.operationParser.addOperator("one_of", GlobalVars.operationParser.getOperator("<"));
-        GlobalVars.operationParser.addOperator("anyof", new AnyOfNode());
-        GlobalVars.operationParser.addOperator("any_of", GlobalVars.operationParser.getOperator("anyof"));
+        loadNode("&", new AndNode());
+        loadNode("and", GlobalVars.operationParser.getOperator("&"));
+        loadNode("both", GlobalVars.operationParser.getOperator("&"));
+        loadNode("false", new FalseNode());
+        loadNode("?", new IfNode());
+        loadNode("if", GlobalVars.operationParser.getOperator("?"));
+        loadNode(":", new ElseNode());
+        loadNode("else", GlobalVars.operationParser.getOperator(":"));
+        loadNode("~", new NotNode());
+        loadNode("not", GlobalVars.operationParser.getOperator("~"));
+        loadNode("|", new OrNode());
+        loadNode("or", GlobalVars.operationParser.getOperator("|"));
+        loadNode("either", GlobalVars.operationParser.getOperator("|"));
+        loadNode("true", new TrueNode());
+        loadNode("<", new XorNode());
+        loadNode("xor", GlobalVars.operationParser.getOperator("<"));
+        loadNode("one_of", GlobalVars.operationParser.getOperator("<"));
+        loadNode("anyof", new AnyOfNode());
+        loadNode("any_of", GlobalVars.operationParser.getOperator("anyof"));
     }
 
     private static void LoadLoop() {
-        GlobalVars.operationParser.addOperator("-eq", new NumericEqualityNode());
-        GlobalVars.operationParser.addOperator("-gte", new NumericGreaterEqualNode());
-        GlobalVars.operationParser.addOperator("-gt", new NumericGreaterNode());
-        GlobalVars.operationParser.addOperator("-lte", new NumericLessEqualNode());
-        GlobalVars.operationParser.addOperator("-lt", new NumericLessNode());
-        GlobalVars.operationParser.addOperator("loop", new WhileNode());
-        GlobalVars.operationParser.addOperator("while", GlobalVars.operationParser.getOperator("loop"));
+        loadNode("-eq", new NumericEqualityNode());
+        loadNode("-gte", new NumericGreaterEqualNode());
+        loadNode("-gt", new NumericGreaterNode());
+        loadNode("-lte", new NumericLessEqualNode());
+        loadNode("-lt", new NumericLessNode());
+        loadNode("loop", new WhileNode());
+        loadNode("while", GlobalVars.operationParser.getOperator("loop"));
     }
 
     private static void LoadQuery() {
-        GlobalVars.operationParser.addOperator("@", new BlocksAdjacentNode());
-        GlobalVars.operationParser.addOperator("adj", GlobalVars.operationParser.getOperator("@"));
-        GlobalVars.operationParser.addOperator("adjacent", GlobalVars.operationParser.getOperator("@"));
-        GlobalVars.operationParser.addOperator("blocks_adjacent", GlobalVars.operationParser.getOperator("@"));
-        GlobalVars.operationParser.addOperator("^", new BlocksAboveNode());
-        GlobalVars.operationParser.addOperator("blocks_above", GlobalVars.operationParser.getOperator("^"));
-        GlobalVars.operationParser.addOperator("above", GlobalVars.operationParser.getOperator("^"));
-        GlobalVars.operationParser.addOperator("_", new BlocksBelowNode());
-        GlobalVars.operationParser.addOperator("blocks_below", GlobalVars.operationParser.getOperator("_"));
-        GlobalVars.operationParser.addOperator("below", GlobalVars.operationParser.getOperator("_"));
-        GlobalVars.operationParser.addOperator("*", new FacesExposedNode());
-        GlobalVars.operationParser.addOperator("exposed", GlobalVars.operationParser.getOperator("*"));
-        GlobalVars.operationParser.addOperator("faces_exposed", GlobalVars.operationParser.getOperator("*"));
-        GlobalVars.operationParser.addOperator("<<n", new GetNBTNode());
-        GlobalVars.operationParser.addOperator("get_nbt", GlobalVars.operationParser.getOperator("<<n"));
-        GlobalVars.operationParser.addOperator("at", new BlockAtNode());
-        GlobalVars.operationParser.addOperator("block_at", GlobalVars.operationParser.getOperator("at"));
-        GlobalVars.operationParser.addOperator("sky", new SkylightNode());
-        GlobalVars.operationParser.addOperator("skylight", GlobalVars.operationParser.getOperator("sky"));
-        GlobalVars.operationParser.addOperator("bl", new BlocklightNode());
-        GlobalVars.operationParser.addOperator("blocklight", GlobalVars.operationParser.getOperator("bl"));
-        GlobalVars.operationParser.addOperator("ang", new AngleNode());
-        GlobalVars.operationParser.addOperator("angle", GlobalVars.operationParser.getOperator("ang"));
-        GlobalVars.operationParser.addOperator("slope", GlobalVars.operationParser.getOperator("ang"));
-        GlobalVars.operationParser.addOperator("biome_is", new CheckBiomeNode());
-        GlobalVars.operationParser.addOperator("get_biome", GlobalVars.operationParser.getOperator("biome_is"));
-        GlobalVars.operationParser.addOperator("is_biome", GlobalVars.operationParser.getOperator("biome_is"));
-        GlobalVars.operationParser.addOperator("@@", new NearbyNode());
-        GlobalVars.operationParser.addOperator("near", GlobalVars.operationParser.getOperator("@@"));
-        GlobalVars.operationParser.addOperator("nearby", GlobalVars.operationParser.getOperator("@@"));
-        GlobalVars.operationParser.addOperator("@v", new BlocksAdjacentVerticalNode());
-        GlobalVars.operationParser.addOperator("adjv", GlobalVars.operationParser.getOperator("@v"));
-        GlobalVars.operationParser.addOperator("adjacent_vertical", GlobalVars.operationParser.getOperator("@v"));
-        GlobalVars.operationParser.addOperator("@h", new BlocksAdjacentHorizontalNode());
-        GlobalVars.operationParser.addOperator("adjh", GlobalVars.operationParser.getOperator("@h"));
-        GlobalVars.operationParser.addOperator("adjacent_horizontal", GlobalVars.operationParser.getOperator("@h"));
+        loadNode("@", new BlocksAdjacentNode());
+        loadNode("adj", GlobalVars.operationParser.getOperator("@"));
+        loadNode("adjacent", GlobalVars.operationParser.getOperator("@"));
+        loadNode("blocks_adjacent", GlobalVars.operationParser.getOperator("@"));
+        loadNode("^", new BlocksAboveNode());
+        loadNode("blocks_above", GlobalVars.operationParser.getOperator("^"));
+        loadNode("above", GlobalVars.operationParser.getOperator("^"));
+        loadNode("_", new BlocksBelowNode());
+        loadNode("blocks_below", GlobalVars.operationParser.getOperator("_"));
+        loadNode("below", GlobalVars.operationParser.getOperator("_"));
+        loadNode("*", new FacesExposedNode());
+        loadNode("exposed", GlobalVars.operationParser.getOperator("*"));
+        loadNode("faces_exposed", GlobalVars.operationParser.getOperator("*"));
+        loadNode("<<n", new GetNBTNode());
+        loadNode("get_nbt", GlobalVars.operationParser.getOperator("<<n"));
+        loadNode("at", new BlockAtNode());
+        loadNode("block_at", GlobalVars.operationParser.getOperator("at"));
+        loadNode("sky", new SkylightNode());
+        loadNode("skylight", GlobalVars.operationParser.getOperator("sky"));
+        loadNode("bl", new BlocklightNode());
+        loadNode("blocklight", GlobalVars.operationParser.getOperator("bl"));
+        loadNode("ang", new AngleNode());
+        loadNode("angle", GlobalVars.operationParser.getOperator("ang"));
+        loadNode("slope", GlobalVars.operationParser.getOperator("ang"));
+        loadNode("biome_is", new CheckBiomeNode());
+        loadNode("get_biome", GlobalVars.operationParser.getOperator("biome_is"));
+        loadNode("is_biome", GlobalVars.operationParser.getOperator("biome_is"));
+        loadNode("@@", new NearbyNode());
+        loadNode("near", GlobalVars.operationParser.getOperator("@@"));
+        loadNode("nearby", GlobalVars.operationParser.getOperator("@@"));
+        loadNode("@v", new BlocksAdjacentVerticalNode());
+        loadNode("adjv", GlobalVars.operationParser.getOperator("@v"));
+        loadNode("adjacent_vertical", GlobalVars.operationParser.getOperator("@v"));
+        loadNode("@h", new BlocksAdjacentHorizontalNode());
+        loadNode("adjh", GlobalVars.operationParser.getOperator("@h"));
+        loadNode("adjacent_horizontal", GlobalVars.operationParser.getOperator("@h"));
     }
 
     private static void LoadVariable() {
-        GlobalVars.operationParser.addOperator("blk", new BlockVarNode());
-        GlobalVars.operationParser.addOperator("block", GlobalVars.operationParser.getOperator("blk"));
-        GlobalVars.operationParser.addOperator("dealloc", new DeallocNode());
-        GlobalVars.operationParser.addOperator("deallocate", GlobalVars.operationParser.getOperator("dealloc"));
-        GlobalVars.operationParser.addOperator("delete", GlobalVars.operationParser.getOperator("dealloc"));
-        GlobalVars.operationParser.addOperator("delete_variable", GlobalVars.operationParser.getOperator("dealloc"));
-        GlobalVars.operationParser.addOperator(">>i", new GetItemCommandNode());
-        GlobalVars.operationParser.addOperator("get_item_command", GlobalVars.operationParser.getOperator(">>i"));
-        GlobalVars.operationParser.addOperator("item_command", GlobalVars.operationParser.getOperator(">>i"));
-        GlobalVars.operationParser.addOperator(">i", new GetItemVarNode());
-        GlobalVars.operationParser.addOperator("get_item", GlobalVars.operationParser.getOperator(">i"));
-        GlobalVars.operationParser.addOperator(">>m", new GetMonsterCommandNode());
-        GlobalVars.operationParser.addOperator("get_monster_command", GlobalVars.operationParser.getOperator(">>m"));
-        GlobalVars.operationParser.addOperator("monster_command", GlobalVars.operationParser.getOperator(">>m"));
-        GlobalVars.operationParser.addOperator(">>s", new GetSpawnerCommandNode());
-        GlobalVars.operationParser.addOperator("get_spawner_command", GlobalVars.operationParser.getOperator(">>s"));
-        GlobalVars.operationParser.addOperator("spawner_command", GlobalVars.operationParser.getOperator(">>s"));
-        GlobalVars.operationParser.addOperator("itm", new ItemVarNode());
-        GlobalVars.operationParser.addOperator("item", GlobalVars.operationParser.getOperator("itm"));
-        GlobalVars.operationParser.addOperator("mob", new MobVarNode());
-        GlobalVars.operationParser.addOperator("monster", GlobalVars.operationParser.getOperator("mob"));
-        GlobalVars.operationParser.addOperator("var", new ModifyVarNode());
-        GlobalVars.operationParser.addOperator("modify_variable", GlobalVars.operationParser.getOperator("var"));
-        GlobalVars.operationParser.addOperator("num", new NumericVarNode());
-        GlobalVars.operationParser.addOperator("numeric", GlobalVars.operationParser.getOperator("num"));
-        GlobalVars.operationParser.addOperator("number", GlobalVars.operationParser.getOperator("num"));
-        GlobalVars.operationParser.addOperator("spwn", new SpawnerVarNode());
-        GlobalVars.operationParser.addOperator("spawner_var", GlobalVars.operationParser.getOperator("spwn"));
-        GlobalVars.operationParser.addOperator(">s", new SetSpawnerNode());
-        GlobalVars.operationParser.addOperator("set_spawner", GlobalVars.operationParser.getOperator(">s"));
-        GlobalVars.operationParser.addOperator(">m", new SpawnMonsterNode());
-        GlobalVars.operationParser.addOperator("spawn_monster", GlobalVars.operationParser.getOperator(">m"));
-        GlobalVars.operationParser.addOperator(">b", new SetBlockVarNode());
-        GlobalVars.operationParser.addOperator("set_block_variable", GlobalVars.operationParser.getOperator(">b"));
-        GlobalVars.operationParser.addOperator(">im", new GetMonsterItemNode());
-        GlobalVars.operationParser.addOperator("monster_item", GlobalVars.operationParser.getOperator(">im"));
-        GlobalVars.operationParser.addOperator("get_monster_item", GlobalVars.operationParser.getOperator(">im"));
-        GlobalVars.operationParser.addOperator(">is", new GetSpawnerItemNode());
-        GlobalVars.operationParser.addOperator("spawner_item", GlobalVars.operationParser.getOperator(">is"));
-        GlobalVars.operationParser.addOperator("get_spawner_item", GlobalVars.operationParser.getOperator(">is"));
-        GlobalVars.operationParser.addOperator("save", new SaveVariableNode());
-        GlobalVars.operationParser.addOperator("load", new LoadVariableNode());
+        loadNode("blk", new BlockVarNode());
+        loadNode("block", GlobalVars.operationParser.getOperator("blk"));
+        loadNode("dealloc", new DeallocNode());
+        loadNode("deallocate", GlobalVars.operationParser.getOperator("dealloc"));
+        loadNode("delete", GlobalVars.operationParser.getOperator("dealloc"));
+        loadNode("delete_variable", GlobalVars.operationParser.getOperator("dealloc"));
+        loadNode(">>i", new GetItemCommandNode());
+        loadNode("get_item_command", GlobalVars.operationParser.getOperator(">>i"));
+        loadNode("item_command", GlobalVars.operationParser.getOperator(">>i"));
+        loadNode(">i", new GetItemVarNode());
+        loadNode("get_item", GlobalVars.operationParser.getOperator(">i"));
+        loadNode(">>m", new GetMonsterCommandNode());
+        loadNode("get_monster_command", GlobalVars.operationParser.getOperator(">>m"));
+        loadNode("monster_command", GlobalVars.operationParser.getOperator(">>m"));
+        loadNode(">>s", new GetSpawnerCommandNode());
+        loadNode("get_spawner_command", GlobalVars.operationParser.getOperator(">>s"));
+        loadNode("spawner_command", GlobalVars.operationParser.getOperator(">>s"));
+        loadNode("itm", new ItemVarNode());
+        loadNode("item", GlobalVars.operationParser.getOperator("itm"));
+        loadNode("mob", new MobVarNode());
+        loadNode("monster", GlobalVars.operationParser.getOperator("mob"));
+        loadNode("var", new ModifyVarNode());
+        loadNode("modify_variable", GlobalVars.operationParser.getOperator("var"));
+        loadNode("num", new NumericVarNode());
+        loadNode("numeric", GlobalVars.operationParser.getOperator("num"));
+        loadNode("number", GlobalVars.operationParser.getOperator("num"));
+        loadNode("spwn", new SpawnerVarNode());
+        loadNode("spawner_var", GlobalVars.operationParser.getOperator("spwn"));
+        loadNode(">s", new SetSpawnerNode());
+        loadNode("set_spawner", GlobalVars.operationParser.getOperator(">s"));
+        loadNode(">m", new SpawnMonsterNode());
+        loadNode("spawn_monster", GlobalVars.operationParser.getOperator(">m"));
+        loadNode(">b", new SetBlockVarNode());
+        loadNode("set_block_variable", GlobalVars.operationParser.getOperator(">b"));
+        loadNode(">im", new GetMonsterItemNode());
+        loadNode("monster_item", GlobalVars.operationParser.getOperator(">im"));
+        loadNode("get_monster_item", GlobalVars.operationParser.getOperator(">im"));
+        loadNode(">is", new GetSpawnerItemNode());
+        loadNode("spawner_item", GlobalVars.operationParser.getOperator(">is"));
+        loadNode("get_spawner_item", GlobalVars.operationParser.getOperator(">is"));
+        loadNode("save", new SaveVariableNode());
+        loadNode("load", new LoadVariableNode());
     }
 
     private static void LoadWorld() {
-        GlobalVars.operationParser.addOperator("<<", new GetBlockDataNode());
-        GlobalVars.operationParser.addOperator("get_data", GlobalVars.operationParser.getOperator("<<"));
-        GlobalVars.operationParser.addOperator("data", GlobalVars.operationParser.getOperator("<<"));
-        GlobalVars.operationParser.addOperator("get_block_data", GlobalVars.operationParser.getOperator("<<"));
-        GlobalVars.operationParser.addOperator("!", new IgnorePhysicsNode());
-        GlobalVars.operationParser.addOperator("physics", GlobalVars.operationParser.getOperator("!"));
-        GlobalVars.operationParser.addOperator("ignore_physcics", GlobalVars.operationParser.getOperator("!"));
-        GlobalVars.operationParser.addOperator("same", new SameNode());
-        GlobalVars.operationParser.addOperator("facing", new FacingNode());
-        GlobalVars.operationParser.addOperator(">>n", new SetNBTNode());
-        GlobalVars.operationParser.addOperator("set_nbt", GlobalVars.operationParser.getOperator(">>n"));
-        GlobalVars.operationParser.addOperator(">", new SetNode());
-        GlobalVars.operationParser.addOperator("set", GlobalVars.operationParser.getOperator(">"));
-        GlobalVars.operationParser.addOperator("set_block", GlobalVars.operationParser.getOperator(">"));
-        GlobalVars.operationParser.addOperator(">>", GlobalVars.operationParser.getOperator(">"));
-        GlobalVars.operationParser.addOperator("grav", new GravityNode());
-        GlobalVars.operationParser.addOperator("gravity", GlobalVars.operationParser.getOperator("grav"));
-        GlobalVars.operationParser.addOperator("biome", new SetBiomeNode());
-        GlobalVars.operationParser.addOperator("set_biome", GlobalVars.operationParser.getOperator("biome"));
-        GlobalVars.operationParser.addOperator("schem", new SchemBlockNode());
-        GlobalVars.operationParser.addOperator("schematic", GlobalVars.operationParser.getOperator("schem"));
-        GlobalVars.operationParser.addOperator(">r", new ReplaceNode());
-        GlobalVars.operationParser.addOperator("replace", GlobalVars.operationParser.getOperator(">r"));
+        loadNode("<<", new GetBlockDataNode());
+        loadNode("get_data", GlobalVars.operationParser.getOperator("<<"));
+        loadNode("data", GlobalVars.operationParser.getOperator("<<"));
+        loadNode("get_block_data", GlobalVars.operationParser.getOperator("<<"));
+        loadNode("!", new IgnorePhysicsNode());
+        loadNode("physics", GlobalVars.operationParser.getOperator("!"));
+        loadNode("ignore_physcics", GlobalVars.operationParser.getOperator("!"));
+        loadNode("same", new SameNode());
+        loadNode("facing", new FacingNode());
+        loadNode(">>n", new SetNBTNode());
+        loadNode("set_nbt", GlobalVars.operationParser.getOperator(">>n"));
+        loadNode(">", new SetNode());
+        loadNode("set", GlobalVars.operationParser.getOperator(">"));
+        loadNode("set_block", GlobalVars.operationParser.getOperator(">"));
+        loadNode(">>", GlobalVars.operationParser.getOperator(">"));
+        loadNode("grav", new GravityNode());
+        loadNode("gravity", GlobalVars.operationParser.getOperator("grav"));
+        loadNode("biome", new SetBiomeNode());
+        loadNode("set_biome", GlobalVars.operationParser.getOperator("biome"));
+        loadNode("schem", new SchemBlockNode());
+        loadNode("schematic", GlobalVars.operationParser.getOperator("schem"));
+        loadNode(">r", new ReplaceNode());
+        loadNode("replace", GlobalVars.operationParser.getOperator(">r"));
     }
 
     private static void LoadFun() {
-        GlobalVars.operationParser.addOperator("smallruin", new SmallRuinNode());
-        GlobalVars.operationParser.addOperator("template", new TemplateNode());
-        GlobalVars.operationParser.addOperator("tpl", GlobalVars.operationParser.getOperator("template"));
+        loadNode("smallruin", new SmallRuinNode());
+        loadNode("template", new TemplateNode());
+        loadNode("tpl", GlobalVars.operationParser.getOperator("template"));
     }
 }

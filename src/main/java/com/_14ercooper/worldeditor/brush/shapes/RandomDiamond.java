@@ -46,4 +46,9 @@ public class RandomDiamond extends BrushShape {
         return gotArgs <= 1;
     }
 
+    @Override
+    public int minArgCount() {
+        return 2;
+    }
+
 }
