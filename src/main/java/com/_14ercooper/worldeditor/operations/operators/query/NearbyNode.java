@@ -24,9 +24,9 @@ public class NearbyNode extends Node {
     public NearbyNode newNode() {
         try {
             NearbyNode node = new NearbyNode();
+            node.trueRange = GlobalVars.operationParser.parseRangeNode();
             node.blockMask = GlobalVars.operationParser.parsePart();
             node.distance = GlobalVars.operationParser.parseNumberNode();
-            node.trueRange = GlobalVars.operationParser.parseRangeNode();
             if (node.trueRange == null) {
                 Main.logError(
                         "Could not create nearby node. Did you provide a block mask, a distance, and a range node?",
