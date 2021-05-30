@@ -1,9 +1,11 @@
 package com._14ercooper.worldeditor.functions;
 
+import com._14ercooper.worldeditor.brush.BrushListener;
 import com._14ercooper.worldeditor.functions.commands.InterpreterCommand;
 import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
 import org.bukkit.Bukkit;
+import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -24,6 +26,7 @@ public class Function {
     public final Map<String, Integer> labelsMap = new HashMap<>();
     public final List<String> templateArgs = new LinkedList<>();
     public final CommandSender player;
+    public final Block target;
     public final boolean isOperator;
     public double ra, cmpres;
     public int waitDelay = 0;
@@ -37,6 +40,13 @@ public class Function {
         templateArgs.addAll(args);
         this.player = player;
         this.isOperator = isOperator;
+
+        if (player instanceof Player) {
+            target = BrushListener.getTargetBlock((Player) player);
+        }
+        else {
+            target = Bukkit.getServer().getWorlds().get(0).getBlockAt(0, 0,0 );
+        }
 
         for (int i = 0; i < 1000; i++) {
             variables.add(0.0);
@@ -81,7 +91,7 @@ public class Function {
     public static void SetupFunctions() {
         RegisterFunctions.RegisterAll();
 
-        Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(GlobalVars.plugin, () -> Function.CheckWaitingFunctions(), 1L, 1L);
+        Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(GlobalVars.plugin, Function::CheckWaitingFunctions, 1L, 1L);
     }
 
     // See if any waiting functions are ready to keep running
@@ -124,8 +134,7 @@ public class Function {
                 }
 
                 // Split into list
-                List<String> lineContents = new ArrayList<>();
-                lineContents.addAll(Arrays.asList(line.split("\\s")));
+                List<String> lineContents = new ArrayList<>(Arrays.asList(line.split("\\s")));
 
                 // If blank line
                 if (lineContents.get(0).isEmpty()) {

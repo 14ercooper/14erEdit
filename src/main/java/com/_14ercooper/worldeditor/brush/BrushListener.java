@@ -73,7 +73,7 @@ public class BrushListener implements Listener {
         }
     }
 
-    private Block getTargetBlock(Player player) {
+    public static Block getTargetBlock(Player player) {
         BlockIterator iter = new BlockIterator(player, 256);
         Block lastBlock = iter.next();
         while (iter.hasNext()) {

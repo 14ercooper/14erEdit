@@ -10,11 +10,7 @@ import com._14ercooper.worldeditor.functions.commands.logic.ReturnCommand;
 import com._14ercooper.worldeditor.functions.commands.logic.WaitCommand;
 import com._14ercooper.worldeditor.functions.commands.logic.WaitTimeCommand;
 import com._14ercooper.worldeditor.functions.commands.math.*;
-import com._14ercooper.worldeditor.functions.commands.player.GetPosCommand;
-import com._14ercooper.worldeditor.functions.commands.player.PrintDebugCommand;
-import com._14ercooper.worldeditor.functions.commands.player.PrintErrorCommand;
-import com._14ercooper.worldeditor.functions.commands.player.SetSlotCommand;
-import com._14ercooper.worldeditor.functions.commands.player.SwapCommand;
+import com._14ercooper.worldeditor.functions.commands.player.*;
 import com._14ercooper.worldeditor.functions.commands.variable.*;
 import com._14ercooper.worldeditor.functions.commands.world.BlockCommand;
 
@@ -33,6 +29,7 @@ public class RegisterFunctions {
         Function.commands.put("setslot", new SetSlotCommand());
         Function.commands.put("swap", new SwapCommand());
         Function.commands.put("getpos", new GetPosCommand());
+        Function.commands.put("gettarget", new GetTargetCommand());
     }
 
     private static void RegisterWorld() {
