@@ -73,4 +73,9 @@ public class NewCylinder extends BrushShape {
         return gotArgs <= 2;
     }
 
+    @Override
+    public int minArgCount() {
+        return 3;
+    }
+
 }

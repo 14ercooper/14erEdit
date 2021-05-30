@@ -56,4 +56,9 @@ public class HollowSphere extends BrushShape {
         return argsSeen <= 1;
     }
 
+    @Override
+    public int minArgCount() {
+        return 2;
+    }
+
 }

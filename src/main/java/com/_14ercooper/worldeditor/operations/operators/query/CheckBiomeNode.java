@@ -31,6 +31,9 @@ public class CheckBiomeNode extends Node {
     @Override
     public boolean performNode() {
         try {
+            if (!(Operator.currentBlock.getChunk().isLoaded())) {
+                Operator.currentBlock.getChunk().load(true);
+            }
             String currBiome = Operator.currentBlock.getBiome().toString();
             for (String s : biomes) {
                 if (currBiome.equalsIgnoreCase(s))

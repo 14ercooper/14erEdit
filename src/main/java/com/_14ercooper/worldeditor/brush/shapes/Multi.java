@@ -145,6 +145,11 @@ public class Multi extends BrushShape {
             ops.add(operation);
         }
     }
+
+    @Override
+    public int minArgCount() {
+        return Integer.MAX_VALUE;
+    }
 }
 
 //else {

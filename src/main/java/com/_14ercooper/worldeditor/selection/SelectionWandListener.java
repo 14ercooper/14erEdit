@@ -32,7 +32,7 @@ public class SelectionWandListener implements Listener {
         SelectionWand wand = null;
         // Check the player
         for (SelectionWand s : wands) {
-            if (s.owner.equals(p)) {
+            if (s.owner.equals(p.getUniqueId())) {
                 wand = s;
                 isValidPlayer = true;
                 break;
@@ -63,7 +63,7 @@ public class SelectionWandListener implements Listener {
         // Player left clicked, update position one
         if (event.getAction().equals(Action.LEFT_CLICK_BLOCK)) {
             Block b = event.getClickedBlock();
-            wand.manager.updatePositionOne(b.getX(), b.getY(), b.getZ(), p);
+            wand.manager.updatePositionOne(b.getX(), b.getY(), b.getZ(), p.getUniqueId());
             event.setCancelled(true);
         }
 
@@ -74,7 +74,7 @@ public class SelectionWandListener implements Listener {
             // conflicts)
             if (e.equals(EquipmentSlot.HAND)) {
                 Block b = event.getClickedBlock();
-                wand.manager.updatePositionTwo(b.getX(), b.getY(), b.getZ(), p);
+                wand.manager.updatePositionTwo(b.getX(), b.getY(), b.getZ(), p.getUniqueId());
                 event.setCancelled(true);
             }
         }

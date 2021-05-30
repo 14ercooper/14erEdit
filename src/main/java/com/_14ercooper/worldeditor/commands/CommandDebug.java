@@ -5,7 +5,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+
+import java.util.ArrayList;
+import java.util.List;
 
 // These are dedicated versions of the undo and redo commands
 public class CommandDebug implements CommandExecutor {
@@ -22,5 +26,12 @@ public class CommandDebug implements CommandExecutor {
         GlobalVars.isDebug = !GlobalVars.isDebug;
         Bukkit.broadcastMessage("§dDebug toggled to " + GlobalVars.isDebug);
         return true;
+    }
+
+    public static class TabComplete implements TabCompleter {
+        @Override
+        public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
+            return new ArrayList<>();
+        }
     }
 }

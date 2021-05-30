@@ -6,9 +6,12 @@ import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 public class CommandBrmask implements CommandExecutor {
 
@@ -31,6 +34,19 @@ public class CommandBrmask implements CommandExecutor {
         } catch (Exception e) {
             Main.logError("Failed to set block mask.", sender, e);
             return false;
+        }
+    }
+
+    public static class TabComplete implements TabCompleter {
+        @Override
+        public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
+            List<String> tabArgs = new ArrayList<>();
+
+            if (args.length == 1) {
+                tabArgs.add("[block_name]");
+            }
+
+            return tabArgs;
         }
     }
 }

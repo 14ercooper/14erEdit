@@ -14,6 +14,11 @@ public class BlocksAboveNode extends Node {
     Node arg2;
 
     @Override
+    public boolean isNextNodeRange() {
+        return true;
+    }
+
+    @Override
     public BlocksAboveNode newNode() {
         BlocksAboveNode node = new BlocksAboveNode();
         try {

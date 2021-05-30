@@ -43,4 +43,9 @@ public class Cube extends BrushShape {
     public boolean gotEnoughArgs() {
         return gotArgs <= 0;
     }
+
+    @Override
+    public int minArgCount() {
+        return 1;
+    }
 }

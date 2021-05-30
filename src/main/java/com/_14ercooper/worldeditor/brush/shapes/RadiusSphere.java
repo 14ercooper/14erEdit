@@ -42,4 +42,9 @@ public class RadiusSphere extends BrushShape {
     public boolean gotEnoughArgs() {
         return !gotArg;
     }
+
+    @Override
+    public int minArgCount() {
+        return 1;
+    }
 }

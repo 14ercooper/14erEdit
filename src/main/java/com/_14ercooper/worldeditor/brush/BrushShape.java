@@ -12,4 +12,6 @@ public abstract class BrushShape {
     public abstract boolean lastInputProcessed();
 
     public abstract boolean gotEnoughArgs();
+
+    public abstract int minArgCount();
 }

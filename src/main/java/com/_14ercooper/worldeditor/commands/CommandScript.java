@@ -4,10 +4,10 @@ import com._14ercooper.worldeditor.main.GlobalVars;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
-import java.util.Arrays;
-import java.util.LinkedList;
+import java.util.*;
 
 public class CommandScript implements CommandExecutor {
 
@@ -26,5 +26,25 @@ public class CommandScript implements CommandExecutor {
             return GlobalVars.scriptManager.runCraftscript(args[0], argsToPass, (Player) sender);
         }
         return false;
+    }
+
+    public static Set<String> getScriptNames() {
+        return GlobalVars.scriptManager.registeredScripts.keySet();
+    }
+
+    public static class TabComplete implements TabCompleter {
+        @Override
+        public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
+            List<String> tabArgs = new ArrayList<>();
+
+            if (args.length == 1) {
+                tabArgs.addAll(CommandScript.getScriptNames());
+            }
+            if (args.length > 1) {
+                tabArgs.add("[script_arg_" + (args.length-2) + "]");
+            }
+
+            return tabArgs;
+        }
     }
 }

@@ -16,7 +16,7 @@ public class SchematicHandler {
     public static boolean saveSchematic(String file, Player p) {
         Main.logDebug("Saving schematic to " + file);
         Operator.currentPlayer = p;
-        SelectionManager sm = SelectionManager.getSelectionManager(p);
+        SelectionManager sm = SelectionManager.getSelectionManager(p.getUniqueId());
         double[] rawOrigin = sm.getMostNegativeCorner();
         double[] posCorner = sm.getMostPositiveCorner();
         int[] origin = {(int) rawOrigin[0], (int) rawOrigin[1], (int) rawOrigin[2]};

@@ -5,7 +5,11 @@ import com._14ercooper.worldeditor.main.Main;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CommandAsync implements CommandExecutor {
 
@@ -36,6 +40,22 @@ public class CommandAsync implements CommandExecutor {
         } catch (Exception e) {
             Main.logError("Error performing async operation.", sender, e);
             return false;
+        }
+    }
+
+    public static class TabComplete implements TabCompleter {
+        @Override
+        public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
+            List<String> tabArgs = new ArrayList<>();
+
+            if (args.length == 1) {
+                tabArgs.add("drop");
+                tabArgs.add("status");
+                tabArgs.add("queue");
+                tabArgs.add("dump");
+            }
+
+            return tabArgs;
         }
     }
 }

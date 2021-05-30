@@ -20,6 +20,11 @@ public class SetNode extends Node {
     public BlockNode arg;
 
     @Override
+    public boolean isNextNodeBlock() {
+        return true;
+    }
+
+    @Override
     public SetNode newNode() {
         SetNode node = new SetNode();
         try {

@@ -287,7 +287,7 @@ public class BasicTreeMacro extends Macro {
 
         // One, two, or 3 layer cap?
         // Also calculate cap circle cutoffs
-        int numCaps = 0;
+        int numCaps;
         if (treeSize > 60) {
             Main.logDebug("5 cap mushroom"); // -----
             numCaps = 5;
@@ -305,7 +305,7 @@ public class BasicTreeMacro extends Macro {
             numCaps = 1;
         }
         double radiusCorrection = 0.35;
-        double cap1Cut = 0, cap2Cut = 0, cap3Cut = 0, cap4Cut = 0, cap5Cut = 0; // These are radii
+        double cap1Cut, cap2Cut, cap3Cut, cap4Cut = 0, cap5Cut = 0; // These are radii
         if (numCaps <= 3) {
             Main.logDebug("Less than or equal to 3 caps will be generated"); // -----
             cap1Cut = treeSize * 0.35;
@@ -365,18 +365,16 @@ public class BasicTreeMacro extends Macro {
         Main.logDebug(
                 "Generating cap at (" + x + "," + y + "," + z + ")"); // -----
         List<Block> capBlocks = new ArrayList<>();
-        if (numCaps >= 1) {
-            Main.logDebug("Size 1 cap generating"); // -----
-            for (double rx = -cap1Cut; rx <= cap1Cut; rx++) {
-                for (double rz = -cap1Cut; rz <= cap1Cut; rz++) {
-                    if ((rx * rx) + (rz * rz) <= ((cap1Cut + radiusCorrection) * (cap1Cut + radiusCorrection))) {
-                        capBlocks.add(Operator.currentWorld.getBlockAt((int) (x + rx), (int) (y),
-                                (int) (z + rz)));
-                    }
+        Main.logDebug("Size 1 cap generating"); // -----
+        for (double rx = -cap1Cut; rx <= cap1Cut; rx++) {
+            for (double rz = -cap1Cut; rz <= cap1Cut; rz++) {
+                if ((rx * rx) + (rz * rz) <= ((cap1Cut + radiusCorrection) * (cap1Cut + radiusCorrection))) {
+                    capBlocks.add(Operator.currentWorld.getBlockAt((int) (x + rx), (int) (y),
+                            (int) (z + rz)));
                 }
             }
-            Main.logDebug("Number of blocks: " + capBlocks.size()); // -----
         }
+        Main.logDebug("Number of blocks: " + capBlocks.size()); // -----
         if (numCaps >= 2) {
             Main.logDebug("Size 2 cap generating"); // -----
             for (int rx = -(int) cap2Cut; rx <= cap2Cut; rx++) {
@@ -564,8 +562,8 @@ public class BasicTreeMacro extends Macro {
             curveDirection = BlockFace.NORTH_WEST;
         }
         // Cutoff for 3-wide trunk logic
-        int trunkSize = 1;
-        double curveGap = 1;
+        int trunkSize;
+        double curveGap;
         if (treeSize > 23) {
             trunkSize = 3;
             curveGap = (treeSize * 0.5) / 7.0;
@@ -579,7 +577,7 @@ public class BasicTreeMacro extends Macro {
 
         // Grow the tree trunk
         double curveCut = 0;
-        boolean doCurve = false;
+        boolean doCurve;
         for (int i = 0; i <= treeSize; i++) {
             // If over half the tree has been grown, curve logic takes effect
             doCurve = false;
@@ -605,9 +603,6 @@ public class BasicTreeMacro extends Macro {
                 blockList.add(currentBlock.getRelative(BlockFace.NORTH));
                 blockList.add(currentBlock.getRelative(BlockFace.EAST));
                 blockList.add(currentBlock.getRelative(BlockFace.NORTH_EAST));
-                for (Block b : blockList) {
-                    SetBlock.setMaterial(b, trunk, GlobalVars.asyncManager.currentAsyncOp.getUndo());
-                }
             }
             if (trunkSize == 3) {
                 blockList.add(currentBlock);
@@ -619,9 +614,10 @@ public class BasicTreeMacro extends Macro {
                 blockList.add(currentBlock.getRelative(BlockFace.NORTH_EAST, 2));
                 blockList.add(currentBlock.getRelative(BlockFace.NORTH_EAST).getRelative(BlockFace.NORTH));
                 blockList.add(currentBlock.getRelative(BlockFace.NORTH_EAST).getRelative(BlockFace.EAST));
-                for (Block b : blockList) {
+            }
+            for (Block b : blockList) {
+                if (b.getType() == Material.AIR)
                     SetBlock.setMaterial(b, trunk, GlobalVars.asyncManager.currentAsyncOp.getUndo());
-                }
             }
         }
 
@@ -841,7 +837,7 @@ public class BasicTreeMacro extends Macro {
         }
 
         // Variables needed by the generator
-        List<Location> endPoints = new ArrayList<>();
+        List<Location> endPoints;
         double leafBallSize = (treeHeight * 0.56) + 1.3;
 
         // Generate the trunk of the tree

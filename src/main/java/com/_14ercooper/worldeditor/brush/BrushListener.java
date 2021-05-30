@@ -36,7 +36,7 @@ public class BrushListener implements Listener {
             ItemStack item = player.getInventory().getItemInMainHand();
             Brush brush = null;
             for (Brush b : brushes) {
-                if (b.owner.equals(player) && b.item.equals(item)) {
+                if (b.owner.equals(player.getUniqueId()) && b.item.equals(item)) {
                     brush = b;
                 }
             }
@@ -55,9 +55,7 @@ public class BrushListener implements Listener {
                     dedupe = true;
                     return;
                 }
-                if (dedupe) {
-                    dedupe = false;
-                }
+                dedupe = false;
             }
 
             // Then get the location where the brush should operate

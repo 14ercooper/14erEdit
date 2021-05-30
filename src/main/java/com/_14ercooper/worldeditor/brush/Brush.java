@@ -5,6 +5,7 @@ import com._14ercooper.worldeditor.brush.shapes.Multi;
 import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.Operator;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -13,7 +14,7 @@ import java.util.*;
 
 public class Brush {
     // Together, these two parameters serve as the ID for the brush
-    public Player owner; // Different people can have different brushes
+    public UUID owner; // Different people can have different brushes
     public ItemStack item; // Each person can have a different brush for different items
 
     // Variables the brush needs
@@ -24,7 +25,7 @@ public class Brush {
     public static Player currentPlayer = null;
 
     // Store brushes
-    static final Map<String, BrushShape> brushShapes = new HashMap<>();
+    public static final Map<String, BrushShape> brushShapes = new HashMap<>();
 
     public static boolean removeBrush(Player player) {
         ItemStack item = player.getInventory().getItemInMainHand();
@@ -32,7 +33,7 @@ public class Brush {
         Brush br = null;
 
         for (Brush b : BrushListener.brushes) {
-            if (b.owner.equals(player) && b.item.equals(item)) {
+            if (b.owner.equals(player.getUniqueId()) && b.item.equals(item)) {
                 br = b;
             }
         }
@@ -52,7 +53,7 @@ public class Brush {
             removeBrush(player);
 
             // Create a brush, and assign the easy variables to it
-            owner = player;
+            owner = player.getUniqueId();
             item = brushItem;
 
             brushOpOffset += 2; // Used to remove brush parameters from the operation
@@ -101,10 +102,6 @@ public class Brush {
                 }
                 // And then construct the operator
                 operation = new Operator(opStr, player);
-
-                // Invalid operator?
-                if (operation == null)
-                    return;
             }
 
             // Store the brush and return success
@@ -139,7 +136,7 @@ public class Brush {
 
     public void operate(double x, double y, double z) {
         try {
-            currentPlayer = owner;
+            currentPlayer = getOwner();
 
             if (!(shapeGenerator instanceof Multi)) {
                 // Build an array of all blocks to operate on
@@ -150,20 +147,24 @@ public class Brush {
                 }
                 Main.logDebug("Block array size is " + blockArray.getTotalBlocks()); // -----
 
-                GlobalVars.asyncManager.scheduleEdit(operation, owner, blockArray);
+                GlobalVars.asyncManager.scheduleEdit(operation, getOwner(), blockArray);
 
             } else {
                 // Create a multi-operator async chain
                 Multi multiShape = (Multi) shapeGenerator;
-                List<BlockIterator> iters = multiShape.getIters(x, y, z, owner.getWorld());
+                List<BlockIterator> iters = multiShape.getIters(x, y, z, getOwner().getWorld());
                 List<Operator> ops = multiShape.getOps(x, y, z);
 
-                GlobalVars.asyncManager.scheduleEdit(iters, ops, owner);
+                GlobalVars.asyncManager.scheduleEdit(iters, ops, getOwner());
 
             }
         } catch (Exception e) {
             e.printStackTrace();
-            Main.logError("Error operating with brush. Please check your syntax.", owner, e);
+            Main.logError("Error operating with brush. Please check your syntax.", getOwner(), e);
         }
+    }
+
+    public Player getOwner() {
+        return Bukkit.getServer().getPlayer(owner);
     }
 }

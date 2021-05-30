@@ -16,7 +16,7 @@ public class SelectionCommand {
             // First, get the wand that this player owns
             SelectionWand wand = null;
             for (SelectionWand s : SelectionWandListener.wands) {
-                if (s.owner.equals(player)) {
+                if (s.owner.equals(player.getUniqueId())) {
                     wand = s;
                     break;
                 }
@@ -49,7 +49,7 @@ public class SelectionCommand {
 
             // Expand a selection
             else if (args[1].equalsIgnoreCase("expand")) {
-                return expand(manager, Double.parseDouble(args[2]), args[3], wand.owner);
+                return expand(manager, Double.parseDouble(args[2]), args[3], wand.getOwner());
             }
 
             // Copy selection to clipboard
@@ -243,7 +243,7 @@ public class SelectionCommand {
     // Operate on the selection
     private static boolean operate(SelectionManager manager, SelectionWand wand, String[] brushOperation) {
         // Build an array of blocks within this selection
-        BlockIterator blockArray = manager.getBlocks(wand.owner.getWorld());
+        BlockIterator blockArray = manager.getBlocks(wand.getOwner().getWorld());
         Main.logDebug("Block array size is " + blockArray.getTotalBlocks()); // -----
 
         // Construct the operation
@@ -259,9 +259,9 @@ public class SelectionCommand {
             opStr = opStr.concat(s).concat(" ");
         }
         // And turn the string into an operation
-        Operator operator = new Operator(opStr, wand.owner);
+        Operator operator = new Operator(opStr, wand.getOwner());
 
-        GlobalVars.asyncManager.scheduleEdit(operator, wand.owner, blockArray);
+        GlobalVars.asyncManager.scheduleEdit(operator, wand.getOwner(), blockArray);
         GlobalVars.errorLogged = false;
 
         return true;
@@ -270,7 +270,7 @@ public class SelectionCommand {
     // Expand the selection
     // Note that using the wand afterwards doesn't reflect the changes
     private static boolean expand(SelectionManager manager, double amt, String dir, Player player) {
-        return manager.expandSelection(amt, dir, player);
+        return manager.expandSelection(amt, dir, player.getUniqueId());
     }
 
     // Get a schematic file name for a player

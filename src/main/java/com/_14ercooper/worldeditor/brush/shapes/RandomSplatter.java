@@ -82,4 +82,9 @@ public class RandomSplatter extends BrushShape {
         return gotArgs <= 5;
     }
 
+    @Override
+    public int minArgCount() {
+        return 6;
+    }
+
 }

@@ -5,13 +5,14 @@ import com._14ercooper.worldeditor.brush.shapes.Voxel;
 import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.Operator;
+import com._14ercooper.worldeditor.operations.OperatorLoader;
 import org.bukkit.Bukkit;
-import org.bukkit.command.BlockCommandSender;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
+import org.bukkit.command.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CommandRunat implements CommandExecutor {
 
@@ -79,6 +80,43 @@ public class CommandRunat implements CommandExecutor {
         } catch (Exception e) {
             Main.logError("Could not parse runat command. Please check your syntax.", sender, e);
             return false;
+        }
+    }
+
+    public static class TabComplete implements TabCompleter {
+        @Override
+        public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
+            List<String> tabArgs = new ArrayList<>();
+
+            int initOffset = 4;
+            if (args.length < 2) {
+                tabArgs.add("<x>");
+            }
+            else if (args.length == 2) {
+                tabArgs.add("<y>");
+            }
+            else if (args.length == 3) {
+                tabArgs.add("<z>");
+            }
+            else {
+                String lastArg = args[args.length - initOffset];
+                if (OperatorLoader.nextRange.contains(lastArg)) {
+                    tabArgs.addAll(OperatorLoader.numberNodeNames);
+                }
+                else if (args.length > initOffset && OperatorLoader.nextRange.contains(args[args.length-initOffset-1])) {
+                    tabArgs.addAll(OperatorLoader.numberNodeNames);
+                }
+                else if (OperatorLoader.nextBlock.contains(lastArg)) {
+                    tabArgs.addAll(OperatorLoader.blockNodeNames);
+                    tabArgs.add("<block_name>");
+                }
+                else {
+                    tabArgs.addAll(OperatorLoader.nodeNames);
+                    tabArgs.add("<block_name>");
+                }
+            }
+
+            return tabArgs;
         }
     }
 }

@@ -59,4 +59,9 @@ public class Ellipse extends BrushShape {
         return args.get(2).isEmpty();
     }
 
+    @Override
+    public int minArgCount() {
+        return 3;
+    }
+
 }
