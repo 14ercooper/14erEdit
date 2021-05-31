@@ -188,6 +188,9 @@ public class CommandFx implements CommandExecutor {
                     tabArgs.add("[regex]");
                 }
             }
+            else if ((args[0].equalsIgnoreCase("brush") || args[0].equalsIgnoreCase("br")) && Brush.GetBrushShape(args[1]) == null) {
+                tabArgs.add("invalid_brush");
+            }
             else if ((args[0].equalsIgnoreCase("brush") || args[0].equalsIgnoreCase("br")) && args.length < 3 + Brush.GetBrushShape(args[1]).minArgCount()) {
                 tabArgs.add("<brush_arg>");
             }
