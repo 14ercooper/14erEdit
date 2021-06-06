@@ -1,5 +1,6 @@
 package com._14ercooper.worldeditor.operations.operators.world;
 
+import org.bukkit.World;
 import org.bukkit.block.Biome;
 
 import com._14ercooper.worldeditor.main.GlobalVars;
@@ -17,7 +18,7 @@ public class SetBiomeNode extends Node {
         try {
             SetBiomeNode node = new SetBiomeNode();
             node.biome = GlobalVars.operationParser.parseStringNode();
-            if (node.biome == null) {
+            if (node.biome.getText().isBlank()) {
                 Main.logError("Could not parse set biome node. Did you provide a biome?", Operator.currentPlayer, null);
             }
             return node;
@@ -33,8 +34,8 @@ public class SetBiomeNode extends Node {
             if (!(Operator.currentBlock.getChunk().isLoaded())) {
                 Operator.currentBlock.getChunk().load(true);
             }
-            Operator.currentWorld.setBiome(Operator.currentBlock.getX(), Operator.currentBlock.getY(),
-                    Operator.currentBlock.getZ(), Biome.valueOf(biome.getText()));
+            Operator.currentBlock.getWorld().setBiome(Operator.currentBlock.getX(), Operator.currentBlock.getY(), Operator.currentBlock.getZ(), Biome.valueOf(biome.getText()));
+            Operator.currentBlock.setBiome(Biome.valueOf(biome.getText()));
             return true;
         } catch (Exception e) {
             Main.logError("Could not perform set biome node. Did you provide a valid biome?", Operator.currentPlayer, e);

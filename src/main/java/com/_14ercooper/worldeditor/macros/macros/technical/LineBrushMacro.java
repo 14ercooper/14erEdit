@@ -1,6 +1,9 @@
 package com._14ercooper.worldeditor.macros.macros.technical;
 
 import com._14ercooper.worldeditor.main.GlobalVars;
+import com._14ercooper.worldeditor.scripts.CraftscriptManager;
+import com._14ercooper.worldeditor.undo.UndoElement;
+import com._14ercooper.worldeditor.undo.UndoSystem;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -48,14 +51,24 @@ public class LineBrushMacro extends Macro {
         float yStep = (yStart - loc.getBlockY()) / blockCount;
         float zStep = (zStart - loc.getBlockZ()) / blockCount;
 
+        UndoElement undoElement;
+        if (GlobalVars.asyncManager.currentAsyncOp == null) {
+            undoElement = UndoSystem.findUserUndo(CraftscriptManager.currentPlayer).getNewUndoElement();
+        }
+        else {
+            undoElement = GlobalVars.asyncManager.currentAsyncOp.getUndo();
+        }
+
         // Place blocks
         for (int t = 0; t < blockCount; t++) {
             int xPos = (int) ((int) (xStart - (xStep * t)) + 0.5);
             int yPos = (int) ((int) (yStart - (yStep * t)) + 0.5);
             int zPos = (int) ((int) (zStart - (zStep * t)) + 0.5);
             Block b = Operator.currentWorld.getBlockAt(xPos, yPos, zPos);
-            SetBlock.setMaterial(b, m, GlobalVars.asyncManager.currentAsyncOp.getUndo());
+            SetBlock.setMaterial(b, m, undoElement);
         }
+
+        undoElement.finalizeUndo();
 
         // Return success
         return true;

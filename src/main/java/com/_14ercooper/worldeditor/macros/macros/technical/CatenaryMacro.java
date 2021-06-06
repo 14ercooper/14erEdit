@@ -18,7 +18,13 @@ public class CatenaryMacro extends Macro {
     @Override
     public boolean performMacro(String[] args, Location loc) {
 
-        UndoElement undoElement = UndoSystem.findUserUndo(CraftscriptManager.currentPlayer).getNewUndoElement();
+        UndoElement undoElement;
+        if (GlobalVars.asyncManager.currentAsyncOp == null) {
+            undoElement = UndoSystem.findUserUndo(CraftscriptManager.currentPlayer).getNewUndoElement();
+        }
+        else {
+            undoElement = GlobalVars.asyncManager.currentAsyncOp.getUndo();
+        }
         try {
             double x0 = Double.parseDouble(args[0]), y0 = Double.parseDouble(args[1]), z0 = Double.parseDouble(args[2]),
                     dx = Double.parseDouble(args[3]), dy = Double.parseDouble(args[4]),
