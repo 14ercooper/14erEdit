@@ -1,5 +1,6 @@
 package com._14ercooper.worldeditor.selection;
 
+import com._14ercooper.worldeditor.async.AsyncManager;
 import com._14ercooper.worldeditor.blockiterator.BlockIterator;
 import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
@@ -161,7 +162,7 @@ public class SelectionCommand {
                     offset[2] = Integer.parseInt(args[4]);
                     int times = Integer.parseInt(args[5]);
                     boolean delOriginal = Boolean.parseBoolean(args[6]);
-                    GlobalVars.asyncManager.scheduleEdit(b, offset, times, delOriginal, player);
+                    AsyncManager.scheduleEdit(b, offset, times, delOriginal, player);
                     return true;
                 } catch (Exception e) {
                     Main.logError("Could not set up selection clone. Please check your syntax.", player, e);
@@ -172,7 +173,7 @@ public class SelectionCommand {
             else if (args[1].equalsIgnoreCase("pos1")) {
                 try {
                     if (args.length > 4) {
-                        int x = 0, y = 0, z = 0;
+                        int x, y, z;
                         // X with relative
                         if (args[2].contains("~")) {
                             x = Integer.parseInt(args[2].replaceAll("~", "")) + player.getLocation().getBlockX();
@@ -204,7 +205,7 @@ public class SelectionCommand {
             else if (args[1].equalsIgnoreCase("pos2")) {
                 try {
                     if (args.length > 4) {
-                        int x = 0, y = 0, z = 0;
+                        int x, y, z;
                         // X with relative
                         if (args[2].contains("~")) {
                             x = Integer.parseInt(args[2].replaceAll("~", "")) + player.getLocation().getBlockX();
@@ -261,7 +262,7 @@ public class SelectionCommand {
         // And turn the string into an operation
         Operator operator = new Operator(opStr, wand.getOwner());
 
-        GlobalVars.asyncManager.scheduleEdit(operator, wand.getOwner(), blockArray);
+        AsyncManager.scheduleEdit(operator, wand.getOwner(), blockArray);
         GlobalVars.errorLogged = false;
 
         return true;

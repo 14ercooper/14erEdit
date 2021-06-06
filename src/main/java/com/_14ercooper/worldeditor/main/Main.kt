@@ -144,7 +144,7 @@ class Main : JavaPlugin() {
         GlobalVars.scriptManager = CraftscriptManager()
         GlobalVars.macroLauncher = MacroLauncher()
         GlobalVars.operationParser = Parser()
-        GlobalVars.asyncManager = AsyncManager()
+        //GlobalVars.asyncManager = AsyncManager()
         GlobalVars.iteratorManager = IteratorManager()
 
         // Register the prepackaged things to managers

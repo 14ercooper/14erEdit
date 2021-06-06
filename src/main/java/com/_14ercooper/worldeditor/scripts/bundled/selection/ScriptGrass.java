@@ -3,7 +3,8 @@ package com._14ercooper.worldeditor.scripts.bundled.selection;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.scripts.Craftscript;
-import org.bukkit.entity.Player;
+import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -11,7 +12,7 @@ import java.util.List;
 
 public class ScriptGrass extends Craftscript {
     @Override
-    public void perform(LinkedList<String> args, Player player, String label) {
+    public void perform(LinkedList<String> args, CommandSender player, String label) {
         try {
             String opToRun = "";
             // Check for missing args to fill in with "default" brush
@@ -31,10 +32,10 @@ public class ScriptGrass extends Craftscript {
                     } catch (Exception ignored) {
                     }
                 }
-                player.performCommand("fx sel op ? air ? _ - 1 1 ~ air ? ^ - 1 " + blocksAbove + " air ? % "
+                Bukkit.getServer().dispatchCommand(player, "fx sel op ? air ? _ - 1 1 ~ air ? ^ - 1 " + blocksAbove + " air ? % "
                         + (density * 100.0)
                         + " ? % 80 > grass ? % 50 > tall_grass ? % 50 > poppy > dandelion false false false false");
-                player.performCommand(
+                Bukkit.getServer().dispatchCommand(player,
                         "fx sel op ? air ? _ - 1 1 minecraft:tall_grass[half=lower] >> minecraft:tall_grass[half=upper] false false");
                 return;
             }
@@ -57,7 +58,7 @@ public class ScriptGrass extends Craftscript {
                 // Parse if it needs block data
                 if (individualBlocks[0].contains("[")) {
                     opToRun = ">> ";
-                    if (!individualBlocks[0].contains("mineacraft:")) {
+                    if (!individualBlocks[0].contains("minecraft:")) {
                         opToRun = opToRun.concat("minecraft:");
                     }
                     opToRun = opToRun.concat(individualBlocks[0]);
@@ -78,11 +79,11 @@ public class ScriptGrass extends Craftscript {
                 // Then construct the operation
                 for (int i = 0; i < individualBlocks.length; i++) {
                     opToRun = opToRun.concat("? % " + oddsList.get(i) + " ");
-                    String parsedBlock = "", parseText = individualBlocks[i].split("%")[1];
+                    String parsedBlock, parseText = individualBlocks[i].split("%")[1];
                     // Parse if it needs block data
                     if (parseText.contains("[")) {
                         parsedBlock = ">> ";
-                        if (!parseText.contains("mineacraft:")) {
+                        if (!parseText.contains("minecraft:")) {
                             parsedBlock = parsedBlock.concat("minecraft:");
                         }
                         parsedBlock = parsedBlock.concat(parseText);
@@ -104,8 +105,7 @@ public class ScriptGrass extends Craftscript {
             opToRun = opToRun.concat("false");
 
             // Perform the set command
-            player.sendRawMessage("fx sel op " + opToRun);
-            player.performCommand("fx sel op " + opToRun);
+            Bukkit.getServer().dispatchCommand(player, "fx sel op " + opToRun);
         } catch (Exception e) {
             Main.logError("Error performing grass script. Did you pass in the correct parameters?",
                     Operator.currentPlayer, e);

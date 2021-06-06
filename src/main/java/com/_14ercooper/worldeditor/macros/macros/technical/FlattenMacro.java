@@ -1,7 +1,7 @@
 package com._14ercooper.worldeditor.macros.macros.technical;
 
+import com._14ercooper.worldeditor.macros.MacroLauncher;
 import com._14ercooper.worldeditor.macros.macros.Macro;
-import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.main.SetBlock;
 import com._14ercooper.worldeditor.operations.Operator;
@@ -51,7 +51,7 @@ public class FlattenMacro extends Macro {
         // OPERATE
         if (isAbsolute) {
             Main.logDebug("Absolute flatten");
-            absoluteFlatten(x, y, z, operatedBlocks);
+            absoluteFlatten(x, z, operatedBlocks);
         } else {
             Main.logDebug("Brush flatten");
             notAbsoluteFlatten(x, y, z, operatedBlocks);
@@ -61,14 +61,14 @@ public class FlattenMacro extends Macro {
         // Apply the changes to the world
         for (BlockState bs : operatedBlocks) {
             Block b = Operator.currentWorld.getBlockAt(bs.getLocation());
-            SetBlock.setMaterial(b, bs.getType(), GlobalVars.asyncManager.currentAsyncOp.getUndo());
+            SetBlock.setMaterial(b, bs.getType(), MacroLauncher.undoElement);
             b.setBlockData(bs.getBlockData());
         }
 
         return true;
     }
 
-    private void absoluteFlatten(double x, double y, double z, LinkedList<BlockState> operatedBlocks) {
+    private void absoluteFlatten(double x, double z, LinkedList<BlockState> operatedBlocks) {
         // Generate the cylinder
         int radiusInt = (int) Math.round(radius);
         List<Block> blockArray = new ArrayList<>();
@@ -88,7 +88,6 @@ public class FlattenMacro extends Macro {
         for (Block b : blockArray) {
             snapshotArray.add(b.getState());
         }
-        blockArray = null;
         Main.logDebug(snapshotArray.size() + " blocks in snapshot array");
 
         for (BlockState bs : snapshotArray) {
@@ -129,7 +128,6 @@ public class FlattenMacro extends Macro {
         for (Block b : blockArray) {
             snapshotArray.add(b.getState());
         }
-        blockArray = null;
         Main.logDebug(snapshotArray.size() + " blocks in snapshot array");
 
         for (BlockState bs : snapshotArray) {

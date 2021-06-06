@@ -1,5 +1,6 @@
 package com._14ercooper.worldeditor.macros.macros.nature;
 
+import com._14ercooper.worldeditor.macros.MacroLauncher;
 import com._14ercooper.worldeditor.macros.macros.Macro;
 import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
@@ -141,7 +142,7 @@ public class GrassMacro extends Macro {
         // Apply the changes to the world
         for (BlockState bs : operatedBlocks) {
             Block b = Operator.currentWorld.getBlockAt(bs.getLocation());
-            SetBlock.setMaterial(b, bs.getType(), GlobalVars.asyncManager.currentAsyncOp.getUndo());
+            SetBlock.setMaterial(b, bs.getType(), MacroLauncher.undoElement);
             b.setBlockData(bs.getBlockData());
         }
 

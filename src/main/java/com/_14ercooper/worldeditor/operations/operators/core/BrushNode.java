@@ -1,5 +1,6 @@
 package com._14ercooper.worldeditor.operations.operators.core;
 
+import com._14ercooper.worldeditor.async.AsyncManager;
 import com._14ercooper.worldeditor.blockiterator.BlockIterator;
 import com._14ercooper.worldeditor.brush.Brush;
 import com._14ercooper.worldeditor.brush.BrushShape;
@@ -63,7 +64,7 @@ public class BrushNode extends Node {
 
             Main.logDebug("Block array size is " + blockArray.getTotalBlocks()); // -----
 
-            GlobalVars.asyncManager.scheduleEdit(operation, Operator.currentPlayer, blockArray, GlobalVars.asyncManager.currentAsyncOp.getUndo());
+            AsyncManager.scheduleEdit(operation, Operator.currentPlayer, blockArray, Operator.currentUndo);
 
         } else {
             // It's a multi-operator
@@ -71,7 +72,7 @@ public class BrushNode extends Node {
             List<BlockIterator> iters = multiShape.getIters(x, y, z, Operator.currentBlock.getWorld());
             List<Operator> ops = multiShape.getOps(x, y, z);
 
-            GlobalVars.asyncManager.scheduleEdit(iters, ops, Operator.currentPlayer, GlobalVars.asyncManager.currentAsyncOp.getUndo());
+            AsyncManager.scheduleEdit(iters, ops, Operator.currentPlayer, Operator.currentUndo);
 
         }
         return true;

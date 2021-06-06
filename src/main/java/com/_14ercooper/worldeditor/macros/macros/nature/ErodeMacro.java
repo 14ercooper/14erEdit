@@ -1,5 +1,6 @@
 package com._14ercooper.worldeditor.macros.macros.nature;
 
+import com._14ercooper.worldeditor.macros.MacroLauncher;
 import com._14ercooper.worldeditor.macros.macros.Macro;
 import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
@@ -274,7 +275,7 @@ public class ErodeMacro extends Macro {
         for (BlockState b : snapshotArray) {
             Location l = b.getLocation();
             Block block = Operator.currentWorld.getBlockAt(l);
-            SetBlock.setMaterial(block, b.getType(), GlobalVars.asyncManager.currentAsyncOp.getUndo());
+            SetBlock.setMaterial(block, b.getType(), MacroLauncher.undoElement);
             block.setBlockData(b.getBlockData());
         }
     }

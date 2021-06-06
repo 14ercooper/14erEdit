@@ -6,14 +6,14 @@ import com._14ercooper.worldeditor.scripts.Craftscript;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
+import org.bukkit.command.CommandSender;
 
 import java.util.LinkedList;
 
 public class ScriptClone extends Craftscript {
 
     @Override
-    public void perform(LinkedList<String> args, Player player, String label) {
+    public void perform(LinkedList<String> args, CommandSender player, String label) {
         try {
             int xMin = Integer.parseInt(args.get(0));
             int xMax = Integer.parseInt(args.get(1));

@@ -63,7 +63,7 @@ public class CommandFx implements CommandExecutor {
                     }
                     // Create a new brush as requested
                     else {
-                        new Brush(args[argOffset + 1], args[argOffset + 2], args, argOffset,
+                        new Brush(args, argOffset,
                                 (Player) sender);
                         return true;
                     }

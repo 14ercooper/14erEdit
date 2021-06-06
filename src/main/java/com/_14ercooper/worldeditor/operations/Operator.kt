@@ -1,9 +1,11 @@
 package com._14ercooper.worldeditor.operations
 
+import com._14ercooper.worldeditor.async.AsyncManager
 import com._14ercooper.worldeditor.main.GlobalVars
 import com._14ercooper.worldeditor.main.Main.Companion.logError
 import com._14ercooper.worldeditor.operations.operators.core.EntryNode
 import com._14ercooper.worldeditor.operations.type.*
+import com._14ercooper.worldeditor.undo.UndoElement
 import org.bukkit.Bukkit
 import org.bukkit.World
 import org.bukkit.block.Block
@@ -12,11 +14,12 @@ import org.bukkit.entity.Player
 
 class Operator {
     private val entryNode: EntryNode?
-    fun operateOnBlock(block: Block?, p: CommandSender?) {
+    fun operateOnBlock(block: Block?, p: CommandSender?, undo : UndoElement) {
         try {
             // Set global operator variables
             currentOperator = this
             currentBlock = block
+            currentUndo = undo
             currentPlayer = p
                 ?: if (Bukkit.getOnlinePlayers().isNotEmpty()) {
                     Bukkit.getOnlinePlayers().toTypedArray()[0]
@@ -34,15 +37,16 @@ class Operator {
             entryNode!!.performNode()
         } catch (e: Exception) {
             logError("Could not perform operation. Please check your syntax.", p, e)
-            GlobalVars.asyncManager.dropAsync()
+            AsyncManager.dropAsync()
         }
     }
 
-    fun operateOnBlock(block: Block?) {
+    fun operateOnBlock(block: Block?, undo : UndoElement) {
         try {
             // Set global operator variables
             currentOperator = this
             currentBlock = block
+            currentUndo = undo
             currentPlayer = (if (Bukkit.getOnlinePlayers().isNotEmpty()) {
                 Bukkit.getOnlinePlayers().toTypedArray()[0]
             } else {
@@ -55,7 +59,7 @@ class Operator {
             entryNode!!.performNode()
         } catch (e: Exception) {
             logError("Could not perform operation. Please check your syntax.", Bukkit.getConsoleSender(), e)
-            GlobalVars.asyncManager.dropAsync()
+            AsyncManager.dropAsync()
         }
     }
 
@@ -64,7 +68,7 @@ class Operator {
             entryNode!!.performNode()
         } catch (e: Exception) {
             logError("Could not perform operation. Please check your syntax.", Bukkit.getConsoleSender(), e)
-            GlobalVars.asyncManager.dropAsync()
+            AsyncManager.dropAsync()
             false
         }
     }
@@ -104,6 +108,8 @@ class Operator {
         var ignoringPhysics = false // False to ignore physics, true to perform physics 'cause Minecraft
         @JvmField
         var inSetNode = false
+        @JvmField
+        var currentUndo : UndoElement? = null;
 
         // is screwy
         @JvmField

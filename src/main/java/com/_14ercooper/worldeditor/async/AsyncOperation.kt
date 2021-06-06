@@ -26,9 +26,9 @@ class AsyncOperation {
 
     // New undo system
     var undoList : MutableList<UndoElement>? = null
-    constructor(undos : MutableList<UndoElement>) {
+    constructor(undos : MutableList<UndoElement>, thisPlayer : CommandSender) {
         key = "undoedit"
-        player = Bukkit.getServer().consoleSender
+        player = thisPlayer
         undoList = undos
         undo = undos[0]
     }

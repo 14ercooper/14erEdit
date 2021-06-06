@@ -1,8 +1,8 @@
 package com._14ercooper.worldeditor.commands;
 
+import com._14ercooper.worldeditor.async.AsyncManager;
 import com._14ercooper.worldeditor.brush.BrushShape;
 import com._14ercooper.worldeditor.brush.shapes.Voxel;
-import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.operations.OperatorLoader;
@@ -71,7 +71,7 @@ public class CommandRunat implements CommandExecutor {
                     opStr.append(args[i]).append(" ");
                 }
                 Operator op = new Operator(opStr.toString(), (Player) sender);
-                GlobalVars.asyncManager.scheduleEdit(op, null, shape.GetBlocks(x, y, z, sender instanceof Player ? ((Player) sender).getWorld() : Bukkit.getWorlds().get(0)));
+                AsyncManager.scheduleEdit(op, null, shape.GetBlocks(x, y, z, sender instanceof Player ? ((Player) sender).getWorld() : Bukkit.getWorlds().get(0)));
                 return true;
             } catch (Exception e) {
                 Main.logError("Error in runat. Please check your syntax.", sender, e);

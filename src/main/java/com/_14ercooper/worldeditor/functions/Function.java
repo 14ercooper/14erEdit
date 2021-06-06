@@ -1,5 +1,6 @@
 package com._14ercooper.worldeditor.functions;
 
+import com._14ercooper.worldeditor.async.AsyncManager;
 import com._14ercooper.worldeditor.brush.BrushListener;
 import com._14ercooper.worldeditor.functions.commands.InterpreterCommand;
 import com._14ercooper.worldeditor.main.GlobalVars;
@@ -258,7 +259,7 @@ public class Function {
             run();
             return true;
         } else if (waitDelay < 0) {
-            if (GlobalVars.asyncManager.getRemainingBlocks() == 0) {
+            if (AsyncManager.getRemainingBlocks() == 0) {
                 waitingFunctions.remove(waitPos);
                 waitDelay = 0;
                 run();

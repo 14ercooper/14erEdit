@@ -8,7 +8,7 @@ class TestsRunningTest {
 
     @Test
     void test() {
-	// This just makes sure tests are running
-	assertTrue(true);
+        // This just makes sure tests are running
+        assertTrue(true);
     }
 }

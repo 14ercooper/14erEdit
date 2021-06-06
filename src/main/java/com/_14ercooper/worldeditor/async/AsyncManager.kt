@@ -18,13 +18,16 @@ import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import java.io.IOException
 
-class AsyncManager {
+object AsyncManager {
     // Flag queue dropped
     private var queueDropped = false
 
     // Store operations
     private var operations : MutableList<AsyncOperation> = mutableListOf()
     private var queuedOperations : MutableList<AsyncOperation> = mutableListOf()
+
+    // How much work have we done?
+    var doneOperations: Long = 0
 
 
     // Get undo for commandsender
@@ -40,6 +43,7 @@ class AsyncManager {
     }
 
     // Drops the async queue
+    @JvmStatic
     fun dropAsync() {
         Main.logDebug("Async queue dropped.")
         for (asyncOp in operations) {
@@ -55,6 +59,7 @@ class AsyncManager {
     }
 
     // How many blocks do we have less
+    @JvmStatic
     val remainingBlocks: Long
         get() {
             var remBlocks: Long = 0
@@ -63,6 +68,7 @@ class AsyncManager {
             return remBlocks
         }
 
+    @JvmStatic
     private fun getRemBlocks(remBlocks: Long, ops: List<AsyncOperation>): Long {
         var remBlocksSum = remBlocks
         for (a in ops) {
@@ -76,6 +82,7 @@ class AsyncManager {
     }
 
     // About how big is the async queue?
+    @JvmStatic
     fun asyncProgress(p: CommandSender) {
         val remBlocks = remainingBlocks
         val remTime = (remBlocks / (GlobalVars.blocksPerAsync * (20.0 / GlobalVars.ticksPerAsync))).toInt()
@@ -86,6 +93,7 @@ class AsyncManager {
     }
 
     // Dump some data about what's in the async queue
+    @JvmStatic
     fun asyncDump(p: CommandSender) {
         p.sendMessage(
             "§aThere are currently " + (operations.size + queuedOperations.size) + " operations in the async queue for "
@@ -107,34 +115,41 @@ class AsyncManager {
     }
 
     // Schedule a block iterator task
+    @JvmStatic
     fun scheduleEdit(o: Operator?, p: CommandSender, b: BlockIterator) {
         queuedOperations.add(AsyncOperation(o, p, b, startUndo(p)))
     }
+    @JvmStatic
     fun scheduleEdit(o: Operator?, p: CommandSender, b: BlockIterator, ue : UndoElement) {
         queuedOperations.add(AsyncOperation(o, p, b, ue))
     }
 
     // Schedule a multibrush operation
+    @JvmStatic
     fun scheduleEdit(iterators: MutableList<out BlockIterator>, operations: MutableList<Operator>, p: CommandSender) {
         queuedOperations.add(AsyncOperation(iterators, operations, p, startUndo(p)))
     }
+    @JvmStatic
     fun scheduleEdit(iterators: MutableList<out BlockIterator>, operations: MutableList<Operator>, p: CommandSender, ue : UndoElement) {
         queuedOperations.add(AsyncOperation(iterators, operations, p, ue))
     }
 
     // Schedule a schematics operation
+    @JvmStatic
     fun scheduleEdit(sl: SchemLite?, saveSchem: Boolean, p: Player, origin: IntArray) {
         queuedOperations.add(AsyncOperation(sl, saveSchem, origin, p, startUndo(p)))
     }
 
     // Schedule a selection clone operation
+    @JvmStatic
     fun scheduleEdit(b: BlockIterator?, offset: IntArray, times: Int, delOriginal: Boolean, p: Player) {
         queuedOperations.add(AsyncOperation(b, offset, times, delOriginal, p, startUndo(p)))
     }
 
     // Scheule an undo operation
-    fun scheduleEdit(undos : MutableList<UndoElement>) {
-        queuedOperations.add(AsyncOperation(undos))
+    @JvmStatic
+    fun scheduleEdit(undos : MutableList<UndoElement>, player : CommandSender) {
+        queuedOperations.add(AsyncOperation(undos, player))
     }
 
     // Scheduled task to operate
@@ -217,7 +232,7 @@ class AsyncManager {
                         i++
                         continue
                     }
-                    currentAsyncOp.operation!!.operateOnBlock(b, currentAsyncOp.player)
+                    currentAsyncOp.operation!!.operateOnBlock(b, currentAsyncOp.player, currentAsyncOp.undo)
                     doneOperations++
                 }
 
@@ -257,7 +272,6 @@ class AsyncManager {
                     else if (currentAsyncOp.undoList!![0].currentState == UndoMode.PERFORMING_UNDO) {
                         currentAsyncOp.undoList!![0].applyUndo(undoBatchSize)
                         doneOperations += undoBatchSize
-
                     }
                     // If redo running, handle it
                     else if (currentAsyncOp.undoList!![0].currentState == UndoMode.PERFORMING_REDO) {
@@ -299,7 +313,7 @@ class AsyncManager {
                         i++
                         continue
                     }
-                    currentAsyncOp.operations[0].operateOnBlock(b, currentAsyncOp.player)
+                    currentAsyncOp.operations[0].operateOnBlock(b, currentAsyncOp.player, currentAsyncOp.undo)
                     doneOperations++
                 }
 
@@ -426,16 +440,12 @@ class AsyncManager {
         return currentAsyncOp.blocks!!.next
     }
 
-    companion object {
-        var doneOperations: Long = 0
-    }
-
     // On initialization start the scheduler
     init {
         val scheduler = Bukkit.getServer().scheduler
         scheduler.scheduleSyncRepeatingTask(
             GlobalVars.plugin,
-            { GlobalVars.asyncManager.performOperation() },
+            { performOperation() },
             GlobalVars.ticksPerAsync,
             GlobalVars.ticksPerAsync
         )

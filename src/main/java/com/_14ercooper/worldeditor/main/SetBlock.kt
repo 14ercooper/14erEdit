@@ -84,7 +84,7 @@ object SetBlock {
     }
 
     private fun invalidMaterial(mat: Material?, e: Exception) {
-        GlobalVars.asyncManager.dropAsync()
+        AsyncManager.dropAsync()
         Main.logError(
             "Invalid block ID " + mat?.toString() + " provided. The async queue has been dropped.",
             Operator.currentPlayer, e

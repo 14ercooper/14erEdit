@@ -3,6 +3,8 @@ package com._14ercooper.worldeditor.scripts.bundled.easyedit;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.scripts.Craftscript;
+import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.LinkedList;
@@ -10,7 +12,7 @@ import java.util.LinkedList;
 public class ScriptGrassBrush extends Craftscript {
 
     @Override
-    public void perform(LinkedList<String> args, Player player, String label) {
+    public void perform(LinkedList<String> args, CommandSender player, String label) {
         try {
             String radius = args.get(0);
             String mixture, airSpaces, density;
@@ -33,7 +35,7 @@ public class ScriptGrassBrush extends Craftscript {
                 density = "0.35";
             }
 
-            player.performCommand(
+            Bukkit.getServer().dispatchCommand(player,
                     "fx br s 0 0.5 $ grass{" + radius + ";" + mixture + ";" + airSpaces + ";" + density + "}");
         } catch (Exception e) {
             Main.logError("Could not parse grass brush macro. Did you provide the correct arguments?",

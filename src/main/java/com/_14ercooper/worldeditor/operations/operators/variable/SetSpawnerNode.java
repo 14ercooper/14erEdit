@@ -36,7 +36,7 @@ public class SetSpawnerNode extends Node {
         command += " replace";
         Main.logDebug("Command: " + command);
         Bukkit.getServer().dispatchCommand(Operator.currentPlayer, command);
-        GlobalVars.asyncManager.currentAsyncOp.getUndo().addBlock(oldBS, Operator.currentBlock.getState());
+        Operator.currentUndo.addBlock(oldBS, Operator.currentBlock.getState());
         return true;
     }
 
