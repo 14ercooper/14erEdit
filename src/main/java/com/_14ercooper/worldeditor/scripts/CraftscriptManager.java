@@ -2,6 +2,7 @@ package com._14ercooper.worldeditor.scripts;
 
 import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
+import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -13,6 +14,9 @@ public class CraftscriptManager {
 
     // Stores registered scripts
     public final Map<String, Craftscript> registeredScripts = new HashMap<>();
+
+    // Current player
+    public static CommandSender currentPlayer;
 
     // Create a new manager
     public CraftscriptManager() {
@@ -29,6 +33,7 @@ public class CraftscriptManager {
         Main.logDebug("Calling Craftsript: " + label);
 
         try {
+            currentPlayer = player;
             registeredScripts.get(label).perform(args, (Player) player, label);
         } catch (Exception e) {
             Main.logError("Error performing CraftScript. Check your syntax?", player, e);

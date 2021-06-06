@@ -1,6 +1,9 @@
 package com._14ercooper.worldeditor.macros.macros.technical;
 
 import com._14ercooper.worldeditor.main.GlobalVars;
+import com._14ercooper.worldeditor.scripts.CraftscriptManager;
+import com._14ercooper.worldeditor.undo.UndoElement;
+import com._14ercooper.worldeditor.undo.UndoSystem;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -15,6 +18,7 @@ public class CatenaryMacro extends Macro {
     @Override
     public boolean performMacro(String[] args, Location loc) {
 
+        UndoElement undoElement = UndoSystem.findUserUndo(CraftscriptManager.currentPlayer).getNewUndoElement();
         try {
             double x0 = Double.parseDouble(args[0]), y0 = Double.parseDouble(args[1]), z0 = Double.parseDouble(args[2]),
                     dx = Double.parseDouble(args[3]), dy = Double.parseDouble(args[4]),
@@ -33,13 +37,16 @@ public class CatenaryMacro extends Macro {
                 int z = (int) ((int) (z0 + (t * dz)) + 0.5);
                 Main.logDebug(x + "," + y + "," + z);
                 Block b = Operator.currentWorld.getBlockAt(x, y, z);
-                SetBlock.setMaterial(b, Material.matchMaterial(block), GlobalVars.asyncManager.currentAsyncOp.getUndo());
+                SetBlock.setMaterial(b, Material.matchMaterial(block), undoElement);
             }
         } catch (Exception e) {
             Main.logError(
                     "Could not parse catenary macro. Did you pass in the correct 8 numerical arguments and material?",
                     Operator.currentPlayer, e);
             return false;
+        }
+        finally {
+            undoElement.finalizeUndo();
         }
 
         return true;
