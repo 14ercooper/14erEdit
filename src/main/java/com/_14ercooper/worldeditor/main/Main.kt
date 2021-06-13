@@ -155,6 +155,12 @@ class Main : JavaPlugin() {
         IteratorLoader.LoadIterators()
         Function.SetupFunctions()
 
+        // Set up the world height
+        if (GlobalVars.majorVer >= 1 && GlobalVars.minorVer >= 17) {
+            GlobalVars.minEditY = server.worlds[0].minHeight.toLong()
+            GlobalVars.maxEditY = server.worlds[0].maxHeight.toLong()
+        }
+
         // Initialize the WE syntax compat layer
         WorldEditCompat.init()
     }
