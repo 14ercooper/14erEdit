@@ -1,45 +1,29 @@
 package com._14ercooper.worldeditor.main
 
-import org.bukkit.plugin.java.JavaPlugin
-import org.bukkit.Bukkit
-import java.lang.InterruptedException
-import java.nio.file.Paths
-import java.io.IOException
-import com._14ercooper.worldeditor.commands.CommandFx
-import com._14ercooper.worldeditor.commands.CommandUndo
-import com._14ercooper.worldeditor.commands.CommandScript
-import com._14ercooper.worldeditor.commands.CommandRun
-import com._14ercooper.worldeditor.commands.CommandRunat
-import com._14ercooper.worldeditor.commands.CommandDebug
-import com._14ercooper.worldeditor.commands.CommandError
-import com._14ercooper.worldeditor.commands.CommandInfo
-import com._14ercooper.worldeditor.commands.CommandAsync
-import com._14ercooper.worldeditor.commands.CommandBrmask
-import com._14ercooper.worldeditor.commands.CommandTemplate
-import com._14ercooper.worldeditor.commands.CommandFunction
-import com._14ercooper.worldeditor.commands.CommandLimit
-import java.util.HashSet
-import org.bukkit.Material
-import com._14ercooper.worldeditor.selection.SelectionWandListener
-import com._14ercooper.worldeditor.brush.BrushListener
-import com._14ercooper.worldeditor.scripts.CraftscriptManager
-import com._14ercooper.worldeditor.macros.MacroLauncher
-import com._14ercooper.worldeditor.async.AsyncManager
-import com._14ercooper.worldeditor.blockiterator.IteratorManager
-import com._14ercooper.worldeditor.scripts.CraftscriptLoader
-import com._14ercooper.worldeditor.macros.MacroLoader
-import com._14ercooper.worldeditor.brush.BrushLoader
-import com._14ercooper.worldeditor.operations.OperatorLoader
 import com._14ercooper.worldeditor.blockiterator.IteratorLoader
+import com._14ercooper.worldeditor.blockiterator.IteratorManager
+import com._14ercooper.worldeditor.brush.BrushListener
+import com._14ercooper.worldeditor.brush.BrushLoader
+import com._14ercooper.worldeditor.commands.*
 import com._14ercooper.worldeditor.compat.WorldEditCompat
 import com._14ercooper.worldeditor.functions.Function
+import com._14ercooper.worldeditor.macros.MacroLauncher
+import com._14ercooper.worldeditor.macros.MacroLoader
+import com._14ercooper.worldeditor.operations.OperatorLoader
 import com._14ercooper.worldeditor.operations.Parser
+import com._14ercooper.worldeditor.scripts.CraftscriptLoader
+import com._14ercooper.worldeditor.scripts.CraftscriptManager
+import com._14ercooper.worldeditor.selection.SelectionWandListener
 import com._14ercooper.worldeditor.undo.UndoSystem
+import org.bukkit.Bukkit
+import org.bukkit.Material
 import org.bukkit.command.CommandSender
+import org.bukkit.plugin.java.JavaPlugin
+import java.io.IOException
 import java.io.PrintWriter
 import java.io.StringWriter
-import java.lang.Exception
 import java.nio.file.Files
+import java.nio.file.Paths
 import java.nio.file.StandardOpenOption
 
 class Main : JavaPlugin() {
@@ -66,11 +50,6 @@ class Main : JavaPlugin() {
                 // Do nothing
             }
         }
-
-        val ver = server.version.split("MC: ").toTypedArray()[1]
-        ver.split(".").toTypedArray()[1].replace("[^\\d.]".toRegex(), "").toInt().also { GlobalVars.majorVer = it }
-        ver.split(".").toTypedArray()[2].replace("[^\\d.]".toRegex(), "").toInt().also { GlobalVars.minorVer = it }
-        println("Using version " + server.version + ": " + GlobalVars.majorVer + "/" + GlobalVars.minorVer)
 
         // Create folders as needed
         try {
@@ -156,9 +135,12 @@ class Main : JavaPlugin() {
         Function.SetupFunctions()
 
         // Set up the world height
-        if (GlobalVars.majorVer >= 1 && GlobalVars.minorVer >= 17) {
+        try {
             GlobalVars.minEditY = server.worlds[0].minHeight.toLong()
             GlobalVars.maxEditY = server.worlds[0].maxHeight.toLong()
+        }
+        catch (e : Exception) {
+            // Do nothing
         }
 
         // Initialize the WE syntax compat layer
