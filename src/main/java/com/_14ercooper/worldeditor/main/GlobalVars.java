@@ -18,6 +18,8 @@ public class GlobalVars {
     public static SimplexNoise simplexNoise;
     public static Plugin plugin;
     public static final Random rand = new Random();
+    public static int minorVer = 0;
+    public static int majorVer = 0;
 
     // What blocks should be targeted?
     public static Set<Material> brushMask;

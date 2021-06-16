@@ -51,6 +51,17 @@ class Main : JavaPlugin() {
             }
         }
 
+        // Load version numbers
+        val ver = server.version.split("MC: ").toTypedArray()[1]
+        ver.split(".").toTypedArray()[1].replace("[^\\d.]".toRegex(), "").toInt().also { GlobalVars.majorVer = it }
+        try {
+            ver.split(".").toTypedArray()[2].replace("[^\\d.]".toRegex(), "").toInt().also { GlobalVars.minorVer = it }
+        }
+        catch (e : Exception) {
+            GlobalVars.minorVer = 0
+        }
+        println("Using version " + server.version + ": " + GlobalVars.majorVer + "/" + GlobalVars.minorVer)
+
         // Create folders as needed
         try {
             Files.createDirectories(Paths.get("plugins/14erEdit/schematics"))
@@ -135,12 +146,9 @@ class Main : JavaPlugin() {
         Function.SetupFunctions()
 
         // Set up the world height
-        try {
+        if (GlobalVars.majorVer >= 17) {
             GlobalVars.minEditY = server.worlds[0].minHeight.toLong()
             GlobalVars.maxEditY = server.worlds[0].maxHeight.toLong()
-        }
-        catch (e : Exception) {
-            // Do nothing
         }
 
         // Initialize the WE syntax compat layer
