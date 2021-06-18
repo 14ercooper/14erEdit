@@ -36,7 +36,7 @@ public class SelectionManager {
     public boolean updatePositionOne(double x, double y, double z, UUID player) {
         positionOne[0] = x;
         // Use nested ternary operators to clamp y between 0 and 255
-        positionOne[1] = y < 0 ? 0 : y > 255 ? 255 : y;
+        positionOne[1] = y < GlobalVars.minEditY ? GlobalVars.minEditY : y > GlobalVars.maxEditY ? GlobalVars.maxEditY : y;
         positionOne[2] = z;
         getPlayer(player).sendMessage("§dFirst position updated to (" + x + ", " + y + ", "
                 + z + "); giving a volume of "
@@ -50,7 +50,7 @@ public class SelectionManager {
     public boolean updatePositionTwo(double x, double y, double z, UUID player) {
         positionTwo[0] = x;
         // Use nested ternary operators to clamp y between 0 and 255
-        positionTwo[1] = y < 0 ? 0 : y > 255 ? 255 : y;
+        positionTwo[1] = y < GlobalVars.minEditY ? GlobalVars.minEditY : y > GlobalVars.maxEditY ? GlobalVars.maxEditY : y;
         positionTwo[2] = z;
         getPlayer(player).sendMessage("§dSecond position updated to (" + x + ", " + y + ", "
                 + z + "); giving a volume of "
