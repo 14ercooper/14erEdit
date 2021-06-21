@@ -2,7 +2,7 @@
 
 ## How to use:
 
-1. Ensure you can use java from the command line, and the version is at least Java 8. You can check this using "java -version" in a command prompt
+1. Ensure you can use java from the command line, and the version is at least Java 11. You can check this using "java --version" in a command prompt
 
 2. Download the latest build from the [releases page](https://github.com/14ercooper/14erEdit/releases). You need the jar file.
 
