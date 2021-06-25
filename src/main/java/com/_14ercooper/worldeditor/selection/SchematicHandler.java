@@ -1,6 +1,7 @@
 package com._14ercooper.worldeditor.selection;
 
 import com._14ercooper.schematics.SchemLite;
+import com._14ercooper.worldeditor.async.AsyncManager;
 import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.Operator;
@@ -31,7 +32,7 @@ public class SchematicHandler {
         } catch (IOException e) {
             Main.logError("Could not write to schematic file.", p, e);
         }
-        GlobalVars.asyncManager.scheduleEdit(schem, true, p, origin);
+        AsyncManager.scheduleEdit(schem, true, p, origin);
         return true;
     }
 
@@ -50,7 +51,7 @@ public class SchematicHandler {
         if (!mirror.isEmpty()) {
             schem.mirror(mirror.contains("x"), mirror.contains("y"), mirror.contains("z"));
         }
-        GlobalVars.asyncManager.scheduleEdit(schem, false, p, origin);
+        AsyncManager.scheduleEdit(schem, false, p, origin);
     }
 
     // Load a schematic into the world with offset
@@ -70,7 +71,7 @@ public class SchematicHandler {
         if (!mirror.isEmpty()) {
             schem.mirror(mirror.contains("x"), mirror.contains("y"), mirror.contains("z"));
         }
-        GlobalVars.asyncManager.scheduleEdit(schem, false, p, origin);
+        AsyncManager.scheduleEdit(schem, false, p, origin);
         return true;
     }
 
@@ -89,7 +90,7 @@ public class SchematicHandler {
         if (!mirror.isEmpty()) {
             schem.mirror(mirror.contains("x"), mirror.contains("y"), mirror.contains("z"));
         }
-        GlobalVars.asyncManager.scheduleEdit(schem, false, p, origin);
+        AsyncManager.scheduleEdit(schem, false, p, origin);
         return true;
     }
 
@@ -123,7 +124,7 @@ public class SchematicHandler {
         if (mirror.isEmpty())
             mirror = "";
         schem.mirror(mirror.contains("x"), mirror.contains("y"), mirror.contains("z"));
-        GlobalVars.asyncManager.scheduleEdit(schem, false, p, origin);
+        AsyncManager.scheduleEdit(schem, false, p, origin);
         return true;
     }
 

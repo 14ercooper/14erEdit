@@ -1,5 +1,6 @@
 package com._14ercooper.worldeditor.macros.macros.nature;
 
+import com._14ercooper.worldeditor.macros.MacroLauncher;
 import com._14ercooper.worldeditor.macros.macros.Macro;
 import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
@@ -79,7 +80,6 @@ public class VinesMacro extends Macro {
         for (Block b : blockArray) {
             snapshotArray.add(b.getState());
         }
-        blockArray = null;
         Main.logDebug(snapshotArray.size() + " blocks in snapshot array");
         LinkedList<BlockState> operatedBlocks = new LinkedList<>();
 
@@ -194,7 +194,7 @@ public class VinesMacro extends Macro {
         // Apply the changes to the world
         for (BlockState bs : operatedBlocks) {
             Block b = Operator.currentWorld.getBlockAt(bs.getLocation());
-            SetBlock.setMaterial(b, bs.getType(), GlobalVars.asyncManager.currentAsyncOp.getUndo());
+            SetBlock.setMaterial(b, bs.getType(), MacroLauncher.undoElement);
             b.setBlockData(bs.getBlockData());
         }
 

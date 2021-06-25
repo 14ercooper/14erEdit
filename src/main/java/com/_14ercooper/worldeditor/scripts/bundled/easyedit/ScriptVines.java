@@ -3,6 +3,8 @@ package com._14ercooper.worldeditor.scripts.bundled.easyedit;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.scripts.Craftscript;
+import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.LinkedList;
@@ -10,7 +12,7 @@ import java.util.LinkedList;
 public class ScriptVines extends Craftscript {
 
     @Override
-    public void perform(LinkedList<String> args, Player player, String label) {
+    public void perform(LinkedList<String> args, CommandSender player, String label) {
         try {
             String radius = args.get(0);
             String length = args.get(1);
@@ -26,7 +28,7 @@ public class ScriptVines extends Craftscript {
             } else {
                 density = "0.2";
             }
-            player.performCommand("fx br s 0 0.5 $ vines{" + radius + ";" + length + ";" + variance + ";"
+            Bukkit.getServer().dispatchCommand(player, "fx br s 0 0.5 $ vines{" + radius + ";" + length + ";" + variance + ";"
                     + density + ";" + block + "}");
         } catch (Exception e) {
             Main.logError("Could not parse vine script. Did you pass the correct arguments?", Operator.currentPlayer, e);

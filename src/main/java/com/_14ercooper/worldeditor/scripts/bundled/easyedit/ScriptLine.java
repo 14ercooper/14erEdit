@@ -3,6 +3,8 @@ package com._14ercooper.worldeditor.scripts.bundled.easyedit;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.scripts.Craftscript;
+import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
@@ -12,7 +14,7 @@ public class ScriptLine extends Craftscript {
 
     // Args block depth air
     @Override
-    public void perform(LinkedList<String> args, Player player, String label) {
+    public void perform(LinkedList<String> args, CommandSender player, String label) {
         try {
             String block = args.get(0);
             int length;
@@ -22,8 +24,15 @@ public class ScriptLine extends Craftscript {
                 length = 10;
             }
 
-            Vector blockPos = player.getLocation().getDirection();
-            Vector playerPos = player.getLocation().toVector();
+            Vector blockPos, playerPos;
+            if (player instanceof Player) {
+                blockPos = ((Player) player).getLocation().getDirection();
+                playerPos = ((Player) player).getLocation().toVector();
+            }
+            else {
+                blockPos = new Vector(0,0,0);
+                playerPos = new Vector(0,0,0);
+            }
 
             int x1 = (int) playerPos.getX();
             int y1 = (int) playerPos.getY() + 1;
@@ -32,7 +41,7 @@ public class ScriptLine extends Craftscript {
             int y2 = (int) (blockPos.getY() * -1 * length + playerPos.getY());
             int z2 = (int) (blockPos.getZ() * -1 * length + playerPos.getZ());
 
-            player.performCommand(
+            Bukkit.getServer().dispatchCommand(player,
                     "run $ line_old{" + x1 + ";" + y1 + ";" + z1 + ";" + x2 + ";" + y2 + ";" + z2 + ";" + block + "}");
 
         } catch (Exception e) {

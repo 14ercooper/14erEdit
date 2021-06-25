@@ -1,6 +1,10 @@
 package com._14ercooper.worldeditor.macros.macros.technical;
 
+import com._14ercooper.worldeditor.macros.MacroLauncher;
 import com._14ercooper.worldeditor.main.GlobalVars;
+import com._14ercooper.worldeditor.scripts.CraftscriptManager;
+import com._14ercooper.worldeditor.undo.UndoElement;
+import com._14ercooper.worldeditor.undo.UndoSystem;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -54,7 +58,7 @@ public class LineBrushMacro extends Macro {
             int yPos = (int) ((int) (yStart - (yStep * t)) + 0.5);
             int zPos = (int) ((int) (zStart - (zStep * t)) + 0.5);
             Block b = Operator.currentWorld.getBlockAt(xPos, yPos, zPos);
-            SetBlock.setMaterial(b, m, GlobalVars.asyncManager.currentAsyncOp.getUndo());
+            SetBlock.setMaterial(b, m, MacroLauncher.undoElement);
         }
 
         // Return success

@@ -1,8 +1,10 @@
 package com._14ercooper.worldeditor.undo
 
+import com._14ercooper.worldeditor.async.AsyncManager
 import com._14ercooper.worldeditor.main.GlobalVars
 import com._14ercooper.worldeditor.main.Main
 import kotlinx.coroutines.runBlocking
+import org.bukkit.Bukkit
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.Path
@@ -66,7 +68,8 @@ class UserUndo
             Main.logDebug("Nothing to undo for $name")
             return true
         }
-        GlobalVars.asyncManager.scheduleEdit(undoSet)
+        val uuid = UUID.fromString(name)
+        AsyncManager.scheduleEdit(undoSet, Bukkit.getServer().getPlayer(uuid) ?: Bukkit.getConsoleSender())
         Main.logDebug("Undoing $count changes for $name")
         return true
     }
@@ -89,7 +92,8 @@ class UserUndo
             Main.logDebug("Nothing to redo for $name")
             return true
         }
-        GlobalVars.asyncManager.scheduleEdit(redoSet)
+        val uuid = UUID.fromString(name)
+        AsyncManager.scheduleEdit(redoSet, Bukkit.getServer().getPlayer(uuid) ?: Bukkit.getConsoleSender())
         Main.logDebug("Redoing $count changes for $name")
         return true
     }

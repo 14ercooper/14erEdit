@@ -21,7 +21,7 @@ public class SchematicMacro extends Macro {
         // Parse the file path
         path = args[0];
         // Parse the offset
-        int xOff = 1, yOff = 1, zOff = 1;
+        int xOff, yOff, zOff;
         try {
             xOff = Integer.parseInt(args[1]);
         } catch (NumberFormatException e) {

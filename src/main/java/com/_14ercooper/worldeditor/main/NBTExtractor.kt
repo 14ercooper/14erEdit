@@ -1,5 +1,6 @@
 package com._14ercooper.worldeditor.main
 
+import org.bukkit.Bukkit
 import org.bukkit.block.Block
 import org.bukkit.block.BlockState
 
@@ -27,7 +28,7 @@ class NBTExtractor {
                 for (minor in 0..25) {
                     var didCrash = false
                     try {
-                        versionId = "${majorMajor}_${major}_${minor}"
+                        versionId = "${majorMajor}_${major}_R${minor}"
                         Class.forName("org.bukkit.craftbukkit.v$versionId.block.CraftBlockEntityState")
                     } catch (e: ClassNotFoundException) {
                         didCrash = true

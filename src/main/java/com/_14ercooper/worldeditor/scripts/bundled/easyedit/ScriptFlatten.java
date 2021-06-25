@@ -1,21 +1,24 @@
 package com._14ercooper.worldeditor.scripts.bundled.easyedit;
 
-import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.main.SetBlock;
 import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.scripts.Craftscript;
+import com._14ercooper.worldeditor.scripts.CraftscriptManager;
 import com._14ercooper.worldeditor.selection.SelectionManager;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.LinkedList;
+import java.util.UUID;
 
 public class ScriptFlatten extends Craftscript {
 
     @Override
-    public void perform(LinkedList<String> args, Player player, String label) {
+    public void perform(LinkedList<String> args, CommandSender player, String label) {
         try {
             boolean useSelection = true;
             double height = Double.parseDouble(args.get(0));
@@ -27,14 +30,14 @@ public class ScriptFlatten extends Craftscript {
                 if (useSelection) {
                     selectionFlatten(player, height, block);
                 } else {
-                    player.performCommand("fx br s 0 0.5 $ flatten{" + args.get(2) + ";" + "false" + ";"
+                    Bukkit.getServer().dispatchCommand(player, "fx br s 0 0.5 $ flatten{" + args.get(2) + ";" + "false" + ";"
                             + args.get(0) + ";" + args.get(1) + "}");
                 }
             } else if (label.equalsIgnoreCase("absflatten")) {
                 if (useSelection) {
                     absoluteSelectionFlatten(player, height, block);
                 } else {
-                    player.performCommand("fx br s 0 0.5 $ flatten{" + args.get(2) + ";" + "true" + ";"
+                    Bukkit.getServer().dispatchCommand(player, "fx br s 0 0.5 $ flatten{" + args.get(2) + ";" + "true" + ";"
                             + args.get(0) + ";" + args.get(1) + "}");
                 }
             }
@@ -44,8 +47,12 @@ public class ScriptFlatten extends Craftscript {
         }
     }
 
-    private boolean selectionFlatten(Player player, double height, Material block) {
-        SelectionManager sm = SelectionManager.getSelectionManager(player.getUniqueId());
+    private void selectionFlatten(CommandSender player, double height, Material block) {
+        UUID id = null;
+        if (player instanceof Player) {
+            id = ((Player) player).getUniqueId();
+        }
+        SelectionManager sm = SelectionManager.getSelectionManager(id);
         if (sm != null) {
             double[] negCorner = sm.getMostNegativeCorner();
             double[] posCorner = sm.getMostPositiveCorner();
@@ -56,21 +63,24 @@ public class ScriptFlatten extends Craftscript {
                     for (int ry = (int) negCorner[1]; ry <= posCorner[1]; ry++) {
                         if (ry <= Math.round(height)) {
                             Block b = Operator.currentWorld.getBlockAt(rx, ry, rz);
-                            SetBlock.setMaterial(b, block, GlobalVars.asyncManager.currentAsyncOp.getUndo());
+                            SetBlock.setMaterial(b, block, CraftscriptManager.getScriptUndo());
                         } else {
                             Block b = Operator.currentWorld.getBlockAt(rx, ry, rz);
-                            SetBlock.setMaterial(b, Material.AIR, GlobalVars.asyncManager.currentAsyncOp.getUndo());
+                            SetBlock.setMaterial(b, Material.AIR, CraftscriptManager.getScriptUndo());
                         }
                     }
                 }
             }
         }
 
-        return true;
     }
 
-    private boolean absoluteSelectionFlatten(Player player, double height, Material block) {
-        SelectionManager sm = SelectionManager.getSelectionManager(player.getUniqueId());
+    private void absoluteSelectionFlatten(CommandSender player, double height, Material block) {
+        UUID id = null;
+        if (player instanceof Player) {
+            id = ((Player) player).getUniqueId();
+        }
+        SelectionManager sm = SelectionManager.getSelectionManager(id);
         if (sm != null) {
             double[] negCorner = sm.getMostNegativeCorner();
             double[] posCorner = sm.getMostPositiveCorner();
@@ -81,16 +91,15 @@ public class ScriptFlatten extends Craftscript {
                     for (int ry = 0; ry <= 255; ry++) {
                         if (ry <= Math.round(height)) {
                             Block b = Operator.currentWorld.getBlockAt(rx, ry, rz);
-                            SetBlock.setMaterial(b, block, GlobalVars.asyncManager.currentAsyncOp.getUndo());
+                            SetBlock.setMaterial(b, block, CraftscriptManager.getScriptUndo());
                         } else {
                             Block b = Operator.currentWorld.getBlockAt(rx, ry, rz);
-                            SetBlock.setMaterial(b, Material.AIR, GlobalVars.asyncManager.currentAsyncOp.getUndo());
+                            SetBlock.setMaterial(b, Material.AIR, CraftscriptManager.getScriptUndo());
                         }
                     }
                 }
             }
         }
 
-        return true;
     }
 }

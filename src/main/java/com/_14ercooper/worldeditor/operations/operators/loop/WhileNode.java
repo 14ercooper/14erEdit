@@ -1,5 +1,6 @@
 package com._14ercooper.worldeditor.operations.operators.loop;
 
+import com._14ercooper.worldeditor.async.AsyncManager;
 import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.Operator;
@@ -34,7 +35,7 @@ public class WhileNode extends Node {
             while (cond.performNode()) {
                 if (loopsRun > GlobalVars.maxLoopLength) {
                     Main.logError("Max loop length exceeded. Async queue dropped.", Operator.currentPlayer, null);
-                    GlobalVars.asyncManager.dropAsync();
+                    AsyncManager.dropAsync();
                     return false;
                 }
                 boolean result2 = op.performNode();

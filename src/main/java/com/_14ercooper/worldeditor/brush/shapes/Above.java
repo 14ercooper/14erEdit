@@ -17,7 +17,7 @@ public class Above extends BrushShape {
         argList.add(Integer.toString((int) y));
         argList.add(Integer.toString((int) z));
         argList.add(Integer.toString((int) x));
-        argList.add("255");
+        argList.add(Long.toString(GlobalVars.maxEditY));
         argList.add(Integer.toString((int) z));
         return GlobalVars.iteratorManager.getIterator("cube").newIterator(argList, world);
     }

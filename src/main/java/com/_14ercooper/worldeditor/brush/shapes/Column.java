@@ -14,10 +14,10 @@ public class Column extends BrushShape {
     public BlockIterator GetBlocks(double x, double y, double z, World world) {
         List<String> argList = new ArrayList<>();
         argList.add(Integer.toString((int) x));
-        argList.add("0");
+        argList.add(Long.toString(GlobalVars.minEditY));
         argList.add(Integer.toString((int) z));
         argList.add(Integer.toString((int) x));
-        argList.add("255");
+        argList.add(Long.toString(GlobalVars.maxEditY));
         argList.add(Integer.toString((int) z));
         return GlobalVars.iteratorManager.getIterator("cube").newIterator(argList, world);
     }

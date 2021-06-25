@@ -4,6 +4,7 @@ import com._14ercooper.worldeditor.macros.macros.Macro;
 import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.Operator;
+import com._14ercooper.worldeditor.undo.UndoElement;
 import org.bukkit.Location;
 
 import java.util.HashMap;
@@ -13,9 +14,12 @@ public class MacroLauncher {
 
     final Map<String, Macro> macros = new HashMap<>();
 
+    public static UndoElement undoElement;
+
     // This allows for macros to be launched and executed
-    public boolean launchMacro(String macro, Location location) {
+    public boolean launchMacro(String macro, Location location, UndoElement undo) {
         Main.logDebug("Launching macro " + macro); // ----
+        undoElement = undo;
         // First off, parse the macro for the macro name and arguments
         String[] split1 = macro.split("\\{");
         String macroName = split1[0];

@@ -4,7 +4,7 @@
   <groupId>fourteener</groupId>
   <artifactId>14erEdit</artifactId>
   <name>worldeditor</name>
-  <version>1.8.1</version>
+  <version>1.9.0-SNAPSHOT</version>
   <url>https://14ercooper.com/edit</url>
   <build>
     <resources>
@@ -106,7 +106,7 @@
     <dependency>
       <groupId>org.spigotmc</groupId>
       <artifactId>spigot-api</artifactId>
-      <version>1.16.5-R0.1-SNAPSHOT</version>
+      <version>1.17-R0.1-SNAPSHOT</version>
       <scope>provided</scope>
       <exclusions>
         <exclusion>

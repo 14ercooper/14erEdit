@@ -63,7 +63,6 @@ public class BiomeMacro extends Macro {
         for (Block b : blockArray) {
             snapshotArray.add(b.getState());
         }
-        blockArray = null;
         Main.logDebug(snapshotArray.size() + " blocks in snapshot array");
 
         // OPERATE

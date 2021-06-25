@@ -1,6 +1,6 @@
 package com._14ercooper.worldeditor.commands;
 
-import com._14ercooper.worldeditor.main.GlobalVars;
+import com._14ercooper.worldeditor.async.AsyncManager;
 import com._14ercooper.worldeditor.main.Main;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -24,14 +24,14 @@ public class CommandAsync implements CommandExecutor {
 
         try {
             if (args[0].equalsIgnoreCase("drop")) {
-                GlobalVars.asyncManager.dropAsync();
+                AsyncManager.dropAsync();
                 sender.sendMessage("§aAsync queue dropped.");
                 return true;
             } else if (args[0].equalsIgnoreCase("status") || args[0].equalsIgnoreCase("queue")) {
-                GlobalVars.asyncManager.asyncProgress(sender);
+                AsyncManager.asyncProgress(sender);
                 return true;
             } else if (args[0].equalsIgnoreCase("dump")) {
-                GlobalVars.asyncManager.asyncDump(sender);
+                AsyncManager.asyncDump(sender);
                 return true;
             }
 
