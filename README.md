@@ -8,6 +8,9 @@ Directly access the operations system for maximum power and customizability, or 
 
 14erEdit currently only supports Spigot. More platforms may be coming in the future.
 
+### Support
+  - Please email 14erEdit@14er.games
+
 ### Highlights
  - Manipulate the world with direct access to the underlying operations system
  - Utilize brushes of assorted shapes alond with selection boxes to get just the edits you want
