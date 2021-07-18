@@ -1,26 +1,21 @@
 package com._14ercooper.worldeditor.macros.macros.technical;
 
 import com._14ercooper.worldeditor.macros.MacroLauncher;
-import com._14ercooper.worldeditor.main.GlobalVars;
-import com._14ercooper.worldeditor.scripts.CraftscriptManager;
-import com._14ercooper.worldeditor.undo.UndoElement;
-import com._14ercooper.worldeditor.undo.UndoSystem;
+import com._14ercooper.worldeditor.macros.macros.Macro;
+import com._14ercooper.worldeditor.main.Main;
+import com._14ercooper.worldeditor.main.SetBlock;
+import com._14ercooper.worldeditor.operations.OperatorState;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
-import com._14ercooper.worldeditor.macros.macros.Macro;
-import com._14ercooper.worldeditor.main.Main;
-import com._14ercooper.worldeditor.main.SetBlock;
-import com._14ercooper.worldeditor.operations.Operator;
-
 public class LineBrushMacro extends Macro {
 
     @Override
-    public boolean performMacro(String[] args, Location loc) {
+    public boolean performMacro(String[] args, Location loc, OperatorState state) {
         // Parse args
-        Player p = (Player) Operator.currentPlayer;
+        Player p = (Player) state.getCurrentPlayer();
         Material m = Material.matchMaterial(args[0]);
         if (m == null) {
             Main.logError("Could not parse line brush macro. " + args[0] + " does not match a known block.", p, null);
@@ -57,8 +52,8 @@ public class LineBrushMacro extends Macro {
             int xPos = (int) ((int) (xStart - (xStep * t)) + 0.5);
             int yPos = (int) ((int) (yStart - (yStep * t)) + 0.5);
             int zPos = (int) ((int) (zStart - (zStep * t)) + 0.5);
-            Block b = Operator.currentWorld.getBlockAt(xPos, yPos, zPos);
-            SetBlock.setMaterial(b, m, MacroLauncher.undoElement);
+            Block b = state.getCurrentWorld().getBlockAt(xPos, yPos, zPos);
+            SetBlock.setMaterial(b, m, MacroLauncher.undoElement, state.getCurrentPlayer());
         }
 
         // Return success

@@ -1,15 +1,15 @@
 package com._14ercooper.worldeditor.operations.operators.world;
 
+import com._14ercooper.worldeditor.blockiterator.iterators.SchemBrushIterator;
+import com._14ercooper.worldeditor.main.GlobalVars;
+import com._14ercooper.worldeditor.main.Main;
+import com._14ercooper.worldeditor.operations.OperatorState;
+import com._14ercooper.worldeditor.operations.operators.Node;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
-
-import com._14ercooper.worldeditor.blockiterator.iterators.SchemBrushIterator;
-import com._14ercooper.worldeditor.main.GlobalVars;
-import com._14ercooper.worldeditor.main.Main;
-import com._14ercooper.worldeditor.operations.Operator;
-import com._14ercooper.worldeditor.operations.operators.Node;
+import org.bukkit.command.CommandSender;
 
 public class SchemBlockNode extends BlockNode {
 
@@ -19,59 +19,59 @@ public class SchemBlockNode extends BlockNode {
 
     // Creates a new node
     @Override
-    public BlockNode newNode() {
+    public BlockNode newNode(CommandSender currentPlayer) {
         SchemBlockNode node = new SchemBlockNode();
-        node.isInSet = Operator.inSetNode;
+        node.isInSet = GlobalVars.operationParser.inSetNode;
         if (!node.isInSet) {
             Main.logDebug("SchemBlockNode: Processing subnode");
-            node.arg = GlobalVars.operationParser.parsePart();
+            node.arg = GlobalVars.operationParser.parsePart(currentPlayer);
         }
         return node;
     }
 
     // This should never be run
     @Override
-    public BlockNode newNode(String text) {
-        Main.logError("Schematic block node in invalid state", Operator.currentPlayer, null);
+    public BlockNode newNode(String text, CommandSender currentPlayer) {
+        Main.logError("Schematic block node in invalid state", currentPlayer, null);
         return null;
     }
 
     // Return the material this node references
     @Override
-    public String getBlock() {
+    public String getBlock(OperatorState state) {
         return SchemBrushIterator.blockType;
     }
 
     // Get the data of this block
     @Override
-    public String getData() {
+    public String getData(OperatorState state) {
         return SchemBrushIterator.blockData;
     }
 
     // Get the NBT of this block
     @Override
-    public String getNBT() {
+    public String getNBT(OperatorState state) {
         return SchemBrushIterator.nbt;
     }
 
     // Check if it's the correct block
     @Override
-    public boolean performNode() {
+    public boolean performNode(OperatorState state) {
         if (!isInSet) {
-            BlockState state = Operator.currentWorld.getBlockAt(14, 0, 14).getState();
-            Block currBlock = Operator.currentBlock;
+            BlockState stateBlock = state.getCurrentWorld().getBlockAt(14, 0, 14).getState();
+            Block currBlock = state.getCurrentBlock();
             boolean retVal = false;
             try {
-                Operator.currentBlock = Operator.currentWorld.getBlockAt(14, 0, 14);
-                Operator.currentBlock.setType(Material.matchMaterial(SchemBrushIterator.blockType));
-                Operator.currentBlock.setBlockData(Bukkit.getServer().createBlockData(SchemBrushIterator.blockData));
-                retVal = arg.performNode();
+                state.setCurrentBlock(state.getCurrentWorld().getBlockAt(14, 0, 14));
+                state.getCurrentBlock().setType(Material.matchMaterial(SchemBrushIterator.blockType));
+                state.getCurrentBlock().setBlockData(Bukkit.getServer().createBlockData(SchemBrushIterator.blockData));
+                retVal = arg.performNode(state);
             } catch (Exception e) {
-                Main.logError("Could not perform schem block node", Operator.currentPlayer, e);
+                Main.logError("Could not perform schem block node", state.getCurrentPlayer(), e);
             } finally {
-                Operator.currentBlock.setType(state.getType());
-                Operator.currentBlock.setBlockData(state.getBlockData());
-                Operator.currentBlock = currBlock;
+                state.getCurrentBlock().setType(stateBlock.getType());
+                state.getCurrentBlock().setBlockData(stateBlock.getBlockData());
+                state.setCurrentBlock(currBlock);
             }
             return retVal;
         } else {

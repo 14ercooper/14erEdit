@@ -141,7 +141,7 @@ public class Brush {
 
             if (!(shapeGenerator instanceof Multi)) {
                 // Build an array of all blocks to operate on
-                BlockIterator blockArray = shapeGenerator.GetBlocks(x, y, z, currentPlayer.getWorld());
+                BlockIterator blockArray = shapeGenerator.GetBlocks(x, y, z, currentPlayer.getWorld(), currentPlayer);
 
                 if (blockArray == null || blockArray.getTotalBlocks() == 0) {
                     return;
@@ -153,7 +153,7 @@ public class Brush {
             } else {
                 // Create a multi-operator async chain
                 Multi multiShape = (Multi) shapeGenerator;
-                List<BlockIterator> iters = multiShape.getIters(x, y, z, getOwner().getWorld());
+                List<BlockIterator> iters = multiShape.getIters(x, y, z, getOwner().getWorld(), currentPlayer);
                 List<Operator> ops = multiShape.getOps(x, y, z);
 
                 AsyncManager.scheduleEdit(iters, ops, getOwner());

@@ -1,14 +1,14 @@
 package com._14ercooper.worldeditor.operations.operators.query;
 
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-
 import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
-import com._14ercooper.worldeditor.operations.Operator;
+import com._14ercooper.worldeditor.operations.OperatorState;
 import com._14ercooper.worldeditor.operations.operators.Node;
 import com._14ercooper.worldeditor.operations.operators.core.NumberNode;
 import com._14ercooper.worldeditor.operations.operators.function.RangeNode;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.command.CommandSender;
 
 public class AngleNode extends Node {
 
@@ -21,43 +21,43 @@ public class AngleNode extends Node {
     }
 
     @Override
-    public Node newNode() {
+    public Node newNode(CommandSender currentPlayer) {
         try {
             AngleNode node = new AngleNode();
-            node.angleForTrue = GlobalVars.operationParser.parseRangeNode();
-            node.distance = GlobalVars.operationParser.parseNumberNode();
+            node.angleForTrue = GlobalVars.operationParser.parseRangeNode(currentPlayer);
+            node.distance = GlobalVars.operationParser.parseNumberNode(currentPlayer);
             if (node.distance == null) {
                 Main.logError("Could not parse angle node. Did you provide a range node and a distance?",
-                        Operator.currentPlayer, null);
+                        currentPlayer, null);
                 return null;
             }
             return node;
         } catch (Exception e) {
-            Main.logError("Error parsing range node. Please check your syntax.", Operator.currentPlayer, e);
+            Main.logError("Error parsing range node. Please check your syntax.", currentPlayer, e);
             return null;
         }
     }
 
     @Override
-    public boolean performNode() {
+    public boolean performNode(OperatorState state) {
         // Get angle from each block pair
-        int dist = (int) distance.getValue();
-        int maxAngle = getAngle(Operator.currentBlock.getRelative(dist, 0, 0),
-                Operator.currentBlock.getRelative(-dist, 0, 0));
-        int angle = getAngle(Operator.currentBlock.getRelative(0, 0, dist),
-                Operator.currentBlock.getRelative(0, 0, -dist));
+        int dist = (int) distance.getValue(state);
+        int maxAngle = getAngle(state.getCurrentBlock().getRelative(dist, 0, 0),
+                state.getCurrentBlock().getRelative(-dist, 0, 0), state);
+        int angle = getAngle(state.getCurrentBlock().getRelative(0, 0, dist),
+                state.getCurrentBlock().getRelative(0, 0, -dist), state);
         if (angle > maxAngle)
             maxAngle = angle;
-        angle = getAngle(Operator.currentBlock.getRelative((int) (dist * 0.707), 0, (int) (dist * 0.707)),
-                Operator.currentBlock.getRelative((int) (-dist * 0.707), 0, (int) (-dist * 0.707)));
+        angle = getAngle(state.getCurrentBlock().getRelative((int) (dist * 0.707), 0, (int) (dist * 0.707)),
+                state.getCurrentBlock().getRelative((int) (-dist * 0.707), 0, (int) (-dist * 0.707)), state);
         if (angle > maxAngle)
             maxAngle = angle;
-        angle = getAngle(Operator.currentBlock.getRelative((int) (dist * 0.707), 0, (int) (-dist * 0.707)),
-                Operator.currentBlock.getRelative((int) (-dist * 0.707), 0, (int) (dist * 0.707)));
+        angle = getAngle(state.getCurrentBlock().getRelative((int) (dist * 0.707), 0, (int) (-dist * 0.707)),
+                state.getCurrentBlock().getRelative((int) (-dist * 0.707), 0, (int) (dist * 0.707)), state);
         if (angle > maxAngle)
             maxAngle = angle;
         // Return if max angle found is in range
-        return angleForTrue.getMin() <= maxAngle && angleForTrue.getMax() >= maxAngle;
+        return angleForTrue.getMin(state) <= maxAngle && angleForTrue.getMax(state) >= maxAngle;
     }
 
     @Override
@@ -65,7 +65,7 @@ public class AngleNode extends Node {
         return 2;
     }
 
-    private int getAngle(Block b1, Block b2) {
+    private int getAngle(Block b1, Block b2, OperatorState state) {
         // Check current states both blocks
         Material mat1 = b1.getType();
         Material mat2 = b2.getType();
@@ -93,7 +93,7 @@ public class AngleNode extends Node {
                 upVal++;
             }
             double distVert = upVal - downVal;
-            double distHor = 2 * distance.getValue();
+            double distHor = 2 * distance.getValue(state);
             return (int) Math.abs(Math.atan2(distVert, distHor) * 57.296);
         }
     }

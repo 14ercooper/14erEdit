@@ -1,5 +1,6 @@
 package com._14ercooper.worldeditor.operations.operators.query;
 
+import com._14ercooper.worldeditor.operations.OperatorState;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 
@@ -8,6 +9,7 @@ import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.operations.operators.Node;
 import com._14ercooper.worldeditor.operations.operators.function.RangeNode;
+import org.bukkit.command.CommandSender;
 
 public class BlocksAdjacentNode extends Node {
 
@@ -20,61 +22,61 @@ public class BlocksAdjacentNode extends Node {
     }
 
     @Override
-    public BlocksAdjacentNode newNode() {
+    public BlocksAdjacentNode newNode(CommandSender currentPlayer) {
         BlocksAdjacentNode node = new BlocksAdjacentNode();
         try {
-            node.arg2 = GlobalVars.operationParser.parseRangeNode();
-            node.arg1 = GlobalVars.operationParser.parsePart();
+            node.arg2 = GlobalVars.operationParser.parseRangeNode(currentPlayer);
+            node.arg1 = GlobalVars.operationParser.parsePart(currentPlayer);
         } catch (Exception e) {
-            Main.logError("Error creating blocks adjacent node. Please check your syntax.", Operator.currentPlayer, e);
+            Main.logError("Error creating blocks adjacent node. Please check your syntax.", currentPlayer, e);
             return null;
         }
         if (node.arg2 == null) {
             Main.logError("Could not parse blocks adjacent node. Two arguments are required, but not given.",
-                    Operator.currentPlayer, null);
+                    currentPlayer, null);
         }
         return node;
     }
 
     @Override
-    public boolean performNode() {
+    public boolean performNode(OperatorState state) {
         Main.logDebug("Performing faces exposed node"); // -----
 
         // Check if any adjacent blocks match arg1
         // Set up some variables
         int numAdjacentBlocks = 0;
-        Block curBlock = Operator.currentWorld.getBlockAt(Operator.currentBlock.getLocation());
+        Block curBlock = state.getCurrentWorld().getBlockAt(state.getCurrentBlock().getLocation());
 
         // Check each direction
         Block blockAdj = curBlock.getRelative(BlockFace.NORTH);
-        Operator.currentBlock = blockAdj;
-        if (arg1.performNode())
+        state.setCurrentBlock(blockAdj);
+        if (arg1.performNode(state))
             numAdjacentBlocks++;
         blockAdj = curBlock.getRelative(BlockFace.SOUTH);
-        Operator.currentBlock = blockAdj;
-        if (arg1.performNode())
+        state.setCurrentBlock(blockAdj);
+        if (arg1.performNode(state))
             numAdjacentBlocks++;
         blockAdj = curBlock.getRelative(BlockFace.EAST);
-        Operator.currentBlock = blockAdj;
-        if (arg1.performNode())
+        state.setCurrentBlock(blockAdj);
+        if (arg1.performNode(state))
             numAdjacentBlocks++;
         blockAdj = curBlock.getRelative(BlockFace.WEST);
-        Operator.currentBlock = blockAdj;
-        if (arg1.performNode())
+        state.setCurrentBlock(blockAdj);
+        if (arg1.performNode(state))
             numAdjacentBlocks++;
         blockAdj = curBlock.getRelative(BlockFace.UP);
-        Operator.currentBlock = blockAdj;
-        if (arg1.performNode())
+        state.setCurrentBlock(blockAdj);
+        if (arg1.performNode(state))
             numAdjacentBlocks++;
         blockAdj = curBlock.getRelative(BlockFace.DOWN);
-        Operator.currentBlock = blockAdj;
-        if (arg1.performNode())
+        state.setCurrentBlock(blockAdj);
+        if (arg1.performNode(state))
             numAdjacentBlocks++;
 
         // Reset the current block
-        Operator.currentBlock = curBlock;
+        state.setCurrentBlock(curBlock);
 
-        return (numAdjacentBlocks >= arg2.getMin() - 0.1 && numAdjacentBlocks <= arg2.getMax() + 0.1);
+        return (numAdjacentBlocks >= arg2.getMin(state) - 0.1 && numAdjacentBlocks <= arg2.getMax(state) + 0.1);
     }
 
     @Override

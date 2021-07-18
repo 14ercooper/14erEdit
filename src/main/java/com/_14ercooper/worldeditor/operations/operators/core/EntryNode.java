@@ -2,7 +2,7 @@ package com._14ercooper.worldeditor.operations.operators.core;
 
 import com._14ercooper.worldeditor.async.AsyncManager;
 import com._14ercooper.worldeditor.main.Main;
-import com._14ercooper.worldeditor.operations.Operator;
+import com._14ercooper.worldeditor.operations.OperatorState;
 import com._14ercooper.worldeditor.operations.operators.Node;
 
 public class EntryNode {
@@ -12,11 +12,11 @@ public class EntryNode {
         node = newNode;
     }
 
-    public boolean performNode() {
+    public boolean performNode(OperatorState state) {
         try {
-            return node.performNode();
+            return node.performNode(state);
         } catch (Exception e) {
-            Main.logError("Error performing node. Async queue dropped.", Operator.currentPlayer, e);
+            Main.logError("Error performing node. Async queue dropped.", state.getCurrentPlayer(), e);
             e.printStackTrace();
             AsyncManager.dropAsync();
             return false;

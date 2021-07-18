@@ -1,19 +1,20 @@
 package com._14ercooper.worldeditor.operations.operators.core;
 
-import com._14ercooper.worldeditor.operations.Operator;
+import com._14ercooper.worldeditor.operations.OperatorState;
+import org.bukkit.command.CommandSender;
 
 public class ZNode extends NumberNode {
 
     // Returns a new node
     @Override
-    public ZNode newNode() {
+    public ZNode newNode(CommandSender currentPlayer) {
         return new ZNode();
     }
 
     // Return the number
     @Override
-    public double getValue() {
-        return Operator.currentBlock.getZ();
+    public double getValue(OperatorState state) {
+        return state.getCurrentBlock().getZ();
     }
 
     // Get how many arguments this type of node takes

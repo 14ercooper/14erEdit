@@ -8,7 +8,9 @@ import com._14ercooper.worldeditor.brush.shapes.Multi;
 import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.Operator;
+import com._14ercooper.worldeditor.operations.OperatorState;
 import com._14ercooper.worldeditor.operations.operators.Node;
+import org.bukkit.command.CommandSender;
 
 import java.util.List;
 
@@ -18,12 +20,12 @@ public class BrushNode extends Node {
     public Node op = null;
 
     @Override
-    public BrushNode newNode() {
+    public BrushNode newNode(CommandSender currentPlayer) {
         try {
             BrushNode node = new BrushNode();
-            node.shape = Brush.GetBrushShape(GlobalVars.operationParser.parseStringNode().contents);
+            node.shape = Brush.GetBrushShape(GlobalVars.operationParser.parseStringNode(currentPlayer).contents);
             do {
-                String nextText = GlobalVars.operationParser.parseStringNode().getText();
+                String nextText = GlobalVars.operationParser.parseStringNode(currentPlayer).getText();
                 if (nextText.equalsIgnoreCase("end")) {
                     GlobalVars.operationParser.index++;
                     break;
@@ -37,42 +39,42 @@ public class BrushNode extends Node {
             }
 
             if (!(node.shape instanceof Multi))
-                node.op = GlobalVars.operationParser.parsePart();
+                node.op = GlobalVars.operationParser.parsePart(currentPlayer);
 
             return node;
         } catch (Exception e) {
             Main.logError("Could not create brush node. Did you provide the correct number of arguments?",
-                    Operator.currentPlayer, e);
+                    currentPlayer, e);
             return null;
         }
     }
 
     @Override
-    public boolean performNode() {
-        int x = Operator.currentBlock.getX();
-        int y = Operator.currentBlock.getY();
-        int z = Operator.currentBlock.getZ();
+    public boolean performNode(OperatorState state) {
+        int x = state.getCurrentBlock().getX();
+        int y = state.getCurrentBlock().getY();
+        int z = state.getCurrentBlock().getZ();
         if (!(shape instanceof Multi)) {
             // Build an array of all blocks to operate on
-            BlockIterator blockArray = shape.GetBlocks(x, y, z, Operator.currentBlock.getWorld());
+            BlockIterator blockArray = shape.GetBlocks(x, y, z, state.getCurrentBlock().getWorld(), state.getCurrentPlayer());
 
             if (blockArray.getTotalBlocks() == 0) {
                 return false;
             }
             EntryNode entry = new EntryNode(op);
-            Operator operation = new Operator(entry, Operator.currentPlayer);
+            Operator operation = new Operator(entry);
 
             Main.logDebug("Block array size is " + blockArray.getTotalBlocks()); // -----
 
-            AsyncManager.scheduleEdit(operation, Operator.currentPlayer, blockArray, Operator.currentUndo);
+            AsyncManager.scheduleEdit(operation, state.getCurrentPlayer(), blockArray, state.getCurrentUndo());
 
         } else {
             // It's a multi-operator
             Multi multiShape = (Multi) shape;
-            List<BlockIterator> iters = multiShape.getIters(x, y, z, Operator.currentBlock.getWorld());
+            List<BlockIterator> iters = multiShape.getIters(x, y, z, state.getCurrentBlock().getWorld(), state.getCurrentPlayer());
             List<Operator> ops = multiShape.getOps(x, y, z);
 
-            AsyncManager.scheduleEdit(iters, ops, Operator.currentPlayer, Operator.currentUndo);
+            AsyncManager.scheduleEdit(iters, ops, state.getCurrentPlayer(), state.getCurrentUndo());
 
         }
         return true;

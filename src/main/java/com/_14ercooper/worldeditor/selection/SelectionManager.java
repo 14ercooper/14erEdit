@@ -185,7 +185,7 @@ public class SelectionManager {
         args.add(Integer.toString((int) pos2[1]));
         args.add(Integer.toString((int) pos2[2]));
         args.add("1");
-        return GlobalVars.iteratorManager.getIterator("cube").newIterator(args, world);
+        return GlobalVars.iteratorManager.getIterator("cube").newIterator(args, world, Bukkit.getConsoleSender());
     }
 
     public Player getPlayer(UUID player){

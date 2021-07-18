@@ -3,10 +3,11 @@ package com._14ercooper.worldeditor.operations.operators.world;
 import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.main.NBTExtractor;
-import com._14ercooper.worldeditor.operations.Operator;
+import com._14ercooper.worldeditor.operations.OperatorState;
 import com._14ercooper.worldeditor.operations.operators.Node;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.command.CommandSender;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -20,19 +21,19 @@ public class BlockNode extends Node {
 
     // Creates a new node
     @Override
-    public BlockNode newNode() {
+    public BlockNode newNode(CommandSender currentPlayer) {
         BlockNode node = new BlockNode();
-        String[] data = GlobalVars.operationParser.parseStringNode().getText().split(";");
+        String[] data = GlobalVars.operationParser.parseStringNode(currentPlayer).getText().split(";");
         try {
-            if (loadBlockList(node, data)) return null;
+            if (loadBlockList(node, data, currentPlayer)) return null;
         } catch (Exception e) {
-            Main.logError("Could not parse block node. Block name required, but not found: " + data, Operator.currentPlayer, e);
+            Main.logError("Could not parse block node. Block name required, but not found: " + data, currentPlayer, e);
             return null;
         }
         return node;
     }
 
-    private boolean loadBlockList(BlockNode node, String[] data) {
+    private boolean loadBlockList(BlockNode node, String[] data, CommandSender currentPlayer) {
         node.blockList = new LinkedList<>();
         node.textMasks = new LinkedList<>();
         for (String s : data) {
@@ -42,41 +43,41 @@ public class BlockNode extends Node {
             } else {
                 Main.logDebug("Created block instance");
                 if (!s.isBlank())
-                node.blockList.add(new BlockInstance(s));
+                node.blockList.add(new BlockInstance(s, currentPlayer));
             }
         }
         if (node.blockList.isEmpty() && node.textMasks.isEmpty()) {
-            Main.logError("Error creating block node. No blocks were provided.", Operator.currentPlayer, null);
+            Main.logError("Error creating block node. No blocks were provided.", currentPlayer, null);
             return true;
         }
         return false;
     }
 
-    public BlockNode newNode(String input) {
+    public BlockNode newNode(String input, CommandSender currentPlayer) {
         BlockNode node = new BlockNode();
         try {
             String[] data = input.split(";");
-            if (loadBlockList(node, data)) return null;
+            if (loadBlockList(node, data, currentPlayer)) return null;
         } catch (Exception e) {
-            Main.logError("Could not parse block node from input. Block name required, but not found: " + input, Operator.currentPlayer, e);
+            Main.logError("Could not parse block node from input. Block name required, but not found: " + input, currentPlayer, e);
             return null;
         }
         return node;
     }
 
     // Return the material this node references
-    public String getBlock() {
+    public String getBlock(OperatorState state) {
         try {
             nextBlock = (new BlockInstance()).GetRandom(blockList);
         } catch (Exception e) {
-            Main.logError("Error performing block node. Does it contain blocks?", Operator.currentPlayer, e);
+            Main.logError("Error performing block node. Does it contain blocks?", state.getCurrentPlayer(), e);
             return null;
         }
         return nextBlock.mat;
     }
 
     // Get the data of this block
-    public String getData() {
+    public String getData(OperatorState state) {
         try {
             return nextBlock.data;
         } catch (Exception e) {
@@ -85,17 +86,17 @@ public class BlockNode extends Node {
     }
 
     // Get the NBT of this block
-    public String getNBT() {
+    public String getNBT(OperatorState state) {
         return nextBlock.nbt;
     }
 
     // Check if it's the correct block
     @Override
-    public boolean performNode() {
+    public boolean performNode(OperatorState state) {
         try {
-            return (new BlockInstance()).Contains(blockList, textMasks, Operator.currentBlock);
+            return (new BlockInstance()).Contains(blockList, textMasks, state.getCurrentBlock());
         } catch (Exception e) {
-            Main.logError("Error performing block node. Does it contain blocks?", Operator.currentPlayer, e);
+            Main.logError("Error performing block node. Does it contain blocks?", state.getCurrentPlayer(), e);
             return false;
         }
     }
@@ -114,7 +115,7 @@ public class BlockNode extends Node {
         int weight;
 
         // Construct a new block instance from an input string
-        BlockInstance(String input) {
+        BlockInstance(String input, CommandSender currentPlayer) {
             if (input.toCharArray()[0] == '[') {
                 Main.logDebug("Data only node");
                 // Data only
@@ -128,7 +129,7 @@ public class BlockNode extends Node {
                 data = null;
                 StringBuilder inputBuilder = new StringBuilder(input);
                 while (inputBuilder.charAt(inputBuilder.length() - 1) != '}') {
-                    inputBuilder.append(" ").append(GlobalVars.operationParser.parseStringNode().getText());
+                    inputBuilder.append(" ").append(GlobalVars.operationParser.parseStringNode(currentPlayer).getText());
                 }
                 input = inputBuilder.toString();
                 nbt = input.replaceAll("[{}]", "");

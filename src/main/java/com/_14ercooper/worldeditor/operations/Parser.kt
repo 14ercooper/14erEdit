@@ -8,6 +8,7 @@ import com._14ercooper.worldeditor.operations.operators.core.NumberNode
 import com._14ercooper.worldeditor.operations.operators.core.StringNode
 import com._14ercooper.worldeditor.operations.operators.function.RangeNode
 import com._14ercooper.worldeditor.operations.operators.world.BlockNode
+import org.bukkit.command.CommandSender
 import java.util.*
 import kotlin.streams.toList
 
@@ -16,6 +17,9 @@ class Parser {
     @JvmField
     var index = -1
     private var parts: List<String>? = null
+
+    @JvmField
+    var inSetNode = false
 
     // Store operators
     val operators: MutableMap<String, Node> = HashMap()
@@ -26,18 +30,18 @@ class Parser {
         operators[name] = node
     }
 
-    fun getOperator(name: String): Node? {
+    fun getOperator(currentPlayer: CommandSender, name: String): Node? {
         if (!operators.containsKey(name)) {
             logError(
                 "Operator \"$name\" not found. Please check that you input a valid operator.",
-                Operator.currentPlayer, null
+                currentPlayer, null
             )
             return null
         }
         return operators[name]
     }
 
-    fun parseOperation(op: String): EntryNode? {
+    fun parseOperation(currentPlayer: CommandSender, op: String): EntryNode? {
 
         // Here there be parsing magic
         // A massive recursive nightmare
@@ -48,12 +52,12 @@ class Parser {
                     ""
                 ) else s.replace("[()\\[\\]]+".toRegex(), "")
             }.toList()
-        val rootNode = parsePart()
+        val rootNode = parsePart(currentPlayer)
 
         // This is an error if this is true
         // Probably user error with an invalid operation
         if (rootNode == null) {
-            logError("Operation parse failed. Please check your syntax.", Operator.currentPlayer, null)
+            logError("Operation parse failed. Please check your syntax.", currentPlayer, null)
             return null
         }
 
@@ -64,7 +68,7 @@ class Parser {
 
     // This is the massive recursive nightmare
     @JvmOverloads
-    fun parsePart(numberNode: Boolean = false): Node? {
+    fun parsePart(currentPlayer: CommandSender, numberNode: Boolean = false): Node? {
         index++
         return try {
             // Comments
@@ -87,19 +91,19 @@ class Parser {
             if (index == 0 && !operators.containsKey(parts!![index])) {
                 logError(
                     "First node parsed was a string node. This is likely a mistake. Please check that you used a valid operator.",
-                    Operator.currentPlayer, null
+                    currentPlayer, null
                 )
             }
             if (operators.containsKey(parts!![index])) {
-                val n = operators[parts!![index]]!!.newNode()
+                val n = operators[parts!![index]]!!.newNode(currentPlayer)
                 logDebug(parts!![oldIndex] + " node created: " + n.toString())
                 n
             } else {
                 if (!numberNode) {
                     index--
-                    val strNode = parseStringNode()
+                    val strNode = parseStringNode(currentPlayer)
                     val bn = if (strNode.text.isNotBlank())
-                        BlockNode().newNode(strNode.text)
+                        BlockNode().newNode(strNode.text, currentPlayer)
                     else null
                     if (bn != null) {
                         logDebug("Block node created: $bn")
@@ -109,7 +113,7 @@ class Parser {
                         strNode
                     }
                 } else {
-                    NumberNode().newNode()
+                    NumberNode().newNode(currentPlayer)
                 }
             }
         } catch (e: IndexOutOfBoundsException) {
@@ -117,28 +121,28 @@ class Parser {
         }
     }
 
-    fun parseNumberNode(): NumberNode? {
+    fun parseNumberNode(currentPlayer: CommandSender): NumberNode? {
         logDebug("Number node created") // -----
         return try {
-            parsePart(true) as NumberNode?
+            parsePart(currentPlayer, true) as NumberNode?
         } catch (e: Exception) {
-            logError("Number expected. Did not find a number.", Operator.currentPlayer, e)
+            logError("Number expected. Did not find a number.", currentPlayer, e)
             null
         }
     }
 
-    fun parseRangeNode(): RangeNode? {
+    fun parseRangeNode(currentPlayer : CommandSender): RangeNode? {
         index++
         logDebug("Range node created") // -----
         return try {
-            RangeNode().newNode()
+            RangeNode().newNode(currentPlayer)
         } catch (e: Exception) {
-            logError("Range node expected. Could not create a range node.", Operator.currentPlayer, e)
+            logError("Range node expected. Could not create a range node.", currentPlayer, e)
             null
         }
     }
 
-    fun parseStringNode(): StringNode {
+    fun parseStringNode(currentPlayer : CommandSender): StringNode {
         index++
         logDebug("String node created") // -----
         return try {
@@ -149,7 +153,7 @@ class Parser {
         } catch (e: Exception) {
             logError(
                 "Ran off end of operator (could not create string node). Are you missing arguments?",
-                Operator.currentPlayer, e
+                currentPlayer, e
             )
             val node = StringNode()
             node.contents = ""

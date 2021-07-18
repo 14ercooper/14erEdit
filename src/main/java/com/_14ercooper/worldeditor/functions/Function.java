@@ -5,6 +5,7 @@ import com._14ercooper.worldeditor.brush.BrushListener;
 import com._14ercooper.worldeditor.functions.commands.InterpreterCommand;
 import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
+import com._14ercooper.worldeditor.operations.OperatorState;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
@@ -36,12 +37,15 @@ public class Function {
     public int currentLine = -1; // Incremented as the first step
     public double exitVal = 1;
     long iters = 0;
+    // Operator state
+    public OperatorState operatorState;
 
-    public Function(String filename, List<String> args, CommandSender player, boolean isOperator) {
+    public Function(String filename, List<String> args, CommandSender player, boolean isOperator, OperatorState opState) {
         // Set constant variables
         templateArgs.addAll(args);
         this.player = player;
         this.isOperator = isOperator;
+        this.operatorState = opState;
 
         if (player instanceof Player) {
             target = BrushListener.getTargetBlock((Player) player);

@@ -2,7 +2,7 @@ package com._14ercooper.worldeditor.macros.macros.nature;
 
 import com._14ercooper.worldeditor.macros.macros.Macro;
 import com._14ercooper.worldeditor.main.Main;
-import com._14ercooper.worldeditor.operations.Operator;
+import com._14ercooper.worldeditor.operations.OperatorState;
 import org.bukkit.Location;
 import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
@@ -19,24 +19,24 @@ public class BiomeMacro extends Macro {
     Location pos;
 
     // Create a new macro
-    private void SetupMacro(String[] args, Location loc) {
+    private void SetupMacro(String[] args, Location loc, OperatorState state) {
         try {
             radius = Double.parseDouble(args[0]);
         } catch (Exception e) {
-            Main.logError("Could not parse biome macro. " + args[0] + " is not a number.", Operator.currentPlayer, e);
+            Main.logError("Could not parse biome macro. " + args[0] + " is not a number.", state.getCurrentPlayer(), e);
         }
         try {
             biome = Biome.valueOf(args[1].toUpperCase(Locale.ROOT));
         } catch (Exception e) {
-            Main.logError("Could not parse biome macro. " + args[1] + " is not a known biome.", Operator.currentPlayer, e);
+            Main.logError("Could not parse biome macro. " + args[1] + " is not a known biome.", state.getCurrentPlayer(), e);
         }
         pos = loc;
     }
 
     // Run this macro
     @Override
-    public boolean performMacro(String[] args, Location loc) {
-        SetupMacro(args, loc);
+    public boolean performMacro(String[] args, Location loc, OperatorState state) {
+        SetupMacro(args, loc, state);
 
         // Location of the brush
         double x = pos.getX();
@@ -51,7 +51,7 @@ public class BiomeMacro extends Macro {
                 for (int ry = -radiusInt; ry < radiusInt; ry++) {
                     if (rx * rx + rz * rz + ry * ry <= (radius + 0.5) * (radius + 0.5)) {
                         blockArray.add(
-                                Operator.currentWorld.getBlockAt((int) x + rx, (int) y + ry, (int) z + rz));
+                                state.getCurrentWorld().getBlockAt((int) x + rx, (int) y + ry, (int) z + rz));
                     }
                 }
             }
@@ -67,7 +67,7 @@ public class BiomeMacro extends Macro {
 
         // OPERATE
         for (BlockState bs : snapshotArray) {
-            Operator.currentWorld.setBiome(bs.getX(), bs.getY(), bs.getZ(), biome);
+            state.getCurrentWorld().setBiome(bs.getX(), bs.getY(), bs.getZ(), biome);
         }
 
         return true;

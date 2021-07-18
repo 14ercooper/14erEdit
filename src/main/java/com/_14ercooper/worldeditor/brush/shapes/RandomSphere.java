@@ -5,6 +5,7 @@ import com._14ercooper.worldeditor.brush.BrushShape;
 import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
 import org.bukkit.World;
+import org.bukkit.command.CommandSender;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -16,7 +17,7 @@ public class RandomSphere extends BrushShape {
     int gotArgs;
 
     @Override
-    public BlockIterator GetBlocks(double x, double y, double z, World world) {
+    public BlockIterator GetBlocks(double x, double y, double z, World world, CommandSender sender) {
         List<String> argList = new LinkedList<>();
 //	int radius = rand.nextInt(radiusMax - radiusMin) + radiusMin;
         int radius = Main.randRange(radiusMin, radiusMax);
@@ -26,7 +27,7 @@ public class RandomSphere extends BrushShape {
         argList.add(Integer.toString(radius));
         argList.add(Integer.toString(0));
         argList.add(correction);
-        return GlobalVars.iteratorManager.getIterator("sphere").newIterator(argList, world);
+        return GlobalVars.iteratorManager.getIterator("sphere").newIterator(argList, world, sender);
     }
 
     @Override

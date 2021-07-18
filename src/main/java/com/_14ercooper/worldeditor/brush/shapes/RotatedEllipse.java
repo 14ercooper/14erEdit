@@ -4,6 +4,7 @@ import com._14ercooper.worldeditor.blockiterator.BlockIterator;
 import com._14ercooper.worldeditor.brush.BrushShape;
 import com._14ercooper.worldeditor.main.GlobalVars;
 import org.bukkit.World;
+import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +15,7 @@ public class RotatedEllipse extends BrushShape {
     int gotArgs = 0;
 
     @Override
-    public BlockIterator GetBlocks(double x, double y, double z, World world) {
+    public BlockIterator GetBlocks(double x, double y, double z, World world, CommandSender sender) {
         List<String> args = new ArrayList<>();
         args.add(Integer.toString((int) x));
         args.add(Integer.toString((int) y));
@@ -30,7 +31,7 @@ public class RotatedEllipse extends BrushShape {
             args.add(dY);
             args.add(dZ);
         }
-        return GlobalVars.iteratorManager.getIterator("rotatedellipse").newIterator(args, world);
+        return GlobalVars.iteratorManager.getIterator("rotatedellipse").newIterator(args, world, sender);
     }
 
     @Override

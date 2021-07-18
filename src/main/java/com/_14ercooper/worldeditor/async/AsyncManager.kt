@@ -8,6 +8,7 @@ import com._14ercooper.worldeditor.main.Main
 import com._14ercooper.worldeditor.main.NBTExtractor
 import com._14ercooper.worldeditor.main.SetBlock.setMaterial
 import com._14ercooper.worldeditor.operations.Operator
+import com._14ercooper.worldeditor.operations.OperatorState
 import com._14ercooper.worldeditor.undo.UndoElement
 import com._14ercooper.worldeditor.undo.UndoMode
 import com._14ercooper.worldeditor.undo.UndoSystem
@@ -153,7 +154,7 @@ object AsyncManager {
     }
 
     // Scheduled task to operate
-    lateinit var currentAsyncOp : AsyncOperation
+    private lateinit var currentAsyncOp : AsyncOperation
     private fun performOperation() {
         // Output building up debug
         Main.outputDebug()
@@ -232,7 +233,15 @@ object AsyncManager {
                         i++
                         continue
                     }
-                    currentAsyncOp.operation!!.operateOnBlock(b, currentAsyncOp.player, currentAsyncOp.undo)
+
+                    val currWorld = if (currentAsyncOp.player is Player) {
+                        (currentAsyncOp.player as Player).world
+                    }
+                    else {
+                        GlobalVars.plugin.server.worlds[0]
+                    }
+                    val state = OperatorState(b, currentAsyncOp.player, currWorld, currentAsyncOp.undo)
+                    currentAsyncOp.operation!!.operateOnBlock(state)
                     doneOperations++
                 }
 
@@ -283,10 +292,10 @@ object AsyncManager {
                 }
 
                 else if (currentAsyncOp.key.equals("multibrush", ignoreCase = true)) {
-                    var b: Block?
+                    var b: Block
                     var doContinue = false
                     while (true) {
-                        b = currentAsyncOp.iterators[0].next
+                        b = currentAsyncOp.iterators[0].getNext(1)[0]
                         if (b != null) {
                             break
                         }
@@ -313,13 +322,21 @@ object AsyncManager {
                         i++
                         continue
                     }
-                    currentAsyncOp.operations[0].operateOnBlock(b, currentAsyncOp.player, currentAsyncOp.undo)
+
+                    val currWorld = if (currentAsyncOp.player is Player) {
+                        (currentAsyncOp.player as Player).world
+                    }
+                    else {
+                        GlobalVars.plugin.server.worlds[0]
+                    }
+                    val state = OperatorState(b, currentAsyncOp.player, currWorld, currentAsyncOp.undo)
+                    currentAsyncOp.operations[0].operateOnBlock(state)
                     doneOperations++
                 }
 
                 else if (currentAsyncOp.key.equals("saveschem", ignoreCase = true)) {
                     assert(currentAsyncOp.blocks != null)
-                    val b = currentAsyncOp.blocks!!.next
+                    val b = currentAsyncOp.blocks!!.getNext(1)[0]
                     if (!currentAsyncOp.startedWrite) {
                         try {
                             currentAsyncOp.schem!!.resetWrite()
@@ -365,7 +382,7 @@ object AsyncManager {
                     }
                     val m = Material.matchMaterial(results[0])
                     if (m != null && !m.isAir || currentAsyncOp.schem!!.setAir()) {
-                        setMaterial(b, Material.matchMaterial(results[0]), false, currentAsyncOp.undo)
+                        setMaterial(b, Material.matchMaterial(results[0]), false, currentAsyncOp.undo, currentAsyncOp.player)
                         b.blockData = Bukkit.getServer().createBlockData(results[1])
                         if (results[2].isNotEmpty()) {
                             val command = ("data merge block " + b.x + " " + b.y + " " + b.z + " "
@@ -377,11 +394,8 @@ object AsyncManager {
                 }
 
                 else if (currentAsyncOp.key.equals("selclone", ignoreCase = true)) {
-                    val tempPlayer = Operator.currentPlayer
-                    Operator.currentPlayer = currentAsyncOp.player
                     assert(currentAsyncOp.blocks != null)
-                    val b = currentAsyncOp.blocks!!.next
-                    Operator.currentPlayer = tempPlayer
+                    val b = currentAsyncOp.blocks!!.getNext(1)[0]
                     if (b == null) {
                         finishUndo(currentAsyncOp.undo)
                         operations.removeAt(i)
@@ -396,7 +410,7 @@ object AsyncManager {
                             currentAsyncOp.offset[0] * (1 + timesDone),
                             currentAsyncOp.offset[1] * (1 + timesDone), currentAsyncOp.offset[2] * (1 + timesDone)
                         )
-                        setMaterial(toEdit, b.type, false, currentAsyncOp.undo)
+                        setMaterial(toEdit, b.type, false, currentAsyncOp.undo, currentAsyncOp.player)
                         toEdit.setBlockData(b.blockData, false)
                         val nbt = NBTExtractor()
                         val nbtStr = nbt.getNBT(b)
@@ -408,7 +422,7 @@ object AsyncManager {
                         }
                     }
                     if (currentAsyncOp.delOriginal) {
-                        setMaterial(b, Material.AIR, false, currentAsyncOp.undo)
+                        setMaterial(b, Material.AIR, false, currentAsyncOp.undo, currentAsyncOp.player)
                         doneOperations++
                     }
                     doneOperations += currentAsyncOp.times.toLong()
@@ -437,7 +451,7 @@ object AsyncManager {
 
     private fun getBlock(currentAsyncOp: AsyncOperation): Block? {
         assert(currentAsyncOp.blocks != null)
-        return currentAsyncOp.blocks!!.next
+        return currentAsyncOp.blocks!!.getNext(1)[0]
     }
 
     // On initialization start the scheduler

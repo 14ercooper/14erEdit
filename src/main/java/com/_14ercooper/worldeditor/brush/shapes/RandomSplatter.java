@@ -6,6 +6,7 @@ import com._14ercooper.worldeditor.brush.BrushShape;
 import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
 import org.bukkit.World;
+import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -19,7 +20,7 @@ public class RandomSplatter extends BrushShape {
     int gotArgs = 0;
 
     @Override
-    public BlockIterator GetBlocks(double x, double y, double z, World world) {
+    public BlockIterator GetBlocks(double x, double y, double z, World world, CommandSender sender) {
         int spheresGenerated = 0;
         Set<BlockIterator> spheres = new HashSet<>();
 //	int sphereCount = rand.nextInt(sphereCountMax - sphereCountMin) + sphereCountMin;
@@ -40,7 +41,7 @@ public class RandomSplatter extends BrushShape {
                 argList.add(Integer.toString(sphereRadius));
                 argList.add(Integer.toString(0));
                 argList.add(correction);
-                spheres.add(GlobalVars.iteratorManager.getIterator("sphere").newIterator(argList, world));
+                spheres.add(GlobalVars.iteratorManager.getIterator("sphere").newIterator(argList, world, sender));
                 spheresGenerated++;
             }
         }

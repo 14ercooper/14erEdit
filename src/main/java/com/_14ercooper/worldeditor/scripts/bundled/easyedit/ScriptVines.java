@@ -31,7 +31,7 @@ public class ScriptVines extends Craftscript {
             Bukkit.getServer().dispatchCommand(player, "fx br s 0 0.5 $ vines{" + radius + ";" + length + ";" + variance + ";"
                     + density + ";" + block + "}");
         } catch (Exception e) {
-            Main.logError("Could not parse vine script. Did you pass the correct arguments?", Operator.currentPlayer, e);
+            Main.logError("Could not parse vine script. Did you pass the correct arguments?", player, e);
         }
     }
 

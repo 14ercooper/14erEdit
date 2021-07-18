@@ -46,7 +46,7 @@ public class ScriptLine extends Craftscript {
 
         } catch (Exception e) {
             Main.logError("Could not parse line macro. Did you provide a block material and optionally length?",
-                    Operator.currentPlayer, e);
+                    player, e);
         }
     }
 }

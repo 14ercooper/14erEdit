@@ -1,12 +1,12 @@
 package com._14ercooper.worldeditor.operations.operators.query;
 
-import org.bukkit.block.Block;
-
 import com._14ercooper.worldeditor.main.GlobalVars;
-import com._14ercooper.worldeditor.operations.Operator;
+import com._14ercooper.worldeditor.operations.OperatorState;
 import com._14ercooper.worldeditor.operations.operators.Node;
 import com._14ercooper.worldeditor.operations.operators.core.NumberNode;
 import com._14ercooper.worldeditor.operations.operators.function.NoiseNode;
+import org.bukkit.block.Block;
+import org.bukkit.command.CommandSender;
 
 public class NoiseAtNode extends Node {
 
@@ -15,29 +15,29 @@ public class NoiseAtNode extends Node {
     Node function;
 
     @Override
-    public NoiseAtNode newNode() {
+    public NoiseAtNode newNode(CommandSender currentPlayer) {
         NoiseAtNode node = new NoiseAtNode();
-        node.noise = (NoiseNode) GlobalVars.operationParser.parsePart();
-        node.midplane = GlobalVars.operationParser.parseNumberNode();
-        node.amplitude = GlobalVars.operationParser.parseNumberNode();
-        node.function = GlobalVars.operationParser.parsePart();
+        node.noise = (NoiseNode) GlobalVars.operationParser.parsePart(currentPlayer);
+        node.midplane = GlobalVars.operationParser.parseNumberNode(currentPlayer);
+        node.amplitude = GlobalVars.operationParser.parseNumberNode(currentPlayer);
+        node.function = GlobalVars.operationParser.parsePart(currentPlayer);
         return node;
     }
 
     @Override
-    public boolean performNode() {
-        Block b = Operator.currentBlock;
+    public boolean performNode(OperatorState state) {
+        Block b = state.getCurrentBlock();
         int x = b.getX();
         int z = b.getZ();
-        int y = 64;
-        if (midplane.getValue() < 0) {
-            y = (int) ((noise.getNum() * amplitude.getValue()) + b.getY());
+        int y;
+        if (midplane.getValue(state) < 0) {
+            y = (int) ((noise.getNum(state) * amplitude.getValue(state)) + b.getY());
         } else {
-            y = (int) ((noise.getNum() * amplitude.getValue()) + midplane.getValue());
+            y = (int) ((noise.getNum(state) * amplitude.getValue(state)) + midplane.getValue(state));
         }
-        Operator.currentBlock = Operator.currentWorld.getBlockAt(x, y, z);
-        boolean result = function.performNode();
-        Operator.currentBlock = b;
+        state.setCurrentBlock(state.getCurrentWorld().getBlockAt(x, y, z));
+        boolean result = function.performNode(state);
+        state.setCurrentBlock(b);
         return result;
     }
 

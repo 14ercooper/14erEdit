@@ -1,17 +1,17 @@
 package com._14ercooper.worldeditor.main
 
 import com._14ercooper.worldeditor.async.AsyncManager
-import com._14ercooper.worldeditor.operations.Operator
 import com._14ercooper.worldeditor.undo.UndoElement
 import com._14ercooper.worldeditor.undo.UndoMode
 import org.bukkit.Material
 import org.bukkit.block.Block
 import org.bukkit.block.BlockState
 import org.bukkit.block.data.type.Leaves
+import org.bukkit.command.CommandSender
 
 object SetBlock {
     @JvmStatic
-    fun setMaterial(b: Block, mat: Material?, undo : UndoElement) {
+    fun setMaterial(b: Block, mat: Material?, undo : UndoElement, currentPlayer : CommandSender) {
         if (GlobalVars.countEdits) {
             ++AsyncManager.doneOperations
         }
@@ -25,12 +25,12 @@ object SetBlock {
                 undo.addBlock(bs, b.state)
             updateLeafData(mat, b)
         } catch (e: Exception) {
-            invalidMaterial(mat, e)
+            invalidMaterial(mat, e, currentPlayer)
         }
     }
 
     @JvmStatic
-    fun setMaterial(b: Block, mat: Material?, physics: Boolean, undo : UndoElement) {
+    fun setMaterial(b: Block, mat: Material?, physics: Boolean, undo : UndoElement, currentPlayer : CommandSender) {
         if (GlobalVars.countEdits) {
             ++AsyncManager.doneOperations
         }
@@ -44,7 +44,7 @@ object SetBlock {
                 undo.addBlock(bs, b.state)
             updateLeafData(mat, b)
         } catch (e: Exception) {
-            invalidMaterial(mat, e)
+            invalidMaterial(mat, e, currentPlayer)
         }
     }
 
@@ -57,7 +57,7 @@ object SetBlock {
     }
 
     @JvmStatic
-    fun setMaterial(b: BlockState, mat: Material?, undo : UndoElement) {
+    fun setMaterial(b: BlockState, mat: Material?, undo : UndoElement, currentPlayer : CommandSender) {
         if (GlobalVars.countEdits) {
             ++AsyncManager.doneOperations
         }
@@ -71,7 +71,7 @@ object SetBlock {
                 undo.addBlock(bs, b)
             updateLeafDataState(mat, b)
         } catch (e: Exception) {
-            invalidMaterial(mat, e)
+            invalidMaterial(mat, e, currentPlayer)
         }
     }
 
@@ -83,11 +83,11 @@ object SetBlock {
         }
     }
 
-    private fun invalidMaterial(mat: Material?, e: Exception) {
+    private fun invalidMaterial(mat: Material?, e: Exception, currentPlayer : CommandSender) {
         AsyncManager.dropAsync()
         Main.logError(
             "Invalid block ID " + mat?.toString() + " provided. The async queue has been dropped.",
-            Operator.currentPlayer, e
+            currentPlayer, e
         )
     }
 }

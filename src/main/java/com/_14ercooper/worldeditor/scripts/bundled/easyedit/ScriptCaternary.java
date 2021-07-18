@@ -1,7 +1,6 @@
 package com._14ercooper.worldeditor.scripts.bundled.easyedit;
 
 import com._14ercooper.worldeditor.main.Main;
-import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.scripts.Craftscript;
 import com._14ercooper.worldeditor.selection.SelectionManager;
 import org.bukkit.Bukkit;
@@ -48,7 +47,7 @@ public class ScriptCaternary extends Craftscript {
             Bukkit.getServer().dispatchCommand(player, "run $ catenary{" + x0 + ";" + y0 + ";" + z0 + ";" + dx + ";" + dy + ";" + dy2 + ";"
                     + dz + ";" + step + ";" + block + "}");
         } catch (Exception e) {
-            Main.logError("Error running Catenary script. Did you pass the correct arguments?", Operator.currentPlayer, e);
+            Main.logError("Error running Catenary script. Did you pass the correct arguments?", player, e);
         }
 
     }

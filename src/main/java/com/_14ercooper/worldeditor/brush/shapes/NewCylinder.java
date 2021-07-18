@@ -4,6 +4,7 @@ import com._14ercooper.worldeditor.blockiterator.BlockIterator;
 import com._14ercooper.worldeditor.brush.BrushShape;
 import com._14ercooper.worldeditor.main.GlobalVars;
 import org.bukkit.World;
+import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +15,7 @@ public class NewCylinder extends BrushShape {
     int gotArgs = 0;
 
     @Override
-    public BlockIterator GetBlocks(double x, double y, double z, World world) {
+    public BlockIterator GetBlocks(double x, double y, double z, World world, CommandSender sender) {
         List<String> args = new ArrayList<>();
         args.add(Integer.toString((int) x));
         args.add(Integer.toString((int) y));
@@ -40,7 +41,7 @@ public class NewCylinder extends BrushShape {
             args.add("1");
             args.add("0");
         }
-        return GlobalVars.iteratorManager.getIterator("newcylinder").newIterator(args, world);
+        return GlobalVars.iteratorManager.getIterator("newcylinder").newIterator(args, world, sender);
     }
 
     @Override

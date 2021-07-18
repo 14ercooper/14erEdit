@@ -3,16 +3,26 @@ package com._14ercooper.worldeditor.blockiterator;
 import com._14ercooper.worldeditor.main.GlobalVars;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.command.CommandSender;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class BlockIterator {
     // Returns a new instance of the block iterator based on the passed arguments
     // First 3 are the origin of the iterator, the rest vary
-    public abstract BlockIterator newIterator(List<String> args, World world);
+    public abstract BlockIterator newIterator(List<String> args, World world, CommandSender player);
 
     // Gets the next block in this block iterator
-    public abstract Block getNext();
+    public abstract Block getNextBlock();
+
+    public List<Block> getNext(int num) {
+        List<Block> blocks = new ArrayList<Block>();
+        for (int i = 0; i < num; i++) {
+            blocks.add(getNextBlock());
+        }
+        return blocks;
+    }
 
     // Gets the number of total blocks in this iterator
     // This cannot underestimate, but may slightly overestimate

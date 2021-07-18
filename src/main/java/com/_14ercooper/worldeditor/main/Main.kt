@@ -65,9 +65,6 @@ class Main : JavaPlugin() {
         // Create folders as needed
         try {
             Files.createDirectories(Paths.get("plugins/14erEdit/schematics"))
-            Files.createDirectories(Paths.get("plugins/14erEdit/ops"))
-            Files.createDirectories(Paths.get("plugins/14erEdit/Commands"))
-            Files.createDirectories(Paths.get("plugins/14erEdit/vars"))
             Files.createDirectories(Paths.get("plugins/14erEdit/templates"))
             Files.createDirectories(Paths.get("plugins/14erEdit/multibrushes"))
             Files.createDirectories(Paths.get("plugins/14erEdit/functions"))

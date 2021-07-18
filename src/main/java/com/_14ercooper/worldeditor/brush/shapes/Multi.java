@@ -5,7 +5,9 @@ import com._14ercooper.worldeditor.brush.Brush;
 import com._14ercooper.worldeditor.brush.BrushShape;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.Operator;
+import org.bukkit.Bukkit;
 import org.bukkit.World;
+import org.bukkit.command.CommandSender;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -23,8 +25,8 @@ public class Multi extends BrushShape {
     List<Operator> ops = null;
 
     @Override
-    public BlockIterator GetBlocks(double x, double y, double z, World world) {
-        Main.logError("Multibrush used in a normal brush context. This is an error.", Operator.currentPlayer, null);
+    public BlockIterator GetBlocks(double x, double y, double z, World world, CommandSender sender) {
+        Main.logError("Multibrush used in a normal brush context. This is an error.", Bukkit.getConsoleSender(), null);
         return null;
     }
 
@@ -47,8 +49,8 @@ public class Multi extends BrushShape {
         return file.isEmpty();
     }
 
-    public List<BlockIterator> getIters(double x, double y, double z, World world) {
-        genMultibrush(x, y, z, world);
+    public List<BlockIterator> getIters(double x, double y, double z, World world, CommandSender sender) {
+        genMultibrush(x, y, z, world, sender);
         return iters;
     }
 
@@ -57,7 +59,7 @@ public class Multi extends BrushShape {
     }
 
     @SuppressWarnings("unused")
-    private void genMultibrush(double x, double y, double z, World world) {
+    private void genMultibrush(double x, double y, double z, World world, CommandSender sender) {
         // Create the lists
         iters = new ArrayList<>();
         ops = new ArrayList<>();
@@ -141,7 +143,7 @@ public class Multi extends BrushShape {
                 continue;
 
             // Add to the lists
-            iters.add(shapeGenerator.GetBlocks(x, y, z, world));
+            iters.add(shapeGenerator.GetBlocks(x, y, z, world, sender));
             ops.add(operation);
         }
     }

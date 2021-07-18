@@ -5,6 +5,7 @@ import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.Operator;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.command.CommandSender;
 
 import java.util.List;
 
@@ -17,7 +18,7 @@ public class CylinderIterator extends BlockIterator {
     double radCorr;
 
     @Override
-    public CylinderIterator newIterator(List<String> args, World world) {
+    public CylinderIterator newIterator(List<String> args, World world, CommandSender player) {
         try {
             CylinderIterator iterator = new CylinderIterator();
             iterator.iterWorld = world;
@@ -39,13 +40,13 @@ public class CylinderIterator extends BlockIterator {
             return iterator;
         } catch (Exception e) {
             Main.logError("Error creating cylinder iterator. Please check your brush parameters.",
-                    Operator.currentPlayer, e);
+                    player, e);
             return null;
         }
     }
 
     @Override
-    public Block getNext() {
+    public Block getNextBlock() {
         while (true) {
             if (incrXYZ(radMax, radMax, radMax, xC, yC, zC)) {
                 return null;

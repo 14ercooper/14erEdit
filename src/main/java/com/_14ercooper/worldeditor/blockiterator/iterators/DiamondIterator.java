@@ -5,6 +5,7 @@ import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.Operator;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.command.CommandSender;
 
 import java.util.List;
 
@@ -15,7 +16,7 @@ public class DiamondIterator extends BlockIterator {
     int radius;
 
     @Override
-    public DiamondIterator newIterator(List<String> args, World world) {
+    public DiamondIterator newIterator(List<String> args, World world, CommandSender player) {
         try {
             DiamondIterator iterator = new DiamondIterator();
             iterator.iterWorld = world;
@@ -30,13 +31,13 @@ public class DiamondIterator extends BlockIterator {
             return iterator;
         } catch (Exception e) {
             Main.logError("Error creating diamond iterator. Please check your brush parameters.",
-                    Operator.currentPlayer, e);
+                    player, e);
             return null;
         }
     }
 
     @Override
-    public Block getNext() {
+    public Block getNextBlock() {
         while (true) {
             if (incrXYZ(radius, radius, radius, xC, yC, zC)) {
                 return null;

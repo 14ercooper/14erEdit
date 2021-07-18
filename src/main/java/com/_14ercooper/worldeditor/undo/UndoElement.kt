@@ -13,6 +13,7 @@ import kotlinx.coroutines.*
 import java.nio.ByteBuffer
 import java.nio.channels.AsynchronousFileChannel
 import java.nio.file.StandardOpenOption
+import java.util.*
 
 class UndoElement
     (id: String, parent: UserUndo) {
@@ -214,7 +215,13 @@ class UndoElement
     fun setBlock(world : String, x : Int, y : Int, z : Int, type : String, data : String, nbt : String) : Boolean {
         val blk = Bukkit.getServer().getWorld(world)?.getBlockAt(x, y, z)
         return if (blk != null) {
-            setMaterial(blk, Material.matchMaterial(type), false, this)
+            val currPlayer = if (name.equals("console",true)) {
+                Bukkit.getConsoleSender()
+            }
+            else {
+                Bukkit.getPlayer(UUID.fromString(name))
+            }
+            setMaterial(blk, Material.matchMaterial(type), false, this, currPlayer!!)
             blk.blockData = Bukkit.getServer().createBlockData(data)
             if (nbt.isNotEmpty()) {
                 val command = ("data merge block " + x + " " + y + " " + z + " "

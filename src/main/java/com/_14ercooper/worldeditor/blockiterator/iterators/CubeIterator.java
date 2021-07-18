@@ -2,9 +2,9 @@ package com._14ercooper.worldeditor.blockiterator.iterators;
 
 import com._14ercooper.worldeditor.blockiterator.BlockIterator;
 import com._14ercooper.worldeditor.main.Main;
-import com._14ercooper.worldeditor.operations.Operator;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.command.CommandSender;
 
 import java.util.List;
 
@@ -20,7 +20,7 @@ public class CubeIterator extends BlockIterator {
     int executionOrder = 0;
 
     @Override
-    public CubeIterator newIterator(List<String> args, World world) {
+    public CubeIterator newIterator(List<String> args, World world, CommandSender player) {
         try {
             CubeIterator iterator = new CubeIterator();
             iterator.iterWorld = world;
@@ -68,13 +68,13 @@ public class CubeIterator extends BlockIterator {
         } catch (Exception e) {
             Main.logError(
                     "Could not create cube iterator. Please check your brush parameters/if you have a selection box.",
-                    Operator.currentPlayer, e);
+                    player, e);
             return null;
         }
     }
 
     @Override
-    public Block getNext() {
+    public Block getNextBlock() {
         if (executionOrder == 0) { // xzy
             x += xStep;
             doneBlocks++;
@@ -180,8 +180,8 @@ public class CubeIterator extends BlockIterator {
     }
 
     private boolean inRange(int val, int r1, int r2) {
-        int min = 0;
-        int max = 0;
+        int min;
+        int max;
         if (r1 <= r2) {
             min = r1;
             max = r2;

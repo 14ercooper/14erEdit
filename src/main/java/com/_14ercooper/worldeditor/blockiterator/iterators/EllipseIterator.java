@@ -2,9 +2,9 @@ package com._14ercooper.worldeditor.blockiterator.iterators;
 
 import com._14ercooper.worldeditor.blockiterator.BlockIterator;
 import com._14ercooper.worldeditor.main.Main;
-import com._14ercooper.worldeditor.operations.Operator;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.command.CommandSender;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ public class EllipseIterator extends BlockIterator {
     double radCorr;
 
     @Override
-    public EllipseIterator newIterator(List<String> args, World world) {
+    public EllipseIterator newIterator(List<String> args, World world, CommandSender player) {
         try {
             EllipseIterator iterator = new EllipseIterator();
             iterator.iterWorld = world;
@@ -35,13 +35,13 @@ public class EllipseIterator extends BlockIterator {
             return iterator;
         } catch (Exception e) {
             Main.logError("Error creating ellipse iterator. Please check your brush parameters.",
-                    Operator.currentPlayer, e);
+                    player, e);
             return null;
         }
     }
 
     @Override
-    public Block getNext() {
+    public Block getNextBlock() {
         while (true) {
             if (incrXYZ((int) rx, (int) ry, (int) rz, xC, yC, zC)) {
                 return null;

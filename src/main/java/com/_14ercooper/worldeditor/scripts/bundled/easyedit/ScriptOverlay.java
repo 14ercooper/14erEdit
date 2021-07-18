@@ -35,7 +35,7 @@ public class ScriptOverlay extends Craftscript {
             Bukkit.getServer().dispatchCommand(player, command.toString());
         } catch (Exception e) {
             Main.logError("Could not parse overlay macro. Did you provide the correct arguments?",
-                    Operator.currentPlayer, e);
+                    player, e);
         }
     }
 }

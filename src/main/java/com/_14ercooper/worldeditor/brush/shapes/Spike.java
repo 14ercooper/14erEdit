@@ -5,6 +5,7 @@ import com._14ercooper.worldeditor.brush.Brush;
 import com._14ercooper.worldeditor.brush.BrushShape;
 import com._14ercooper.worldeditor.main.GlobalVars;
 import org.bukkit.World;
+import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +16,7 @@ public class Spike extends BrushShape {
     int gotArgs = 0;
 
     @Override
-    public BlockIterator GetBlocks(double x, double y, double z, World world) {
+    public BlockIterator GetBlocks(double x, double y, double z, World world, CommandSender sender) {
         List<String> args = new ArrayList<>();
         args.add(Integer.toString((int) x));
         args.add(Integer.toString((int) y));
@@ -26,7 +27,7 @@ public class Spike extends BrushShape {
         args.add(Double.toString(Brush.currentPlayer.getLocation().getX()));
         args.add(Double.toString(Brush.currentPlayer.getLocation().getY()));
         args.add(Double.toString(Brush.currentPlayer.getLocation().getZ()));
-        return GlobalVars.iteratorManager.getIterator("spike").newIterator(args, world);
+        return GlobalVars.iteratorManager.getIterator("spike").newIterator(args, world, sender);
     }
 
     @Override

@@ -4,9 +4,9 @@ import com._14ercooper.math.Line;
 import com._14ercooper.math.Point3;
 import com._14ercooper.worldeditor.blockiterator.BlockIterator;
 import com._14ercooper.worldeditor.main.Main;
-import com._14ercooper.worldeditor.operations.Operator;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.command.CommandSender;
 
 import java.util.List;
 
@@ -17,10 +17,9 @@ public class SpikeIterator extends BlockIterator {
     double bSize, h, dX, dY, dZ;
     double rMin;
     int radMax;
-    double radCorr;
 
     @Override
-    public SpikeIterator newIterator(List<String> args, World world) {
+    public SpikeIterator newIterator(List<String> args, World world, CommandSender player) {
         try {
             SpikeIterator iterator = new SpikeIterator();
             iterator.iterWorld = world;
@@ -44,7 +43,7 @@ public class SpikeIterator extends BlockIterator {
             iterator.setup();
             return iterator;
         } catch (Exception e) {
-            Main.logError("Error creating spike iterator. Please check your brush parameters.", Operator.currentPlayer, e);
+            Main.logError("Error creating spike iterator. Please check your brush parameters.", player, e);
             return null;
         }
     }
@@ -59,7 +58,7 @@ public class SpikeIterator extends BlockIterator {
     }
 
     @Override
-    public Block getNext() {
+    public Block getNextBlock() {
         while (true) {
             if (incrXYZ(radMax, radMax, radMax, xC, yC, zC)) {
                 return null;

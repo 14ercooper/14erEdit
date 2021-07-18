@@ -1,42 +1,42 @@
 package com._14ercooper.worldeditor.operations.operators.query;
 
+import com._14ercooper.worldeditor.main.GlobalVars;
+import com._14ercooper.worldeditor.main.Main;
+import com._14ercooper.worldeditor.operations.OperatorState;
+import com._14ercooper.worldeditor.operations.operators.Node;
+import com._14ercooper.worldeditor.operations.operators.core.NumberNode;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-
-import com._14ercooper.worldeditor.main.GlobalVars;
-import com._14ercooper.worldeditor.main.Main;
-import com._14ercooper.worldeditor.operations.Operator;
-import com._14ercooper.worldeditor.operations.operators.Node;
-import com._14ercooper.worldeditor.operations.operators.core.NumberNode;
+import org.bukkit.command.CommandSender;
 
 public class FacesExposedNode extends Node {
 
     public NumberNode arg;
 
     @Override
-    public FacesExposedNode newNode() {
+    public FacesExposedNode newNode(CommandSender currentPlayer) {
         FacesExposedNode node = new FacesExposedNode();
         try {
-            node.arg = GlobalVars.operationParser.parseNumberNode();
+            node.arg = GlobalVars.operationParser.parseNumberNode(currentPlayer);
         } catch (Exception e) {
-            Main.logError("Error creating faces exposed node. Please check your syntax.", Operator.currentPlayer, e);
+            Main.logError("Error creating faces exposed node. Please check your syntax.", currentPlayer, e);
             return null;
         }
         if (node.arg == null) {
             Main.logError("Could not create faces exposed node. Requires a number argument that was not given.",
-                    Operator.currentPlayer, null);
+                    currentPlayer, null);
         }
         return node;
     }
 
     @Override
-    public boolean performNode() {
+    public boolean performNode(OperatorState state) {
 
         // Count the number of faces
         // Basically check for air in each of the four directions
         int faceCount = 0;
-        Block b = Operator.currentWorld.getBlockAt(Operator.currentBlock.getLocation());
+        Block b = state.getCurrentWorld().getBlockAt(state.getCurrentBlock().getLocation());
         if (b.getRelative(BlockFace.NORTH).getType() == Material.AIR) {
             faceCount++;
         }
@@ -57,7 +57,7 @@ public class FacesExposedNode extends Node {
         }
 
         // Perform the node
-        return (faceCount >= arg.getValue() - 0.1);
+        return (faceCount >= arg.getValue(state) - 0.1);
     }
 
     @Override

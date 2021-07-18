@@ -29,14 +29,14 @@ public class ScriptTree extends Craftscript {
                 } catch (Exception e) {
                     Main.logError(
                             "Error parsing tree script. If you provide leaves, you must provide wood block material as well.",
-                            Operator.currentPlayer, e);
+                            player, e);
                     return;
                 }
             }
             Bukkit.getServer().dispatchCommand(player, "fx br s 0 0.5 $ tree{" + treeType + ";" + treeLeaves + ";" + treeWood + ";"
                     + treeSize + ";" + treeSizeVariance + "}");
         } catch (Exception e) {
-            Main.logError("Error parsing tree script. Did you provide the correct arguments?", Operator.currentPlayer, e);
+            Main.logError("Error parsing tree script. Did you provide the correct arguments?", player, e);
         }
     }
 }

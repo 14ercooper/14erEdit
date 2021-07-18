@@ -2,6 +2,7 @@ package com._14ercooper.worldeditor.macros.macros.technical;
 
 import com._14ercooper.worldeditor.macros.MacroLauncher;
 import com._14ercooper.worldeditor.main.GlobalVars;
+import com._14ercooper.worldeditor.operations.OperatorState;
 import com._14ercooper.worldeditor.scripts.CraftscriptManager;
 import com._14ercooper.worldeditor.undo.UndoElement;
 import com._14ercooper.worldeditor.undo.UndoSystem;
@@ -17,7 +18,7 @@ import com._14ercooper.worldeditor.operations.Operator;
 public class CatenaryMacro extends Macro {
 
     @Override
-    public boolean performMacro(String[] args, Location loc) {
+    public boolean performMacro(String[] args, Location loc, OperatorState state) {
 
         try {
             double x0 = Double.parseDouble(args[0]), y0 = Double.parseDouble(args[1]), z0 = Double.parseDouble(args[2]),
@@ -36,13 +37,13 @@ public class CatenaryMacro extends Macro {
                 int y = (int) ((int) (y0 + (t * dy) + (t * t * dy2)) + 0.5);
                 int z = (int) ((int) (z0 + (t * dz)) + 0.5);
                 Main.logDebug(x + "," + y + "," + z);
-                Block b = Operator.currentWorld.getBlockAt(x, y, z);
-                SetBlock.setMaterial(b, Material.matchMaterial(block), MacroLauncher.undoElement);
+                Block b = state.getCurrentWorld().getBlockAt(x, y, z);
+                SetBlock.setMaterial(b, Material.matchMaterial(block), MacroLauncher.undoElement, state.getCurrentPlayer());
             }
         } catch (Exception e) {
             Main.logError(
                     "Could not parse catenary macro. Did you pass in the correct 8 numerical arguments and material?",
-                    Operator.currentPlayer, e);
+                    state.getCurrentPlayer(), e);
             return false;
         }
 

@@ -4,6 +4,7 @@ import com._14ercooper.worldeditor.blockiterator.BlockIterator;
 import com._14ercooper.worldeditor.brush.BrushShape;
 import com._14ercooper.worldeditor.main.GlobalVars;
 import org.bukkit.World;
+import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +16,7 @@ public class Sphere extends BrushShape {
     int numArgsProcessed = 0;
 
     @Override
-    public BlockIterator GetBlocks(double x, double y, double z, World world) {
+    public BlockIterator GetBlocks(double x, double y, double z, World world, CommandSender sender) {
         List<String> argList = new ArrayList<>();
         argList.add(Integer.toString((int) x));
         argList.add(Integer.toString((int) y));
@@ -23,7 +24,7 @@ public class Sphere extends BrushShape {
         argList.add(radius);
         argList.add(Integer.toString(0));
         argList.add(correction);
-        return GlobalVars.iteratorManager.getIterator("sphere").newIterator(argList, world);
+        return GlobalVars.iteratorManager.getIterator("sphere").newIterator(argList, world, sender);
     }
 
     @Override

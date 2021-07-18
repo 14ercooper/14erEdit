@@ -1,5 +1,6 @@
 package com._14ercooper.worldeditor.macros.macros.technical;
 
+import com._14ercooper.worldeditor.operations.OperatorState;
 import org.bukkit.Location;
 
 import com._14ercooper.worldeditor.macros.macros.Macro;
@@ -17,7 +18,7 @@ public class SchematicMacro extends Macro {
     int executionOrder = 0;
 
     // Create a new macro
-    private void SetupMacro(String[] args, Location loc) {
+    private void SetupMacro(String[] args, Location loc, OperatorState state) {
         // Parse the file path
         path = args[0];
         // Parse the offset
@@ -54,8 +55,8 @@ public class SchematicMacro extends Macro {
 
     // Run this macro
     @Override
-    public boolean performMacro(String[] args, Location loc) {
-        SetupMacro(args, loc);
+    public boolean performMacro(String[] args, Location loc, OperatorState state) {
+        SetupMacro(args, loc, state);
         int[] origin = {xPos, yPos, zPos};
         String[] schemNames = path.split("\\|");
         String useSchem = schemNames[GlobalVars.rand.nextInt(schemNames.length)];
@@ -68,7 +69,7 @@ public class SchematicMacro extends Macro {
                 mirrorOpts = mirrorOpts + "z";
             }
         }
-        return SchematicHandler.loadSchematic(useSchem, origin, mirrorOpts, setAir, (Player) Operator.currentPlayer,
+        return SchematicHandler.loadSchematic(useSchem, origin, mirrorOpts, setAir, (Player) state.getCurrentPlayer(),
                 executionOrder, loc);
     }
 }

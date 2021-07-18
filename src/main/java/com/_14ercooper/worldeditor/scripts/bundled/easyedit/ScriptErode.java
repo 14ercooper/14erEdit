@@ -24,7 +24,7 @@ public class ScriptErode extends Craftscript {
             }
             Bukkit.getServer().dispatchCommand(player, "fx br s 0 0.5 $ erode{" + radius + ";" + mode + ";" + modeArg + "}");
         } catch (Exception e) {
-            Main.logError("Error parsing erode macro. Did you pass in the correct arguments?", Operator.currentPlayer, e);
+            Main.logError("Error parsing erode macro. Did you pass in the correct arguments?", player, e);
         }
     }
 

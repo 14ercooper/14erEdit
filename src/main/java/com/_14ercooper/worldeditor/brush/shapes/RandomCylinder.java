@@ -5,6 +5,7 @@ import com._14ercooper.worldeditor.brush.BrushShape;
 import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
 import org.bukkit.World;
+import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +17,7 @@ public class RandomCylinder extends BrushShape {
     int argsGot = 0;
 
     @Override
-    public BlockIterator GetBlocks(double x, double y, double z, World world) {
+    public BlockIterator GetBlocks(double x, double y, double z, World world, CommandSender sender) {
         List<String> argList = new ArrayList<>();
         argList.add(Integer.toString((int) x));
         argList.add(Integer.toString((int) y));
@@ -42,7 +43,7 @@ public class RandomCylinder extends BrushShape {
             argList.add("1");
             argList.add("0");
         }
-        return GlobalVars.iteratorManager.getIterator("cylinder").newIterator(argList, world);
+        return GlobalVars.iteratorManager.getIterator("cylinder").newIterator(argList, world, sender);
     }
 
     @Override
