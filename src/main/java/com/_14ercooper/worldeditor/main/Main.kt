@@ -47,7 +47,7 @@ class Main : JavaPlugin() {
                 Thread.sleep(15000)
                 Bukkit.shutdown()
             } catch (e1: InterruptedException) {
-                // Do nothing
+                Bukkit.shutdown()
             }
         }
 
@@ -134,7 +134,6 @@ class Main : JavaPlugin() {
         GlobalVars.scriptManager = CraftscriptManager()
         GlobalVars.macroLauncher = MacroLauncher()
         GlobalVars.operationParser = Parser()
-        //GlobalVars.asyncManager = AsyncManager()
         GlobalVars.iteratorManager = IteratorManager()
 
         // Register the prepackaged things to managers

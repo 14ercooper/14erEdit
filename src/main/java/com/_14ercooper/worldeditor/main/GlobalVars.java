@@ -1,6 +1,5 @@
 package com._14ercooper.worldeditor.main;
 
-import com._14ercooper.worldeditor.async.AsyncManager;
 import com._14ercooper.worldeditor.blockiterator.IteratorManager;
 import com._14ercooper.worldeditor.macros.MacroLauncher;
 import com._14ercooper.worldeditor.operations.Parser;
