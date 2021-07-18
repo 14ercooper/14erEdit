@@ -20,6 +20,8 @@ import org.bukkit.entity.Player
 import java.io.IOException
 
 object AsyncManager {
+    private const val opBlockSize = 128
+
     // Flag queue dropped
     private var queueDropped = false
 
@@ -222,7 +224,7 @@ object AsyncManager {
                     )
                 ) {
                     val b = getBlock(currentAsyncOp)
-                    if (b == null) {
+                    if (b.isEmpty()) {
                         finishUndo(currentAsyncOp.undo)
                         if (currentAsyncOp.blocks is SchemBrushIterator) {
                             (currentAsyncOp.blocks as SchemBrushIterator).cleanup()
@@ -240,9 +242,11 @@ object AsyncManager {
                     else {
                         GlobalVars.plugin.server.worlds[0]
                     }
-                    val state = OperatorState(b, currentAsyncOp.player, currWorld, currentAsyncOp.undo)
-                    currentAsyncOp.operation!!.operateOnBlock(state)
-                    doneOperations++
+                    b.stream().forEach {
+                        val state = OperatorState(it, currentAsyncOp.player, currWorld, currentAsyncOp.undo)
+                        currentAsyncOp.operation!!.operateOnBlock(state)
+                    }
+                    doneOperations += b.size
                 }
 
                 else if (currentAsyncOp.key.equals("undoedit", ignoreCase = true)) {
@@ -292,11 +296,11 @@ object AsyncManager {
                 }
 
                 else if (currentAsyncOp.key.equals("multibrush", ignoreCase = true)) {
-                    var b: Block
+                    var b: List<Block>
                     var doContinue = false
                     while (true) {
-                        b = currentAsyncOp.iterators[0].getNext(1)[0]
-                        if (b != null) {
+                        b = currentAsyncOp.iterators[0].getNext(opBlockSize)
+                        if (b.isEmpty()) {
                             break
                         }
                         if (currentAsyncOp.iterators.size > 1) {
@@ -325,13 +329,14 @@ object AsyncManager {
 
                     val currWorld = if (currentAsyncOp.player is Player) {
                         (currentAsyncOp.player as Player).world
-                    }
-                    else {
+                    } else {
                         GlobalVars.plugin.server.worlds[0]
                     }
-                    val state = OperatorState(b, currentAsyncOp.player, currWorld, currentAsyncOp.undo)
-                    currentAsyncOp.operations[0].operateOnBlock(state)
-                    doneOperations++
+                    b.stream().forEach {
+                        val state = OperatorState(it, currentAsyncOp.player, currWorld, currentAsyncOp.undo)
+                        currentAsyncOp.operations[0].operateOnBlock(state)
+                    }
+                    doneOperations += b.size
                 }
 
                 else if (currentAsyncOp.key.equals("saveschem", ignoreCase = true)) {
@@ -359,7 +364,7 @@ object AsyncManager {
                 }
 
                 else if (currentAsyncOp.key.equals("loadschem", ignoreCase = true)) {
-                    val b = getBlock(currentAsyncOp)
+                    val b = currentAsyncOp.blocks!!.getNext(1)[0]
                     if (b == null) {
                         finishUndo(currentAsyncOp.undo)
                         operations.removeAt(i)
@@ -449,9 +454,9 @@ object AsyncManager {
         }
     }
 
-    private fun getBlock(currentAsyncOp: AsyncOperation): Block? {
+    private fun getBlock(currentAsyncOp: AsyncOperation): List<Block> {
         assert(currentAsyncOp.blocks != null)
-        return currentAsyncOp.blocks!!.getNext(1)[0]
+        return currentAsyncOp.blocks!!.getNext(opBlockSize)
     }
 
     // On initialization start the scheduler

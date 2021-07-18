@@ -19,7 +19,13 @@ public abstract class BlockIterator {
     public List<Block> getNext(int num) {
         List<Block> blocks = new ArrayList<Block>();
         for (int i = 0; i < num; i++) {
-            blocks.add(getNextBlock());
+            Block next = getNextBlock();
+            if (next != null) {
+                blocks.add(next);
+            }
+            else {
+                break;
+            }
         }
         return blocks;
     }

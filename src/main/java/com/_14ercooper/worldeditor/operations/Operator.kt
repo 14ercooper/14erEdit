@@ -12,7 +12,7 @@ class Operator {
     fun operateOnBlock(state : OperatorState) {
         try {
             // Perform the operation
-            entryNode!!.performNode(state)
+            entryNode.performNode(state)
         } catch (e: Exception) {
             logError("Could not perform operation. Please check your syntax.", state.currentPlayer, e)
             AsyncManager.dropAsync()
