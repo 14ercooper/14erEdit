@@ -215,13 +215,7 @@ class UndoElement
     fun setBlock(world : String, x : Int, y : Int, z : Int, type : String, data : String, nbt : String) : Boolean {
         val blk = Bukkit.getServer().getWorld(world)?.getBlockAt(x, y, z)
         return if (blk != null) {
-            val currPlayer = if (name.equals("console",true)) {
-                Bukkit.getConsoleSender()
-            }
-            else {
-                Bukkit.getPlayer(UUID.fromString(name))
-            }
-            setMaterial(blk, Material.matchMaterial(type), false, this, currPlayer!!)
+            setMaterial(blk, Material.matchMaterial(type), false, this, Bukkit.getConsoleSender())
             blk.blockData = Bukkit.getServer().createBlockData(data)
             if (nbt.isNotEmpty()) {
                 val command = ("data merge block " + x + " " + y + " " + z + " "
