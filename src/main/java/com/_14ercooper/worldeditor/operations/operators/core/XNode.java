@@ -1,13 +1,13 @@
 package com._14ercooper.worldeditor.operations.operators.core;
 
 import com._14ercooper.worldeditor.operations.OperatorState;
-import org.bukkit.command.CommandSender;
+import com._14ercooper.worldeditor.operations.ParserState;
 
 public class XNode extends NumberNode {
 
     // Returns a new node
     @Override
-    public XNode newNode(CommandSender currentPlayer) {
+    public XNode newNode(ParserState parserState) {
         return new XNode();
     }
 

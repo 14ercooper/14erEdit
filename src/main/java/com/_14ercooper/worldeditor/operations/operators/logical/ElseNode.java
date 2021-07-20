@@ -1,28 +1,27 @@
 package com._14ercooper.worldeditor.operations.operators.logical;
 
-import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
-import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.operations.OperatorState;
+import com._14ercooper.worldeditor.operations.Parser;
+import com._14ercooper.worldeditor.operations.ParserState;
 import com._14ercooper.worldeditor.operations.operators.Node;
-import org.bukkit.command.CommandSender;
 
 public class ElseNode extends Node {
 
     Node subNode;
 
     @Override
-    public ElseNode newNode(CommandSender currentPlayer) {
+    public ElseNode newNode(ParserState parserState) {
         ElseNode node = new ElseNode();
         try {
-            node.subNode = GlobalVars.operationParser.parsePart(currentPlayer);
+            node.subNode = Parser.parsePart(parserState);
         } catch (Exception e) {
-            Main.logError("Error creating else node. Please check your syntax.", currentPlayer, e);
+            Main.logError("Error creating else node. Please check your syntax.", parserState, e);
             return null;
         }
         if (node.subNode == null) {
             Main.logError("Could not create else node. An argument is required but not provided.",
-                    currentPlayer, null);
+                    parserState, null);
         }
         return node;
     }

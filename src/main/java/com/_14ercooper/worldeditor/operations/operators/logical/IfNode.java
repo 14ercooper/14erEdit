@@ -1,37 +1,37 @@
 package com._14ercooper.worldeditor.operations.operators.logical;
 
-import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.OperatorState;
+import com._14ercooper.worldeditor.operations.Parser;
+import com._14ercooper.worldeditor.operations.ParserState;
 import com._14ercooper.worldeditor.operations.operators.Node;
-import org.bukkit.command.CommandSender;
 
 public class IfNode extends Node {
 
     public Node arg1, arg2, arg3;
 
     @Override
-    public IfNode newNode(CommandSender currentPlayer) {
+    public IfNode newNode(ParserState parserState) {
         IfNode node = new IfNode();
         try {
-            node.arg1 = GlobalVars.operationParser.parsePart(currentPlayer);
-            node.arg2 = GlobalVars.operationParser.parsePart(currentPlayer);
+            node.arg1 = Parser.parsePart(parserState);
+            node.arg2 = Parser.parsePart(parserState);
 
-            int iter = GlobalVars.operationParser.index;
-            node.arg3 = GlobalVars.operationParser.parsePart(currentPlayer);
+            int iter = parserState.getIndex();
+            node.arg3 = Parser.parsePart(parserState);
             if (!(node.arg3 instanceof ElseNode)) {
                 Main.logDebug("Did not find an instance of an else node.");
                 node.arg3 = null;
-                GlobalVars.operationParser.index = iter;
+                parserState.setIndex(iter);
             }
         } catch (Exception e) {
-            Main.logError("Error creating if node. Please check your syntax.", currentPlayer, e);
+            Main.logError("Error creating if node. Please check your syntax.", parserState, e);
             return null;
         }
         if (node.arg2 == null) {
             Main.logError(
                     "Error creating if node. At least a condition and on-true operator are required, but are not provided.",
-                    currentPlayer, null);
+                    parserState, null);
         }
         return node;
     }

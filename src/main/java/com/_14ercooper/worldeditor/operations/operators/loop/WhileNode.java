@@ -4,26 +4,27 @@ import com._14ercooper.worldeditor.async.AsyncManager;
 import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.OperatorState;
+import com._14ercooper.worldeditor.operations.Parser;
+import com._14ercooper.worldeditor.operations.ParserState;
 import com._14ercooper.worldeditor.operations.operators.Node;
-import org.bukkit.command.CommandSender;
 
 public class WhileNode extends Node {
 
     Node cond, op;
 
     @Override
-    public WhileNode newNode(CommandSender currentPlayer) {
+    public WhileNode newNode(ParserState parserState) {
         WhileNode node = new WhileNode();
         try {
-            node.cond = GlobalVars.operationParser.parsePart(currentPlayer);
-            node.op = GlobalVars.operationParser.parsePart(currentPlayer);
+            node.cond = Parser.parsePart(parserState);
+            node.op = Parser.parsePart(parserState);
         } catch (Exception e) {
-            Main.logError("Error creating while node. Please check your syntax.", currentPlayer, e);
+            Main.logError("Error creating while node. Please check your syntax.", parserState, e);
             return null;
         }
         if (node.op == null) {
             Main.logError("Could not create while node. Requires two arguments, but were not given.",
-                    currentPlayer, null);
+                    parserState, null);
         }
         return node;
     }

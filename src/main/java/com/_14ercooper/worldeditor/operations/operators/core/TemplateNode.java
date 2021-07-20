@@ -4,6 +4,8 @@ import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.OperatorState;
 import com._14ercooper.worldeditor.operations.DummyState;
+import com._14ercooper.worldeditor.operations.Parser;
+import com._14ercooper.worldeditor.operations.ParserState;
 import com._14ercooper.worldeditor.operations.operators.Node;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -23,12 +25,12 @@ public class TemplateNode extends Node {
     final List<String> args = new ArrayList<>();
 
     @Override
-    public TemplateNode newNode(CommandSender currentPlayer) {
+    public TemplateNode newNode(ParserState parserState) {
         TemplateNode node = new TemplateNode();
-        node.filename = "plugins/14erEdit/templates/" + GlobalVars.operationParser.parseStringNode(currentPlayer).getText();
-        int argCount = (int) GlobalVars.operationParser.parseNumberNode(currentPlayer).getValue(new DummyState(currentPlayer));
+        node.filename = "plugins/14erEdit/templates/" + Parser.parseStringNode(parserState).getText();
+        int argCount = (int) Parser.parseNumberNode(parserState).getValue(new DummyState(parserState.getCurrentPlayer()));
         for (int i = 0; i < argCount; i++) {
-            node.args.add(GlobalVars.operationParser.parseStringNode(currentPlayer).getText());
+            node.args.add(Parser.parseStringNode(parserState).getText());
         }
 
         return node;

@@ -1,20 +1,20 @@
 package com._14ercooper.worldeditor.operations.operators.query;
 
-import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.operations.OperatorState;
+import com._14ercooper.worldeditor.operations.Parser;
+import com._14ercooper.worldeditor.operations.ParserState;
 import com._14ercooper.worldeditor.operations.operators.Node;
 import com._14ercooper.worldeditor.operations.operators.core.NumberNode;
 import org.bukkit.block.BlockFace;
-import org.bukkit.command.CommandSender;
 
 public class SkylightNode extends Node {
 
     NumberNode arg;
 
     @Override
-    public SkylightNode newNode(CommandSender currentPlayer) {
+    public SkylightNode newNode(ParserState parserState) {
         SkylightNode node = new SkylightNode();
-        node.arg = GlobalVars.operationParser.parseNumberNode(currentPlayer);
+        node.arg = Parser.parseNumberNode(parserState);
         return node;
     }
 

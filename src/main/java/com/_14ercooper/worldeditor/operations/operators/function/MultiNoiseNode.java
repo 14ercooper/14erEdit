@@ -1,12 +1,12 @@
 package com._14ercooper.worldeditor.operations.operators.function;
 
-import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
-import com._14ercooper.worldeditor.operations.OperatorState;
 import com._14ercooper.worldeditor.operations.DummyState;
+import com._14ercooper.worldeditor.operations.OperatorState;
+import com._14ercooper.worldeditor.operations.Parser;
+import com._14ercooper.worldeditor.operations.ParserState;
 import com._14ercooper.worldeditor.operations.operators.Node;
 import com._14ercooper.worldeditor.operations.operators.core.NumberNode;
-import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,37 +18,37 @@ public class MultiNoiseNode extends Node {
     final List<Node> noises = new ArrayList<>();
 
     @Override
-    public MultiNoiseNode newNode(CommandSender currentPlayer) {
+    public MultiNoiseNode newNode(ParserState parserState) {
         try {
             MultiNoiseNode node = new MultiNoiseNode();
 
             try {
-                node.noiseCount = GlobalVars.operationParser.parseNumberNode(currentPlayer);
+                node.noiseCount = Parser.parseNumberNode(parserState);
             } catch (Exception e) {
                 Main.logError("Multinoise node expected first argument to be a number, but it was not.",
-                        currentPlayer, e);
+                        parserState, e);
                 return null;
             }
 
             try {
-                node.noiseFunction = (NoiseNode) GlobalVars.operationParser.parsePart(currentPlayer);
+                node.noiseFunction = (NoiseNode) Parser.parsePart(parserState);
             } catch (Exception e) {
-                Main.logError("Multinoise node requires a noise node, but none was found.", currentPlayer, e);
+                Main.logError("Multinoise node requires a noise node, but none was found.", parserState, e);
                 return null;
             }
 
             try {
-                for (int i = 0; i < node.noiseCount.getMaxInt(new DummyState(currentPlayer)); i++) {
-                    node.noises.add(GlobalVars.operationParser.parsePart(currentPlayer));
+                for (int i = 0; i < node.noiseCount.getMaxInt(new DummyState(parserState.getCurrentPlayer())); i++) {
+                    node.noises.add(Parser.parsePart(parserState));
                 }
             } catch (Exception e) {
-                Main.logError("Error parsing nodes for multinoise, likely ran out of nodes.", currentPlayer, e);
+                Main.logError("Error parsing nodes for multinoise, likely ran out of nodes.", parserState, e);
                 return null;
             }
 
             return node;
         } catch (Exception e) {
-            Main.logError("Could not create multinoise node. Are you missing an argument?", currentPlayer, e);
+            Main.logError("Could not create multinoise node. Are you missing an argument?", parserState, e);
             return null;
         }
     }

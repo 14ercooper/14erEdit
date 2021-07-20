@@ -11,6 +11,7 @@ import com._14ercooper.worldeditor.macros.MacroLauncher
 import com._14ercooper.worldeditor.macros.MacroLoader
 import com._14ercooper.worldeditor.operations.OperatorLoader
 import com._14ercooper.worldeditor.operations.Parser
+import com._14ercooper.worldeditor.operations.ParserState
 import com._14ercooper.worldeditor.scripts.CraftscriptLoader
 import com._14ercooper.worldeditor.scripts.CraftscriptManager
 import com._14ercooper.worldeditor.selection.SelectionWandListener
@@ -130,7 +131,6 @@ class Main : JavaPlugin() {
         // Load managers
         GlobalVars.scriptManager = CraftscriptManager()
         GlobalVars.macroLauncher = MacroLauncher()
-        GlobalVars.operationParser = Parser()
         GlobalVars.iteratorManager = IteratorManager()
 
         // Register the prepackaged things to managers
@@ -152,6 +152,11 @@ class Main : JavaPlugin() {
     }
 
     companion object {
+        @JvmStatic
+        fun logError(message: String, p: ParserState, e: Exception?) {
+            logError(message, p.currentPlayer, e)
+        }
+
         @JvmStatic
         fun logError(message: String, p: CommandSender?, e: Exception?) {
             var player = p

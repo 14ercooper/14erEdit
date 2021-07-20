@@ -3,12 +3,13 @@ package com._14ercooper.worldeditor.operations.operators.world;
 import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.OperatorState;
+import com._14ercooper.worldeditor.operations.Parser;
+import com._14ercooper.worldeditor.operations.ParserState;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.BlockData;
-import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,17 +20,17 @@ public class FacingNode extends BlockNode {
     BlockNode arg;
 
     @Override
-    public FacingNode newNode(CommandSender currentPlayer) {
+    public FacingNode newNode(ParserState parserState) {
         FacingNode node = new FacingNode();
         try {
-            node.arg = (BlockNode) GlobalVars.operationParser.parsePart(currentPlayer);
+            node.arg = (BlockNode) Parser.parsePart(parserState);
         } catch (Exception e) {
-            Main.logError("Error creating facing node. Please check your syntax.", currentPlayer, e);
+            Main.logError("Error creating facing node. Please check your syntax.", parserState, e);
             return null;
         }
         if (node.arg == null) {
             Main.logError("Could not parse facing node. A child operation is required, but not found.",
-                    currentPlayer, null);
+                    parserState, null);
         }
         return node;
     }

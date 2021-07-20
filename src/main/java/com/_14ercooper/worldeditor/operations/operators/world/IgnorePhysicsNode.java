@@ -1,28 +1,27 @@
 package com._14ercooper.worldeditor.operations.operators.world;
 
-import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
-import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.operations.OperatorState;
+import com._14ercooper.worldeditor.operations.Parser;
+import com._14ercooper.worldeditor.operations.ParserState;
 import com._14ercooper.worldeditor.operations.operators.Node;
-import org.bukkit.command.CommandSender;
 
 public class IgnorePhysicsNode extends Node {
 
     public Node arg;
 
     @Override
-    public IgnorePhysicsNode newNode(CommandSender currentPlayer) {
+    public IgnorePhysicsNode newNode(ParserState parserState) {
         IgnorePhysicsNode node = new IgnorePhysicsNode();
         try {
-            node.arg = GlobalVars.operationParser.parsePart(currentPlayer);
+            node.arg = Parser.parsePart(parserState);
         } catch (Exception e) {
-            Main.logError("Error creating physics node. Please check your syntax.", currentPlayer, e);
+            Main.logError("Error creating physics node. Please check your syntax.", parserState, e);
             return null;
         }
         if (node.arg == null) {
             Main.logError("Could not parse physics node. Requires an operation, but none was provided.",
-                    currentPlayer, null);
+                    parserState, null);
         }
         return node;
     }

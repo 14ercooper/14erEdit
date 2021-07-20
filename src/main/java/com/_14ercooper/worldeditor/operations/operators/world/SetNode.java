@@ -1,16 +1,16 @@
 package com._14ercooper.worldeditor.operations.operators.world;
 
-import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.main.SetBlock;
 import com._14ercooper.worldeditor.operations.OperatorState;
+import com._14ercooper.worldeditor.operations.Parser;
+import com._14ercooper.worldeditor.operations.ParserState;
 import com._14ercooper.worldeditor.operations.operators.Node;
 import com._14ercooper.worldeditor.operations.operators.query.BlockAtNode;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.data.BlockData;
-import org.bukkit.command.CommandSender;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,19 +26,19 @@ public class SetNode extends Node {
     }
 
     @Override
-    public SetNode newNode(CommandSender currentPlayer) {
+    public SetNode newNode(ParserState parserState) {
         SetNode node = new SetNode();
         try {
-            GlobalVars.operationParser.inSetNode = true;
-            node.arg = (BlockNode) GlobalVars.operationParser.parsePart(currentPlayer);
-            GlobalVars.operationParser.inSetNode = false;
+            parserState.setInSetNode(true);
+            node.arg = (BlockNode) Parser.parsePart(parserState);
+            parserState.setInSetNode(false);
         } catch (Exception e) {
-            Main.logError("Error parsing set block node. Please check your syntax.", currentPlayer, e);
+            Main.logError("Error parsing set block node. Please check your syntax.", parserState, e);
             return null;
         }
         if (node.arg == null) {
             Main.logError("Could not create set block node. A block is required, but not provided.",
-                    currentPlayer, null);
+                    parserState, null);
         }
         return node;
     }

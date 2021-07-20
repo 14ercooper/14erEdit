@@ -2,18 +2,17 @@ package com._14ercooper.worldeditor.operations.operators.world;
 
 import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
-import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.operations.OperatorState;
+import com._14ercooper.worldeditor.operations.ParserState;
 import com._14ercooper.worldeditor.operations.operators.Node;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.command.CommandSender;
 
 public class GravityNode extends Node {
 
     @Override
-    public GravityNode newNode(CommandSender currentPlayer) {
+    public GravityNode newNode(ParserState parserState) {
         return new GravityNode();
     }
 

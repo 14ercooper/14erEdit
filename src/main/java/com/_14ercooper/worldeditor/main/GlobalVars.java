@@ -26,7 +26,6 @@ public class GlobalVars {
     // Managers
     public static CraftscriptManager scriptManager;
     public static MacroLauncher macroLauncher;
-    public static Parser operationParser;
     public static IteratorManager iteratorManager;
 
     // For debugging

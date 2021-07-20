@@ -4,11 +4,13 @@ import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.main.NBTExtractor;
 import com._14ercooper.worldeditor.operations.OperatorState;
+import com._14ercooper.worldeditor.operations.Parser;
+import com._14ercooper.worldeditor.operations.ParserState;
 import com._14ercooper.worldeditor.operations.operators.Node;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.command.CommandSender;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -21,19 +23,19 @@ public class BlockNode extends Node {
 
     // Creates a new node
     @Override
-    public BlockNode newNode(CommandSender currentPlayer) {
+    public BlockNode newNode(ParserState parserState) {
         BlockNode node = new BlockNode();
-        String[] data = GlobalVars.operationParser.parseStringNode(currentPlayer).getText().split(";");
+        String[] data = Parser.parseStringNode(parserState).getText().split(";");
         try {
-            if (loadBlockList(node, data, currentPlayer)) return null;
+            if (loadBlockList(node, data, parserState)) return null;
         } catch (Exception e) {
-            Main.logError("Could not parse block node. Block name required, but not found: " + data, currentPlayer, e);
+            Main.logError("Could not parse block node. Block name required, but not found: " + Arrays.toString(data), parserState.getCurrentPlayer(), e);
             return null;
         }
         return node;
     }
 
-    private boolean loadBlockList(BlockNode node, String[] data, CommandSender currentPlayer) {
+    private boolean loadBlockList(BlockNode node, String[] data, ParserState parserState) {
         node.blockList = new LinkedList<>();
         node.textMasks = new LinkedList<>();
         for (String s : data) {
@@ -43,23 +45,23 @@ public class BlockNode extends Node {
             } else {
                 Main.logDebug("Created block instance");
                 if (!s.isBlank())
-                node.blockList.add(new BlockInstance(s, currentPlayer));
+                node.blockList.add(new BlockInstance(s, parserState));
             }
         }
         if (node.blockList.isEmpty() && node.textMasks.isEmpty()) {
-            Main.logError("Error creating block node. No blocks were provided.", currentPlayer, null);
+            Main.logError("Error creating block node. No blocks were provided.", parserState.getCurrentPlayer(), null);
             return true;
         }
         return false;
     }
 
-    public BlockNode newNode(String input, CommandSender currentPlayer) {
+    public BlockNode newNode(String input, ParserState parserState) {
         BlockNode node = new BlockNode();
         try {
             String[] data = input.split(";");
-            if (loadBlockList(node, data, currentPlayer)) return null;
+            if (loadBlockList(node, data, parserState)) return null;
         } catch (Exception e) {
-            Main.logError("Could not parse block node from input. Block name required, but not found: " + input, currentPlayer, e);
+            Main.logError("Could not parse block node from input. Block name required, but not found: " + input, parserState.getCurrentPlayer(), e);
             return null;
         }
         return node;
@@ -115,7 +117,7 @@ public class BlockNode extends Node {
         int weight;
 
         // Construct a new block instance from an input string
-        BlockInstance(String input, CommandSender currentPlayer) {
+        BlockInstance(String input, ParserState parserState) {
             if (input.toCharArray()[0] == '[') {
                 Main.logDebug("Data only node");
                 // Data only
@@ -129,7 +131,7 @@ public class BlockNode extends Node {
                 data = null;
                 StringBuilder inputBuilder = new StringBuilder(input);
                 while (inputBuilder.charAt(inputBuilder.length() - 1) != '}') {
-                    inputBuilder.append(" ").append(GlobalVars.operationParser.parseStringNode(currentPlayer).getText());
+                    inputBuilder.append(" ").append(Parser.parseStringNode(parserState).getText());
                 }
                 input = inputBuilder.toString();
                 nbt = input.replaceAll("[{}]", "");

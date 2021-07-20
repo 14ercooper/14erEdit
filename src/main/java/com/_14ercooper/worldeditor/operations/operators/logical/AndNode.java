@@ -1,29 +1,28 @@
 package com._14ercooper.worldeditor.operations.operators.logical;
 
-import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
-import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.operations.OperatorState;
+import com._14ercooper.worldeditor.operations.Parser;
+import com._14ercooper.worldeditor.operations.ParserState;
 import com._14ercooper.worldeditor.operations.operators.Node;
-import org.bukkit.command.CommandSender;
 
 public class AndNode extends Node {
 
     public Node arg1, arg2;
 
     @Override
-    public AndNode newNode(CommandSender currentPlayer) {
+    public AndNode newNode(ParserState parserState) {
         AndNode node = new AndNode();
         try {
-            node.arg1 = GlobalVars.operationParser.parsePart(currentPlayer);
-            node.arg2 = GlobalVars.operationParser.parsePart(currentPlayer);
+            node.arg1 = Parser.parsePart(parserState);
+            node.arg2 = Parser.parsePart(parserState);
         } catch (Exception e) {
-            Main.logError("Error creating and node. Please check your syntax.", currentPlayer, e);
+            Main.logError("Error creating and node. Please check your syntax.", parserState, e);
             return null;
         }
         if (node.arg2 == null) {
             Main.logError("Could not create and node. Two arguments are required, but were not given.",
-                    currentPlayer, null);
+                    parserState, null);
         }
         return node;
     }

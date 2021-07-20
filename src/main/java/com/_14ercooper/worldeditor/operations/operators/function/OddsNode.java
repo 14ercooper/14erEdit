@@ -3,26 +3,27 @@ package com._14ercooper.worldeditor.operations.operators.function;
 import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.OperatorState;
+import com._14ercooper.worldeditor.operations.Parser;
+import com._14ercooper.worldeditor.operations.ParserState;
 import com._14ercooper.worldeditor.operations.operators.Node;
 import com._14ercooper.worldeditor.operations.operators.core.NumberNode;
-import org.bukkit.command.CommandSender;
 
 public class OddsNode extends Node {
 
     public NumberNode arg;
 
     @Override
-    public OddsNode newNode(CommandSender currentPlayer) {
+    public OddsNode newNode(ParserState parserState) {
         OddsNode node = new OddsNode();
         try {
-            node.arg = GlobalVars.operationParser.parseNumberNode(currentPlayer);
+            node.arg = Parser.parseNumberNode(parserState);
         } catch (Exception e) {
-            Main.logError("Could not create odds node, argument is not a number.", currentPlayer, e);
+            Main.logError("Could not create odds node, argument is not a number.", parserState, e);
             return null;
         }
         if (node.arg == null) {
             Main.logError("Error creating odds node. Requires a number, but no number was found.",
-                    currentPlayer, null);
+                    parserState, null);
         }
         return node;
     }

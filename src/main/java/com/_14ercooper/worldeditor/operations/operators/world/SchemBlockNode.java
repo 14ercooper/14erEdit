@@ -1,15 +1,15 @@
 package com._14ercooper.worldeditor.operations.operators.world;
 
 import com._14ercooper.worldeditor.blockiterator.iterators.SchemBrushIterator;
-import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.OperatorState;
+import com._14ercooper.worldeditor.operations.Parser;
+import com._14ercooper.worldeditor.operations.ParserState;
 import com._14ercooper.worldeditor.operations.operators.Node;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
-import org.bukkit.command.CommandSender;
 
 public class SchemBlockNode extends BlockNode {
 
@@ -19,20 +19,20 @@ public class SchemBlockNode extends BlockNode {
 
     // Creates a new node
     @Override
-    public BlockNode newNode(CommandSender currentPlayer) {
+    public BlockNode newNode(ParserState parserState) {
         SchemBlockNode node = new SchemBlockNode();
-        node.isInSet = GlobalVars.operationParser.inSetNode;
+        node.isInSet = parserState.getInSetNode();
         if (!node.isInSet) {
             Main.logDebug("SchemBlockNode: Processing subnode");
-            node.arg = GlobalVars.operationParser.parsePart(currentPlayer);
+            node.arg = Parser.parsePart(parserState);
         }
         return node;
     }
 
     // This should never be run
     @Override
-    public BlockNode newNode(String text, CommandSender currentPlayer) {
-        Main.logError("Schematic block node in invalid state", currentPlayer, null);
+    public BlockNode newNode(String text, ParserState parserState) {
+        Main.logError("Schematic block node in invalid state", parserState, null);
         return null;
     }
 

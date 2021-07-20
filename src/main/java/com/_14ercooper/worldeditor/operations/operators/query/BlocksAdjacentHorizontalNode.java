@@ -1,13 +1,13 @@
 package com._14ercooper.worldeditor.operations.operators.query;
 
-import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.OperatorState;
+import com._14ercooper.worldeditor.operations.Parser;
+import com._14ercooper.worldeditor.operations.ParserState;
 import com._14ercooper.worldeditor.operations.operators.Node;
 import com._14ercooper.worldeditor.operations.operators.function.RangeNode;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.command.CommandSender;
 
 public class BlocksAdjacentHorizontalNode extends Node {
 
@@ -20,18 +20,18 @@ public class BlocksAdjacentHorizontalNode extends Node {
     }
 
     @Override
-    public BlocksAdjacentHorizontalNode newNode(CommandSender currentPlayer) {
+    public BlocksAdjacentHorizontalNode newNode(ParserState parserState) {
         BlocksAdjacentHorizontalNode node = new BlocksAdjacentHorizontalNode();
         try {
-            node.arg2 = GlobalVars.operationParser.parseRangeNode(currentPlayer);
-            node.arg1 = GlobalVars.operationParser.parsePart(currentPlayer);
+            node.arg2 = Parser.parseRangeNode(parserState);
+            node.arg1 = Parser.parsePart(parserState);
         } catch (Exception e) {
-            Main.logError("Error creating blocks adjacent node. Please check your syntax.", currentPlayer, e);
+            Main.logError("Error creating blocks adjacent node. Please check your syntax.", parserState, e);
             return null;
         }
         if (node.arg2 == null) {
             Main.logError("Could not parse blocks adjacent node. Two arguments are required, but not given.",
-                    currentPlayer, null);
+                    parserState, null);
         }
         return node;
     }

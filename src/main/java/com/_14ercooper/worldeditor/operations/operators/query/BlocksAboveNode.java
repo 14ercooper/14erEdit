@@ -1,14 +1,12 @@
 package com._14ercooper.worldeditor.operations.operators.query;
 
-import com._14ercooper.worldeditor.operations.OperatorState;
-import org.bukkit.block.Block;
-
-import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
-import com._14ercooper.worldeditor.operations.Operator;
+import com._14ercooper.worldeditor.operations.OperatorState;
+import com._14ercooper.worldeditor.operations.Parser;
+import com._14ercooper.worldeditor.operations.ParserState;
 import com._14ercooper.worldeditor.operations.operators.Node;
 import com._14ercooper.worldeditor.operations.operators.function.RangeNode;
-import org.bukkit.command.CommandSender;
+import org.bukkit.block.Block;
 
 public class BlocksAboveNode extends Node {
 
@@ -21,18 +19,18 @@ public class BlocksAboveNode extends Node {
     }
 
     @Override
-    public BlocksAboveNode newNode(CommandSender currentPlayer) {
+    public BlocksAboveNode newNode(ParserState parserState) {
         BlocksAboveNode node = new BlocksAboveNode();
         try {
-            node.arg1 = GlobalVars.operationParser.parseRangeNode(currentPlayer);
-            node.arg2 = GlobalVars.operationParser.parsePart(currentPlayer);
+            node.arg1 = Parser.parseRangeNode(parserState);
+            node.arg2 = Parser.parsePart(parserState);
         } catch (Exception e) {
-            Main.logError("Error creating blocks above node. Please check your syntax.", currentPlayer, e);
+            Main.logError("Error creating blocks above node. Please check your syntax.", parserState, e);
             return null;
         }
         if (node.arg2 == null) {
             Main.logError("Could not parse blocks above node. Range node and a block are required, but not given.",
-                    currentPlayer, null);
+                    parserState, null);
         }
         return node;
     }

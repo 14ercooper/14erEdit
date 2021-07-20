@@ -1,27 +1,27 @@
 package com._14ercooper.worldeditor.operations.operators.world;
 
-import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.OperatorState;
+import com._14ercooper.worldeditor.operations.Parser;
+import com._14ercooper.worldeditor.operations.ParserState;
 import com._14ercooper.worldeditor.operations.operators.Node;
 import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
 
 public class SetNBTNode extends Node {
 
     String nbt;
 
     @Override
-    public SetNBTNode newNode(CommandSender currentPlayer) {
+    public SetNBTNode newNode(ParserState parserState) {
         SetNBTNode node = new SetNBTNode();
         try {
-            node.nbt = GlobalVars.operationParser.parseStringNode(currentPlayer).contents;
+            node.nbt = Parser.parseStringNode(parserState).contents;
         } catch (Exception e) {
-            Main.logError("Error creating set NBT node. Please check your syntax.", currentPlayer, e);
+            Main.logError("Error creating set NBT node. Please check your syntax.", parserState, e);
             return null;
         }
         if (node.nbt.isEmpty()) {
-            Main.logError("Could not parse set NBT node. Requires NBT, but did not find nay.", currentPlayer, null);
+            Main.logError("Could not parse set NBT node. Requires NBT, but did not find nay.", parserState, null);
         }
         return node;
     }

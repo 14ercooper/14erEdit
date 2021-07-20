@@ -1,26 +1,26 @@
 package com._14ercooper.worldeditor.operations.operators.logical;
 
-import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.OperatorState;
+import com._14ercooper.worldeditor.operations.Parser;
+import com._14ercooper.worldeditor.operations.ParserState;
 import com._14ercooper.worldeditor.operations.operators.Node;
-import org.bukkit.command.CommandSender;
 
 public class NotNode extends Node {
     public Node arg;
 
     @Override
-    public NotNode newNode(CommandSender currentPlayer) {
+    public NotNode newNode(ParserState parserState) {
         NotNode node = new NotNode();
         try {
-            node.arg = GlobalVars.operationParser.parsePart(currentPlayer);
+            node.arg = Parser.parsePart(parserState);
         } catch (Exception e) {
-            Main.logError("Error creating not node. Please check your syntax.", currentPlayer, e);
+            Main.logError("Error creating not node. Please check your syntax.", parserState, e);
             return null;
         }
         if (node.arg == null) {
             Main.logError("Error creating not node. An argument is required, but was not provided.",
-                    currentPlayer, null);
+                    parserState, null);
         }
         return node;
     }

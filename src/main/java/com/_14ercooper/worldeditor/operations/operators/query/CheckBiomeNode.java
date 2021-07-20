@@ -1,10 +1,10 @@
 package com._14ercooper.worldeditor.operations.operators.query;
 
-import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.OperatorState;
+import com._14ercooper.worldeditor.operations.Parser;
+import com._14ercooper.worldeditor.operations.ParserState;
 import com._14ercooper.worldeditor.operations.operators.Node;
-import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,16 +15,16 @@ public class CheckBiomeNode extends Node {
     final List<String> biomes = new ArrayList<>();
 
     @Override
-    public Node newNode(CommandSender currentPlayer) {
+    public Node newNode(ParserState parserState) {
         try {
             CheckBiomeNode node = new CheckBiomeNode();
-            node.biomes.addAll(Arrays.asList(GlobalVars.operationParser.parseStringNode(currentPlayer).getText().split(",")));
+            node.biomes.addAll(Arrays.asList(Parser.parseStringNode(parserState).getText().split(",")));
             if (node.biomes.size() == 0) {
-                Main.logError("Could not parse set biome node. Did you provide a biome?", currentPlayer, null);
+                Main.logError("Could not parse set biome node. Did you provide a biome?", parserState, null);
             }
             return node;
         } catch (Exception e) {
-            Main.logError("Error parisng biome node. Please check your syntax.", currentPlayer, e);
+            Main.logError("Error parisng biome node. Please check your syntax.", parserState, e);
             return null;
         }
     }

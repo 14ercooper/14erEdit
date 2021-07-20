@@ -1,14 +1,14 @@
 package com._14ercooper.worldeditor.operations.operators.query;
 
-import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.main.NBTExtractor;
 import com._14ercooper.worldeditor.operations.OperatorState;
+import com._14ercooper.worldeditor.operations.Parser;
+import com._14ercooper.worldeditor.operations.ParserState;
 import com._14ercooper.worldeditor.operations.operators.Node;
 import com._14ercooper.worldeditor.operations.operators.core.NumberNode;
 import com._14ercooper.worldeditor.operations.operators.world.BlockNode;
 import org.bukkit.block.Block;
-import org.bukkit.command.CommandSender;
 
 public class BlockAtNode extends BlockNode {
 
@@ -17,28 +17,28 @@ public class BlockAtNode extends BlockNode {
     Node node;
 
     @Override
-    public BlockAtNode newNode(CommandSender currentPlayer) {
+    public BlockAtNode newNode(ParserState parserState) {
         BlockAtNode baNode = new BlockAtNode();
         try {
-            baNode.x = GlobalVars.operationParser.parseNumberNode(currentPlayer);
-            baNode.y = GlobalVars.operationParser.parseNumberNode(currentPlayer);
-            baNode.z = GlobalVars.operationParser.parseNumberNode(currentPlayer);
+            baNode.x = Parser.parseNumberNode(parserState);
+            baNode.y = Parser.parseNumberNode(parserState);
+            baNode.z = Parser.parseNumberNode(parserState);
             baNode.xA = baNode.x.isAbsolute;
             baNode.yA = baNode.y.isAbsolute;
             baNode.zA = baNode.z.isAbsolute;
             try {
-                baNode.node = GlobalVars.operationParser.parsePart(currentPlayer);
+                baNode.node = Parser.parsePart(parserState);
             } catch (Exception e) {
                 Main.logDebug("Block at created with type blocknode");
             }
         } catch (Exception e) {
-            Main.logError("Error creating block at node. Please check your syntax.", currentPlayer, e);
+            Main.logError("Error creating block at node. Please check your syntax.", parserState, e);
             return null;
         }
         if (baNode.z == null) {
             Main.logError(
                     "Could not parse block at node. Three numbers and optionally an operation are required, but not given.",
-                    currentPlayer, null);
+                    parserState, null);
         }
         return baNode;
     }

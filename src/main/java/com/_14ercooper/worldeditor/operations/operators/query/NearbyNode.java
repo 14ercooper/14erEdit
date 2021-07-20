@@ -1,13 +1,13 @@
 package com._14ercooper.worldeditor.operations.operators.query;
 
-import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.OperatorState;
+import com._14ercooper.worldeditor.operations.Parser;
+import com._14ercooper.worldeditor.operations.ParserState;
 import com._14ercooper.worldeditor.operations.operators.Node;
 import com._14ercooper.worldeditor.operations.operators.core.NumberNode;
 import com._14ercooper.worldeditor.operations.operators.function.RangeNode;
 import org.bukkit.block.Block;
-import org.bukkit.command.CommandSender;
 
 public class NearbyNode extends Node {
 
@@ -21,21 +21,21 @@ public class NearbyNode extends Node {
     }
 
     @Override
-    public NearbyNode newNode(CommandSender currentPlayer) {
+    public NearbyNode newNode(ParserState parserState) {
         try {
             NearbyNode node = new NearbyNode();
-            node.trueRange = GlobalVars.operationParser.parseRangeNode(currentPlayer);
-            node.blockMask = GlobalVars.operationParser.parsePart(currentPlayer);
-            node.distance = GlobalVars.operationParser.parseNumberNode(currentPlayer);
+            node.trueRange = Parser.parseRangeNode(parserState);
+            node.blockMask = Parser.parsePart(parserState);
+            node.distance = Parser.parseNumberNode(parserState);
             if (node.trueRange == null) {
                 Main.logError(
                         "Could not create nearby node. Did you provide a block mask, a distance, and a range node?",
-                        currentPlayer, null);
+                        parserState, null);
                 return null;
             }
             return node;
         } catch (Exception e) {
-            Main.logError("Error parsing nearby node. Please check your syntax.", currentPlayer, e);
+            Main.logError("Error parsing nearby node. Please check your syntax.", parserState, e);
             return null;
         }
     }

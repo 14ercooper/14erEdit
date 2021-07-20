@@ -3,10 +3,11 @@ package com._14ercooper.worldeditor.operations.operators.function;
 import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.OperatorState;
+import com._14ercooper.worldeditor.operations.Parser;
+import com._14ercooper.worldeditor.operations.ParserState;
 import com._14ercooper.worldeditor.operations.operators.Node;
 import com._14ercooper.worldeditor.operations.operators.core.NumberNode;
 import org.bukkit.Location;
-import org.bukkit.command.CommandSender;
 
 // This node currently accepts both 2 and 3 as dimensions using worldspace
 // 4 dimensions uses worldspace plus average of the three other dimensions, creating good looking results
@@ -15,19 +16,19 @@ public class SimplexNode extends Node {
     public NumberNode arg1, arg2, scaleFactor;
 
     @Override
-    public SimplexNode newNode(CommandSender currentPlayer) {
+    public SimplexNode newNode(ParserState parserState) {
         SimplexNode node = new SimplexNode();
         try {
-            node.arg1 = GlobalVars.operationParser.parseNumberNode(currentPlayer);
-            node.arg2 = GlobalVars.operationParser.parseNumberNode(currentPlayer);
-            node.scaleFactor = GlobalVars.operationParser.parseNumberNode(currentPlayer);
+            node.arg1 = Parser.parseNumberNode(parserState);
+            node.arg2 = Parser.parseNumberNode(parserState);
+            node.scaleFactor = Parser.parseNumberNode(parserState);
         } catch (Exception e) {
-            Main.logError("Could not create simplex node. Please check your syntax.", currentPlayer, e);
+            Main.logError("Could not create simplex node. Please check your syntax.", parserState, e);
             return null;
         }
         if (node.scaleFactor == null) {
             Main.logError("Could not create simplex node. Three numbers are required, but not provided.",
-                    currentPlayer, null);
+                    parserState, null);
         }
         return node;
     }

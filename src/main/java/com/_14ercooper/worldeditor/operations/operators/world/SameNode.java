@@ -1,13 +1,12 @@
 package com._14ercooper.worldeditor.operations.operators.world;
 
-import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.operations.OperatorState;
-import org.bukkit.command.CommandSender;
+import com._14ercooper.worldeditor.operations.ParserState;
 
 public class SameNode extends BlockNode {
 
     @Override
-    public SameNode newNode(CommandSender currentPlayer) {
+    public SameNode newNode(ParserState parserState) {
         return new SameNode();
     }
 

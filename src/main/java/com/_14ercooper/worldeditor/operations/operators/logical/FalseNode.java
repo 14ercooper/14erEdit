@@ -1,13 +1,13 @@
 package com._14ercooper.worldeditor.operations.operators.logical;
 
 import com._14ercooper.worldeditor.operations.OperatorState;
+import com._14ercooper.worldeditor.operations.ParserState;
 import com._14ercooper.worldeditor.operations.operators.Node;
-import org.bukkit.command.CommandSender;
 
 public class FalseNode extends Node {
 
     @Override
-    public FalseNode newNode(CommandSender currentPlayer) {
+    public FalseNode newNode(ParserState parserState) {
         return new FalseNode();
     }
 

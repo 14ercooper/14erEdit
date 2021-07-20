@@ -1,12 +1,12 @@
 package com._14ercooper.worldeditor.operations.operators.query;
 
-import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.OperatorState;
+import com._14ercooper.worldeditor.operations.Parser;
+import com._14ercooper.worldeditor.operations.ParserState;
 import com._14ercooper.worldeditor.operations.operators.Node;
 import com._14ercooper.worldeditor.operations.operators.function.RangeNode;
 import org.bukkit.block.Block;
-import org.bukkit.command.CommandSender;
 
 public class BlocksBelowNode extends Node {
 
@@ -19,18 +19,18 @@ public class BlocksBelowNode extends Node {
     }
 
     @Override
-    public BlocksBelowNode newNode(CommandSender currentPlayer) {
+    public BlocksBelowNode newNode(ParserState parserState) {
         BlocksBelowNode node = new BlocksBelowNode();
         try {
-            node.arg1 = GlobalVars.operationParser.parseRangeNode(currentPlayer);
-            node.arg2 = GlobalVars.operationParser.parsePart(currentPlayer);
+            node.arg1 = Parser.parseRangeNode(parserState);
+            node.arg2 = Parser.parsePart(parserState);
         } catch (Exception e) {
-            Main.logError("Error creating blocks below node. Please check your syntax.", currentPlayer, e);
+            Main.logError("Error creating blocks below node. Please check your syntax.", parserState, e);
             return null;
         }
         if (node.arg2 == null) {
             Main.logError("Could not create blocks below node. Two arguments are required, but not given.",
-                    currentPlayer, null);
+                    parserState, null);
         }
         return node;
     }

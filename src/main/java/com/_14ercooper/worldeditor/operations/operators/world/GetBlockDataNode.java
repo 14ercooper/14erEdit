@@ -1,15 +1,14 @@
 package com._14ercooper.worldeditor.operations.operators.world;
 
 import com._14ercooper.worldeditor.main.Main;
-import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.operations.OperatorState;
+import com._14ercooper.worldeditor.operations.ParserState;
 import com._14ercooper.worldeditor.operations.operators.Node;
-import org.bukkit.command.CommandSender;
 
 public class GetBlockDataNode extends Node {
 
     @Override
-    public GetBlockDataNode newNode(CommandSender currentPlayer) {
+    public GetBlockDataNode newNode(ParserState parserState) {
         return new GetBlockDataNode();
     }
 

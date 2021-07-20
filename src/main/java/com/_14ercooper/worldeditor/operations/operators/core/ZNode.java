@@ -1,13 +1,13 @@
 package com._14ercooper.worldeditor.operations.operators.core;
 
 import com._14ercooper.worldeditor.operations.OperatorState;
-import org.bukkit.command.CommandSender;
+import com._14ercooper.worldeditor.operations.ParserState;
 
 public class ZNode extends NumberNode {
 
     // Returns a new node
     @Override
-    public ZNode newNode(CommandSender currentPlayer) {
+    public ZNode newNode(ParserState parserState) {
         return new ZNode();
     }
 

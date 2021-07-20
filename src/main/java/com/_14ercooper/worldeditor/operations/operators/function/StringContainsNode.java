@@ -1,30 +1,30 @@
 package com._14ercooper.worldeditor.operations.operators.function;
 
-import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.OperatorState;
+import com._14ercooper.worldeditor.operations.Parser;
+import com._14ercooper.worldeditor.operations.ParserState;
 import com._14ercooper.worldeditor.operations.operators.Node;
 import com._14ercooper.worldeditor.operations.operators.core.StringNode;
 import com._14ercooper.worldeditor.operations.operators.query.GetNBTNode;
-import org.bukkit.command.CommandSender;
 
 public class StringContainsNode extends Node {
 
     Node arg1, arg2;
 
     @Override
-    public Node newNode(CommandSender currentPlayer) {
+    public Node newNode(ParserState parserState) {
         StringContainsNode node = new StringContainsNode();
         try {
-            node.arg1 = GlobalVars.operationParser.parsePart(currentPlayer);
-            node.arg2 = GlobalVars.operationParser.parsePart(currentPlayer);
+            node.arg1 = Parser.parsePart(parserState);
+            node.arg2 = Parser.parsePart(parserState);
         } catch (Exception e) {
-            Main.logError("Could not create string contains node. Please check your syntax.", currentPlayer, e);
+            Main.logError("Could not create string contains node. Please check your syntax.", parserState, e);
             return null;
         }
         if (node.arg2 == null) {
             Main.logError("Could not create string contains node. Two string nodes required, but not provided.",
-                    currentPlayer, null);
+                    parserState, null);
         }
         return node;
     }

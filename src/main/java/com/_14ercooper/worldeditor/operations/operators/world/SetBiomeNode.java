@@ -1,28 +1,28 @@
 package com._14ercooper.worldeditor.operations.operators.world;
 
-import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.OperatorState;
+import com._14ercooper.worldeditor.operations.Parser;
+import com._14ercooper.worldeditor.operations.ParserState;
 import com._14ercooper.worldeditor.operations.operators.Node;
 import com._14ercooper.worldeditor.operations.operators.core.StringNode;
 import org.bukkit.block.Biome;
-import org.bukkit.command.CommandSender;
 
 public class SetBiomeNode extends Node {
 
     StringNode biome;
 
     @Override
-    public Node newNode(CommandSender currentPlayer) {
+    public Node newNode(ParserState parserState) {
         try {
             SetBiomeNode node = new SetBiomeNode();
-            node.biome = GlobalVars.operationParser.parseStringNode(currentPlayer);
+            node.biome = Parser.parseStringNode(parserState);
             if (node.biome.getText().isBlank()) {
-                Main.logError("Could not parse set biome node. Did you provide a biome?", currentPlayer, null);
+                Main.logError("Could not parse set biome node. Did you provide a biome?", parserState, null);
             }
             return node;
         } catch (Exception e) {
-            Main.logError("Error parisng biome node. Please check your syntax.", currentPlayer, e);
+            Main.logError("Error parisng biome node. Please check your syntax.", parserState, e);
             return null;
         }
     }

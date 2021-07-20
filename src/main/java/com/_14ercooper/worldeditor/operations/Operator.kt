@@ -20,7 +20,7 @@ class Operator {
     }
 
     constructor(op: String, p: CommandSender) {
-        entryNode = GlobalVars.operationParser.parseOperation(p, op)!!
+        entryNode = Parser.parseOperation(p, op)!!
     }
 
     constructor(e: EntryNode) {

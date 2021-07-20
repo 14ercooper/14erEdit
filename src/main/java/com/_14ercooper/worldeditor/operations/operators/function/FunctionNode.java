@@ -4,8 +4,9 @@ import com._14ercooper.worldeditor.functions.Function;
 import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.operations.OperatorState;
 import com._14ercooper.worldeditor.operations.DummyState;
+import com._14ercooper.worldeditor.operations.Parser;
+import com._14ercooper.worldeditor.operations.ParserState;
 import com._14ercooper.worldeditor.operations.operators.core.NumberNode;
-import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,12 +17,12 @@ public class FunctionNode extends NumberNode {
     final List<String> args = new ArrayList<>();
 
     @Override
-    public FunctionNode newNode(CommandSender currentPlayer) {
+    public FunctionNode newNode(ParserState parserState) {
         FunctionNode node = new FunctionNode();
-        node.filename = GlobalVars.operationParser.parseStringNode(currentPlayer).getText();
-        int argNum = (int) GlobalVars.operationParser.parseNumberNode(currentPlayer).getValue(new DummyState(currentPlayer));
+        node.filename = Parser.parseStringNode(parserState).getText();
+        int argNum = (int) Parser.parseNumberNode(parserState).getValue(new DummyState(parserState.getCurrentPlayer()));
         for (int i = 0; i < argNum; i++) {
-            node.args.add(GlobalVars.operationParser.parseStringNode(currentPlayer).getText());
+            node.args.add(Parser.parseStringNode(parserState).getText());
         }
         return node;
     }

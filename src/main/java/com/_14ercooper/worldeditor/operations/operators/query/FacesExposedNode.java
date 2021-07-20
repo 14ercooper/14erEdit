@@ -1,31 +1,31 @@
 package com._14ercooper.worldeditor.operations.operators.query;
 
-import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.OperatorState;
+import com._14ercooper.worldeditor.operations.Parser;
+import com._14ercooper.worldeditor.operations.ParserState;
 import com._14ercooper.worldeditor.operations.operators.Node;
 import com._14ercooper.worldeditor.operations.operators.core.NumberNode;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.command.CommandSender;
 
 public class FacesExposedNode extends Node {
 
     public NumberNode arg;
 
     @Override
-    public FacesExposedNode newNode(CommandSender currentPlayer) {
+    public FacesExposedNode newNode(ParserState parserState) {
         FacesExposedNode node = new FacesExposedNode();
         try {
-            node.arg = GlobalVars.operationParser.parseNumberNode(currentPlayer);
+            node.arg = Parser.parseNumberNode(parserState);
         } catch (Exception e) {
-            Main.logError("Error creating faces exposed node. Please check your syntax.", currentPlayer, e);
+            Main.logError("Error creating faces exposed node. Please check your syntax.", parserState, e);
             return null;
         }
         if (node.arg == null) {
             Main.logError("Could not create faces exposed node. Requires a number argument that was not given.",
-                    currentPlayer, null);
+                    parserState, null);
         }
         return node;
     }

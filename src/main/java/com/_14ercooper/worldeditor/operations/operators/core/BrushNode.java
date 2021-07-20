@@ -9,8 +9,9 @@ import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.operations.OperatorState;
+import com._14ercooper.worldeditor.operations.Parser;
+import com._14ercooper.worldeditor.operations.ParserState;
 import com._14ercooper.worldeditor.operations.operators.Node;
-import org.bukkit.command.CommandSender;
 
 import java.util.List;
 
@@ -20,31 +21,31 @@ public class BrushNode extends Node {
     public Node op = null;
 
     @Override
-    public BrushNode newNode(CommandSender currentPlayer) {
+    public BrushNode newNode(ParserState parserState) {
         try {
             BrushNode node = new BrushNode();
-            node.shape = Brush.GetBrushShape(GlobalVars.operationParser.parseStringNode(currentPlayer).contents);
+            node.shape = Brush.GetBrushShape(Parser.parseStringNode(parserState).contents);
             do {
-                String nextText = GlobalVars.operationParser.parseStringNode(currentPlayer).getText();
+                String nextText = Parser.parseStringNode(parserState).getText();
                 if (nextText.equalsIgnoreCase("end")) {
-                    GlobalVars.operationParser.index++;
+                    parserState.setIndex(parserState.getIndex() + 1);
                     break;
                 }
                 node.shape.addNewArgument(nextText);
             }
             while (node.shape.lastInputProcessed());
-            GlobalVars.operationParser.index--;
+            parserState.setIndex(parserState.getIndex() - 1);
             if (node.shape.gotEnoughArgs()) {
                 throw new Exception();
             }
 
             if (!(node.shape instanceof Multi))
-                node.op = GlobalVars.operationParser.parsePart(currentPlayer);
+                node.op = Parser.parsePart(parserState);
 
             return node;
         } catch (Exception e) {
             Main.logError("Could not create brush node. Did you provide the correct number of arguments?",
-                    currentPlayer, e);
+                    parserState, e);
             return null;
         }
     }

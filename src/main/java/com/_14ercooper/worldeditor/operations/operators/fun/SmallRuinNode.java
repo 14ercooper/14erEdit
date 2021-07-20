@@ -3,12 +3,13 @@ package com._14ercooper.worldeditor.operations.operators.fun;
 import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.OperatorState;
+import com._14ercooper.worldeditor.operations.Parser;
+import com._14ercooper.worldeditor.operations.ParserState;
 import com._14ercooper.worldeditor.operations.operators.Node;
 import com._14ercooper.worldeditor.operations.operators.function.RangeNode;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.command.CommandSender;
 
 public class SmallRuinNode extends Node {
 
@@ -17,12 +18,12 @@ public class SmallRuinNode extends Node {
     RangeNode xMax, zMax;
 
     @Override
-    public SmallRuinNode newNode(CommandSender currentPlayer) {
+    public SmallRuinNode newNode(ParserState parserState) {
         SmallRuinNode node = new SmallRuinNode();
-        node.xMax = GlobalVars.operationParser.parseRangeNode(currentPlayer);
-        node.zMax = GlobalVars.operationParser.parseRangeNode(currentPlayer);
-        node.stackSize = GlobalVars.operationParser.parseRangeNode(currentPlayer);
-        node.block = GlobalVars.operationParser.parsePart(currentPlayer);
+        node.xMax = Parser.parseRangeNode(parserState);
+        node.zMax = Parser.parseRangeNode(parserState);
+        node.stackSize = Parser.parseRangeNode(parserState);
+        node.block = Parser.parsePart(parserState);
         return node;
     }
 

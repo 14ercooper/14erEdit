@@ -3,12 +3,13 @@ package com._14ercooper.worldeditor.operations.operators.query;
 import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.OperatorState;
+import com._14ercooper.worldeditor.operations.Parser;
+import com._14ercooper.worldeditor.operations.ParserState;
 import com._14ercooper.worldeditor.operations.operators.Node;
 import com._14ercooper.worldeditor.operations.operators.core.NumberNode;
 import com._14ercooper.worldeditor.operations.operators.function.RangeNode;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.command.CommandSender;
 
 public class AngleNode extends Node {
 
@@ -21,19 +22,19 @@ public class AngleNode extends Node {
     }
 
     @Override
-    public Node newNode(CommandSender currentPlayer) {
+    public Node newNode(ParserState parserState) {
         try {
             AngleNode node = new AngleNode();
-            node.angleForTrue = GlobalVars.operationParser.parseRangeNode(currentPlayer);
-            node.distance = GlobalVars.operationParser.parseNumberNode(currentPlayer);
+            node.angleForTrue = Parser.parseRangeNode(parserState);
+            node.distance = Parser.parseNumberNode(parserState);
             if (node.distance == null) {
                 Main.logError("Could not parse angle node. Did you provide a range node and a distance?",
-                        currentPlayer, null);
+                        parserState, null);
                 return null;
             }
             return node;
         } catch (Exception e) {
-            Main.logError("Error parsing range node. Please check your syntax.", currentPlayer, e);
+            Main.logError("Error parsing range node. Please check your syntax.", parserState, e);
             return null;
         }
     }
