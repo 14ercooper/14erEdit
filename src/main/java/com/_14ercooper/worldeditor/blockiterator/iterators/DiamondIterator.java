@@ -37,9 +37,9 @@ public class DiamondIterator extends BlockIterator {
     }
 
     @Override
-    public Block getNextBlock() {
+    public Block getNextBlock(CommandSender player) {
         while (true) {
-            if (incrXYZ(radius, radius, radius, xC, yC, zC)) {
+            if (incrXYZ(radius, radius, radius, xC, yC, zC, player)) {
                 return null;
             }
 

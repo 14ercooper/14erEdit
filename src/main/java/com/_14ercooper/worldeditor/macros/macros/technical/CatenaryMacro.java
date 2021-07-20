@@ -1,11 +1,7 @@
 package com._14ercooper.worldeditor.macros.macros.technical;
 
 import com._14ercooper.worldeditor.macros.MacroLauncher;
-import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.operations.OperatorState;
-import com._14ercooper.worldeditor.scripts.CraftscriptManager;
-import com._14ercooper.worldeditor.undo.UndoElement;
-import com._14ercooper.worldeditor.undo.UndoSystem;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -13,7 +9,6 @@ import org.bukkit.block.Block;
 import com._14ercooper.worldeditor.macros.macros.Macro;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.main.SetBlock;
-import com._14ercooper.worldeditor.operations.Operator;
 
 public class CatenaryMacro extends Macro {
 

@@ -2,7 +2,7 @@ package com._14ercooper.worldeditor.brush.shapes;
 
 import com._14ercooper.worldeditor.blockiterator.BlockIterator;
 import com._14ercooper.worldeditor.brush.BrushShape;
-import com._14ercooper.worldeditor.main.GlobalVars;
+import com._14ercooper.worldeditor.blockiterator.IteratorManager;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 
@@ -18,9 +18,9 @@ public class Above extends BrushShape {
         argList.add(Integer.toString((int) y));
         argList.add(Integer.toString((int) z));
         argList.add(Integer.toString((int) x));
-        argList.add(Long.toString(GlobalVars.maxEditY));
+        argList.add(Long.toString(Long.MAX_VALUE));
         argList.add(Integer.toString((int) z));
-        return GlobalVars.iteratorManager.getIterator("cube").newIterator(argList, world, sender);
+        return IteratorManager.INSTANCE.getIterator("cube").newIterator(argList, world, sender);
     }
 
     @Override

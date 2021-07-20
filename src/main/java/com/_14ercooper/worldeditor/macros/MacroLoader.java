@@ -8,18 +8,17 @@ import com._14ercooper.worldeditor.macros.macros.technical.CatenaryMacro;
 import com._14ercooper.worldeditor.macros.macros.technical.LineBrushMacro;
 import com._14ercooper.worldeditor.macros.macros.technical.LineMacro;
 import com._14ercooper.worldeditor.macros.macros.technical.SchematicMacro;
-import com._14ercooper.worldeditor.main.GlobalVars;
 
 public class MacroLoader {
 
     public static void LoadMacros() {
-        GlobalVars.macroLauncher.addMacro("erode", new ErodeMacro());
-        GlobalVars.macroLauncher.addMacro("tree", new BasicTreeMacro());
-        GlobalVars.macroLauncher.addMacro("biome", new BiomeMacro());
-        GlobalVars.macroLauncher.addMacro("vines", new VinesMacro());
-        GlobalVars.macroLauncher.addMacro("schem", new SchematicMacro());
-        GlobalVars.macroLauncher.addMacro("line_old", new LineMacro());
-        GlobalVars.macroLauncher.addMacro("line", new LineBrushMacro());
-        GlobalVars.macroLauncher.addMacro("catenary", new CatenaryMacro());
+        MacroLauncher.INSTANCE.addMacro("erode", new ErodeMacro());
+        MacroLauncher.INSTANCE.addMacro("tree", new BasicTreeMacro());
+        MacroLauncher.INSTANCE.addMacro("biome", new BiomeMacro());
+        MacroLauncher.INSTANCE.addMacro("vines", new VinesMacro());
+        MacroLauncher.INSTANCE.addMacro("schem", new SchematicMacro());
+        MacroLauncher.INSTANCE.addMacro("line_old", new LineMacro());
+        MacroLauncher.INSTANCE.addMacro("line", new LineBrushMacro());
+        MacroLauncher.INSTANCE.addMacro("catenary", new CatenaryMacro());
     }
 }

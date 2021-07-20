@@ -2,7 +2,6 @@ package com._14ercooper.worldeditor.blockiterator.iterators;
 
 import com._14ercooper.worldeditor.blockiterator.BlockIterator;
 import com._14ercooper.worldeditor.main.Main;
-import com._14ercooper.worldeditor.operations.Operator;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
@@ -14,7 +13,7 @@ public class CylinderIterator extends BlockIterator {
     long totalBlocks;
     int xC, yC, zC;
     double xS, yS, zS;
-    int radMin, radMax;
+    int radMax;
     double radCorr;
 
     @Override
@@ -46,9 +45,9 @@ public class CylinderIterator extends BlockIterator {
     }
 
     @Override
-    public Block getNextBlock() {
+    public Block getNextBlock(CommandSender player) {
         while (true) {
-            if (incrXYZ(radMax, radMax, radMax, xC, yC, zC)) {
+            if (incrXYZ(radMax, radMax, radMax, xC, yC, zC, player)) {
                 return null;
             }
 

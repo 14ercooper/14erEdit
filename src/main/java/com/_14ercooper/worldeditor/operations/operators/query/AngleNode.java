@@ -1,6 +1,5 @@
 package com._14ercooper.worldeditor.operations.operators.query;
 
-import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.OperatorState;
 import com._14ercooper.worldeditor.operations.Parser;
@@ -8,6 +7,8 @@ import com._14ercooper.worldeditor.operations.ParserState;
 import com._14ercooper.worldeditor.operations.operators.Node;
 import com._14ercooper.worldeditor.operations.operators.core.NumberNode;
 import com._14ercooper.worldeditor.operations.operators.function.RangeNode;
+import com._14ercooper.worldeditor.player.PlayerManager;
+import com._14ercooper.worldeditor.player.PlayerWrapper;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 
@@ -70,27 +71,30 @@ public class AngleNode extends Node {
         // Check current states both blocks
         Material mat1 = b1.getType();
         Material mat2 = b2.getType();
+
+        PlayerWrapper playerWrapper = PlayerManager.INSTANCE.getPlayerWrapper(state.getCurrentPlayer());
+        
         // Both solid
-        if (!GlobalVars.brushMask.contains(mat1) && !GlobalVars.brushMask.contains(mat2)) {
+        if (!playerWrapper.getBrushMask().contains(mat1) && !playerWrapper.getBrushMask().contains(mat2)) {
             return 0;
         }
         // Neither solid
-        else if (GlobalVars.brushMask.contains(mat1) && GlobalVars.brushMask.contains(mat1)) {
+        else if (playerWrapper.getBrushMask().contains(mat1) && playerWrapper.getBrushMask().contains(mat1)) {
             return 0;
         }
         // One solid
         else {
-            if (GlobalVars.brushMask.contains(mat2)) {
+            if (playerWrapper.getBrushMask().contains(mat2)) {
                 Block temp = b2;
                 b2 = b1;
                 b1 = temp;
             }
             int downVal = 0;
-            while (GlobalVars.brushMask.contains(b1.getRelative(0, downVal, 0).getType())) {
+            while (playerWrapper.getBrushMask().contains(b1.getRelative(0, downVal, 0).getType())) {
                 downVal--;
             }
             int upVal = 0;
-            while (!GlobalVars.brushMask.contains(b2.getRelative(0, upVal, 0).getType())) {
+            while (!playerWrapper.getBrushMask().contains(b2.getRelative(0, upVal, 0).getType())) {
                 upVal++;
             }
             double distVert = upVal - downVal;

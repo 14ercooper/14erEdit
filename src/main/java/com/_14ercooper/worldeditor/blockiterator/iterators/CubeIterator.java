@@ -74,7 +74,7 @@ public class CubeIterator extends BlockIterator {
     }
 
     @Override
-    public Block getNextBlock() {
+    public Block getNextBlock(CommandSender player) {
         if (executionOrder == 0) { // xzy
             x += xStep;
             doneBlocks++;

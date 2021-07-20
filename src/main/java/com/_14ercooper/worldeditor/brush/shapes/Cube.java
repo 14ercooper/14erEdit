@@ -2,7 +2,7 @@ package com._14ercooper.worldeditor.brush.shapes;
 
 import com._14ercooper.worldeditor.blockiterator.BlockIterator;
 import com._14ercooper.worldeditor.brush.BrushShape;
-import com._14ercooper.worldeditor.main.GlobalVars;
+import com._14ercooper.worldeditor.blockiterator.IteratorManager;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 
@@ -24,7 +24,7 @@ public class Cube extends BrushShape {
         argList.add(Integer.toString((int) x + cubeRad));
         argList.add(Integer.toString((int) y + cubeRad));
         argList.add(Integer.toString((int) z + cubeRad));
-        return GlobalVars.iteratorManager.getIterator("cube").newIterator(argList, world, sender);
+        return IteratorManager.INSTANCE.getIterator("cube").newIterator(argList, world, sender);
     }
 
     @Override

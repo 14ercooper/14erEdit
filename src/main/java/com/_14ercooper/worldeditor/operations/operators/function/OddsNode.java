@@ -1,6 +1,5 @@
 package com._14ercooper.worldeditor.operations.operators.function;
 
-import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.OperatorState;
 import com._14ercooper.worldeditor.operations.Parser;
@@ -30,7 +29,7 @@ public class OddsNode extends Node {
 
     @Override
     public boolean performNode(OperatorState state) {
-        double chance = GlobalVars.rand.nextDouble() * 100.0;
+        double chance = Main.getRand().nextDouble() * 100.0;
         return (chance < arg.getValue(state));
     }
 

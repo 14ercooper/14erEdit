@@ -1,6 +1,5 @@
 package com._14ercooper.worldeditor.operations.operators.world;
 
-import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.OperatorState;
 import com._14ercooper.worldeditor.operations.Parser;
@@ -64,7 +63,7 @@ public class FacingNode extends BlockNode {
 
             if (dirs.size() > 0) {
                 String newData = arg.getBlock(state).toLowerCase(Locale.ROOT);
-                newData += dirs.get(GlobalVars.rand.nextInt(dirs.size()));
+                newData += dirs.get(Main.getRand().nextInt(dirs.size()));
                 BlockData newDat = Bukkit.getServer().createBlockData(newData);
                 dat = dat.merge(newDat);
             }

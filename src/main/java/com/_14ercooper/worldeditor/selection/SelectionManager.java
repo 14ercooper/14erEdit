@@ -1,7 +1,9 @@
 package com._14ercooper.worldeditor.selection;
 
 import com._14ercooper.worldeditor.blockiterator.BlockIterator;
-import com._14ercooper.worldeditor.main.GlobalVars;
+import com._14ercooper.worldeditor.blockiterator.IteratorManager;
+import com._14ercooper.worldeditor.player.PlayerManager;
+import com._14ercooper.worldeditor.player.PlayerWrapper;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -36,7 +38,8 @@ public class SelectionManager {
     public boolean updatePositionOne(double x, double y, double z, UUID player) {
         positionOne[0] = x;
         // Use nested ternary operators to clamp y between 0 and 255
-        positionOne[1] = y < GlobalVars.minEditY ? GlobalVars.minEditY : y > GlobalVars.maxEditY ? GlobalVars.maxEditY : y;
+        PlayerWrapper playerWrapper = PlayerManager.INSTANCE.getPlayerWrapper(player);
+        positionOne[1] = y < playerWrapper.getMinEditY() ? playerWrapper.getMinEditY() : y > playerWrapper.getMinEditY() ? playerWrapper.getMaxEditY() : y;
         positionOne[2] = z;
         getPlayer(player).sendMessage("§dFirst position updated to (" + x + ", " + y + ", "
                 + z + "); giving a volume of "
@@ -50,7 +53,8 @@ public class SelectionManager {
     public boolean updatePositionTwo(double x, double y, double z, UUID player) {
         positionTwo[0] = x;
         // Use nested ternary operators to clamp y between 0 and 255
-        positionTwo[1] = y < GlobalVars.minEditY ? GlobalVars.minEditY : y > GlobalVars.maxEditY ? GlobalVars.maxEditY : y;
+        PlayerWrapper playerWrapper = PlayerManager.INSTANCE.getPlayerWrapper(player);
+        positionOne[1] = y < playerWrapper.getMinEditY() ? playerWrapper.getMinEditY() : y > playerWrapper.getMinEditY() ? playerWrapper.getMaxEditY() : y;
         positionTwo[2] = z;
         getPlayer(player).sendMessage("§dSecond position updated to (" + x + ", " + y + ", "
                 + z + "); giving a volume of "
@@ -185,7 +189,7 @@ public class SelectionManager {
         args.add(Integer.toString((int) pos2[1]));
         args.add(Integer.toString((int) pos2[2]));
         args.add("1");
-        return GlobalVars.iteratorManager.getIterator("cube").newIterator(args, world, Bukkit.getConsoleSender());
+        return IteratorManager.INSTANCE.getIterator("cube").newIterator(args, world, Bukkit.getConsoleSender());
     }
 
     public Player getPlayer(UUID player){

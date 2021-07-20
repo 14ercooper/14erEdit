@@ -2,7 +2,7 @@ package com._14ercooper.worldeditor.brush.shapes;
 
 import com._14ercooper.worldeditor.blockiterator.BlockIterator;
 import com._14ercooper.worldeditor.brush.BrushShape;
-import com._14ercooper.worldeditor.main.GlobalVars;
+import com._14ercooper.worldeditor.blockiterator.IteratorManager;
 import com._14ercooper.worldeditor.main.Main;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
@@ -27,7 +27,7 @@ public class RandomSphere extends BrushShape {
         argList.add(Integer.toString(radius));
         argList.add(Integer.toString(0));
         argList.add(correction);
-        return GlobalVars.iteratorManager.getIterator("sphere").newIterator(argList, world, sender);
+        return IteratorManager.INSTANCE.getIterator("sphere").newIterator(argList, world, sender);
     }
 
     @Override

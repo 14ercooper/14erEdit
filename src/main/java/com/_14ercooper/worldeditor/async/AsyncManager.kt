@@ -3,7 +3,6 @@ package com._14ercooper.worldeditor.async
 import com._14ercooper.schematics.SchemLite
 import com._14ercooper.worldeditor.blockiterator.BlockIterator
 import com._14ercooper.worldeditor.blockiterator.iterators.SchemBrushIterator
-import com._14ercooper.worldeditor.main.GlobalVars
 import com._14ercooper.worldeditor.main.Main
 import com._14ercooper.worldeditor.main.NBTExtractor
 import com._14ercooper.worldeditor.main.SetBlock.setMaterial
@@ -20,6 +19,9 @@ import org.bukkit.entity.Player
 import java.io.IOException
 
 object AsyncManager {
+    var blocksPerAsync : Long = 10000
+    var ticksPerAsync : Long = 4
+    var countEdits = false
     private const val opBlockSize = 128
 
     // Flag queue dropped
@@ -88,7 +90,7 @@ object AsyncManager {
     @JvmStatic
     fun asyncProgress(p: CommandSender) {
         val remBlocks = remainingBlocks
-        val remTime = (remBlocks / (GlobalVars.blocksPerAsync * (20.0 / GlobalVars.ticksPerAsync))).toInt()
+        val remTime = (remBlocks / (blocksPerAsync * (20.0 / ticksPerAsync))).toInt()
         p.sendMessage(
             "§aThere are " + remBlocks
                     + " blocks in the async queue, for an estimated remaining time of less than " + remTime + " seconds."
@@ -186,10 +188,9 @@ object AsyncManager {
         if (queueDropped) {
             queueDropped = false
         }
-        GlobalVars.errorLogged = false
 
         // Loop until finished
-        while (doneOperations < GlobalVars.blocksPerAsync && operations.size > 0) {
+        while (doneOperations < blocksPerAsync && operations.size > 0) {
             if (queueDropped) {
                 queueDropped = false
                 return
@@ -240,7 +241,7 @@ object AsyncManager {
                         (currentAsyncOp.player as Player).world
                     }
                     else {
-                        GlobalVars.plugin.server.worlds[0]
+                        Main.plugin.server.worlds[0]
                     }
                     b.stream().forEach {
                         val state = OperatorState(it, currentAsyncOp.player, currWorld, currentAsyncOp.undo)
@@ -299,7 +300,7 @@ object AsyncManager {
                     var b: List<Block>
                     var doContinue = false
                     while (true) {
-                        b = currentAsyncOp.iterators[0].getNext(opBlockSize)
+                        b = currentAsyncOp.iterators[0].getNext(opBlockSize, currentAsyncOp.player)
                         if (b.isEmpty()) {
                             break
                         }
@@ -330,7 +331,7 @@ object AsyncManager {
                     val currWorld = if (currentAsyncOp.player is Player) {
                         (currentAsyncOp.player as Player).world
                     } else {
-                        GlobalVars.plugin.server.worlds[0]
+                        Main.plugin.server.worlds[0]
                     }
                     b.stream().forEach {
                         val state = OperatorState(it, currentAsyncOp.player, currWorld, currentAsyncOp.undo)
@@ -341,7 +342,7 @@ object AsyncManager {
 
                 else if (currentAsyncOp.key.equals("saveschem", ignoreCase = true)) {
                     assert(currentAsyncOp.blocks != null)
-                    val b = currentAsyncOp.blocks!!.getNext(1)[0]
+                    val b = currentAsyncOp.blocks!!.getNext(1, currentAsyncOp.player)[0]
                     if (!currentAsyncOp.startedWrite) {
                         try {
                             currentAsyncOp.schem!!.resetWrite()
@@ -364,7 +365,7 @@ object AsyncManager {
                 }
 
                 else if (currentAsyncOp.key.equals("loadschem", ignoreCase = true)) {
-                    val b = currentAsyncOp.blocks!!.getNext(1)[0]
+                    val b = currentAsyncOp.blocks!!.getNext(1, currentAsyncOp.player)[0]
                     if (b == null) {
                         finishUndo(currentAsyncOp.undo)
                         operations.removeAt(i)
@@ -400,7 +401,7 @@ object AsyncManager {
 
                 else if (currentAsyncOp.key.equals("selclone", ignoreCase = true)) {
                     assert(currentAsyncOp.blocks != null)
-                    val b = currentAsyncOp.blocks!!.getNext(1)[0]
+                    val b = currentAsyncOp.blocks!!.getNext(1, currentAsyncOp.player)[0]
                     if (b == null) {
                         finishUndo(currentAsyncOp.undo)
                         operations.removeAt(i)
@@ -456,17 +457,17 @@ object AsyncManager {
 
     private fun getBlock(currentAsyncOp: AsyncOperation): List<Block> {
         assert(currentAsyncOp.blocks != null)
-        return currentAsyncOp.blocks!!.getNext(opBlockSize)
+        return currentAsyncOp.blocks!!.getNext(opBlockSize, currentAsyncOp.player)
     }
 
     // On initialization start the scheduler
     init {
         val scheduler = Bukkit.getServer().scheduler
         scheduler.scheduleSyncRepeatingTask(
-            GlobalVars.plugin,
+            Main.plugin,
             { performOperation() },
-            GlobalVars.ticksPerAsync,
-            GlobalVars.ticksPerAsync
+            ticksPerAsync,
+            ticksPerAsync
         )
     }
 }

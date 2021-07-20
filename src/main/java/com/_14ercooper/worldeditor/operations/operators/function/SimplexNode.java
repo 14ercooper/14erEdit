@@ -1,7 +1,7 @@
 package com._14ercooper.worldeditor.operations.operators.function;
 
-import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
+import com._14ercooper.worldeditor.main.SimplexNoise;
 import com._14ercooper.worldeditor.operations.OperatorState;
 import com._14ercooper.worldeditor.operations.Parser;
 import com._14ercooper.worldeditor.operations.ParserState;
@@ -40,16 +40,16 @@ public class SimplexNode extends Node {
             double scale = 4 * scaleFactor.getValue(state);
             if (arg1.getValue(state) <= 2.1 && arg1.getValue(state) >= 1.9) {
                 Location loc = state.getCurrentBlock().getLocation();
-                return GlobalVars.simplexNoise.noise(loc.getX() / scale, loc.getZ() / scale) <= arg2.getValue(state);
+                return SimplexNoise.simplexNoise.noise(loc.getX() / scale, loc.getZ() / scale) <= arg2.getValue(state);
             }
             if (arg1.getValue(state) <= 3.1 && arg1.getValue(state) >= 2.9) {
                 Location loc = state.getCurrentBlock().getLocation();
-                return GlobalVars.simplexNoise.noise(loc.getX() / scale, loc.getY() / scale, loc.getZ() / scale) <= arg2
+                return SimplexNoise.simplexNoise.noise(loc.getX() / scale, loc.getY() / scale, loc.getZ() / scale) <= arg2
                         .getValue(state);
             }
             if (arg1.getValue(state) <= 4.1 && arg1.getValue(state) >= 3.9) {
                 Location loc = state.getCurrentBlock().getLocation();
-                return GlobalVars.simplexNoise.noise(loc.getX() / scale, loc.getY() / scale, loc.getZ() / scale,
+                return SimplexNoise.simplexNoise.noise(loc.getX() / scale, loc.getY() / scale, loc.getZ() / scale,
                         (loc.getX() + loc.getY() + loc.getZ()) * 0.33333333 / scale) <= arg2.getValue(state);
             }
             Main.logError("Simplex in " + arg1.getValue(state) + " dimensions not found. Please check your simplex syntax.",

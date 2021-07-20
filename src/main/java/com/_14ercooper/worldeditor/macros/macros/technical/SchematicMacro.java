@@ -1,12 +1,10 @@
 package com._14ercooper.worldeditor.macros.macros.technical;
 
-import com._14ercooper.worldeditor.operations.OperatorState;
-import org.bukkit.Location;
-
 import com._14ercooper.worldeditor.macros.macros.Macro;
-import com._14ercooper.worldeditor.main.GlobalVars;
-import com._14ercooper.worldeditor.operations.Operator;
+import com._14ercooper.worldeditor.main.Main;
+import com._14ercooper.worldeditor.operations.OperatorState;
 import com._14ercooper.worldeditor.selection.SchematicHandler;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 public class SchematicMacro extends Macro {
@@ -59,13 +57,13 @@ public class SchematicMacro extends Macro {
         SetupMacro(args, loc, state);
         int[] origin = {xPos, yPos, zPos};
         String[] schemNames = path.split("\\|");
-        String useSchem = schemNames[GlobalVars.rand.nextInt(schemNames.length)];
+        String useSchem = schemNames[Main.getRand().nextInt(schemNames.length)];
         if (mirrorOpts.contains("r")) {
             mirrorOpts = "t";
-            if (GlobalVars.rand.nextBoolean()) {
+            if (Main.getRand().nextBoolean()) {
                 mirrorOpts = mirrorOpts + "x";
             }
-            if (GlobalVars.rand.nextBoolean()) {
+            if (Main.getRand().nextBoolean()) {
                 mirrorOpts = mirrorOpts + "z";
             }
         }

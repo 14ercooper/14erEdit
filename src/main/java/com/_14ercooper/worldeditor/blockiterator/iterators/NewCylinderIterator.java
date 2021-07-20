@@ -52,9 +52,9 @@ public class NewCylinderIterator extends BlockIterator {
     }
 
     @Override
-    public Block getNextBlock() {
+    public Block getNextBlock(CommandSender player) {
         while (true) {
-            if (incrXYZ(dirMaxX, dirMaxY, dirMaxZ, xC, yC, zC)) {
+            if (incrXYZ(dirMaxX, dirMaxY, dirMaxZ, xC, yC, zC, player)) {
                 return null;
             }
 

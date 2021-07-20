@@ -3,7 +3,8 @@ package com._14ercooper.worldeditor.brush.shapes;
 import com._14ercooper.worldeditor.blockiterator.BlockIterator;
 import com._14ercooper.worldeditor.blockiterator.iterators.MultiIterator;
 import com._14ercooper.worldeditor.brush.BrushShape;
-import com._14ercooper.worldeditor.main.GlobalVars;
+import com._14ercooper.worldeditor.blockiterator.IteratorManager;
+import com._14ercooper.worldeditor.main.Main;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 
@@ -23,9 +24,9 @@ public class Splatter extends BrushShape {
         int spheresGenerated = 0;
         Set<BlockIterator> spheres = new HashSet<>();
         while (spheresGenerated < sphereCount) {
-            double xOff = GlobalVars.rand.nextInt((2 * splatterRadius) + 1) - splatterRadius;
-            double yOff = GlobalVars.rand.nextInt((2 * splatterRadius) + 1) - splatterRadius;
-            double zOff = GlobalVars.rand.nextInt((2 * splatterRadius) + 1) - splatterRadius;
+            double xOff = Main.getRand().nextInt((2 * splatterRadius) + 1) - splatterRadius;
+            double yOff = Main.getRand().nextInt((2 * splatterRadius) + 1) - splatterRadius;
+            double zOff = Main.getRand().nextInt((2 * splatterRadius) + 1) - splatterRadius;
             if (xOff * xOff + yOff * yOff + zOff * zOff < splatterRadius * splatterRadius + 0.5) {
                 List<String> argList = new ArrayList<>();
                 argList.add(Integer.toString((int) (x + xOff)));
@@ -34,12 +35,12 @@ public class Splatter extends BrushShape {
                 argList.add(Integer.toString(sphereRadius));
                 argList.add(Integer.toString(0));
                 argList.add(correction);
-                spheres.add(GlobalVars.iteratorManager.getIterator("sphere").newIterator(argList, world, sender));
+                spheres.add(IteratorManager.INSTANCE.getIterator("sphere").newIterator(argList, world, sender));
                 spheresGenerated++;
             }
 
         }
-        return ((MultiIterator) GlobalVars.iteratorManager.getIterator("multi")).newIterator(spheres);
+        return ((MultiIterator) IteratorManager.INSTANCE.getIterator("multi")).newIterator(spheres);
     }
 
     @Override

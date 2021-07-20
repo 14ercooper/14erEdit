@@ -28,13 +28,12 @@ public class SelectionWandListener implements Listener {
         // Makes sure the player is holding a registered wand, else this doesn't need to
         // do anything
         Player p = event.getPlayer();
-        boolean isValidPlayer = false;
+        boolean isValidPlayer;
         SelectionWand wand = null;
         // Check the player
         for (SelectionWand s : wands) {
             if (s.owner.equals(p.getUniqueId())) {
                 wand = s;
-                isValidPlayer = true;
                 break;
             }
         }

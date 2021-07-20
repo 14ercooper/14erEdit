@@ -39,9 +39,9 @@ public class SphereIterator extends BlockIterator {
     }
 
     @Override
-    public Block getNextBlock() {
+    public Block getNextBlock(CommandSender player) {
         while (true) {
-            if (incrXYZ(radMax, radMax, radMax, xC, yC, zC)) {
+            if (incrXYZ(radMax, radMax, radMax, xC, yC, zC, player)) {
                 return null;
             }
 

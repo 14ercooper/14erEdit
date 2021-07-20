@@ -2,7 +2,7 @@ package com._14ercooper.worldeditor.brush.shapes;
 
 import com._14ercooper.worldeditor.blockiterator.BlockIterator;
 import com._14ercooper.worldeditor.brush.BrushShape;
-import com._14ercooper.worldeditor.main.GlobalVars;
+import com._14ercooper.worldeditor.blockiterator.IteratorManager;
 import com._14ercooper.worldeditor.main.Main;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
@@ -23,7 +23,7 @@ public class SchemShape extends BrushShape {
         args.add(Integer.toString((int) z));
         Main.logDebug("Creating schematic iterator, file " + fileName);
         args.add(fileName);
-        return GlobalVars.iteratorManager.getIterator("schem").newIterator(args, world, sender);
+        return IteratorManager.INSTANCE.getIterator("schem").newIterator(args, world, sender);
     }
 
     @Override

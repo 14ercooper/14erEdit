@@ -1,6 +1,5 @@
 package com._14ercooper.worldeditor.operations.operators.core;
 
-import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.OperatorState;
 import com._14ercooper.worldeditor.operations.DummyState;

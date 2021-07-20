@@ -2,7 +2,6 @@ package com._14ercooper.worldeditor.macros.macros.nature;
 
 import com._14ercooper.worldeditor.macros.MacroLauncher;
 import com._14ercooper.worldeditor.macros.macros.Macro;
-import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.main.SetBlock;
 import com._14ercooper.worldeditor.operations.OperatorState;
@@ -172,7 +171,7 @@ public class ErodeMacro extends Macro {
             }
 
             // Make sure the chance is met
-            if (GlobalVars.rand.nextInt(100) >= erodeSubtype) {
+            if (Main.getRand().nextInt(100) >= erodeSubtype) {
                 snapshotCopy.add(b);
                 continue;
             }
@@ -188,7 +187,7 @@ public class ErodeMacro extends Macro {
             adjBlocks.add(current.getRelative(BlockFace.WEST));
 
             // Pick a random one and update
-            BlockState setMat = adjBlocks.get(GlobalVars.rand.nextInt(adjBlocks.size())).getState();
+            BlockState setMat = adjBlocks.get(Main.getRand().nextInt(adjBlocks.size())).getState();
             b.setType(setMat.getType());
             b.setBlockData(setMat.getBlockData());
             snapshotCopy.add(b);

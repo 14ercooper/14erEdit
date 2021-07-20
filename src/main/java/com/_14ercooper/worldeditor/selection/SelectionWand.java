@@ -20,7 +20,7 @@ public class SelectionWand {
     public static SelectionWand giveNewWand(Player player) {
         for (SelectionWand s : SelectionWandListener.wands) {
             // Player already has a wand registered to them, give it back
-            if (s.owner.equals(player)) {
+            if (s.owner.equals(player.getUniqueId())) {
                 s.givePlayerWand();
                 return s;
             }

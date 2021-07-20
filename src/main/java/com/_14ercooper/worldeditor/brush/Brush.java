@@ -3,7 +3,6 @@ package com._14ercooper.worldeditor.brush;
 import com._14ercooper.worldeditor.async.AsyncManager;
 import com._14ercooper.worldeditor.blockiterator.BlockIterator;
 import com._14ercooper.worldeditor.brush.shapes.Multi;
-import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.Operator;
 import org.bukkit.Bukkit;
@@ -108,7 +107,6 @@ public class Brush {
             // Store the brush and return success
             BrushListener.brushes.add(this);
             player.sendMessage("§dBrush created and bound to item in hand.");
-            GlobalVars.errorLogged = false;
 
         } catch (Exception e) {
             Main.logError("Error creating brush. Please check your syntax.", player, e);

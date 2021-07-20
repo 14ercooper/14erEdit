@@ -1,6 +1,7 @@
 package com._14ercooper.worldeditor.blockiterator;
 
-import com._14ercooper.worldeditor.main.GlobalVars;
+import com._14ercooper.worldeditor.player.PlayerManager;
+import com._14ercooper.worldeditor.player.PlayerWrapper;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
@@ -14,12 +15,12 @@ public abstract class BlockIterator {
     public abstract BlockIterator newIterator(List<String> args, World world, CommandSender player);
 
     // Gets the next block in this block iterator
-    public abstract Block getNextBlock();
+    public abstract Block getNextBlock(CommandSender player);
 
-    public List<Block> getNext(int num) {
-        List<Block> blocks = new ArrayList<Block>();
+    public List<Block> getNext(int num, CommandSender player) {
+        List<Block> blocks = new ArrayList<>();
         for (int i = 0; i < num; i++) {
-            Block next = getNextBlock();
+            Block next = getNextBlock(player);
             if (next != null) {
                 blocks.add(next);
             }
@@ -42,32 +43,34 @@ public abstract class BlockIterator {
     public long doneBlocks = 0;
     protected World iterWorld;
 
-    public boolean incrXYZ(int radX, int radY, int radZ, int xOff, int yOff, int zOff) {
+    public boolean incrXYZ(int radX, int radY, int radZ, int xOff, int yOff, int zOff, CommandSender player) {
+
+        PlayerWrapper playerManager = PlayerManager.INSTANCE.getPlayerWrapper(player);
 
         x++;
         doneBlocks++;
-        if (x > radX || x + xOff > GlobalVars.maxEditX) {
+        if (x > radX || x + xOff > playerManager.getMaxEditX()) {
             y++;
             x = -radX;
 
-            if (x + xOff < GlobalVars.minEditX) {
-                x = (int) GlobalVars.minEditX - xOff;
+            if (x + xOff < playerManager.getMinEditX()) {
+                x = (int) playerManager.getMinEditX() - xOff;
             }
         }
-        if (y > radY || y + yOff > GlobalVars.maxEditY) {
+        if (y > radY || y + yOff > playerManager.getMaxEditY()) {
             z++;
 
-            if (z + zOff < GlobalVars.minEditZ) {
-                z = (int) GlobalVars.minEditZ - zOff;
+            if (z + zOff < playerManager.getMinEditZ()) {
+                z = (int) playerManager.getMinEditZ() - zOff;
             }
 
             y = -radY;
-            while (y + yOff < GlobalVars.minEditY) {
+            while (y + yOff < playerManager.getMinEditY()) {
                 y++;
                 doneBlocks++;
             }
         }
 
-        return z > radZ || z + zOff > GlobalVars.maxEditZ;
+        return z > radZ || z + zOff > playerManager.getMaxEditZ();
     }
 }

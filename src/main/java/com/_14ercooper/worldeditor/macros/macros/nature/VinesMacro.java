@@ -2,7 +2,6 @@ package com._14ercooper.worldeditor.macros.macros.nature;
 
 import com._14ercooper.worldeditor.macros.MacroLauncher;
 import com._14ercooper.worldeditor.macros.macros.Macro;
-import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.main.SetBlock;
 import com._14ercooper.worldeditor.operations.OperatorState;
@@ -96,7 +95,7 @@ public class VinesMacro extends Macro {
             }
 
             // Check density
-            if (GlobalVars.rand.nextDouble() >= density) {
+            if (Main.getRand().nextDouble() >= density) {
                 continue;
             }
 
@@ -154,7 +153,7 @@ public class VinesMacro extends Macro {
 
                 // Pick the side for the vines that will be below this one
                 if (dirs.size() > 1) {
-                    blockState = dirs.get(GlobalVars.rand.nextInt(dirs.size() - 1));
+                    blockState = dirs.get(Main.getRand().nextInt(dirs.size() - 1));
                 } else {
                     blockState = dirs.get(0);
                 }
@@ -166,7 +165,7 @@ public class VinesMacro extends Macro {
             }
 
             // Determine the length of this vine
-            double actVariance = ((GlobalVars.rand.nextDouble() * 2.0) - 1.0) * variance;
+            double actVariance = ((Main.getRand().nextDouble() * 2.0) - 1.0) * variance;
             int vineLength = (int) Math.round(length + actVariance);
 
             // Grow the vine (checking to make sure only air gets replaced and registering

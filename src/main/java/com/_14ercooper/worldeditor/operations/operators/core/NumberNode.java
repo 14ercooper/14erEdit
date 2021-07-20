@@ -1,6 +1,5 @@
 package com._14ercooper.worldeditor.operations.operators.core;
 
-import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.OperatorState;
 import com._14ercooper.worldeditor.operations.Parser;
@@ -78,7 +77,7 @@ public class NumberNode extends Node {
         if (isRange) {
             double rangeMinVal = rangeMin.getValue(state);
             double rangeMaxVal = rangeMax.getValue(state);
-            return (GlobalVars.rand.nextDouble() * (rangeMaxVal - rangeMinVal)) + rangeMinVal
+            return (Main.getRand().nextDouble() * (rangeMaxVal - rangeMinVal)) + rangeMinVal
                     + center;
         } else if (isNoise) {
             return (noise.getNum(state)) + center;

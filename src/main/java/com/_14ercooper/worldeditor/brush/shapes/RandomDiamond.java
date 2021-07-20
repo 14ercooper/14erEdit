@@ -2,7 +2,7 @@ package com._14ercooper.worldeditor.brush.shapes;
 
 import com._14ercooper.worldeditor.blockiterator.BlockIterator;
 import com._14ercooper.worldeditor.brush.BrushShape;
-import com._14ercooper.worldeditor.main.GlobalVars;
+import com._14ercooper.worldeditor.blockiterator.IteratorManager;
 import com._14ercooper.worldeditor.main.Main;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
@@ -24,7 +24,7 @@ public class RandomDiamond extends BrushShape {
         argList.add(Integer.toString((int) z));
 //	argList.add(Integer.toString(rand.nextInt(radiusMax - radiusMin) + radiusMin));
         argList.add(Integer.toString(Main.randRange(radiusMin, radiusMax)));
-        return GlobalVars.iteratorManager.getIterator("diamond").newIterator(argList, world, sender);
+        return IteratorManager.INSTANCE.getIterator("diamond").newIterator(argList, world, sender);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com._14ercooper.worldeditor.main
 
 import com._14ercooper.worldeditor.async.AsyncManager
+import com._14ercooper.worldeditor.player.PlayerManager
 import com._14ercooper.worldeditor.undo.UndoElement
 import com._14ercooper.worldeditor.undo.UndoMode
 import org.bukkit.Material
@@ -12,10 +13,10 @@ import org.bukkit.command.CommandSender
 object SetBlock {
     @JvmStatic
     fun setMaterial(b: Block, mat: Material?, undo : UndoElement, currentPlayer : CommandSender) {
-        if (GlobalVars.countEdits) {
+        if (AsyncManager.countEdits) {
             ++AsyncManager.doneOperations
         }
-        if (Main.inEditRegion(b.x.toLong(), b.y.toLong(), b.z.toLong())) {
+        if (PlayerManager.getPlayerWrapper(currentPlayer).inEditRegion(b.x.toLong(), b.y.toLong(), b.z.toLong())) {
             return
         }
         try {
@@ -31,10 +32,10 @@ object SetBlock {
 
     @JvmStatic
     fun setMaterial(b: Block, mat: Material?, physics: Boolean, undo : UndoElement, currentPlayer : CommandSender) {
-        if (GlobalVars.countEdits) {
+        if (AsyncManager.countEdits) {
             ++AsyncManager.doneOperations
         }
-        if (Main.inEditRegion(b.x.toLong(), b.y.toLong(), b.z.toLong())) {
+        if (PlayerManager.getPlayerWrapper(currentPlayer).inEditRegion(b.x.toLong(), b.y.toLong(), b.z.toLong())) {
             return
         }
         try {
@@ -58,10 +59,10 @@ object SetBlock {
 
     @JvmStatic
     fun setMaterial(b: BlockState, mat: Material?, undo : UndoElement, currentPlayer : CommandSender) {
-        if (GlobalVars.countEdits) {
+        if (AsyncManager.countEdits) {
             ++AsyncManager.doneOperations
         }
-        if (Main.inEditRegion(b.x.toLong(), b.y.toLong(), b.z.toLong())) {
+        if (PlayerManager.getPlayerWrapper(currentPlayer).inEditRegion(b.x.toLong(), b.y.toLong(), b.z.toLong())) {
             return
         }
         try {

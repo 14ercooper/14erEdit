@@ -1,7 +1,6 @@
 package com._14ercooper.worldeditor.operations
 
 import com._14ercooper.worldeditor.async.AsyncManager
-import com._14ercooper.worldeditor.main.GlobalVars
 import com._14ercooper.worldeditor.main.Main.Companion.logError
 import com._14ercooper.worldeditor.operations.operators.core.EntryNode
 import org.bukkit.command.CommandSender

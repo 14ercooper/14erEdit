@@ -1,7 +1,7 @@
 package com._14ercooper.schematics;
 
 import com._14ercooper.worldeditor.blockiterator.BlockIterator;
-import com._14ercooper.worldeditor.main.GlobalVars;
+import com._14ercooper.worldeditor.blockiterator.IteratorManager;
 import com._14ercooper.worldeditor.main.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -87,7 +87,7 @@ public class SchemLite {
         iterArgs.add(Integer.toString(yE));
         iterArgs.add(Integer.toString(zE));
         iterArgs.add(Integer.toString(executionOrder));
-        return GlobalVars.iteratorManager.getIterator("cube").newIterator(iterArgs, world, Bukkit.getConsoleSender());
+        return IteratorManager.INSTANCE.getIterator("cube").newIterator(iterArgs, world, Bukkit.getConsoleSender());
     }
 
     // Reset the write position of the schem lite object

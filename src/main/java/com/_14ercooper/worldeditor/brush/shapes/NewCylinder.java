@@ -2,7 +2,7 @@ package com._14ercooper.worldeditor.brush.shapes;
 
 import com._14ercooper.worldeditor.blockiterator.BlockIterator;
 import com._14ercooper.worldeditor.brush.BrushShape;
-import com._14ercooper.worldeditor.main.GlobalVars;
+import com._14ercooper.worldeditor.blockiterator.IteratorManager;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 
@@ -41,7 +41,7 @@ public class NewCylinder extends BrushShape {
             args.add("1");
             args.add("0");
         }
-        return GlobalVars.iteratorManager.getIterator("newcylinder").newIterator(args, world, sender);
+        return IteratorManager.INSTANCE.getIterator("newcylinder").newIterator(args, world, sender);
     }
 
     @Override

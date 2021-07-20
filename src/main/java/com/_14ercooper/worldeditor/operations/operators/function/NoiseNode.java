@@ -3,7 +3,7 @@ package com._14ercooper.worldeditor.operations.operators.function;
 import com._14ercooper.worldeditor.main.FastNoise;
 import com._14ercooper.worldeditor.main.FastNoise.CellularDistanceFunction;
 import com._14ercooper.worldeditor.main.FastNoise.FractalType;
-import com._14ercooper.worldeditor.main.GlobalVars;
+import com._14ercooper.worldeditor.main.SimplexNoise;
 import com._14ercooper.worldeditor.operations.OperatorState;
 import com._14ercooper.worldeditor.operations.DummyState;
 import com._14ercooper.worldeditor.operations.Parser;
@@ -38,7 +38,7 @@ public class NoiseNode extends Node {
         node.frequency = Parser.parseNumberNode(parserState);
 
         node.noise = new FastNoise();
-        node.noise.SetSeed(GlobalVars.noiseSeed);
+        node.noise.SetSeed(SimplexNoise.noiseSeed);
         node.noise.SetFrequency((float) (node.frequency.getValue(new DummyState(parserState.getCurrentPlayer())) / 40.0));
 
         if (node.noiseType.getText().contains("Fractal") || node.noiseType.getText().contains("fractal")) {

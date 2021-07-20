@@ -2,7 +2,6 @@ package com._14ercooper.worldeditor.selection;
 
 import com._14ercooper.worldeditor.async.AsyncManager;
 import com._14ercooper.worldeditor.blockiterator.BlockIterator;
-import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.Operator;
 import org.bukkit.entity.Player;
@@ -263,7 +262,6 @@ public class SelectionCommand {
         Operator operator = new Operator(opStr, wand.getOwner());
 
         AsyncManager.scheduleEdit(operator, wand.getOwner(), blockArray);
-        GlobalVars.errorLogged = false;
 
         return true;
     }

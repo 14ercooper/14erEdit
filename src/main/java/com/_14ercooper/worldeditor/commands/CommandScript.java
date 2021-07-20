@@ -1,6 +1,6 @@
 package com._14ercooper.worldeditor.commands;
 
-import com._14ercooper.worldeditor.main.GlobalVars;
+import com._14ercooper.worldeditor.scripts.CraftscriptManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -23,13 +23,13 @@ public class CommandScript implements CommandExecutor {
         if (sender instanceof Player) {
             LinkedList<String> argsToPass = new LinkedList<>(Arrays.asList(args));
             argsToPass.removeFirst();
-            return GlobalVars.scriptManager.runCraftscript(args[0], argsToPass, (Player) sender);
+            return CraftscriptManager.INSTANCE.runCraftscript(args[0], argsToPass, (Player) sender);
         }
         return false;
     }
 
     public static Set<String> getScriptNames() {
-        return GlobalVars.scriptManager.registeredScripts.keySet();
+        return CraftscriptManager.INSTANCE.registeredScripts.keySet();
     }
 
     public static class TabComplete implements TabCompleter {

@@ -41,9 +41,9 @@ public class EllipseIterator extends BlockIterator {
     }
 
     @Override
-    public Block getNextBlock() {
+    public Block getNextBlock(CommandSender player) {
         while (true) {
-            if (incrXYZ((int) rx, (int) ry, (int) rz, xC, yC, zC)) {
+            if (incrXYZ((int) rx, (int) ry, (int) rz, xC, yC, zC, player)) {
                 return null;
             }
 

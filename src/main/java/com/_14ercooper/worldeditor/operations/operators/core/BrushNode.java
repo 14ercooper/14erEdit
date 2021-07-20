@@ -5,7 +5,6 @@ import com._14ercooper.worldeditor.blockiterator.BlockIterator;
 import com._14ercooper.worldeditor.brush.Brush;
 import com._14ercooper.worldeditor.brush.BrushShape;
 import com._14ercooper.worldeditor.brush.shapes.Multi;
-import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.operations.OperatorState;

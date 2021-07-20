@@ -1,10 +1,11 @@
 package com._14ercooper.worldeditor.operations.operators.world;
 
-import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.OperatorState;
 import com._14ercooper.worldeditor.operations.ParserState;
 import com._14ercooper.worldeditor.operations.operators.Node;
+import com._14ercooper.worldeditor.player.PlayerManager;
+import com._14ercooper.worldeditor.player.PlayerWrapper;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -21,7 +22,10 @@ public class GravityNode extends Node {
         try {
             Material mat = state.getCurrentBlock().getType();
             Block b = state.getCurrentBlock();
-            while (b.getX() != 0 && GlobalVars.brushMask.contains(b.getRelative(BlockFace.DOWN).getType())) {
+
+            PlayerWrapper playerWrapper = PlayerManager.INSTANCE.getPlayerWrapper(state.getCurrentPlayer());
+
+            while (b.getX() != 0 && playerWrapper.getBrushMask().contains(b.getRelative(BlockFace.DOWN).getType())) {
                 b = b.getRelative(BlockFace.DOWN);
             }
             b.setType(mat);

@@ -3,7 +3,6 @@ package com._14ercooper.worldeditor.functions;
 import com._14ercooper.worldeditor.async.AsyncManager;
 import com._14ercooper.worldeditor.brush.BrushListener;
 import com._14ercooper.worldeditor.functions.commands.InterpreterCommand;
-import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.OperatorState;
 import org.bukkit.Bukkit;
@@ -17,6 +16,8 @@ import java.nio.file.Paths;
 import java.util.*;
 
 public class Function {
+
+    public static long maxFunctionIters = 100000;
 
     // Interpreter commands map
     public static final Map<String, InterpreterCommand> commands = new HashMap<>();
@@ -103,7 +104,7 @@ public class Function {
     public static void SetupFunctions() {
         RegisterFunctions.RegisterAll();
 
-        Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(GlobalVars.plugin, Function::CheckWaitingFunctions, 1L, 1L);
+        Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(), Function::CheckWaitingFunctions, 1L, 1L);
     }
 
     // See if any waiting functions are ready to keep running
@@ -133,7 +134,7 @@ public class Function {
                 }
 
                 // Log error and exit if running too long
-                if (iters > GlobalVars.maxFunctionIters) {
+                if (iters > maxFunctionIters) {
                     exit = true;
                     Main.logError("Function max iterations exceeded.", player, null);
                     continue;

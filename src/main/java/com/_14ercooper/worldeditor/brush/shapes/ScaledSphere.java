@@ -2,7 +2,7 @@ package com._14ercooper.worldeditor.brush.shapes;
 
 import com._14ercooper.worldeditor.blockiterator.BlockIterator;
 import com._14ercooper.worldeditor.brush.BrushShape;
-import com._14ercooper.worldeditor.main.GlobalVars;
+import com._14ercooper.worldeditor.blockiterator.IteratorManager;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 
@@ -25,7 +25,7 @@ public class ScaledSphere extends BrushShape {
         argList.add(args.get(2));
         argList.add(args.get(3));
         argList.add(args.get(4));
-        return GlobalVars.iteratorManager.getIterator("cylinder").newIterator(argList, world, sender);
+        return IteratorManager.INSTANCE.getIterator("cylinder").newIterator(argList, world, sender);
     }
 
     @Override

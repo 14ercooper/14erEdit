@@ -27,12 +27,12 @@ public class MultiIterator extends BlockIterator {
     }
 
     @Override
-    public Block getNextBlock() {
+    public Block getNextBlock(CommandSender player) {
         Block next = null;
         while (next == null) {
             if (childIterators.isEmpty())
                 return null;
-            next = childIterators.get(0).getNextBlock();
+            next = childIterators.get(0).getNextBlock(player);
             if (next == null) {
                 if (childIterators.isEmpty())
                     return null;

@@ -1,6 +1,5 @@
 package com._14ercooper.worldeditor.operations.operators.world;
 
-import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.main.NBTExtractor;
 import com._14ercooper.worldeditor.operations.OperatorState;
@@ -200,7 +199,7 @@ public class BlockNode extends Node {
             for (BlockInstance bi : list) {
                 totalWeight += bi.weight;
             }
-            int randNum = GlobalVars.rand.nextInt(totalWeight + 1);
+            int randNum = Main.getRand().nextInt(totalWeight + 1);
             for (BlockInstance bi : list) {
                 randNum -= bi.weight;
                 if (randNum <= 0)

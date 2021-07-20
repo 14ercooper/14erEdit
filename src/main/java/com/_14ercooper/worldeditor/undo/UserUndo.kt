@@ -1,7 +1,6 @@
 package com._14ercooper.worldeditor.undo
 
 import com._14ercooper.worldeditor.async.AsyncManager
-import com._14ercooper.worldeditor.main.GlobalVars
 import com._14ercooper.worldeditor.main.Main
 import kotlinx.coroutines.runBlocking
 import org.bukkit.Bukkit
@@ -9,7 +8,6 @@ import java.io.File
 import java.nio.file.Files
 import java.nio.file.Path
 import java.util.*
-import kotlin.collections.HashMap
 
 class UserUndo
     (thisName: String) {
@@ -102,16 +100,15 @@ class UserUndo
     private fun saveUndoList() : Boolean {
         val fileName = "plugins/14erEdit/undo/$name/"
         // Size limit the lists
-        if (GlobalVars.undoLimit > 0) {
-            while (undoList.size > GlobalVars.undoLimit) {
-                val undoName = undoList.removeFirst()
-                File(fileName + undoName).deleteRecursively()
-            }
-            while (redoList.size > GlobalVars.undoLimit) {
-                val redoName = redoList.removeFirst()
-                File(fileName + redoName).deleteRecursively()
-            }
+        while (undoList.size > maxListSize) {
+            val undoName = undoList.removeFirst()
+            File(fileName + undoName).deleteRecursively()
         }
+        while (redoList.size > maxListSize) {
+            val redoName = redoList.removeFirst()
+            File(fileName + redoName).deleteRecursively()
+        }
+
         // Save the lists
         run {
             Files.deleteIfExists(Path.of(fileName + "undoList"))
@@ -157,5 +154,9 @@ class UserUndo
         undoElements = HashMap()
         Main.logDebug("Flushed user undo for $name")
         return true
+    }
+
+    companion object {
+        val maxListSize : Long = 500
     }
 }

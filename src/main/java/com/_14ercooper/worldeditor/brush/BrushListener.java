@@ -1,7 +1,8 @@
 package com._14ercooper.worldeditor.brush;
 
-import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
+import com._14ercooper.worldeditor.player.PlayerManager;
+import com._14ercooper.worldeditor.player.PlayerWrapper;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -79,7 +80,9 @@ public class BrushListener implements Listener {
         while (iter.hasNext()) {
             lastBlock = iter.next();
 
-            if (GlobalVars.brushMask.contains(lastBlock.getType())) {
+            PlayerWrapper playerWrapper = PlayerManager.INSTANCE.getPlayerWrapper(player);
+
+            if (playerWrapper.getBrushMask().contains(lastBlock.getType())) {
                 continue;
             }
 

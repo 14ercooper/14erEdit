@@ -49,7 +49,7 @@ public class SchemBrushIterator extends BlockIterator {
     }
 
     @Override
-    public Block getNextBlock() {
+    public Block getNextBlock(CommandSender player) {
         // Update the schem block
         try {
             String[] data = schem.readNext();
@@ -62,7 +62,7 @@ public class SchemBrushIterator extends BlockIterator {
         }
 
         // Return the next world block
-        return schemIter.getNextBlock();
+        return schemIter.getNextBlock(player);
     }
 
     @Override

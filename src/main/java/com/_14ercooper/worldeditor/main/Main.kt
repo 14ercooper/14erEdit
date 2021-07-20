@@ -1,24 +1,23 @@
 package com._14ercooper.worldeditor.main
 
+import com._14ercooper.worldeditor.async.AsyncManager
 import com._14ercooper.worldeditor.blockiterator.IteratorLoader
-import com._14ercooper.worldeditor.blockiterator.IteratorManager
 import com._14ercooper.worldeditor.brush.BrushListener
 import com._14ercooper.worldeditor.brush.BrushLoader
 import com._14ercooper.worldeditor.commands.*
 import com._14ercooper.worldeditor.compat.WorldEditCompat
 import com._14ercooper.worldeditor.functions.Function
-import com._14ercooper.worldeditor.macros.MacroLauncher
 import com._14ercooper.worldeditor.macros.MacroLoader
 import com._14ercooper.worldeditor.operations.OperatorLoader
-import com._14ercooper.worldeditor.operations.Parser
 import com._14ercooper.worldeditor.operations.ParserState
+import com._14ercooper.worldeditor.operations.operators.loop.WhileNode
+import com._14ercooper.worldeditor.player.PlayerManager
 import com._14ercooper.worldeditor.scripts.CraftscriptLoader
-import com._14ercooper.worldeditor.scripts.CraftscriptManager
 import com._14ercooper.worldeditor.selection.SelectionWandListener
 import com._14ercooper.worldeditor.undo.UndoSystem
 import org.bukkit.Bukkit
-import org.bukkit.Material
 import org.bukkit.command.CommandSender
+import org.bukkit.plugin.Plugin
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.IOException
 import java.io.PrintWriter
@@ -26,6 +25,7 @@ import java.io.StringWriter
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.nio.file.StandardOpenOption
+import java.util.*
 
 class Main : JavaPlugin() {
     override fun onDisable() {
@@ -52,16 +52,19 @@ class Main : JavaPlugin() {
             }
         }
 
+        // Set the plugin
+        plugin = this
+
         // Load version numbers
         val ver = server.version.split("MC: ").toTypedArray()[1]
-        ver.split(".").toTypedArray()[1].replace("[^\\d.]".toRegex(), "").toInt().also { GlobalVars.majorVer = it }
+        ver.split(".").toTypedArray()[1].replace("[^\\d.]".toRegex(), "").toInt().also { majorVer = it }
         try {
-            ver.split(".").toTypedArray()[2].replace("[^\\d.]".toRegex(), "").toInt().also { GlobalVars.minorVer = it }
+            ver.split(".").toTypedArray()[2].replace("[^\\d.]".toRegex(), "").toInt().also { minorVer = it }
         }
         catch (e : Exception) {
-            GlobalVars.minorVer = 0
+            minorVer = 0
         }
-        println("Using version " + server.version + ": " + GlobalVars.majorVer + "/" + GlobalVars.minorVer)
+        println("Using version " + server.version + ": " + majorVer + "/" + minorVer)
 
         // Create folders as needed
         try {
@@ -105,33 +108,21 @@ class Main : JavaPlugin() {
         getCommand("limit")!!.setExecutor(CommandLimit())
         getCommand("limit")!!.tabCompleter = CommandLimit.TabComplete()
 
-        // Set up brush mask
-        GlobalVars.brushMask = HashSet()
-        GlobalVars.brushMask.add(Material.AIR)
-        GlobalVars.brushMask.add(Material.CAVE_AIR)
-        GlobalVars.brushMask.add(Material.VOID_AIR)
-
         // Register listeners for brushes and wands
         server.pluginManager.registerEvents(SelectionWandListener(), this)
         server.pluginManager.registerEvents(BrushListener(), this)
 
         // These are needed by the plugin, but should only be loaded once as they are
         // very slow to load
-        GlobalVars.noiseSeed = Bukkit.getWorlds()[0].seed.toInt() // Seeded using the world seed
+        SimplexNoise.noiseSeed = Bukkit.getWorlds()[0].seed.toInt() // Seeded using the world seed
         // for variance between worlds
         // but consistency in the same
         // world
-        GlobalVars.simplexNoise = SimplexNoise(Bukkit.getWorlds()[0].seed)
-        GlobalVars.plugin = this
-        GlobalVars.rand.nextDouble() // Toss out a value from the LCG
+        SimplexNoise.simplexNoise = SimplexNoise(Bukkit.getWorlds()[0].seed)
+        rand.nextDouble() // Toss out a value from the LCG
 
         // Load config
         loadConfig()
-
-        // Load managers
-        GlobalVars.scriptManager = CraftscriptManager()
-        GlobalVars.macroLauncher = MacroLauncher()
-        GlobalVars.iteratorManager = IteratorManager()
 
         // Register the prepackaged things to managers
         CraftscriptLoader.LoadBundledCraftscripts()
@@ -141,17 +132,24 @@ class Main : JavaPlugin() {
         IteratorLoader.LoadIterators()
         Function.SetupFunctions()
 
-        // Set up the world height
-        if (GlobalVars.majorVer >= 17) {
-            GlobalVars.minEditY = server.worlds[0].minHeight.toLong()
-            GlobalVars.maxEditY = server.worlds[0].maxHeight.toLong()
-        }
-
         // Initialize the WE syntax compat layer
         WorldEditCompat.init()
     }
 
     companion object {
+        // Variables for in main
+        private var isDebugDefault = false
+        @JvmStatic
+        lateinit var plugin : Plugin
+        var majorVer : Int = 0
+        var minorVer : Int = 0
+        @JvmStatic
+        val rand = Random()
+        @JvmStatic
+        var outputStacktrace = false
+        var logDebugs = false
+        var logErrors = false
+
         @JvmStatic
         fun logError(message: String, p: ParserState, e: Exception?) {
             logError(message, p.currentPlayer, e)
@@ -160,10 +158,9 @@ class Main : JavaPlugin() {
         @JvmStatic
         fun logError(message: String, p: CommandSender?, e: Exception?) {
             var player = p
-            GlobalVars.errorLogged = true
             if (player == null) player = Bukkit.getConsoleSender()
             var stackTrace = ""
-            if (e != null && GlobalVars.outputStacktrace) {
+            if (e != null && outputStacktrace) {
                 val sw = StringWriter()
                 val pw = PrintWriter(sw)
                 e.printStackTrace(pw)
@@ -172,11 +169,11 @@ class Main : JavaPlugin() {
                     $sw
                     """.trimIndent()
             }
-            if (!GlobalVars.logErrors)
+            if (!logErrors)
                 player.sendMessage("§6[ERROR] $message$stackTrace")
             else
-                GlobalVars.plugin.server.broadcastMessage("§6[ERROR] $message$stackTrace")
-            if (GlobalVars.logErrors) {
+                plugin.server.broadcastMessage("§6[ERROR] $message$stackTrace")
+            if (logErrors) {
                 try {
                     var errMessage = ""
                     errMessage += """
@@ -199,38 +196,46 @@ class Main : JavaPlugin() {
         fun randRange(min: Int, max: Int): Int {
             return if (min == max) {
                 min
-            } else min + GlobalVars.rand.nextInt(max - min + 1)
+            } else min + rand.nextInt(max - min + 1)
         }
 
         private var debugText = ""
         @JvmStatic
         fun logDebug(message: String) {
-            if (GlobalVars.isDebug) debugText += "§c[DEBUG] $message\n" // ----
-            try {
-                if (GlobalVars.logDebugs) {
-                    if (!Files.exists(Paths.get("plugins/14erEdit/debug.log"))) Files.createFile(Paths.get("plugins/14erEdit/debug.log"))
-                    Files.writeString(
-                        Paths.get("plugins/14erEdit/debug.log"), """
+            var hasADebug = false
+            for (p in Bukkit.getOnlinePlayers()) {
+                val playerWrapper = PlayerManager.getPlayerWrapper(p)
+                hasADebug = hasADebug || playerWrapper.isDebug
+            }
+                if (hasADebug) debugText += "§c[DEBUG] $message\n" // ----
+                try {
+                    if (hasADebug) {
+                        if (!Files.exists(Paths.get("plugins/14erEdit/debug.log"))) Files.createFile(Paths.get("plugins/14erEdit/debug.log"))
+                        Files.writeString(
+                            Paths.get("plugins/14erEdit/debug.log"), """
      $message
      
      """.trimIndent(), StandardOpenOption.APPEND
-                    )
+                        )
+                    }
+                } catch (e: Exception) {
+                    // Do nothing, this isn't super important
                 }
-            } catch (e: Exception) {
-                // Do nothing, this isn't super important
-            }
         }
 
         fun outputDebug() {
-            if (GlobalVars.isDebug && debugText.isNotBlank()) {
-                Bukkit.getServer().broadcastMessage(debugText)
-                debugText = ""
+            for (p in Bukkit.getOnlinePlayers()) {
+                val playerWrapper = PlayerManager.getPlayerWrapper(p)
+                if (playerWrapper.isDebug && debugText.isNotBlank()) {
+                    Bukkit.getServer().broadcastMessage(debugText)
+                    debugText = ""
+                }
             }
         }
 
         private fun loadConfig() {
-            GlobalVars.plugin.saveDefaultConfig()
-            if (!GlobalVars.plugin.config.isSet("maxLoopLength")) {
+            plugin.saveDefaultConfig()
+            if (!plugin.config.isSet("maxLoopLength")) {
                 println("Updating configuration file.")
                 try {
                     val configUpdate1 = """
@@ -266,21 +271,13 @@ class Main : JavaPlugin() {
                     }
                 }
             }
-            GlobalVars.undoLimit = GlobalVars.plugin.config.getLong("undoLimit")
-            if (GlobalVars.undoLimit >= 0)
-                GlobalVars.undoLimit /= 250
-            GlobalVars.blocksPerAsync = GlobalVars.plugin.config.getLong("blocksPerAsync")
-            GlobalVars.ticksPerAsync = GlobalVars.plugin.config.getLong("ticksPerAsync")
-            GlobalVars.maxLoopLength = GlobalVars.plugin.config.getLong("maxLoopLength")
-            GlobalVars.maxFunctionIters = GlobalVars.plugin.config.getLong("maxFunctionIters")
-            GlobalVars.logDebugs = GlobalVars.plugin.config.getBoolean("logDebugs")
-            GlobalVars.logErrors = GlobalVars.plugin.config.getBoolean("logErrors")
-            GlobalVars.isDebug = GlobalVars.plugin.config.getBoolean("defaultDebug")
-        }
-
-        fun inEditRegion(x: Long, y: Long, z: Long): Boolean {
-            return (x <= GlobalVars.minEditX || y <= GlobalVars.minEditY || z <= GlobalVars.minEditZ
-                    || x >= GlobalVars.maxEditX || y >= GlobalVars.maxEditY || z >= GlobalVars.maxEditZ)
+            AsyncManager.blocksPerAsync = plugin.config.getLong("blocksPerAsync")
+            AsyncManager.ticksPerAsync = plugin.config.getLong("ticksPerAsync")
+            WhileNode.maxLoopLength = plugin.config.getLong("maxLoopLength")
+            Function.maxFunctionIters = plugin.config.getLong("maxFunctionIters")
+            logDebugs = plugin.config.getBoolean("logDebugs")
+            logErrors = plugin.config.getBoolean("logErrors")
+            this.isDebugDefault = plugin.config.getBoolean("defaultDebug")
         }
     }
 }

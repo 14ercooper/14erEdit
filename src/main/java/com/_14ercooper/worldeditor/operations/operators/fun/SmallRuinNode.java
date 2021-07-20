@@ -1,6 +1,5 @@
 package com._14ercooper.worldeditor.operations.operators.fun;
 
-import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.OperatorState;
 import com._14ercooper.worldeditor.operations.Parser;
@@ -48,7 +47,7 @@ public class SmallRuinNode extends Node {
                         state.setCurrentBlock(currBlockOffset);
                         block.performNode(state);
                     } else {
-                        if (GlobalVars.rand.nextBoolean()) {
+                        if (Main.getRand().nextBoolean()) {
                             state.setCurrentBlock(currBlockOffset);
                             block.performNode(state);
                         }
@@ -71,7 +70,7 @@ public class SmallRuinNode extends Node {
                 for (int zO = -zSize; zO <= zSize; zO++) {
                     if (xO == -xSize || xO == xSize || zO == -zSize || zO == zSize) {
                         for (int i = 0; i < 5; i++) {
-                            if (GlobalVars.rand.nextInt(5) == 0)
+                            if (Main.getRand().nextInt(5) == 0)
                                 break;
                             state.setCurrentBlock(currBlock.getRelative(xO, i, zO));
                             block.performNode(state);
