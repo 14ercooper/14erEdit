@@ -4,7 +4,7 @@ import com._14ercooper.worldeditor.main.Main
 import org.bukkit.Bukkit
 import org.bukkit.Material
 
-class PlayerWrapper (val playerName : String) {
+class PlayerWrapper(val playerName: String) {
     var brushMask = mutableSetOf<Material>()
 
     init {
@@ -15,12 +15,12 @@ class PlayerWrapper (val playerName : String) {
 
     var isDebug = false
 
-    var minEditX : Long = Long.MIN_VALUE
-    var minEditY : Long = -1
-    var minEditZ : Long = Long.MIN_VALUE
-    var maxEditX : Long = Long.MAX_VALUE
-    var maxEditY : Long = 256
-    var maxEditZ : Long = Long.MAX_VALUE
+    var minEditX: Long = Long.MIN_VALUE
+    var minEditY: Long = -1
+    var minEditZ: Long = Long.MIN_VALUE
+    var maxEditX: Long = Long.MAX_VALUE
+    var maxEditY: Long = 256
+    var maxEditZ: Long = Long.MAX_VALUE
 
     init {
         if (Main.majorVer >= 17) {

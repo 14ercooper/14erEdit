@@ -74,7 +74,7 @@ public class BlockAtNode extends BlockNode {
         yA = y.isAbsolute;
         zA = z.isAbsolute;
         return state.getCurrentWorld().getBlockAt(xV + (xA ? 0 : state.getCurrentBlock().getX()),
-                        yV + (yA ? 0 : state.getCurrentBlock().getY()), zV + (zA ? 0 : state.getCurrentBlock().getZ()))
+                yV + (yA ? 0 : state.getCurrentBlock().getY()), zV + (zA ? 0 : state.getCurrentBlock().getZ()))
                 .toString();
     }
 
@@ -82,7 +82,7 @@ public class BlockAtNode extends BlockNode {
     @Override
     public String getData(OperatorState state) {
         return state.getCurrentWorld().getBlockAt(xV + (xA ? 0 : state.getCurrentBlock().getX()),
-                        yV + (yA ? 0 : state.getCurrentBlock().getY()), zV + (zA ? 0 : state.getCurrentBlock().getZ()))
+                yV + (yA ? 0 : state.getCurrentBlock().getY()), zV + (zA ? 0 : state.getCurrentBlock().getZ()))
                 .toString();
     }
 

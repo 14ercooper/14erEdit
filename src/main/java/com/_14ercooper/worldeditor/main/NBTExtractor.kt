@@ -1,6 +1,5 @@
 package com._14ercooper.worldeditor.main
 
-import org.bukkit.Bukkit
 import org.bukkit.block.Block
 import org.bukkit.block.BlockState
 
@@ -9,7 +8,7 @@ class NBTExtractor {
         return if (!bs.javaClass.name.endsWith("CraftBlockState")) {
             val craftbukkitApiVer = getServerVersionId()
             val className = "org.bukkit.craftbukkit.v$craftbukkitApiVer.block.CraftBlockEntityState"
-            val unsafeClass : Class<*> = Class.forName(className)
+            val unsafeClass: Class<*> = Class.forName(className)
             val cb = unsafeClass.cast(bs)
             val ntc = unsafeClass.getMethod("getSnapshotNBT").invoke(cb)
             ntc.javaClass.getMethod("asString").invoke(ntc) as String
@@ -18,8 +17,8 @@ class NBTExtractor {
         }
     }
 
-    var versionId : String? = null
-    fun getServerVersionId() : String {
+    var versionId: String? = null
+    fun getServerVersionId(): String {
         if (versionId != null) {
             return versionId as String
         }

@@ -43,7 +43,7 @@ public class SelectionWand {
         getOwner().getInventory().addItem(item);
     }
 
-    public Player getOwner(){
+    public Player getOwner() {
         return Bukkit.getServer().getPlayer(owner);
     }
 }

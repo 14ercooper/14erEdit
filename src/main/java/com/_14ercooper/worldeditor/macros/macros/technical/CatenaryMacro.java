@@ -1,14 +1,13 @@
 package com._14ercooper.worldeditor.macros.macros.technical;
 
 import com._14ercooper.worldeditor.macros.MacroLauncher;
+import com._14ercooper.worldeditor.macros.macros.Macro;
+import com._14ercooper.worldeditor.main.Main;
+import com._14ercooper.worldeditor.main.SetBlock;
 import com._14ercooper.worldeditor.operations.OperatorState;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-
-import com._14ercooper.worldeditor.macros.macros.Macro;
-import com._14ercooper.worldeditor.main.Main;
-import com._14ercooper.worldeditor.main.SetBlock;
 
 public class CatenaryMacro extends Macro {
 

@@ -19,8 +19,8 @@ import org.bukkit.entity.Player
 import java.io.IOException
 
 object AsyncManager {
-    var blocksPerAsync : Long = 10000
-    var ticksPerAsync : Long = 4
+    var blocksPerAsync: Long = 10000
+    var ticksPerAsync: Long = 4
     var countEdits = false
     private const val opBlockSize = 128
 
@@ -28,20 +28,20 @@ object AsyncManager {
     private var queueDropped = false
 
     // Store operations
-    private var operations : MutableList<AsyncOperation> = mutableListOf()
-    private var queuedOperations : MutableList<AsyncOperation> = mutableListOf()
+    private var operations: MutableList<AsyncOperation> = mutableListOf()
+    private var queuedOperations: MutableList<AsyncOperation> = mutableListOf()
 
     // How much work have we done?
     var doneOperations: Long = 0
 
 
     // Get undo for commandsender
-    private fun startUndo(sender : CommandSender?) : UndoElement {
+    private fun startUndo(sender: CommandSender?): UndoElement {
         return UndoSystem.findUserUndo(sender).getNewUndoElement()
     }
 
     // Finish an undo element
-    private fun finishUndo(undo : UndoElement) : Boolean {
+    private fun finishUndo(undo: UndoElement): Boolean {
         return if (undo.currentState == UndoMode.WAITING_FOR_BLOCKS)
             undo.userUndo.finalizeUndo(undo)
         else true
@@ -124,8 +124,9 @@ object AsyncManager {
     fun scheduleEdit(o: Operator?, p: CommandSender, b: BlockIterator) {
         queuedOperations.add(AsyncOperation(o, p, b, startUndo(p)))
     }
+
     @JvmStatic
-    fun scheduleEdit(o: Operator?, p: CommandSender, b: BlockIterator, ue : UndoElement) {
+    fun scheduleEdit(o: Operator?, p: CommandSender, b: BlockIterator, ue: UndoElement) {
         queuedOperations.add(AsyncOperation(o, p, b, ue))
     }
 
@@ -134,8 +135,14 @@ object AsyncManager {
     fun scheduleEdit(iterators: MutableList<out BlockIterator>, operations: MutableList<Operator>, p: CommandSender) {
         queuedOperations.add(AsyncOperation(iterators, operations, p, startUndo(p)))
     }
+
     @JvmStatic
-    fun scheduleEdit(iterators: MutableList<out BlockIterator>, operations: MutableList<Operator>, p: CommandSender, ue : UndoElement) {
+    fun scheduleEdit(
+        iterators: MutableList<out BlockIterator>,
+        operations: MutableList<Operator>,
+        p: CommandSender,
+        ue: UndoElement
+    ) {
         queuedOperations.add(AsyncOperation(iterators, operations, p, ue))
     }
 
@@ -153,12 +160,12 @@ object AsyncManager {
 
     // Scheule an undo operation
     @JvmStatic
-    fun scheduleEdit(undos : MutableList<UndoElement>, player : CommandSender) {
+    fun scheduleEdit(undos: MutableList<UndoElement>, player: CommandSender) {
         queuedOperations.add(AsyncOperation(undos, player))
     }
 
     // Scheduled task to operate
-    private lateinit var currentAsyncOp : AsyncOperation
+    private lateinit var currentAsyncOp: AsyncOperation
     private fun performOperation() {
         // Output building up debug
         Main.outputDebug()
@@ -239,8 +246,7 @@ object AsyncManager {
 
                     val currWorld = if (currentAsyncOp.player is Player) {
                         (currentAsyncOp.player as Player).world
-                    }
-                    else {
+                    } else {
                         Main.plugin.server.worlds[0]
                     }
                     b.stream().forEach {
@@ -248,9 +254,7 @@ object AsyncManager {
                         currentAsyncOp.operation!!.operateOnBlock(state)
                     }
                     doneOperations += b.size
-                }
-
-                else if (currentAsyncOp.key.equals("undoedit", ignoreCase = true)) {
+                } else if (currentAsyncOp.key.equals("undoedit", ignoreCase = true)) {
                     val undoBatchSize = 32L
                     // If undo or redo finished, handle it
                     if (currentAsyncOp.undoList!!.isEmpty()) {
@@ -263,12 +267,13 @@ object AsyncManager {
                     if (currentAsyncOp.undoList!![0].currentState == UndoMode.UNDO_FINISHED || currentAsyncOp.undoList!![0].currentState == UndoMode.REDO_FINISHED) {
                         if (currentAsyncOp.undoList!![0].currentState == UndoMode.UNDO_FINISHED) {
                             currentAsyncOp.undoList!![0].finalizeUndo()
-                            val name = if (currentAsyncOp.undoList == null) "null" else currentAsyncOp.undoList!![0].name
+                            val name =
+                                if (currentAsyncOp.undoList == null) "null" else currentAsyncOp.undoList!![0].name
                             Main.logDebug("Undo $name finalized")
-                        }
-                        else {
+                        } else {
                             currentAsyncOp.undoList!![0].finalizeRedo()
-                            val name = if (currentAsyncOp.undoList == null) "null" else currentAsyncOp.undoList!![0].name
+                            val name =
+                                if (currentAsyncOp.undoList == null) "null" else currentAsyncOp.undoList!![0].name
                             Main.logDebug("Redo $name finalized")
                         }
                         currentAsyncOp.undoList!!.removeAt(0)
@@ -294,9 +299,7 @@ object AsyncManager {
 
                     }
 
-                }
-
-                else if (currentAsyncOp.key.equals("multibrush", ignoreCase = true)) {
+                } else if (currentAsyncOp.key.equals("multibrush", ignoreCase = true)) {
                     var b: List<Block>
                     var doContinue = false
                     while (true) {
@@ -338,9 +341,7 @@ object AsyncManager {
                         currentAsyncOp.operations[0].operateOnBlock(state)
                     }
                     doneOperations += b.size
-                }
-
-                else if (currentAsyncOp.key.equals("saveschem", ignoreCase = true)) {
+                } else if (currentAsyncOp.key.equals("saveschem", ignoreCase = true)) {
                     assert(currentAsyncOp.blocks != null)
                     val b = currentAsyncOp.blocks!!.getNext(1, currentAsyncOp.player)[0]
                     if (!currentAsyncOp.startedWrite) {
@@ -362,9 +363,7 @@ object AsyncManager {
                         // Don't need to do anything
                     }
                     doneOperations++
-                }
-
-                else if (currentAsyncOp.key.equals("loadschem", ignoreCase = true)) {
+                } else if (currentAsyncOp.key.equals("loadschem", ignoreCase = true)) {
                     val b = currentAsyncOp.blocks!!.getNext(1, currentAsyncOp.player)[0]
                     if (b == null) {
                         finishUndo(currentAsyncOp.undo)
@@ -388,7 +387,13 @@ object AsyncManager {
                     }
                     val m = Material.matchMaterial(results[0])
                     if (m != null && !m.isAir || currentAsyncOp.schem!!.setAir()) {
-                        setMaterial(b, Material.matchMaterial(results[0]), false, currentAsyncOp.undo, currentAsyncOp.player)
+                        setMaterial(
+                            b,
+                            Material.matchMaterial(results[0]),
+                            false,
+                            currentAsyncOp.undo,
+                            currentAsyncOp.player
+                        )
                         b.blockData = Bukkit.getServer().createBlockData(results[1])
                         if (results[2].isNotEmpty()) {
                             val command = ("data merge block " + b.x + " " + b.y + " " + b.z + " "
@@ -397,9 +402,7 @@ object AsyncManager {
                         }
                     }
                     doneOperations++
-                }
-
-                else if (currentAsyncOp.key.equals("selclone", ignoreCase = true)) {
+                } else if (currentAsyncOp.key.equals("selclone", ignoreCase = true)) {
                     assert(currentAsyncOp.blocks != null)
                     val b = currentAsyncOp.blocks!!.getNext(1, currentAsyncOp.player)[0]
                     if (b == null) {
@@ -432,9 +435,7 @@ object AsyncManager {
                         doneOperations++
                     }
                     doneOperations += currentAsyncOp.times.toLong()
-                }
-
-                else {
+                } else {
                     finishUndo(currentAsyncOp.undo)
                     Main.logError(
                         "Invalid operation in async queue. Removing operation.",

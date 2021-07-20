@@ -1,9 +1,9 @@
 package com._14ercooper.worldeditor.functions.commands.logic;
 
-import java.util.List;
-
 import com._14ercooper.worldeditor.functions.Function;
 import com._14ercooper.worldeditor.functions.commands.InterpreterCommand;
+
+import java.util.List;
 
 public class WaitTimeCommand extends InterpreterCommand {
 

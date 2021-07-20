@@ -1,9 +1,9 @@
 package com._14ercooper.worldeditor.brush.shapes;
 
 import com._14ercooper.worldeditor.blockiterator.BlockIterator;
+import com._14ercooper.worldeditor.blockiterator.IteratorManager;
 import com._14ercooper.worldeditor.brush.Brush;
 import com._14ercooper.worldeditor.brush.BrushShape;
-import com._14ercooper.worldeditor.blockiterator.IteratorManager;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 

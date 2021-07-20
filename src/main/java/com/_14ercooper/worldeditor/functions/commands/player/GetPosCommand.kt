@@ -9,7 +9,8 @@ class GetPosCommand : InterpreterCommand() {
     override fun run(args: List<String>, function: Function) {
         if (function.player is Player) {
             val dim = function.parseVariable(args[1]).toInt()
-            val loc = if (function.isOperator) function.operatorState!!.currentBlock.location else function.player.location
+            val loc =
+                if (function.isOperator) function.operatorState!!.currentBlock.location else function.player.location
             when (dim) {
                 0 -> {
                     function.setVariable(args[0], loc.x)

@@ -1,8 +1,8 @@
 package com._14ercooper.worldeditor.functions.commands;
 
-import java.util.List;
-
 import com._14ercooper.worldeditor.functions.Function;
+
+import java.util.List;
 
 public abstract class InterpreterCommand {
 

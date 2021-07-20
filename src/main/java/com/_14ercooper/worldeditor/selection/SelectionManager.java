@@ -192,7 +192,7 @@ public class SelectionManager {
         return IteratorManager.INSTANCE.getIterator("cube").newIterator(args, world, Bukkit.getConsoleSender());
     }
 
-    public Player getPlayer(UUID player){
+    public Player getPlayer(UUID player) {
         return Bukkit.getServer().getPlayer(player);
     }
 }

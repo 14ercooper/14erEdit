@@ -12,7 +12,7 @@ import org.bukkit.command.CommandSender
 
 object SetBlock {
     @JvmStatic
-    fun setMaterial(b: Block, mat: Material?, undo : UndoElement, currentPlayer : CommandSender) {
+    fun setMaterial(b: Block, mat: Material?, undo: UndoElement, currentPlayer: CommandSender) {
         if (AsyncManager.countEdits) {
             ++AsyncManager.doneOperations
         }
@@ -31,7 +31,7 @@ object SetBlock {
     }
 
     @JvmStatic
-    fun setMaterial(b: Block, mat: Material?, physics: Boolean, undo : UndoElement, currentPlayer : CommandSender) {
+    fun setMaterial(b: Block, mat: Material?, physics: Boolean, undo: UndoElement, currentPlayer: CommandSender) {
         if (AsyncManager.countEdits) {
             ++AsyncManager.doneOperations
         }
@@ -58,7 +58,7 @@ object SetBlock {
     }
 
     @JvmStatic
-    fun setMaterial(b: BlockState, mat: Material?, undo : UndoElement, currentPlayer : CommandSender) {
+    fun setMaterial(b: BlockState, mat: Material?, undo: UndoElement, currentPlayer: CommandSender) {
         if (AsyncManager.countEdits) {
             ++AsyncManager.doneOperations
         }
@@ -84,7 +84,7 @@ object SetBlock {
         }
     }
 
-    private fun invalidMaterial(mat: Material?, e: Exception, currentPlayer : CommandSender) {
+    private fun invalidMaterial(mat: Material?, e: Exception, currentPlayer: CommandSender) {
         AsyncManager.dropAsync()
         Main.logError(
             "Invalid block ID " + mat?.toString() + " provided. The async queue has been dropped.",

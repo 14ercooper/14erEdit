@@ -73,7 +73,7 @@ public class AngleNode extends Node {
         Material mat2 = b2.getType();
 
         PlayerWrapper playerWrapper = PlayerManager.INSTANCE.getPlayerWrapper(state.getCurrentPlayer());
-        
+
         // Both solid
         if (!playerWrapper.getBrushMask().contains(mat1) && !playerWrapper.getBrushMask().contains(mat2)) {
             return 0;

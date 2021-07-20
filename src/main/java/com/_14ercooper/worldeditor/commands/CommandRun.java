@@ -58,17 +58,14 @@ public class CommandRun implements CommandExecutor {
             int initOffset = 2;
             if (args.length < initOffset) {
                 tabArgs.addAll(OperatorLoader.nodeNames);
-            }
-            else {
+            } else {
                 String lastArg = args[args.length - initOffset];
                 if (OperatorLoader.nextRange.contains(lastArg)) {
                     tabArgs.addAll(OperatorLoader.rangeNodeNames);
-                }
-                else if (OperatorLoader.nextBlock.contains(lastArg)) {
+                } else if (OperatorLoader.nextBlock.contains(lastArg)) {
                     tabArgs.addAll(OperatorLoader.blockNodeNames);
                     tabArgs.add("<block_name>");
-                }
-                else {
+                } else {
                     tabArgs.addAll(OperatorLoader.nodeNames);
                     tabArgs.add("<block_name>");
                 }

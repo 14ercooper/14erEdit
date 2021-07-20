@@ -133,8 +133,7 @@ public class CommandFx implements CommandExecutor {
             List<String> functions = files.map(path -> path.getFileName().toString()).collect(Collectors.toList());
             files.close();
             return functions;
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             return new ArrayList<>(Collections.singleton("<schematic_name>"));
         }
     }
@@ -152,8 +151,7 @@ public class CommandFx implements CommandExecutor {
                 tabArgs.add("selection");
                 tabArgs.add("sel");
                 tabArgs.add("schem");
-            }
-            else if (args.length == 2) {
+            } else if (args.length == 2) {
                 if (args[0].equalsIgnoreCase("brush") || args[0].equalsIgnoreCase("br")) {
                     tabArgs.add("none");
                     tabArgs.addAll(Brush.brushShapes.keySet());
@@ -176,8 +174,7 @@ public class CommandFx implements CommandExecutor {
                     tabArgs.add("load");
                     tabArgs.add("list");
                 }
-            }
-            else if (args.length == 3 && args[0].equalsIgnoreCase("schem")) {
+            } else if (args.length == 3 && args[0].equalsIgnoreCase("schem")) {
                 if (args[1].equalsIgnoreCase("load")) {
                     tabArgs.addAll(getSchematicsList());
                 }
@@ -187,71 +184,54 @@ public class CommandFx implements CommandExecutor {
                 if (args[1].equalsIgnoreCase("list")) {
                     tabArgs.add("[regex]");
                 }
-            }
-            else if ((args[0].equalsIgnoreCase("brush") || args[0].equalsIgnoreCase("br")) && Brush.GetBrushShape(args[1]) == null) {
+            } else if ((args[0].equalsIgnoreCase("brush") || args[0].equalsIgnoreCase("br")) && Brush.GetBrushShape(args[1]) == null) {
                 tabArgs.add("invalid_brush");
-            }
-            else if ((args[0].equalsIgnoreCase("brush") || args[0].equalsIgnoreCase("br")) && args.length < 3 + Brush.GetBrushShape(args[1]).minArgCount()) {
+            } else if ((args[0].equalsIgnoreCase("brush") || args[0].equalsIgnoreCase("br")) && args.length < 3 + Brush.GetBrushShape(args[1]).minArgCount()) {
                 tabArgs.add("<brush_arg>");
-            }
-            else if ((args[0].equalsIgnoreCase("selection") || args[0].equalsIgnoreCase("sel")) && !(args[1].equalsIgnoreCase("op"))) {
+            } else if ((args[0].equalsIgnoreCase("selection") || args[0].equalsIgnoreCase("sel")) && !(args[1].equalsIgnoreCase("op"))) {
                 if (args[1].equalsIgnoreCase("expand")) {
                     if (args.length == 3) {
                         tabArgs.add("<amt>");
-                    }
-                    else if (args.length == 4) {
+                    } else if (args.length == 4) {
                         tabArgs.add("<direction>");
                     }
-                }
-                else if (args[1].equalsIgnoreCase("paste")) {
+                } else if (args[1].equalsIgnoreCase("paste")) {
                     tabArgs.add("true");
                     tabArgs.add("false");
-                }
-                else if (args[1].equalsIgnoreCase("origin")) {
+                } else if (args[1].equalsIgnoreCase("origin")) {
                     if (args.length == 3) {
                         tabArgs.add("shift");
                         tabArgs.add("set");
-                    }
-                    else if (args.length  == 4) {
+                    } else if (args.length == 4) {
                         tabArgs.add("<x>");
-                    }
-                    else if (args.length  == 5) {
+                    } else if (args.length == 5) {
                         tabArgs.add("<y>");
-                    }
-                    else if (args.length  == 6) {
+                    } else if (args.length == 6) {
                         tabArgs.add("<z>");
                     }
-                }
-                else if (args[1].equalsIgnoreCase("pos1")) {
+                } else if (args[1].equalsIgnoreCase("pos1")) {
                     if (args.length == 3) {
                         tabArgs.add("<x>");
-                    }
-                    else if (args.length == 4) {
+                    } else if (args.length == 4) {
                         tabArgs.add("<y>");
-                    }
-                    else if (args.length == 5) {
+                    } else if (args.length == 5) {
                         tabArgs.add("<z>");
                     }
-                }
-                else if (args[1].equalsIgnoreCase("pos2")) {
+                } else if (args[1].equalsIgnoreCase("pos2")) {
                     if (args.length == 3) {
                         tabArgs.add("<x>");
-                    }
-                    else if (args.length == 4) {
+                    } else if (args.length == 4) {
                         tabArgs.add("<y>");
-                    }
-                    else if (args.length == 5) {
+                    } else if (args.length == 5) {
                         tabArgs.add("<z>");
                     }
-                }
-                else if (args[1].equalsIgnoreCase("mirror")) {
+                } else if (args[1].equalsIgnoreCase("mirror")) {
                     if (args.length == 3) {
                         tabArgs.add("x");
                         tabArgs.add("y");
                         tabArgs.add("z");
                     }
-                }
-                else if (args[1].equalsIgnoreCase("rotate")) {
+                } else if (args[1].equalsIgnoreCase("rotate")) {
                     if (args.length == 3) {
                         tabArgs.add("0");
                         tabArgs.add("1");
@@ -260,8 +240,7 @@ public class CommandFx implements CommandExecutor {
                         tabArgs.add("4");
                         tabArgs.add("5");
                     }
-                }
-                else if (args[1].equalsIgnoreCase("clone")) {
+                } else if (args[1].equalsIgnoreCase("clone")) {
                     if (args.length == 3) {
                         tabArgs.add("<xOffset>");
                     }
@@ -279,8 +258,7 @@ public class CommandFx implements CommandExecutor {
                         tabArgs.add("true");
                     }
                 }
-            }
-            else {
+            } else {
                 if (args[1].equalsIgnoreCase("selection") || args[1].equalsIgnoreCase("sel")) {
                     initOffset = 4;
                 }
@@ -290,12 +268,10 @@ public class CommandFx implements CommandExecutor {
                 String lastArg = args[args.length - initOffset];
                 if (OperatorLoader.nextRange.contains(lastArg)) {
                     tabArgs.addAll(OperatorLoader.rangeNodeNames);
-                }
-                else if (OperatorLoader.nextBlock.contains(lastArg)) {
+                } else if (OperatorLoader.nextBlock.contains(lastArg)) {
                     tabArgs.addAll(OperatorLoader.blockNodeNames);
                     tabArgs.add("<block_name>");
-                }
-                else {
+                } else {
                     tabArgs.addAll(OperatorLoader.nodeNames);
                     tabArgs.add("<block_name>");
                 }

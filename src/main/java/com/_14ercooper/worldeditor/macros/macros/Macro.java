@@ -2,7 +2,6 @@ package com._14ercooper.worldeditor.macros.macros;
 
 import com._14ercooper.worldeditor.operations.OperatorState;
 import org.bukkit.Location;
-import org.bukkit.command.CommandSender;
 
 // This is a blank macro, to use as a template for others, and so you can reference a generic macro
 public abstract class Macro {

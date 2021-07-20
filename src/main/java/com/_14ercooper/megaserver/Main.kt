@@ -3,7 +3,6 @@ package com._14ercooper.megaserver
 import java.io.File
 import java.io.IOException
 import java.time.Instant
-import java.util.*
 
 object Main {
     private var javaPath = "java"

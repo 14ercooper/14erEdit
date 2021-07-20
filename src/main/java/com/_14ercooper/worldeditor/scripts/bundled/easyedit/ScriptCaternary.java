@@ -25,10 +25,9 @@ public class ScriptCaternary extends Craftscript {
             if (player instanceof Player) {
                 negativeCorner = SelectionManager.getSelectionManager(((Player) player).getUniqueId()).getPositionOne();
                 positiveCorner = SelectionManager.getSelectionManager(((Player) player).getUniqueId()).getPositionTwo();
-            }
-            else {
-                positiveCorner = new double[]{0,0,0};
-                negativeCorner = new double[]{0,0,0};
+            } else {
+                positiveCorner = new double[]{0, 0, 0};
+                negativeCorner = new double[]{0, 0, 0};
             }
             double midpointY = ((positiveCorner[1] + negativeCorner[1]) * 0.5) - droop;
 

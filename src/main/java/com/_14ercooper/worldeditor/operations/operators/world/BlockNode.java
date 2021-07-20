@@ -44,7 +44,7 @@ public class BlockNode extends Node {
             } else {
                 Main.logDebug("Created block instance");
                 if (!s.isBlank())
-                node.blockList.add(new BlockInstance(s, parserState));
+                    node.blockList.add(new BlockInstance(s, parserState));
             }
         }
         if (node.blockList.isEmpty() && node.textMasks.isEmpty()) {

@@ -13,9 +13,9 @@ class AsyncOperation {
     var operation: Operator? = null
     var blocks: BlockIterator? = null
     var player: CommandSender
-    var undo : UndoElement
+    var undo: UndoElement
 
-    constructor(o: Operator?, p: CommandSender, b: BlockIterator?, thisUndo : UndoElement) {
+    constructor(o: Operator?, p: CommandSender, b: BlockIterator?, thisUndo: UndoElement) {
         key = "iteredit"
         operation = o
         player = p
@@ -24,8 +24,9 @@ class AsyncOperation {
     }
 
     // New undo system
-    var undoList : MutableList<UndoElement>? = null
-    constructor(undos : MutableList<UndoElement>, thisPlayer : CommandSender) {
+    var undoList: MutableList<UndoElement>? = null
+
+    constructor(undos: MutableList<UndoElement>, thisPlayer: CommandSender) {
         key = "undoedit"
         player = thisPlayer
         undoList = undos
@@ -35,12 +36,18 @@ class AsyncOperation {
     // New schematics system
     var schem: SchemLite? = null
     private var origin = intArrayOf()
-    var startedWrite : Boolean = false
+    var startedWrite: Boolean = false
 
-    constructor(sl: SchemLite?, saveSchem: Boolean, o: IntArray, p: CommandSender, thisUndo : UndoElement) {
+    constructor(sl: SchemLite?, saveSchem: Boolean, o: IntArray, p: CommandSender, thisUndo: UndoElement) {
         schem = sl
         origin = o
-        blocks = schem!!.getIterator(origin[0], origin[1], origin[2], if (p is Player) { p.world} else {Bukkit.getServer().worlds[0]})
+        blocks = schem!!.getIterator(
+            origin[0], origin[1], origin[2], if (p is Player) {
+                p.world
+            } else {
+                Bukkit.getServer().worlds[0]
+            }
+        )
         key = if (saveSchem) {
             "saveschem"
         } else {
@@ -58,7 +65,7 @@ class AsyncOperation {
     // Uses the same iterator as other functions
     constructor(
         selectionIter: BlockIterator?, cloneOffset: IntArray, cloneTimes: Int, delOriginalBlocks: Boolean,
-        p: CommandSender, thisUndo : UndoElement
+        p: CommandSender, thisUndo: UndoElement
     ) {
         key = "selclone"
         blocks = selectionIter
@@ -73,7 +80,7 @@ class AsyncOperation {
     lateinit var iterators: MutableList<BlockIterator>
     lateinit var operations: MutableList<Operator>
 
-    constructor(iterators: List<BlockIterator>, operations: List<Operator>, p: CommandSender, thisUndo : UndoElement) {
+    constructor(iterators: List<BlockIterator>, operations: List<Operator>, p: CommandSender, thisUndo: UndoElement) {
         key = "multibrush"
         this.iterators = iterators as MutableList<BlockIterator>
         this.operations = operations as MutableList<Operator>

@@ -27,10 +27,9 @@ public class ScriptLine extends Craftscript {
             if (player instanceof Player) {
                 blockPos = ((Player) player).getLocation().getDirection();
                 playerPos = ((Player) player).getLocation().toVector();
-            }
-            else {
-                blockPos = new Vector(0,0,0);
-                playerPos = new Vector(0,0,0);
+            } else {
+                blockPos = new Vector(0, 0, 0);
+                playerPos = new Vector(0, 0, 0);
             }
 
             int x1 = (int) playerPos.getX();

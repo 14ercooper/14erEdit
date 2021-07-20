@@ -43,11 +43,11 @@ object Parser {
         // Here there be parsing magic
         // A massive recursive nightmare
         val splitParts = Arrays.stream(op.split(" ").toTypedArray()).map { s: String ->
-                if (s.matches(".*\\[.+=.+].*".toRegex())) s.replace(
-                    "[()]+".toRegex(),
-                    ""
-                ) else s.replace("[()\\[\\]]+".toRegex(), "")
-            }.toList()
+            if (s.matches(".*\\[.+=.+].*".toRegex())) s.replace(
+                "[()]+".toRegex(),
+                ""
+            ) else s.replace("[()\\[\\]]+".toRegex(), "")
+        }.toList()
         val state = ParserState(currentPlayer, splitParts)
         val rootNode = parsePart(state)
 
@@ -66,7 +66,7 @@ object Parser {
     // This is the massive recursive nightmare
     @JvmOverloads
     @JvmStatic
-    fun parsePart(parserState : ParserState, numberNode: Boolean = false): Node? {
+    fun parsePart(parserState: ParserState, numberNode: Boolean = false): Node? {
         parserState.index++
         return try {
             // Comments
@@ -120,7 +120,7 @@ object Parser {
     }
 
     @JvmStatic
-    fun parseNumberNode(parserState : ParserState): NumberNode? {
+    fun parseNumberNode(parserState: ParserState): NumberNode? {
         logDebug("Number node created") // -----
         return try {
             parsePart(parserState, true) as NumberNode?
@@ -131,7 +131,7 @@ object Parser {
     }
 
     @JvmStatic
-    fun parseRangeNode(parserState : ParserState): RangeNode? {
+    fun parseRangeNode(parserState: ParserState): RangeNode? {
         parserState.index++
         logDebug("Range node created") // -----
         return try {
@@ -143,7 +143,7 @@ object Parser {
     }
 
     @JvmStatic
-    fun parseStringNode(parserState : ParserState): StringNode {
+    fun parseStringNode(parserState: ParserState): StringNode {
         parserState.index++
         logDebug("String node created") // -----
         return try {

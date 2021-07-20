@@ -1,8 +1,8 @@
 package com._14ercooper.worldeditor.operations.operators.function;
 
 import com._14ercooper.worldeditor.functions.Function;
-import com._14ercooper.worldeditor.operations.OperatorState;
 import com._14ercooper.worldeditor.operations.DummyState;
+import com._14ercooper.worldeditor.operations.OperatorState;
 import com._14ercooper.worldeditor.operations.Parser;
 import com._14ercooper.worldeditor.operations.ParserState;
 import com._14ercooper.worldeditor.operations.operators.core.NumberNode;

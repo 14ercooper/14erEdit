@@ -50,9 +50,8 @@ public class Function {
 
         if (player instanceof Player) {
             target = BrushListener.getTargetBlock((Player) player);
-        }
-        else {
-            target = Bukkit.getServer().getWorlds().get(0).getBlockAt(0, 0,0 );
+        } else {
+            target = Bukkit.getServer().getWorlds().get(0).getBlockAt(0, 0, 0);
         }
 
         for (int i = 0; i < 1000; i++) {

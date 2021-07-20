@@ -23,8 +23,7 @@ public abstract class BlockIterator {
             Block next = getNextBlock(player);
             if (next != null) {
                 blocks.add(next);
-            }
-            else {
+            } else {
                 break;
             }
         }

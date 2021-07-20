@@ -6,7 +6,6 @@ import com._14ercooper.worldeditor.brush.shapes.Voxel;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.operations.OperatorLoader;
-import org.bukkit.Bukkit;
 import org.bukkit.command.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -72,7 +71,7 @@ public class CommandRunat implements CommandExecutor {
                     opStr.append(args[i]).append(" ");
                 }
                 assert sender instanceof Player;
-                Operator op = new Operator(opStr.toString(), (Player) sender);
+                Operator op = new Operator(opStr.toString(), sender);
                 AsyncManager.scheduleEdit(op, null, shape.GetBlocks(x, y, z, ((Player) sender).getWorld(), sender));
                 return true;
             } catch (Exception e) {
@@ -93,23 +92,18 @@ public class CommandRunat implements CommandExecutor {
             int initOffset = 4;
             if (args.length < 2) {
                 tabArgs.add("<x>");
-            }
-            else if (args.length == 2) {
+            } else if (args.length == 2) {
                 tabArgs.add("<y>");
-            }
-            else if (args.length == 3) {
+            } else if (args.length == 3) {
                 tabArgs.add("<z>");
-            }
-            else {
+            } else {
                 String lastArg = args[args.length - initOffset];
                 if (OperatorLoader.nextRange.contains(lastArg)) {
                     tabArgs.addAll(OperatorLoader.rangeNodeNames);
-                }
-                else if (OperatorLoader.nextBlock.contains(lastArg)) {
+                } else if (OperatorLoader.nextBlock.contains(lastArg)) {
                     tabArgs.addAll(OperatorLoader.blockNodeNames);
                     tabArgs.add("<block_name>");
-                }
-                else {
+                } else {
                     tabArgs.addAll(OperatorLoader.nodeNames);
                     tabArgs.add("<block_name>");
                 }

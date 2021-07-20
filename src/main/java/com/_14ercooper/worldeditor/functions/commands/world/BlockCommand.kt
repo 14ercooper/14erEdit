@@ -14,7 +14,8 @@ class BlockCommand : InterpreterCommand() {
         val x = function.parseVariable(args[1]).toInt()
         val y = function.parseVariable(args[2]).toInt()
         val z = function.parseVariable(args[3]).toInt()
-        val blk: Block = (if (function.player is Player) function.player.world else Bukkit.getServer().worlds[0]).getBlockAt(x, y, z)
+        val blk: Block =
+            (if (function.player is Player) function.player.world else Bukkit.getServer().worlds[0]).getBlockAt(x, y, z)
         var returnVal = false
         for (s in blocks) {
             val m = Material.matchMaterial(s)

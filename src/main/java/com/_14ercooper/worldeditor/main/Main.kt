@@ -60,8 +60,7 @@ class Main : JavaPlugin() {
         ver.split(".").toTypedArray()[1].replace("[^\\d.]".toRegex(), "").toInt().also { majorVer = it }
         try {
             ver.split(".").toTypedArray()[2].replace("[^\\d.]".toRegex(), "").toInt().also { minorVer = it }
-        }
-        catch (e : Exception) {
+        } catch (e: Exception) {
             minorVer = 0
         }
         println("Using version " + server.version + ": " + majorVer + "/" + minorVer)
@@ -139,12 +138,15 @@ class Main : JavaPlugin() {
     companion object {
         // Variables for in main
         private var isDebugDefault = false
+
         @JvmStatic
-        lateinit var plugin : Plugin
-        var majorVer : Int = 0
-        var minorVer : Int = 0
+        lateinit var plugin: Plugin
+        var majorVer: Int = 0
+        var minorVer: Int = 0
+
         @JvmStatic
         val rand = Random()
+
         @JvmStatic
         var outputStacktrace = false
         var logDebugs = false
@@ -200,6 +202,7 @@ class Main : JavaPlugin() {
         }
 
         private var debugText = ""
+
         @JvmStatic
         fun logDebug(message: String) {
             var hasADebug = false
@@ -207,20 +210,20 @@ class Main : JavaPlugin() {
                 val playerWrapper = PlayerManager.getPlayerWrapper(p)
                 hasADebug = hasADebug || playerWrapper.isDebug
             }
-                if (hasADebug) debugText += "§c[DEBUG] $message\n" // ----
-                try {
-                    if (hasADebug) {
-                        if (!Files.exists(Paths.get("plugins/14erEdit/debug.log"))) Files.createFile(Paths.get("plugins/14erEdit/debug.log"))
-                        Files.writeString(
-                            Paths.get("plugins/14erEdit/debug.log"), """
+            if (hasADebug) debugText += "§c[DEBUG] $message\n" // ----
+            try {
+                if (hasADebug) {
+                    if (!Files.exists(Paths.get("plugins/14erEdit/debug.log"))) Files.createFile(Paths.get("plugins/14erEdit/debug.log"))
+                    Files.writeString(
+                        Paths.get("plugins/14erEdit/debug.log"), """
      $message
      
      """.trimIndent(), StandardOpenOption.APPEND
-                        )
-                    }
-                } catch (e: Exception) {
-                    // Do nothing, this isn't super important
+                    )
                 }
+            } catch (e: Exception) {
+                // Do nothing, this isn't super important
+            }
         }
 
         fun outputDebug() {

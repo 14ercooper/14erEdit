@@ -23,13 +23,13 @@ public class CommandScript implements CommandExecutor {
         if (sender instanceof Player) {
             LinkedList<String> argsToPass = new LinkedList<>(Arrays.asList(args));
             argsToPass.removeFirst();
-            return CraftscriptManager.INSTANCE.runCraftscript(args[0], argsToPass, (Player) sender);
+            return CraftscriptManager.INSTANCE.runCraftscript(args[0], argsToPass, sender);
         }
         return false;
     }
 
     public static Set<String> getScriptNames() {
-        return CraftscriptManager.INSTANCE.registeredScripts.keySet();
+        return CraftscriptManager.registeredScripts.keySet();
     }
 
     public static class TabComplete implements TabCompleter {
@@ -41,7 +41,7 @@ public class CommandScript implements CommandExecutor {
                 tabArgs.addAll(CommandScript.getScriptNames());
             }
             if (args.length > 1) {
-                tabArgs.add("[script_arg_" + (args.length-2) + "]");
+                tabArgs.add("[script_arg_" + (args.length - 2) + "]");
             }
 
             return tabArgs;

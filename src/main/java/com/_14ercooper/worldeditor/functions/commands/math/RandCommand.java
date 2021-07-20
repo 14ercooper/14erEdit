@@ -1,10 +1,10 @@
 package com._14ercooper.worldeditor.functions.commands.math;
 
-import java.util.List;
-
 import com._14ercooper.worldeditor.functions.Function;
 import com._14ercooper.worldeditor.functions.commands.InterpreterCommand;
 import com._14ercooper.worldeditor.main.Main;
+
+import java.util.List;
 
 public class RandCommand extends InterpreterCommand {
 

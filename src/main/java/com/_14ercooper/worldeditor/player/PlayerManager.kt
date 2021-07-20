@@ -5,26 +5,26 @@ import org.bukkit.entity.Player
 import java.util.*
 
 object PlayerManager {
-    val playerWrapperMap = mutableMapOf<String,PlayerWrapper>()
+    val playerWrapperMap = mutableMapOf<String, PlayerWrapper>()
 
-    fun getPlayerWrapper(player : CommandSender): PlayerWrapper {
-        return getPlayerWrapper(if (player is Player) {
-            player.uniqueId.toString()
-        }
-        else {
-            "console"
-        })
+    fun getPlayerWrapper(player: CommandSender): PlayerWrapper {
+        return getPlayerWrapper(
+            if (player is Player) {
+                player.uniqueId.toString()
+            } else {
+                "console"
+            }
+        )
     }
 
-    fun getPlayerWrapper(player : UUID): PlayerWrapper {
+    fun getPlayerWrapper(player: UUID): PlayerWrapper {
         return getPlayerWrapper(player.toString())
     }
 
-    fun getPlayerWrapper(playerName : String) : PlayerWrapper {
+    fun getPlayerWrapper(playerName: String): PlayerWrapper {
         return if (playerWrapperMap.containsKey(playerName)) {
             playerWrapperMap[playerName]!!
-        }
-        else {
+        } else {
             val playerWrapper = PlayerWrapper(playerName)
             playerWrapperMap[playerName] = playerWrapper
             playerWrapper

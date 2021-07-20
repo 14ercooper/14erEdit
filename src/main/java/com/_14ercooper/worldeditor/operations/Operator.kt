@@ -8,7 +8,7 @@ import org.bukkit.command.CommandSender
 class Operator {
     private val entryNode: EntryNode
 
-    fun operateOnBlock(state : OperatorState) {
+    fun operateOnBlock(state: OperatorState) {
         try {
             // Perform the operation
             entryNode.performNode(state)

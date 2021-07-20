@@ -12,10 +12,10 @@ import java.util.*
 class UserUndo
     (thisName: String) {
 
-    var undoElements : HashMap<String, UndoElement>
-    private var undoList : MutableList<String>
-    private var redoList : MutableList<String>
-    var name : String = thisName
+    var undoElements: HashMap<String, UndoElement>
+    private var undoList: MutableList<String>
+    private var redoList: MutableList<String>
+    var name: String = thisName
 
     // Set up this user undo (including loading from disk if needed)
     init {
@@ -26,8 +26,8 @@ class UserUndo
     }
 
     // Get a new undo element to use to register undos
-    fun getNewUndoElement() : UndoElement {
-        val uuid : String = UUID.randomUUID().toString()
+    fun getNewUndoElement(): UndoElement {
+        val uuid: String = UUID.randomUUID().toString()
         val undoElement = UndoElement(uuid, this)
         undoElements[uuid] = undoElement
         Main.logDebug("New undo for user $name created with ID $uuid")
@@ -35,7 +35,7 @@ class UserUndo
     }
 
     // Finalize an undo after it's done
-    fun finalizeUndo(undo : UndoElement) : Boolean {
+    fun finalizeUndo(undo: UndoElement): Boolean {
         if (undoElements.containsKey(undo.name)) {
             runBlocking {
                 undo.flush()
@@ -49,11 +49,11 @@ class UserUndo
     }
 
     // Undo a number of changes (undo elements)
-    fun undoChanges(count : Int) : Boolean {
+    fun undoChanges(count: Int): Boolean {
         flush()
         undoList = undoList.filter { it.isNotBlank() } as MutableList<String>
         val undoCount = count.coerceAtMost(undoList.size)
-        val undoSet : MutableList<UndoElement> = mutableListOf()
+        val undoSet: MutableList<UndoElement> = mutableListOf()
         for (i in 1..undoCount) {
             val s = undoList[undoList.size - 1]
             val ue = UndoElement(s, this)
@@ -73,11 +73,11 @@ class UserUndo
     }
 
     // Redo a number of changes (undo elements)
-    fun redoChanges(count : Int) : Boolean {
+    fun redoChanges(count: Int): Boolean {
         flush()
         redoList = redoList.filter { it.isNotBlank() } as MutableList<String>
         val redoCount = count.coerceAtMost(redoList.size)
-        val redoSet : MutableList<UndoElement> = mutableListOf()
+        val redoSet: MutableList<UndoElement> = mutableListOf()
         for (i in 1..redoCount) {
             val s = redoList[redoList.size - 1]
             val ue = UndoElement(s, this)
@@ -97,7 +97,7 @@ class UserUndo
     }
 
     // Save the undo and redo element lists to disk
-    private fun saveUndoList() : Boolean {
+    private fun saveUndoList(): Boolean {
         val fileName = "plugins/14erEdit/undo/$name/"
         // Size limit the lists
         while (undoList.size > maxListSize) {
@@ -131,7 +131,7 @@ class UserUndo
     }
 
     // Load the undo and redo element lists from disk
-    private fun loadUndoList() : Boolean {
+    private fun loadUndoList(): Boolean {
         val fileName = "plugins/14erEdit/undo/$name/"
         if (Files.exists(Path.of(fileName + "undoList"))) {
             undoList = Files.readString(Path.of(fileName + "undoList")).lines() as MutableList<String>
@@ -146,7 +146,7 @@ class UserUndo
     }
 
     // Flush all data to disk
-    fun flush() : Boolean {
+    fun flush(): Boolean {
         saveUndoList()
         runBlocking {
             undoElements.forEach { (_, undoElement) -> undoElement.flush() }
@@ -157,6 +157,6 @@ class UserUndo
     }
 
     companion object {
-        val maxListSize : Long = 500
+        val maxListSize: Long = 500
     }
 }

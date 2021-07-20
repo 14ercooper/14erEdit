@@ -13,7 +13,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -53,8 +56,7 @@ public class CommandFunction implements CommandExecutor {
             List<String> functions = files.map(path -> path.getFileName().toString()).collect(Collectors.toList());
             files.close();
             return functions;
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             return new ArrayList<>(Collections.singleton("<function_name>"));
         }
     }
@@ -68,7 +70,7 @@ public class CommandFunction implements CommandExecutor {
                 tabArgs.addAll(CommandFunction.getFunctionsList());
             }
             if (args.length > 1) {
-                tabArgs.add("[function_arg_" + (args.length-2) + "]");
+                tabArgs.add("[function_arg_" + (args.length - 2) + "]");
             }
 
             return tabArgs;
