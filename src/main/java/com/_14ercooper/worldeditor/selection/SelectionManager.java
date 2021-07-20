@@ -2,6 +2,7 @@ package com._14ercooper.worldeditor.selection;
 
 import com._14ercooper.worldeditor.blockiterator.BlockIterator;
 import com._14ercooper.worldeditor.blockiterator.IteratorManager;
+import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.player.PlayerManager;
 import com._14ercooper.worldeditor.player.PlayerWrapper;
 import org.bukkit.Bukkit;
@@ -39,7 +40,7 @@ public class SelectionManager {
         positionOne[0] = x;
         // Use nested ternary operators to clamp y between 0 and 255
         PlayerWrapper playerWrapper = PlayerManager.INSTANCE.getPlayerWrapper(player);
-        positionOne[1] = y < playerWrapper.getMinEditY() ? playerWrapper.getMinEditY() : y > playerWrapper.getMinEditY() ? playerWrapper.getMaxEditY() : y;
+        positionOne[1] = y < playerWrapper.getMinEditY() ? playerWrapper.getMinEditY() : y > playerWrapper.getMaxEditY() ? playerWrapper.getMaxEditY() : y;
         positionOne[2] = z;
         getPlayer(player).sendMessage("§dFirst position updated to (" + x + ", " + y + ", "
                 + z + "); giving a volume of "
@@ -54,7 +55,7 @@ public class SelectionManager {
         positionTwo[0] = x;
         // Use nested ternary operators to clamp y between 0 and 255
         PlayerWrapper playerWrapper = PlayerManager.INSTANCE.getPlayerWrapper(player);
-        positionOne[1] = y < playerWrapper.getMinEditY() ? playerWrapper.getMinEditY() : y > playerWrapper.getMinEditY() ? playerWrapper.getMaxEditY() : y;
+        positionTwo[1] = y < playerWrapper.getMinEditY() ? playerWrapper.getMinEditY() : y > playerWrapper.getMaxEditY() ? playerWrapper.getMaxEditY() : y;
         positionTwo[2] = z;
         getPlayer(player).sendMessage("§dSecond position updated to (" + x + ", " + y + ", "
                 + z + "); giving a volume of "

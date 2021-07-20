@@ -119,6 +119,7 @@ object Main {
                     }
                 }
                 FileIO.copyFile("14erEdit", "profiles/$profile/plugins/14erEdit", true)
+                FileIO.deleteFile("14erEdit/undo", true)
                 // Start server
                 val quarterRam = (ramAmt.toInt() / 4).toString()
                 val eighthRam = (ramAmt.toInt() / 8).toString()
