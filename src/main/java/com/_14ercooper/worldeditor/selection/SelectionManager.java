@@ -2,7 +2,6 @@ package com._14ercooper.worldeditor.selection;
 
 import com._14ercooper.worldeditor.blockiterator.BlockIterator;
 import com._14ercooper.worldeditor.blockiterator.IteratorManager;
-import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.player.PlayerManager;
 import com._14ercooper.worldeditor.player.PlayerWrapper;
 import org.bukkit.Bukkit;
@@ -24,19 +23,11 @@ public class SelectionManager {
     private double[] mostPositiveCorner = new double[3];
 
     public static SelectionManager getSelectionManager(UUID player) {
-        SelectionWand wand = null;
-        for (SelectionWand sw : SelectionWandListener.wands) {
-            if (sw.owner.equals(player))
-                wand = sw;
-        }
-        if (wand != null) {
-            return wand.manager;
-        } else {
-            return null;
-        }
+        PlayerWrapper playerWrapper = PlayerManager.INSTANCE.getPlayerWrapper(player);
+        return playerWrapper.getSelectionWand().manager;
     }
 
-    public boolean updatePositionOne(double x, double y, double z, UUID player) {
+    public boolean updatePositionOne(double x, double y, double z, String player) {
         positionOne[0] = x;
         // Use nested ternary operators to clamp y between 0 and 255
         PlayerWrapper playerWrapper = PlayerManager.INSTANCE.getPlayerWrapper(player);
@@ -51,7 +42,7 @@ public class SelectionManager {
         return true;
     }
 
-    public boolean updatePositionTwo(double x, double y, double z, UUID player) {
+    public boolean updatePositionTwo(double x, double y, double z, String player) {
         positionTwo[0] = x;
         // Use nested ternary operators to clamp y between 0 and 255
         PlayerWrapper playerWrapper = PlayerManager.INSTANCE.getPlayerWrapper(player);
@@ -126,7 +117,7 @@ public class SelectionManager {
     }
 
     // Expands the selection in direction by amt
-    public boolean expandSelection(double amt, String direction, UUID player) {
+    public boolean expandSelection(double amt, String direction, String player) {
         if (direction.equalsIgnoreCase("north")) { // -z
             mostNegativeCorner[2] = mostNegativeCorner[2] - amt;
             expandSelectionMessage(player);
@@ -156,7 +147,7 @@ public class SelectionManager {
     }
 
     // Message for the selection expansion
-    private void expandSelectionMessage(UUID player) {
+    private void expandSelectionMessage(String player) {
         getPlayer(player).sendMessage("§dRegion expanded to " + Math
                 .abs(mostNegativeCorner[0] - mostPositiveCorner[0] * Math.signum(mostPositiveCorner[0])
                         + Math.signum(mostPositiveCorner[0]))
@@ -193,7 +184,7 @@ public class SelectionManager {
         return IteratorManager.INSTANCE.getIterator("cube").newIterator(args, world, Bukkit.getConsoleSender());
     }
 
-    public Player getPlayer(UUID player) {
-        return Bukkit.getServer().getPlayer(player);
+    public Player getPlayer(String player) {
+        return Bukkit.getServer().getPlayer(UUID.fromString(player));
     }
 }

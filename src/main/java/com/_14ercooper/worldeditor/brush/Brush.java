@@ -5,6 +5,8 @@ import com._14ercooper.worldeditor.blockiterator.BlockIterator;
 import com._14ercooper.worldeditor.brush.shapes.Multi;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.Operator;
+import com._14ercooper.worldeditor.player.PlayerManager;
+import com._14ercooper.worldeditor.player.PlayerWrapper;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -32,13 +34,14 @@ public class Brush {
 
         Brush br = null;
 
-        for (Brush b : BrushListener.brushes) {
-            if (b.owner.equals(player.getUniqueId()) && b.item.equals(item)) {
+        PlayerWrapper playerWrapper = PlayerManager.INSTANCE.getPlayerWrapper(player);
+        for (Brush b : playerWrapper.getBrushes()) {
+            if (b.item.equals(item)) {
                 br = b;
             }
         }
         if (br != null) {
-            BrushListener.brushes.remove(br);
+            playerWrapper.getBrushes().remove(br);
         }
         return true;
     }
@@ -105,7 +108,8 @@ public class Brush {
             }
 
             // Store the brush and return success
-            BrushListener.brushes.add(this);
+            PlayerWrapper playerWrapper = PlayerManager.INSTANCE.getPlayerWrapper(player);
+            playerWrapper.getBrushes().add(this);
             player.sendMessage("§dBrush created and bound to item in hand.");
 
         } catch (Exception e) {

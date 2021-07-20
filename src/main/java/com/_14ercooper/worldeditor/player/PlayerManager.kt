@@ -30,4 +30,10 @@ object PlayerManager {
             playerWrapper
         }
     }
+
+    fun deletePlayerWrapper(player : String) {
+        if (playerWrapperMap.containsKey(player)) {
+            playerWrapperMap.remove(player)
+        }
+    }
 }

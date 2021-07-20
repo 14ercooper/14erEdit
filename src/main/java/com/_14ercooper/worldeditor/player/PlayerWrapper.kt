@@ -1,6 +1,8 @@
 package com._14ercooper.worldeditor.player
 
+import com._14ercooper.worldeditor.brush.Brush
 import com._14ercooper.worldeditor.main.Main
+import com._14ercooper.worldeditor.selection.SelectionWand
 import org.bukkit.Bukkit
 import org.bukkit.Material
 
@@ -32,5 +34,13 @@ class PlayerWrapper(val playerName: String) {
     fun inEditRegion(x: Long, y: Long, z: Long): Boolean {
         return (x <= minEditX || y <= minEditY || z <= minEditZ
                 || x >= maxEditX || y >= maxEditY || z >= maxEditZ)
+    }
+
+    var brushes = mutableListOf<Brush>()
+
+    var selectionWand = SelectionWand()
+
+    init {
+        selectionWand.owner = playerName
     }
 }

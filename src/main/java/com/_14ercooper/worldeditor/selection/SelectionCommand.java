@@ -4,6 +4,8 @@ import com._14ercooper.worldeditor.async.AsyncManager;
 import com._14ercooper.worldeditor.blockiterator.BlockIterator;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.Operator;
+import com._14ercooper.worldeditor.player.PlayerManager;
+import com._14ercooper.worldeditor.player.PlayerWrapper;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;
@@ -14,26 +16,27 @@ public class SelectionCommand {
     public static boolean performCommand(String[] args, Player player) {
         try {
             // First, get the wand that this player owns
-            SelectionWand wand = null;
-            for (SelectionWand s : SelectionWandListener.wands) {
-                if (s.owner.equals(player.getUniqueId())) {
-                    wand = s;
-                    break;
-                }
-            }
-            if (wand == null && (args[1].equalsIgnoreCase("pos1") || args[1].equalsIgnoreCase("pos2"))) {
-                SelectionWand newWand = (SelectionWand.giveNewWand((player).getPlayer()));
-                SelectionWandListener.wands.add(newWand);
-                wand = newWand;
-            } else if (wand == null && args[2].equalsIgnoreCase("load")
-                    && (args[1].equalsIgnoreCase("schematic") || args[1].equalsIgnoreCase("schem"))) {
-                SelectionWand newWand = (SelectionWand.giveNewWand((player).getPlayer()));
-                SelectionWandListener.wands.add(newWand);
-                wand = newWand;
-            }
-            if (wand == null) {
-                return false;
-            }
+            PlayerWrapper playerWrapper = PlayerManager.INSTANCE.getPlayerWrapper(player);
+            SelectionWand wand = playerWrapper.getSelectionWand();
+//            for (SelectionWand s : SelectionWandListener.wands) {
+//                if (s.owner.equals(player.getUniqueId())) {
+//                    wand = s;
+//                    break;
+//                }
+//            }
+//            if (wand == null && (args[1].equalsIgnoreCase("pos1") || args[1].equalsIgnoreCase("pos2"))) {
+//                SelectionWand newWand = (SelectionWand.giveNewWand((player).getPlayer()));
+//                SelectionWandListener.wands.add(newWand);
+//                wand = newWand;
+//            } else if (wand == null && args[2].equalsIgnoreCase("load")
+//                    && (args[1].equalsIgnoreCase("schematic") || args[1].equalsIgnoreCase("schem"))) {
+//                SelectionWand newWand = (SelectionWand.giveNewWand((player).getPlayer()));
+//                SelectionWandListener.wands.add(newWand);
+//                wand = newWand;
+//            }
+//            if (wand == null) {
+//                return false;
+//            }
 
             // Then get the applicable wand manager
             SelectionManager manager = wand.manager;
@@ -269,7 +272,7 @@ public class SelectionCommand {
     // Expand the selection
     // Note that using the wand afterwards doesn't reflect the changes
     private static boolean expand(SelectionManager manager, double amt, String dir, Player player) {
-        return manager.expandSelection(amt, dir, player.getUniqueId());
+        return manager.expandSelection(amt, dir, player.getUniqueId().toString());
     }
 
     // Get a schematic file name for a player

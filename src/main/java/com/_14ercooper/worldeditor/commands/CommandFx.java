@@ -3,6 +3,7 @@ package com._14ercooper.worldeditor.commands;
 import com._14ercooper.worldeditor.brush.Brush;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.OperatorLoader;
+import com._14ercooper.worldeditor.player.PlayerManager;
 import com._14ercooper.worldeditor.selection.SchematicHandler;
 import com._14ercooper.worldeditor.selection.SelectionCommand;
 import com._14ercooper.worldeditor.selection.SelectionWand;
@@ -47,10 +48,11 @@ public class CommandFx implements CommandExecutor {
                 // Calls the wand command, giving the player a wand
                 if (args[argOffset].equalsIgnoreCase("wand")) {
                     SelectionWand wand = (SelectionWand.giveNewWand(((Player) sender).getPlayer()));
-                    if (SelectionWandListener.wands.contains(wand)) {
-                    } else {
-                        SelectionWandListener.wands.add(wand);
-                    }
+                    return true;
+                }
+
+                else if (args[argOffset].equalsIgnoreCase("reset")) {
+                    PlayerManager.INSTANCE.deletePlayerWrapper(((Player) sender).getUniqueId().toString());
                     return true;
                 }
 
@@ -123,6 +125,7 @@ public class CommandFx implements CommandExecutor {
             return false;
         } catch (Exception e) {
             Main.logError("Error in fx command. Please check your syntax.", sender, e);
+            e.printStackTrace();
             return false;
         }
     }
@@ -151,6 +154,7 @@ public class CommandFx implements CommandExecutor {
                 tabArgs.add("selection");
                 tabArgs.add("sel");
                 tabArgs.add("schem");
+                tabArgs.add("reset");
             } else if (args.length == 2) {
                 if (args[0].equalsIgnoreCase("brush") || args[0].equalsIgnoreCase("br")) {
                     tabArgs.add("none");
