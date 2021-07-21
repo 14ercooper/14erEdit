@@ -458,6 +458,9 @@ object AsyncManager {
 
     private fun getBlock(currentAsyncOp: AsyncOperation): List<Block> {
         assert(currentAsyncOp.blocks != null)
+        if (currentAsyncOp.blocks is SchemBrushIterator) {
+            return currentAsyncOp.blocks!!.getNext(1, currentAsyncOp.player)
+        }
         return currentAsyncOp.blocks!!.getNext(opBlockSize, currentAsyncOp.player)
     }
 

@@ -23,7 +23,7 @@ public class CommandError implements CommandExecutor {
             }
         }
 
-        Main.setOutputStacktrace(Main.getOutputStacktrace());
+        Main.setOutputStacktrace(!Main.getOutputStacktrace());
         Bukkit.broadcastMessage("§dVerbose errors toggled to " + Main.getOutputStacktrace());
         return true;
     }

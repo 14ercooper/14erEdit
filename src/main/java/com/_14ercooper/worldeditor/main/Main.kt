@@ -204,7 +204,7 @@ class Main : JavaPlugin() {
         private var debugText = ""
 
         @JvmStatic
-        fun logDebug(message: String) {
+        fun logDebug(message: String?) {
             var hasADebug = false
             for (p in Bukkit.getOnlinePlayers()) {
                 val playerWrapper = PlayerManager.getPlayerWrapper(p)
