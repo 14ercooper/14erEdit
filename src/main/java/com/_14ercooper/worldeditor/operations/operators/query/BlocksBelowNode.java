@@ -37,7 +37,7 @@ public class BlocksBelowNode extends Node {
 
     @Override
     public boolean performNode(OperatorState state) {
-        Block currBlock = state.getCurrentWorld().getBlockAt(state.getCurrentBlock().getLocation());
+        Block currBlock = state.getCurrentWorld().getBlockAt(state.getCurrentBlock().block.getLocation());
         int x = currBlock.getX();
         int y = currBlock.getY();
         int z = currBlock.getZ();

@@ -22,9 +22,9 @@ public class BlocklightNode extends Node {
     public boolean performNode(OperatorState state) {
         BlockFace[] faces = {BlockFace.UP, BlockFace.DOWN, BlockFace.NORTH, BlockFace.SOUTH, BlockFace.EAST,
                 BlockFace.WEST};
-        int light = state.getCurrentBlock().getLightFromBlocks();
+        int light = state.getCurrentBlock().block.getLightFromBlocks();
         for (BlockFace face : faces) {
-            int l = state.getCurrentBlock().getRelative(face).getLightFromBlocks();
+            int l = state.getCurrentBlock().block.getRelative(face).getLightFromBlocks();
             if (l > light)
                 light = l;
         }

@@ -1,5 +1,6 @@
 package com._14ercooper.worldeditor.commands;
 
+import com._14ercooper.worldeditor.blockiterator.BlockWrapper;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.operations.OperatorLoader;
@@ -38,7 +39,7 @@ public class CommandRun implements CommandExecutor {
                 Operator op = new Operator(opStr, sender);
                 Block b = ((Player) sender).getWorld().getBlockAt(((Player) sender).getLocation());
                 UndoElement undoElement = UndoSystem.findUserUndo(sender).getNewUndoElement();
-                op.operateOnBlock(new OperatorState(b, sender, ((Player) sender).getWorld(), undoElement));
+                op.operateOnBlock(new OperatorState(new BlockWrapper(b, b.getX(), b.getY(), b.getZ()), sender, ((Player) sender).getWorld(), undoElement));
                 undoElement.finalizeUndo();
                 return true;
             }

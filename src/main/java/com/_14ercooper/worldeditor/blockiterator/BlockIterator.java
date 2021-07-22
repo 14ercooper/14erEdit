@@ -3,7 +3,6 @@ package com._14ercooper.worldeditor.blockiterator;
 import com._14ercooper.worldeditor.player.PlayerManager;
 import com._14ercooper.worldeditor.player.PlayerWrapper;
 import org.bukkit.World;
-import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;
@@ -15,12 +14,12 @@ public abstract class BlockIterator {
     public abstract BlockIterator newIterator(List<String> args, World world, CommandSender player);
 
     // Gets the next block in this block iterator
-    public abstract Block getNextBlock(CommandSender player);
+    public abstract BlockWrapper getNextBlock(CommandSender player, boolean getBlock);
 
-    public List<Block> getNext(int num, CommandSender player) {
-        List<Block> blocks = new ArrayList<>();
+    public List<BlockWrapper> getNext(int num, CommandSender player, boolean getBlock) {
+        List<BlockWrapper> blocks = new ArrayList<>();
         for (int i = 0; i < num; i++) {
-            Block next = getNextBlock(player);
+            BlockWrapper next = getNextBlock(player, getBlock);
             if (next != null) {
                 blocks.add(next);
             } else {

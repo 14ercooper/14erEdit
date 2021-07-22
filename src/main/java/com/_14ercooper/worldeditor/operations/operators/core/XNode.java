@@ -14,7 +14,7 @@ public class XNode extends NumberNode {
     // Return the number
     @Override
     public double getValue(OperatorState state) {
-        return state.getCurrentBlock().getX();
+        return state.getCurrentBlock().x;
     }
 
     // Get how many arguments this type of node takes

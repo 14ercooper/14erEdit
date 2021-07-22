@@ -95,7 +95,7 @@ public class BlockNode extends Node {
     @Override
     public boolean performNode(OperatorState state) {
         try {
-            return (new BlockInstance()).Contains(blockList, textMasks, state.getCurrentBlock());
+            return (new BlockInstance()).Contains(blockList, textMasks, state.getCurrentBlock().block);
         } catch (Exception e) {
             Main.logError("Error performing block node. Does it contain blocks?", state.getCurrentPlayer(), e);
             return false;

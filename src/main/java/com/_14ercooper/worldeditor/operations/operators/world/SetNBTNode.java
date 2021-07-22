@@ -30,9 +30,9 @@ public class SetNBTNode extends Node {
     public boolean performNode(OperatorState state) {
         try {
             String command = "data merge block ";
-            command += state.getCurrentBlock().getLocation().getBlockX() + " ";
-            command += state.getCurrentBlock().getLocation().getBlockY() + " ";
-            command += state.getCurrentBlock().getLocation().getBlockZ() + " ";
+            command += state.getCurrentBlock().block.getLocation().getBlockX() + " ";
+            command += state.getCurrentBlock().block.getLocation().getBlockY() + " ";
+            command += state.getCurrentBlock().block.getLocation().getBlockZ() + " ";
             command += nbt.replaceAll("_", " ");
             Bukkit.dispatchCommand(Bukkit.getServer().getConsoleSender(), command);
             return true;

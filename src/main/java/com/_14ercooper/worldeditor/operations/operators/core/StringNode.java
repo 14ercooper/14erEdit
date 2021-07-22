@@ -18,7 +18,7 @@ public class StringNode extends Node {
     @Override
     public boolean performNode(OperatorState state) {
         try {
-            return state.getCurrentBlock().getType() == Material.matchMaterial(contents);
+            return state.getCurrentBlock().block.getType() == Material.matchMaterial(contents);
         } catch (Exception e) {
             Main.logError("Error performing string node. " + contents + " could not be resolved to a block.",
                     state.getCurrentPlayer(), e);

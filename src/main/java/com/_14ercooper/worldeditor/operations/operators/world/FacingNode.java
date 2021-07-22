@@ -40,7 +40,7 @@ public class FacingNode extends BlockNode {
             BlockData dat = Bukkit.getServer().createBlockData(arg.getData(state));
 
             List<String> dirs = new ArrayList<>();
-            Block b = state.getCurrentBlock();
+            Block b = state.getCurrentBlock().block;
             // And next to a solid block
             if (b.getRelative(BlockFace.NORTH).getType() != Material.AIR) {
                 dirs.add("[north=true]");

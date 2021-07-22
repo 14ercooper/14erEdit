@@ -7,7 +7,6 @@ import com._14ercooper.worldeditor.player.PlayerManager;
 import com._14ercooper.worldeditor.selection.SchematicHandler;
 import com._14ercooper.worldeditor.selection.SelectionCommand;
 import com._14ercooper.worldeditor.selection.SelectionWand;
-import com._14ercooper.worldeditor.selection.SelectionWandListener;
 import com._14ercooper.worldeditor.undo.UndoSystem;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -49,9 +48,7 @@ public class CommandFx implements CommandExecutor {
                 if (args[argOffset].equalsIgnoreCase("wand")) {
                     SelectionWand wand = (SelectionWand.giveNewWand(((Player) sender).getPlayer()));
                     return true;
-                }
-
-                else if (args[argOffset].equalsIgnoreCase("reset")) {
+                } else if (args[argOffset].equalsIgnoreCase("reset")) {
                     PlayerManager.INSTANCE.deletePlayerWrapper(((Player) sender).getUniqueId().toString());
                     return true;
                 }

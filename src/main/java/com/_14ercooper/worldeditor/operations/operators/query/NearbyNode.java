@@ -47,7 +47,7 @@ public class NearbyNode extends Node {
         for (int x = -dist; x <= dist; x++) {
             for (int y = -dist; y <= dist; y++) {
                 for (int z = -dist; z <= dist; z++) {
-                    Block currBlock = state.getCurrentBlock();
+                    Block currBlock = state.getCurrentBlock().block;
                     state.setCurrentBlock(currBlock.getRelative(x, y, z));
                     boolean isTrue = blockMask.performNode(state);
                     state.setCurrentBlock(currBlock);

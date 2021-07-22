@@ -75,7 +75,7 @@ public class TemplateNode extends Node {
             if (player instanceof Player) {
                 Player plyr = (Player) player;
                 Location loc = plyr.getLocation();
-                plyr.teleport(state.getCurrentBlock().getLocation());
+                plyr.teleport(state.getCurrentBlock().block.getLocation());
                 boolean retVal = Bukkit.dispatchCommand(player, command);
                 plyr.teleport(loc);
                 return retVal;

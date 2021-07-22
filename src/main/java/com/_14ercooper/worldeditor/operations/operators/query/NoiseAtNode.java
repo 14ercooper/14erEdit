@@ -1,12 +1,12 @@
 package com._14ercooper.worldeditor.operations.operators.query;
 
+import com._14ercooper.worldeditor.blockiterator.BlockWrapper;
 import com._14ercooper.worldeditor.operations.OperatorState;
 import com._14ercooper.worldeditor.operations.Parser;
 import com._14ercooper.worldeditor.operations.ParserState;
 import com._14ercooper.worldeditor.operations.operators.Node;
 import com._14ercooper.worldeditor.operations.operators.core.NumberNode;
 import com._14ercooper.worldeditor.operations.operators.function.NoiseNode;
-import org.bukkit.block.Block;
 
 public class NoiseAtNode extends Node {
 
@@ -26,12 +26,12 @@ public class NoiseAtNode extends Node {
 
     @Override
     public boolean performNode(OperatorState state) {
-        Block b = state.getCurrentBlock();
-        int x = b.getX();
-        int z = b.getZ();
+        BlockWrapper b = state.getCurrentBlock();
+        int x = b.block.getX();
+        int z = b.block.getZ();
         int y;
         if (midplane.getValue(state) < 0) {
-            y = (int) ((noise.getNum(state) * amplitude.getValue(state)) + b.getY());
+            y = (int) ((noise.getNum(state) * amplitude.getValue(state)) + b.block.getY());
         } else {
             y = (int) ((noise.getNum(state) * amplitude.getValue(state)) + midplane.getValue(state));
         }

@@ -14,7 +14,7 @@ public class ZNode extends NumberNode {
     // Return the number
     @Override
     public double getValue(OperatorState state) {
-        return state.getCurrentBlock().getZ();
+        return state.getCurrentBlock().z;
     }
 
     // Get how many arguments this type of node takes

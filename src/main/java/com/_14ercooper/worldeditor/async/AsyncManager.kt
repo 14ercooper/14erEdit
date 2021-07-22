@@ -2,6 +2,7 @@ package com._14ercooper.worldeditor.async
 
 import com._14ercooper.schematics.SchemLite
 import com._14ercooper.worldeditor.blockiterator.BlockIterator
+import com._14ercooper.worldeditor.blockiterator.BlockWrapper
 import com._14ercooper.worldeditor.blockiterator.iterators.SchemBrushIterator
 import com._14ercooper.worldeditor.main.Main
 import com._14ercooper.worldeditor.main.NBTExtractor
@@ -13,7 +14,6 @@ import com._14ercooper.worldeditor.undo.UndoMode
 import com._14ercooper.worldeditor.undo.UndoSystem
 import org.bukkit.Bukkit
 import org.bukkit.Material
-import org.bukkit.block.Block
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import java.io.IOException
@@ -300,10 +300,10 @@ object AsyncManager {
                     }
 
                 } else if (currentAsyncOp.key.equals("multibrush", ignoreCase = true)) {
-                    var b: List<Block>
+                    var b: List<BlockWrapper>
                     var doContinue = false
                     while (true) {
-                        b = currentAsyncOp.iterators[0].getNext(opBlockSize, currentAsyncOp.player)
+                        b = currentAsyncOp.iterators[0].getNext(opBlockSize, currentAsyncOp.player, true)
                         if (b.isEmpty()) {
                             break
                         }
@@ -343,7 +343,7 @@ object AsyncManager {
                     doneOperations += b.size
                 } else if (currentAsyncOp.key.equals("saveschem", ignoreCase = true)) {
                     assert(currentAsyncOp.blocks != null)
-                    val b = currentAsyncOp.blocks!!.getNext(1, currentAsyncOp.player)[0]
+                    val b = currentAsyncOp.blocks!!.getNext(1, currentAsyncOp.player, true)[0]
                     if (!currentAsyncOp.startedWrite) {
                         try {
                             currentAsyncOp.schem!!.resetWrite()
@@ -353,10 +353,10 @@ object AsyncManager {
                         }
                     }
 
-                    val material = b.type.toString()
-                    val data = b.blockData.asString
+                    val material = b.block.type.toString()
+                    val data = b.block.blockData.asString
                     val nbtE = NBTExtractor()
-                    val nbt = nbtE.getNBT(b)
+                    val nbt = nbtE.getNBT(b.block)
                     try {
                         currentAsyncOp.schem!!.writeBlock(material, data, nbt)
                     } catch (e: IOException) {
@@ -364,7 +364,7 @@ object AsyncManager {
                     }
                     doneOperations++
                 } else if (currentAsyncOp.key.equals("loadschem", ignoreCase = true)) {
-                    val b = currentAsyncOp.blocks!!.getNext(1, currentAsyncOp.player)[0]
+                    val b = currentAsyncOp.blocks!!.getNext(1, currentAsyncOp.player, true)[0]
                     if (b == null) {
                         finishUndo(currentAsyncOp.undo)
                         operations.removeAt(i)
@@ -388,13 +388,13 @@ object AsyncManager {
                     val m = Material.matchMaterial(results[0])
                     if (m != null && !m.isAir || currentAsyncOp.schem!!.setAir()) {
                         setMaterial(
-                            b,
+                            b.block,
                             Material.matchMaterial(results[0]),
                             false,
                             currentAsyncOp.undo,
                             currentAsyncOp.player
                         )
-                        b.blockData = Bukkit.getServer().createBlockData(results[1])
+                        b.block.blockData = Bukkit.getServer().createBlockData(results[1])
                         if (results[2].isNotEmpty()) {
                             val command = ("data merge block " + b.x + " " + b.y + " " + b.z + " "
                                     + results[2])
@@ -404,7 +404,7 @@ object AsyncManager {
                     doneOperations++
                 } else if (currentAsyncOp.key.equals("selclone", ignoreCase = true)) {
                     assert(currentAsyncOp.blocks != null)
-                    val b = currentAsyncOp.blocks!!.getNext(1, currentAsyncOp.player)[0]
+                    val b = currentAsyncOp.blocks!!.getNext(1, currentAsyncOp.player, true)[0]
                     if (b == null) {
                         finishUndo(currentAsyncOp.undo)
                         operations.removeAt(i)
@@ -415,14 +415,14 @@ object AsyncManager {
                     }
                     // Actually do the clone
                     for (timesDone in 0 until currentAsyncOp.times) {
-                        val toEdit = b.getRelative(
+                        val toEdit = b.block.getRelative(
                             currentAsyncOp.offset[0] * (1 + timesDone),
                             currentAsyncOp.offset[1] * (1 + timesDone), currentAsyncOp.offset[2] * (1 + timesDone)
                         )
-                        setMaterial(toEdit, b.type, false, currentAsyncOp.undo, currentAsyncOp.player)
-                        toEdit.setBlockData(b.blockData, false)
+                        setMaterial(toEdit, b.block.type, false, currentAsyncOp.undo, currentAsyncOp.player)
+                        toEdit.setBlockData(b.block.blockData, false)
                         val nbt = NBTExtractor()
-                        val nbtStr = nbt.getNBT(b)
+                        val nbtStr = nbt.getNBT(b.block)
                         if (nbtStr.length > 2) {
                             val command = ("data merge block " + toEdit.x + " " + toEdit.y + " "
                                     + toEdit.z + " " + nbtStr)
@@ -431,7 +431,7 @@ object AsyncManager {
                         }
                     }
                     if (currentAsyncOp.delOriginal) {
-                        setMaterial(b, Material.AIR, false, currentAsyncOp.undo, currentAsyncOp.player)
+                        setMaterial(b.block, Material.AIR, false, currentAsyncOp.undo, currentAsyncOp.player)
                         doneOperations++
                     }
                     doneOperations += currentAsyncOp.times.toLong()
@@ -456,12 +456,9 @@ object AsyncManager {
         }
     }
 
-    private fun getBlock(currentAsyncOp: AsyncOperation): List<Block> {
+    private fun getBlock(currentAsyncOp: AsyncOperation): List<BlockWrapper> {
         assert(currentAsyncOp.blocks != null)
-        if (currentAsyncOp.blocks is SchemBrushIterator) {
-            return currentAsyncOp.blocks!!.getNext(1, currentAsyncOp.player)
-        }
-        return currentAsyncOp.blocks!!.getNext(opBlockSize, currentAsyncOp.player)
+        return currentAsyncOp.blocks!!.getNext(opBlockSize, currentAsyncOp.player, true)
     }
 
     // On initialization start the scheduler

@@ -1,5 +1,6 @@
 package com._14ercooper.worldeditor.operations.operators.query;
 
+import com._14ercooper.worldeditor.blockiterator.BlockWrapper;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.main.NBTExtractor;
 import com._14ercooper.worldeditor.operations.OperatorState;
@@ -8,7 +9,6 @@ import com._14ercooper.worldeditor.operations.ParserState;
 import com._14ercooper.worldeditor.operations.operators.Node;
 import com._14ercooper.worldeditor.operations.operators.core.NumberNode;
 import com._14ercooper.worldeditor.operations.operators.world.BlockNode;
-import org.bukkit.block.Block;
 
 public class BlockAtNode extends BlockNode {
 
@@ -46,13 +46,13 @@ public class BlockAtNode extends BlockNode {
     @Override
     public boolean performNode(OperatorState state) {
         try {
-            Block currBlock = state.getCurrentBlock();
+            BlockWrapper currBlock = state.getCurrentBlock();
             xA = x.isAbsolute;
             yA = y.isAbsolute;
             zA = z.isAbsolute;
             state.setCurrentBlock(state.getCurrentWorld().getBlockAt(
-                    x.getInt(state) + (xA ? 0 : currBlock.getX()), y.getInt(state) + (yA ? 0 : currBlock.getY()),
-                    z.getInt(state) + (zA ? 0 : currBlock.getZ())));
+                    x.getInt(state) + (xA ? 0 : currBlock.block.getX()), y.getInt(state) + (yA ? 0 : currBlock.block.getY()),
+                    z.getInt(state) + (zA ? 0 : currBlock.block.getZ())));
             boolean matches = node.performNode(state);
             state.setCurrentBlock(currBlock);
             return matches;
@@ -73,16 +73,16 @@ public class BlockAtNode extends BlockNode {
         xA = x.isAbsolute;
         yA = y.isAbsolute;
         zA = z.isAbsolute;
-        return state.getCurrentWorld().getBlockAt(xV + (xA ? 0 : state.getCurrentBlock().getX()),
-                yV + (yA ? 0 : state.getCurrentBlock().getY()), zV + (zA ? 0 : state.getCurrentBlock().getZ()))
+        return state.getCurrentWorld().getBlockAt(xV + (xA ? 0 : state.getCurrentBlock().block.getX()),
+                yV + (yA ? 0 : state.getCurrentBlock().block.getY()), zV + (zA ? 0 : state.getCurrentBlock().block.getZ()))
                 .toString();
     }
 
     // Get the data of this block
     @Override
     public String getData(OperatorState state) {
-        return state.getCurrentWorld().getBlockAt(xV + (xA ? 0 : state.getCurrentBlock().getX()),
-                yV + (yA ? 0 : state.getCurrentBlock().getY()), zV + (zA ? 0 : state.getCurrentBlock().getZ()))
+        return state.getCurrentWorld().getBlockAt(xV + (xA ? 0 : state.getCurrentBlock().block.getX()),
+                yV + (yA ? 0 : state.getCurrentBlock().block.getY()), zV + (zA ? 0 : state.getCurrentBlock().block.getZ()))
                 .toString();
     }
 
@@ -90,8 +90,8 @@ public class BlockAtNode extends BlockNode {
     @Override
     public String getNBT(OperatorState state) {
         NBTExtractor nbt = new NBTExtractor();
-        return nbt.getNBT(state.getCurrentWorld().getBlockAt(xV + (xA ? 0 : state.getCurrentBlock().getX()),
-                yV + (yA ? 0 : state.getCurrentBlock().getY()), zV + (zA ? 0 : state.getCurrentBlock().getZ())));
+        return nbt.getNBT(state.getCurrentWorld().getBlockAt(xV + (xA ? 0 : state.getCurrentBlock().block.getX()),
+                yV + (yA ? 0 : state.getCurrentBlock().block.getY()), zV + (zA ? 0 : state.getCurrentBlock().block.getZ())));
     }
 
     @Override

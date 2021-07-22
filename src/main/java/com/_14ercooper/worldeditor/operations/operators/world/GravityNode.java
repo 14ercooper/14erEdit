@@ -20,8 +20,8 @@ public class GravityNode extends Node {
     @Override
     public boolean performNode(OperatorState state) {
         try {
-            Material mat = state.getCurrentBlock().getType();
-            Block b = state.getCurrentBlock();
+            Material mat = state.getCurrentBlock().block.getType();
+            Block b = state.getCurrentBlock().block;
 
             PlayerWrapper playerWrapper = PlayerManager.INSTANCE.getPlayerWrapper(state.getCurrentPlayer());
 
@@ -29,7 +29,7 @@ public class GravityNode extends Node {
                 b = b.getRelative(BlockFace.DOWN);
             }
             b.setType(mat);
-            state.getCurrentBlock().setType(Material.AIR);
+            state.getCurrentBlock().block.setType(Material.AIR);
             return true;
         } catch (Exception e) {
             Main.logError("Error performing gravity node. Please check your syntax (or tell 14er how you got here).",

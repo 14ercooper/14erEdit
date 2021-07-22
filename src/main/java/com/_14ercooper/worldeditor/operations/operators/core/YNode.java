@@ -14,7 +14,7 @@ public class YNode extends NumberNode {
     // Return the number
     @Override
     public double getValue(OperatorState state) {
-        return state.getCurrentBlock().getY();
+        return state.getCurrentBlock().y;
     }
 
     // Get how many arguments this type of node takes

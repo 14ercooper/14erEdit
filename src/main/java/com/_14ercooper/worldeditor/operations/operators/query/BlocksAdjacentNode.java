@@ -43,7 +43,7 @@ public class BlocksAdjacentNode extends Node {
         // Check if any adjacent blocks match arg1
         // Set up some variables
         int numAdjacentBlocks = 0;
-        Block curBlock = state.getCurrentWorld().getBlockAt(state.getCurrentBlock().getLocation());
+        Block curBlock = state.getCurrentWorld().getBlockAt(state.getCurrentBlock().block.getLocation());
 
         // Check each direction
         Block blockAdj = curBlock.getRelative(BlockFace.NORTH);

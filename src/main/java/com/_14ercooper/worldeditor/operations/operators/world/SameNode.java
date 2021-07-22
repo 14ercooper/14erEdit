@@ -17,7 +17,7 @@ public class SameNode extends BlockNode {
 
     @Override
     public String getBlock(OperatorState state) {
-        return state.getCurrentBlock().getType().toString();
+        return state.getCurrentBlock().block.getType().toString();
     }
 
     @Override

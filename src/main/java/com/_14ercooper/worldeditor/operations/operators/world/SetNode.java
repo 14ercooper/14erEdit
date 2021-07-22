@@ -55,23 +55,23 @@ public class SetNode extends Node {
             // Block at nodes are handled specially
             if (arg instanceof BlockAtNode) {
                 // Set material
-                SetBlock.setMaterial(state.getCurrentBlock(), Material.matchMaterial(arg.getBlock(state)),
+                SetBlock.setMaterial(state.getCurrentBlock().block, Material.matchMaterial(arg.getBlock(state)),
                         state.getIgnoringPhysics(), state.getCurrentUndo(), state.getCurrentPlayer());
                 // Set data
-                state.getCurrentBlock().setBlockData(Bukkit.getServer().createBlockData(arg.getData(state)),
+                state.getCurrentBlock().block.setBlockData(Bukkit.getServer().createBlockData(arg.getData(state)),
                         state.getIgnoringPhysics());
                 // Clone NBT (if there is any)
                 String nbt = arg.getNBT(state);
                 if (nbt.length() > 2) {
-                    String command = "data merge block " + state.getCurrentBlock().getX() + " "
-                            + state.getCurrentBlock().getY() + " " + state.getCurrentBlock().getZ() + " " + nbt;
+                    String command = "data merge block " + state.getCurrentBlock().block.getX() + " "
+                            + state.getCurrentBlock().block.getY() + " " + state.getCurrentBlock().block.getZ() + " " + nbt;
                     Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), command);
                 }
                 return true;
             }
 
-            Material storedMaterial = state.getCurrentBlock().getType();
-            String storedData = state.getCurrentBlock().getBlockData().getAsString();
+            Material storedMaterial = state.getCurrentBlock().block.getType();
+            String storedData = state.getCurrentBlock().block.getBlockData().getAsString();
             String setMaterial = arg.getBlock(state);
             String setData = arg.getData(state);
             // Case same
@@ -80,7 +80,7 @@ public class SetNode extends Node {
             }
             // Case only data to set, do the data merge
             if (setMaterial.equalsIgnoreCase("dataonly")) {
-                BlockState oldBS = state.getCurrentBlock().getState();
+                BlockState oldBS = state.getCurrentBlock().block.getState();
                 // Step 1, convert the old data into a map
                 Map<String, String> oldData = new HashMap<>();
                 if (storedData.split("\\[").length < 2) {
@@ -102,15 +102,15 @@ public class SetNode extends Node {
                 }
                 newData = new StringBuilder(newData.substring(0, newData.length() - 1));
                 newData.append("]");
-                state.getCurrentBlock().setBlockData(Bukkit.getServer().createBlockData(newData.toString()),
+                state.getCurrentBlock().block.setBlockData(Bukkit.getServer().createBlockData(newData.toString()),
                         state.getIgnoringPhysics());
-                state.getCurrentUndo().addBlock(oldBS, state.getCurrentBlock().getState());
+                state.getCurrentUndo().addBlock(oldBS, state.getCurrentBlock().block.getState());
                 return storedMaterial == Material.matchMaterial(setMaterial) && !storedData.equalsIgnoreCase(setData);
             }
             // Case NBT only, merge nbt
             else if (setMaterial.equalsIgnoreCase("nbtonly")) {
-                String command = "data merge block " + state.getCurrentBlock().getX() + " " + state.getCurrentBlock().getY()
-                        + " " + state.getCurrentBlock().getZ();
+                String command = "data merge block " + state.getCurrentBlock().block.getX() + " " + state.getCurrentBlock().block.getY()
+                        + " " + state.getCurrentBlock().block.getZ();
                 command = command + " " + arg.getNBT(state);
                 Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), command);
                 return true;
@@ -118,14 +118,14 @@ public class SetNode extends Node {
             // Case no data to set
             else if (setData == null) {
                 // Try carry over data
-                SetBlock.setMaterial(state.getCurrentBlock(), Material.matchMaterial(setMaterial),
+                SetBlock.setMaterial(state.getCurrentBlock().block, Material.matchMaterial(setMaterial),
                         state.getIgnoringPhysics(), state.getCurrentUndo(), state.getCurrentPlayer());
                 try {
                     if (!setMaterial.contains("minecraft:"))
                         setMaterial = "minecraft:" + setMaterial;
                     String newData = setMaterial + "[" + storedData.split("\\[")[1];
                     BlockData data = Bukkit.getServer().createBlockData(newData);
-                    state.getCurrentBlock().setBlockData(data, state.getIgnoringPhysics());
+                    state.getCurrentBlock().block.setBlockData(data, state.getIgnoringPhysics());
                 } catch (Exception e) {
                     // Nothing needs to be done, new block can't take the existing data so no
                     // worries
@@ -136,15 +136,15 @@ public class SetNode extends Node {
             else {
                 // Case materials match (update data) - this is slightly faster in some cases
                 if (storedMaterial == Material.matchMaterial(setMaterial)) {
-                    state.getCurrentBlock().setBlockData(Bukkit.getServer().createBlockData(setData),
+                    state.getCurrentBlock().block.setBlockData(Bukkit.getServer().createBlockData(setData),
                             state.getIgnoringPhysics());
                     return !storedData.equalsIgnoreCase(setData);
                 }
                 // Case materials don't match (set all)
                 else {
-                    SetBlock.setMaterial(state.getCurrentBlock(), Material.matchMaterial(setMaterial),
+                    SetBlock.setMaterial(state.getCurrentBlock().block, Material.matchMaterial(setMaterial),
                             state.getIgnoringPhysics(), state.getCurrentUndo(), state.getCurrentPlayer());
-                    state.getCurrentBlock().setBlockData(Bukkit.getServer().createBlockData(setData),
+                    state.getCurrentBlock().block.setBlockData(Bukkit.getServer().createBlockData(setData),
                             state.getIgnoringPhysics());
                     return storedMaterial == Material.matchMaterial(setMaterial)
                             && !storedData.equalsIgnoreCase(setData);

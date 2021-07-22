@@ -44,18 +44,18 @@ public class AngleNode extends Node {
     public boolean performNode(OperatorState state) {
         // Get angle from each block pair
         int dist = (int) distance.getValue(state);
-        int maxAngle = getAngle(state.getCurrentBlock().getRelative(dist, 0, 0),
-                state.getCurrentBlock().getRelative(-dist, 0, 0), state);
-        int angle = getAngle(state.getCurrentBlock().getRelative(0, 0, dist),
-                state.getCurrentBlock().getRelative(0, 0, -dist), state);
+        int maxAngle = getAngle(state.getCurrentBlock().block.getRelative(dist, 0, 0),
+                state.getCurrentBlock().block.getRelative(-dist, 0, 0), state);
+        int angle = getAngle(state.getCurrentBlock().block.getRelative(0, 0, dist),
+                state.getCurrentBlock().block.getRelative(0, 0, -dist), state);
         if (angle > maxAngle)
             maxAngle = angle;
-        angle = getAngle(state.getCurrentBlock().getRelative((int) (dist * 0.707), 0, (int) (dist * 0.707)),
-                state.getCurrentBlock().getRelative((int) (-dist * 0.707), 0, (int) (-dist * 0.707)), state);
+        angle = getAngle(state.getCurrentBlock().block.getRelative((int) (dist * 0.707), 0, (int) (dist * 0.707)),
+                state.getCurrentBlock().block.getRelative((int) (-dist * 0.707), 0, (int) (-dist * 0.707)), state);
         if (angle > maxAngle)
             maxAngle = angle;
-        angle = getAngle(state.getCurrentBlock().getRelative((int) (dist * 0.707), 0, (int) (-dist * 0.707)),
-                state.getCurrentBlock().getRelative((int) (-dist * 0.707), 0, (int) (dist * 0.707)), state);
+        angle = getAngle(state.getCurrentBlock().block.getRelative((int) (dist * 0.707), 0, (int) (-dist * 0.707)),
+                state.getCurrentBlock().block.getRelative((int) (-dist * 0.707), 0, (int) (dist * 0.707)), state);
         if (angle > maxAngle)
             maxAngle = angle;
         // Return if max angle found is in range

@@ -24,7 +24,7 @@ public class RemainderNode extends Node {
             } else if (dim.equalsIgnoreCase("z")) {
                 node.arg1 = 2;
             }
-            arg2 = Parser.parseNumberNode(parserState);
+            node.arg2 = Parser.parseNumberNode(parserState);
         } catch (Exception e) {
             Main.logError("Could not create remainder node. Please check your syntax.", parserState, e);
             return null;
@@ -41,13 +41,13 @@ public class RemainderNode extends Node {
         int base = (int) arg2.getValue(state);
         int modBase = base * 2;
         if (arg1 == 0) {
-            int value = state.getCurrentBlock().getX();
+            int value = state.getCurrentBlock().x;
             return Math.floorMod(value, modBase) < base;
         } else if (arg1 == 1) {
-            int value = state.getCurrentBlock().getY();
+            int value = state.getCurrentBlock().y;
             return Math.floorMod(value, modBase) < base;
         } else if (arg1 == 2) {
-            int value = state.getCurrentBlock().getZ();
+            int value = state.getCurrentBlock().z;
             return Math.floorMod(value, modBase) < base;
         }
         Main.logError("Invalid axis provided to remainder node. Please check your syntax.", state.getCurrentPlayer(), null);

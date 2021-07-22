@@ -2,10 +2,10 @@ package com._14ercooper.worldeditor.blockiterator.iterators;
 
 import com._14ercooper.schematics.SchemLite;
 import com._14ercooper.worldeditor.blockiterator.BlockIterator;
+import com._14ercooper.worldeditor.blockiterator.BlockWrapper;
 import com._14ercooper.worldeditor.main.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
-import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 
 import java.io.IOException;
@@ -17,9 +17,9 @@ public class SchemBrushIterator extends BlockIterator {
     BlockIterator schemIter;
 
     // Statics
-    public static String blockType = "";
-    public static String blockData = "";
-    public static String nbt = "";
+//    public static String blockType = "";
+//    public static String blockData = "";
+//    public static String nbt = "";
 
     @Override
     public BlockIterator newIterator(List<String> args, World world, CommandSender player) {
@@ -49,7 +49,12 @@ public class SchemBrushIterator extends BlockIterator {
     }
 
     @Override
-    public Block getNextBlock(CommandSender player) {
+    public BlockWrapper getNextBlock(CommandSender player, boolean getBlock) {
+
+        String blockType;
+        String blockData;
+        String nbt;
+
         // Update the schem block
         try {
             String[] data = schem.readNext();
@@ -62,7 +67,13 @@ public class SchemBrushIterator extends BlockIterator {
         }
 
         // Return the next world block
-        return schemIter.getNextBlock(player);
+        BlockWrapper wrapper = schemIter.getNextBlock(player, getBlock);
+        if (wrapper != null) {
+            wrapper.otherArgs.add(blockType);
+            wrapper.otherArgs.add(blockData);
+            wrapper.otherArgs.add(nbt);
+        }
+        return wrapper;
     }
 
     @Override

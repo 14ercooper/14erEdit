@@ -22,9 +22,9 @@ public class SkylightNode extends Node {
     public boolean performNode(OperatorState state) {
         BlockFace[] faces = {BlockFace.UP, BlockFace.DOWN, BlockFace.NORTH, BlockFace.SOUTH, BlockFace.EAST,
                 BlockFace.WEST};
-        int light = state.getCurrentBlock().getLightFromSky();
+        int light = state.getCurrentBlock().block.getLightFromSky();
         for (BlockFace face : faces) {
-            int l = state.getCurrentBlock().getRelative(face).getLightFromSky();
+            int l = state.getCurrentBlock().block.getRelative(face).getLightFromSky();
             if (l > light)
                 light = l;
         }

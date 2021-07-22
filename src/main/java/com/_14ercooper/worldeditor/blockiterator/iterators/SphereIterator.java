@@ -1,9 +1,9 @@
 package com._14ercooper.worldeditor.blockiterator.iterators;
 
 import com._14ercooper.worldeditor.blockiterator.BlockIterator;
+import com._14ercooper.worldeditor.blockiterator.BlockWrapper;
 import com._14ercooper.worldeditor.main.Main;
 import org.bukkit.World;
-import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 
 import java.util.List;
@@ -39,7 +39,7 @@ public class SphereIterator extends BlockIterator {
     }
 
     @Override
-    public Block getNextBlock(CommandSender player) {
+    public BlockWrapper getNextBlock(CommandSender player, boolean getBlock) {
         while (true) {
             if (incrXYZ(radMax, radMax, radMax, xC, yC, zC, player)) {
                 return null;
@@ -62,7 +62,11 @@ public class SphereIterator extends BlockIterator {
             break;
         }
 
-        return iterWorld.getBlockAt(x + xC, y + yC, z + zC);
+        if (getBlock) {
+            return new BlockWrapper(iterWorld.getBlockAt(x + xC, y + yC, z + zC), x + xC, y + yC, z + zC);
+        } else {
+            return new BlockWrapper(null, x + xC, y + yC, z + zC);
+        }
     }
 
     @Override

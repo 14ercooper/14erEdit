@@ -79,9 +79,9 @@ public class NoiseNode extends Node {
     }
 
     public float getNum(OperatorState state) {
-        int x = state.getCurrentBlock().getX();
-        int y = state.getCurrentBlock().getY();
-        int z = state.getCurrentBlock().getZ();
+        int x = state.getCurrentBlock().block.getX();
+        int y = state.getCurrentBlock().block.getY();
+        int z = state.getCurrentBlock().block.getZ();
         int w = (int) ((x + y + z) / 0.33333333);
         int dim = (int) dimensions.getValue(state);
 

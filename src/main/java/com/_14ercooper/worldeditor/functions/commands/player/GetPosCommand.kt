@@ -10,7 +10,7 @@ class GetPosCommand : InterpreterCommand() {
         if (function.player is Player) {
             val dim = function.parseVariable(args[1]).toInt()
             val loc =
-                if (function.isOperator) function.operatorState!!.currentBlock.location else function.player.location
+                if (function.isOperator) function.operatorState!!.currentBlock.block.location else function.player.location
             when (dim) {
                 0 -> {
                     function.setVariable(args[0], loc.x)

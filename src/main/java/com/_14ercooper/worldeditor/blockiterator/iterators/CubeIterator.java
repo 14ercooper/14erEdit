@@ -1,9 +1,9 @@
 package com._14ercooper.worldeditor.blockiterator.iterators;
 
 import com._14ercooper.worldeditor.blockiterator.BlockIterator;
+import com._14ercooper.worldeditor.blockiterator.BlockWrapper;
 import com._14ercooper.worldeditor.main.Main;
 import org.bukkit.World;
-import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 
 import java.util.List;
@@ -74,7 +74,7 @@ public class CubeIterator extends BlockIterator {
     }
 
     @Override
-    public Block getNextBlock(CommandSender player) {
+    public BlockWrapper getNextBlock(CommandSender player, boolean getBlock) {
         if (executionOrder == 0) { // xzy
             x += xStep;
             doneBlocks++;
@@ -166,7 +166,11 @@ public class CubeIterator extends BlockIterator {
             }
         }
 
-        return iterWorld.getBlockAt(x, y, z);
+        if (getBlock) {
+            return new BlockWrapper(iterWorld.getBlockAt(x, y, z), x, y, z);
+        } else {
+            return new BlockWrapper(null, x, y, z);
+        }
     }
 
     @Override

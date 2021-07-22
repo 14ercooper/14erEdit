@@ -1,6 +1,6 @@
 package com._14ercooper.worldeditor.operations.operators.world;
 
-import com._14ercooper.worldeditor.blockiterator.iterators.SchemBrushIterator;
+import com._14ercooper.worldeditor.blockiterator.BlockWrapper;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.OperatorState;
 import com._14ercooper.worldeditor.operations.Parser;
@@ -8,7 +8,6 @@ import com._14ercooper.worldeditor.operations.ParserState;
 import com._14ercooper.worldeditor.operations.operators.Node;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 
 public class SchemBlockNode extends BlockNode {
@@ -39,19 +38,19 @@ public class SchemBlockNode extends BlockNode {
     // Return the material this node references
     @Override
     public String getBlock(OperatorState state) {
-        return SchemBrushIterator.blockType;
+        return state.getCurrentBlock().otherArgs.get(0);
     }
 
     // Get the data of this block
     @Override
     public String getData(OperatorState state) {
-        return SchemBrushIterator.blockData;
+        return state.getCurrentBlock().otherArgs.get(1);
     }
 
     // Get the NBT of this block
     @Override
     public String getNBT(OperatorState state) {
-        return SchemBrushIterator.nbt;
+        return state.getCurrentBlock().otherArgs.get(2);
     }
 
     // Check if it's the correct block
@@ -59,18 +58,18 @@ public class SchemBlockNode extends BlockNode {
     public boolean performNode(OperatorState state) {
         if (!isInSet) {
             BlockState stateBlock = state.getCurrentWorld().getBlockAt(14, 0, 14).getState();
-            Block currBlock = state.getCurrentBlock();
+            BlockWrapper currBlock = state.getCurrentBlock();
             boolean retVal = false;
             try {
                 state.setCurrentBlock(state.getCurrentWorld().getBlockAt(14, 0, 14));
-                state.getCurrentBlock().setType(Material.matchMaterial(SchemBrushIterator.blockType));
-                state.getCurrentBlock().setBlockData(Bukkit.getServer().createBlockData(SchemBrushIterator.blockData));
+                state.getCurrentBlock().block.setType(Material.matchMaterial(state.getCurrentBlock().otherArgs.get(0)));
+                state.getCurrentBlock().block.setBlockData(Bukkit.getServer().createBlockData(state.getCurrentBlock().otherArgs.get(1)));
                 retVal = arg.performNode(state);
             } catch (Exception e) {
                 Main.logError("Could not perform schem block node", state.getCurrentPlayer(), e);
             } finally {
-                state.getCurrentBlock().setType(stateBlock.getType());
-                state.getCurrentBlock().setBlockData(stateBlock.getBlockData());
+                state.getCurrentBlock().block.setType(stateBlock.getType());
+                state.getCurrentBlock().block.setBlockData(stateBlock.getBlockData());
                 state.setCurrentBlock(currBlock);
             }
             return retVal;

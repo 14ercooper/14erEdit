@@ -30,11 +30,11 @@ public class SetBiomeNode extends Node {
     @Override
     public boolean performNode(OperatorState state) {
         try {
-            if (!(state.getCurrentBlock().getChunk().isLoaded())) {
-                state.getCurrentBlock().getChunk().load(true);
+            if (!(state.getCurrentBlock().block.getChunk().isLoaded())) {
+                state.getCurrentBlock().block.getChunk().load(true);
             }
-            state.getCurrentBlock().getWorld().setBiome(state.getCurrentBlock().getX(), state.getCurrentBlock().getY(), state.getCurrentBlock().getZ(), Biome.valueOf(biome.getText()));
-            state.getCurrentBlock().setBiome(Biome.valueOf(biome.getText()));
+            state.getCurrentBlock().block.getWorld().setBiome(state.getCurrentBlock().block.getX(), state.getCurrentBlock().block.getY(), state.getCurrentBlock().block.getZ(), Biome.valueOf(biome.getText()));
+            state.getCurrentBlock().block.setBiome(Biome.valueOf(biome.getText()));
             return true;
         } catch (Exception e) {
             Main.logError("Could not perform set biome node. Did you provide a valid biome?", state.getCurrentPlayer(), e);

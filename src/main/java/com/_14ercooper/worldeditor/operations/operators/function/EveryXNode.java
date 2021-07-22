@@ -40,13 +40,13 @@ public class EveryXNode extends Node {
     public boolean performNode(OperatorState state) {
         int base = (int) arg2.getValue(state);
         if (arg1 == 0) {
-            int value = state.getCurrentBlock().getX();
+            int value = state.getCurrentBlock().block.getX();
             return Math.floorMod(value, base) == 0;
         } else if (arg1 == 1) {
-            int value = state.getCurrentBlock().getY();
+            int value = state.getCurrentBlock().block.getY();
             return Math.floorMod(value, base) == 0;
         } else if (arg1 == 2) {
-            int value = state.getCurrentBlock().getZ();
+            int value = state.getCurrentBlock().block.getZ();
             return Math.floorMod(value, base) == 0;
         }
         Main.logError("Invalid axis provided to remainder node. Please check your syntax.", state.getCurrentPlayer(), null);

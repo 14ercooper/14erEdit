@@ -51,12 +51,12 @@ public class BrushNode extends Node {
 
     @Override
     public boolean performNode(OperatorState state) {
-        int x = state.getCurrentBlock().getX();
-        int y = state.getCurrentBlock().getY();
-        int z = state.getCurrentBlock().getZ();
+        int x = state.getCurrentBlock().x;
+        int y = state.getCurrentBlock().y;
+        int z = state.getCurrentBlock().z;
         if (!(shape instanceof Multi)) {
             // Build an array of all blocks to operate on
-            BlockIterator blockArray = shape.GetBlocks(x, y, z, state.getCurrentBlock().getWorld(), state.getCurrentPlayer());
+            BlockIterator blockArray = shape.GetBlocks(x, y, z, state.getCurrentBlock().block.getWorld(), state.getCurrentPlayer());
 
             if (blockArray.getTotalBlocks() == 0) {
                 return false;
@@ -71,7 +71,7 @@ public class BrushNode extends Node {
         } else {
             // It's a multi-operator
             Multi multiShape = (Multi) shape;
-            List<BlockIterator> iters = multiShape.getIters(x, y, z, state.getCurrentBlock().getWorld(), state.getCurrentPlayer());
+            List<BlockIterator> iters = multiShape.getIters(x, y, z, state.getCurrentBlock().block.getWorld(), state.getCurrentPlayer());
             List<Operator> ops = multiShape.getOps(x, y, z);
 
             AsyncManager.scheduleEdit(iters, ops, state.getCurrentPlayer(), state.getCurrentUndo());

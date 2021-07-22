@@ -1,5 +1,6 @@
 package com._14ercooper.worldeditor.operations.operators.fun;
 
+import com._14ercooper.worldeditor.blockiterator.BlockWrapper;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.OperatorState;
 import com._14ercooper.worldeditor.operations.Parser;
@@ -33,10 +34,10 @@ public class SmallRuinNode extends Node {
 
         int stackCount = Main.randRange((int) stackSize.getMin(state), (int) stackSize.getMax(state));
 
-        Block savedBlock = state.getCurrentBlock();
+        BlockWrapper savedBlock = state.getCurrentBlock();
 
         for (int ruinNum = 0; ruinNum < stackCount; ruinNum++) {
-            Block currBlock = savedBlock.getRelative(BlockFace.UP, 4 * ruinNum);
+            Block currBlock = savedBlock.block.getRelative(BlockFace.UP, 4 * ruinNum);
 
             // Create base including fill
             for (int xO = -xSize; xO <= xSize; xO++) {
@@ -57,7 +58,7 @@ public class SmallRuinNode extends Node {
                     if (ruinNum == 0) {
                         for (int i = 1; i < 4; i++) {
                             state.setCurrentBlock(currBlockOffset.getRelative(BlockFace.DOWN, i));
-                            if (state.getCurrentBlock().getType() == Material.AIR)
+                            if (state.getCurrentBlock().block.getType() == Material.AIR)
                                 i--;
                             block.performNode(state);
                         }

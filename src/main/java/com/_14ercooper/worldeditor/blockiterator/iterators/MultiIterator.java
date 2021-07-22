@@ -1,9 +1,9 @@
 package com._14ercooper.worldeditor.blockiterator.iterators;
 
 import com._14ercooper.worldeditor.blockiterator.BlockIterator;
+import com._14ercooper.worldeditor.blockiterator.BlockWrapper;
 import com._14ercooper.worldeditor.main.Main;
 import org.bukkit.World;
-import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;
@@ -27,12 +27,12 @@ public class MultiIterator extends BlockIterator {
     }
 
     @Override
-    public Block getNextBlock(CommandSender player) {
-        Block next = null;
+    public BlockWrapper getNextBlock(CommandSender player, boolean getBlock) {
+        BlockWrapper next = null;
         while (next == null) {
             if (childIterators.isEmpty())
                 return null;
-            next = childIterators.get(0).getNextBlock(player);
+            next = childIterators.get(0).getNextBlock(player, getBlock);
             if (next == null) {
                 if (childIterators.isEmpty())
                     return null;

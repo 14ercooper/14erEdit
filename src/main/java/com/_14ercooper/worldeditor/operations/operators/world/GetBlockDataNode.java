@@ -15,7 +15,7 @@ public class GetBlockDataNode extends Node {
     @Override
     public boolean performNode(OperatorState state) {
         try {
-            String s = state.getCurrentBlock().getBlockData().getAsString(true);
+            String s = state.getCurrentBlock().block.getBlockData().getAsString(true);
             state.getCurrentPlayer().sendMessage("§dBlock Data: " + s);
             return s.contains("[");
         } catch (Exception e) {
