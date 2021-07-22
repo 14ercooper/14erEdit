@@ -34,7 +34,6 @@ object CraftscriptManager  // Create a new manager
             }
         } catch (e: Exception) {
             logError("Error performing CraftScript. Check your syntax?", player, e)
-            e.printStackTrace()
         }
         return true
     }

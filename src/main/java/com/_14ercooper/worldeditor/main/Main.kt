@@ -141,7 +141,7 @@ class Main : JavaPlugin() {
         private var isDebugDefault = false
 
         @JvmStatic
-        lateinit var plugin: Plugin
+        var plugin: Plugin? = null
         var majorVer: Int = 0
         var minorVer: Int = 0
 
@@ -175,7 +175,7 @@ class Main : JavaPlugin() {
             if (!logErrors)
                 player.sendMessage("§6[ERROR] $message$stackTrace")
             else
-                plugin.server.broadcastMessage("§6[ERROR] $message$stackTrace")
+                plugin!!.server.broadcastMessage("§6[ERROR] $message$stackTrace")
             if (logErrors) {
                 try {
                     var errMessage = ""
@@ -228,7 +228,7 @@ class Main : JavaPlugin() {
                 }
             }
             catch (e : NullPointerException) {
-                // Do nothing
+                // Do nothing, this is a test
             }
         }
 
@@ -243,8 +243,8 @@ class Main : JavaPlugin() {
         }
 
         private fun loadConfig() {
-            plugin.saveDefaultConfig()
-            if (!plugin.config.isSet("maxLoopLength")) {
+            plugin!!.saveDefaultConfig()
+            if (!plugin!!.config.isSet("maxLoopLength")) {
                 println("Updating configuration file.")
                 try {
                     val configUpdate1 = """
@@ -280,13 +280,13 @@ class Main : JavaPlugin() {
                     }
                 }
             }
-            AsyncManager.blocksPerAsync = plugin.config.getLong("blocksPerAsync")
-            AsyncManager.ticksPerAsync = plugin.config.getLong("ticksPerAsync")
-            WhileNode.maxLoopLength = plugin.config.getLong("maxLoopLength")
-            Function.maxFunctionIters = plugin.config.getLong("maxFunctionIters")
-            logDebugs = plugin.config.getBoolean("logDebugs")
-            logErrors = plugin.config.getBoolean("logErrors")
-            this.isDebugDefault = plugin.config.getBoolean("defaultDebug")
+            AsyncManager.blocksPerAsync = plugin!!.config.getLong("blocksPerAsync")
+            AsyncManager.ticksPerAsync = plugin!!.config.getLong("ticksPerAsync")
+            WhileNode.maxLoopLength = plugin!!.config.getLong("maxLoopLength")
+            Function.maxFunctionIters = plugin!!.config.getLong("maxFunctionIters")
+            logDebugs = plugin!!.config.getBoolean("logDebugs")
+            logErrors = plugin!!.config.getBoolean("logErrors")
+            this.isDebugDefault = plugin!!.config.getBoolean("defaultDebug")
         }
     }
 }

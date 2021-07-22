@@ -7,6 +7,7 @@ import com._14ercooper.worldeditor.main.Main.Companion.logError
 import com._14ercooper.worldeditor.operations.OperatorState
 import com._14ercooper.worldeditor.undo.UndoElement
 import org.bukkit.Location
+import java.lang.NullPointerException
 
 object MacroLauncher {
     @JvmField
@@ -30,9 +31,14 @@ object MacroLauncher {
         }
         val macroArgs = temp1.split(";".toRegex()).toTypedArray()
         AsyncManager.countEdits = true
-        val returnVal = macros[macroName]!!.performMacro(macroArgs, location, state)
-        AsyncManager.countEdits = false
-        return returnVal
+        return try {
+            val returnVal = macros[macroName]!!.performMacro(macroArgs, location, state)
+            AsyncManager.countEdits = false
+            returnVal
+        } catch (e : NullPointerException) {
+            // Do nothing, this is a test
+            false
+        }
     }
 
     fun addMacro(name: String, macro: Macro) {

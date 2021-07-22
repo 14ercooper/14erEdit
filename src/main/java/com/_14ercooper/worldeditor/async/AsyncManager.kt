@@ -17,6 +17,7 @@ import org.bukkit.Material
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import java.io.IOException
+import java.lang.NullPointerException
 
 object AsyncManager {
     var blocksPerAsync: Long = 10000
@@ -247,7 +248,7 @@ object AsyncManager {
                     val currWorld = if (currentAsyncOp.player is Player) {
                         (currentAsyncOp.player as Player).world
                     } else {
-                        Main.plugin.server.worlds[0]
+                        Main.plugin!!.server.worlds[0]
                     }
                     b.stream().forEach {
                         val state = OperatorState(it, currentAsyncOp.player, currWorld, currentAsyncOp.undo)
@@ -334,7 +335,7 @@ object AsyncManager {
                     val currWorld = if (currentAsyncOp.player is Player) {
                         (currentAsyncOp.player as Player).world
                     } else {
-                        Main.plugin.server.worlds[0]
+                        Main.plugin!!.server.worlds[0]
                     }
                     b.stream().forEach {
                         val state = OperatorState(it, currentAsyncOp.player, currWorld, currentAsyncOp.undo)
@@ -463,12 +464,17 @@ object AsyncManager {
 
     // On initialization start the scheduler
     init {
-        val scheduler = Bukkit.getServer().scheduler
-        scheduler.scheduleSyncRepeatingTask(
-            Main.plugin,
-            { performOperation() },
-            ticksPerAsync,
-            ticksPerAsync
-        )
+        try {
+            val scheduler = Bukkit.getServer().scheduler
+            scheduler.scheduleSyncRepeatingTask(
+                Main.plugin!!,
+                { performOperation() },
+                ticksPerAsync,
+                ticksPerAsync
+            )
+        }
+        catch (e : NullPointerException) {
+            // Do nothing, this is a test
+        }
     }
 }

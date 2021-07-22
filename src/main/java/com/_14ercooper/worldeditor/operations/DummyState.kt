@@ -9,6 +9,6 @@ import org.bukkit.command.CommandSender
 class DummyState(var currentPlayerThis: CommandSender) : OperatorState(
     BlockWrapper(null, 14, 14, 14),
     currentPlayerThis,
-    Main.plugin.server.worlds[0],
+    Main.plugin!!.server.worlds[0],
     UndoElement("temp", UserUndo("dummy"))
 )

@@ -27,7 +27,13 @@ public class TemplateNode extends Node {
     public TemplateNode newNode(ParserState parserState) {
         TemplateNode node = new TemplateNode();
         node.filename = "plugins/14erEdit/templates/" + Parser.parseStringNode(parserState).getText();
-        int argCount = (int) Parser.parseNumberNode(parserState).getValue(new DummyState(parserState.getCurrentPlayer()));
+        int argCount;
+        if (parserState.getTestDummyState() == null) {
+            argCount = (int) Parser.parseNumberNode(parserState).getValue(new DummyState(parserState.getCurrentPlayer()));
+        }
+        else {
+            argCount = (int) Parser.parseNumberNode(parserState).getValue(parserState.getTestDummyState());
+        }
         for (int i = 0; i < argCount; i++) {
             node.args.add(Parser.parseStringNode(parserState).getText());
         }

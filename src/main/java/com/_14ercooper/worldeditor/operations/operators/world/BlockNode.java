@@ -109,11 +109,11 @@ public class BlockNode extends Node {
     }
 
     // Nested class to make parsing , and % lists easier
-    private static class BlockInstance {
-        String mat;
-        String data;
-        String nbt = "";
-        int weight;
+    public static class BlockInstance {
+        public String mat;
+        public String data;
+        public String nbt = "";
+        public int weight;
 
         // Construct a new block instance from an input string
         BlockInstance(String input, ParserState parserState) {
