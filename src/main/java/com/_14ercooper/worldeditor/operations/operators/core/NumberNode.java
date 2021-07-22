@@ -64,7 +64,7 @@ public class NumberNode extends Node {
     }
 
     @Override
-    public boolean performNode(OperatorState state) {
+    public boolean performNode(OperatorState state, boolean perform) {
         return !(Math.abs(arg) < 0.01);
     }
 

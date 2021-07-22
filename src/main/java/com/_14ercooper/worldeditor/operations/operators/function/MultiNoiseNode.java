@@ -54,7 +54,7 @@ public class MultiNoiseNode extends Node {
     }
 
     @Override
-    public boolean performNode(OperatorState state) {
+    public boolean performNode(OperatorState state, boolean perform) {
         // Get the noise value and the value of the noise count
         int c = noiseCount.getInt(state) + 1;
         float n = NoiseNode.scaleTo255(noiseFunction.getNum(state));
@@ -70,7 +70,7 @@ public class MultiNoiseNode extends Node {
         }
 
         // Perform correct node
-        return noises.get(nodeToRun).performNode(state);
+        return noises.get(nodeToRun).performNode(state, true);
     }
 
     private float sigmoid(float val) {

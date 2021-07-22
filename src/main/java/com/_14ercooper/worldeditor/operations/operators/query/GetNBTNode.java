@@ -15,7 +15,7 @@ public class GetNBTNode extends StringNode {
     }
 
     @Override
-    public boolean performNode(OperatorState state) {
+    public boolean performNode(OperatorState state, boolean perform) {
         String s = (new NBTExtractor()).getNBT(state.getCurrentBlock().block);
         contents = s;
         return s.length() > 2;

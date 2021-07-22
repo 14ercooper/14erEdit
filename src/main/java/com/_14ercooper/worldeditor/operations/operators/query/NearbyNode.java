@@ -41,7 +41,7 @@ public class NearbyNode extends Node {
     }
 
     @Override
-    public boolean performNode(OperatorState state) {
+    public boolean performNode(OperatorState state, boolean perform) {
         int dist = (int) distance.getValue(state);
         int trueSeen = 0;
         for (int x = -dist; x <= dist; x++) {
@@ -49,7 +49,7 @@ public class NearbyNode extends Node {
                 for (int z = -dist; z <= dist; z++) {
                     Block currBlock = state.getCurrentBlock().block;
                     state.setCurrentBlock(currBlock.getRelative(x, y, z));
-                    boolean isTrue = blockMask.performNode(state);
+                    boolean isTrue = blockMask.performNode(state, true);
                     state.setCurrentBlock(currBlock);
                     if (isTrue)
                         trueSeen++;

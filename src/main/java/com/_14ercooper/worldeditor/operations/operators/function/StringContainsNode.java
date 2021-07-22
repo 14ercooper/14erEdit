@@ -30,13 +30,13 @@ public class StringContainsNode extends Node {
     }
 
     @Override
-    public boolean performNode(OperatorState state) {
+    public boolean performNode(OperatorState state, boolean perform) {
         try {
             if (!(arg1 instanceof StringNode) || !(arg2 instanceof StringNode))
                 return false;
             boolean result;
             if (arg1 instanceof GetNBTNode) {
-                arg1.performNode(state);
+                arg1.performNode(state, true);
                 result = ((GetNBTNode) arg1).getText().contains(((StringNode) arg2).contents);
             } else {
                 result = ((StringNode) arg1).contents.contains(((StringNode) arg2).contents);

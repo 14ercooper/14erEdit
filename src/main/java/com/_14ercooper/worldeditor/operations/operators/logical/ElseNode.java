@@ -27,9 +27,9 @@ public class ElseNode extends Node {
     }
 
     @Override
-    public boolean performNode(OperatorState state) {
+    public boolean performNode(OperatorState state, boolean perform) {
         try {
-            return subNode.performNode(state);
+            return subNode.performNode(state, true);
         } catch (Exception e) {
             Main.logError("Error performing else node. Please check your syntax.", state.getCurrentPlayer(), e);
             return false;

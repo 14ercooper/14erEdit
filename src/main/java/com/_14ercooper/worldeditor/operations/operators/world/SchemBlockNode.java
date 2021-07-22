@@ -55,7 +55,7 @@ public class SchemBlockNode extends BlockNode {
 
     // Check if it's the correct block
     @Override
-    public boolean performNode(OperatorState state) {
+    public boolean performNode(OperatorState state, boolean perform) {
         if (!isInSet) {
             BlockState stateBlock = state.getCurrentWorld().getBlockAt(14, 0, 14).getState();
             BlockWrapper currBlock = state.getCurrentBlock();
@@ -64,7 +64,7 @@ public class SchemBlockNode extends BlockNode {
                 state.setCurrentBlock(state.getCurrentWorld().getBlockAt(14, 0, 14));
                 state.getCurrentBlock().block.setType(Material.matchMaterial(state.getCurrentBlock().otherArgs.get(0)));
                 state.getCurrentBlock().block.setBlockData(Bukkit.getServer().createBlockData(state.getCurrentBlock().otherArgs.get(1)));
-                retVal = arg.performNode(state);
+                retVal = arg.performNode(state, true);
             } catch (Exception e) {
                 Main.logError("Could not perform schem block node", state.getCurrentPlayer(), e);
             } finally {

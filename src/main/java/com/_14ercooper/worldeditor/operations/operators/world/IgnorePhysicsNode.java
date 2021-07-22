@@ -27,10 +27,10 @@ public class IgnorePhysicsNode extends Node {
     }
 
     @Override
-    public boolean performNode(OperatorState state) {
+    public boolean performNode(OperatorState state, boolean perform) {
         try {
             state.setIgnoringPhysics(!state.getIgnoringPhysics());
-            boolean output = arg.performNode(state);
+            boolean output = arg.performNode(state, true);
             state.setIgnoringPhysics(!state.getIgnoringPhysics());
             return output;
         } catch (Exception e) {

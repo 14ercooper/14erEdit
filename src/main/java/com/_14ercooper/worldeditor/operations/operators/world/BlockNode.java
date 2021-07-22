@@ -93,7 +93,7 @@ public class BlockNode extends Node {
 
     // Check if it's the correct block
     @Override
-    public boolean performNode(OperatorState state) {
+    public boolean performNode(OperatorState state, boolean perform) {
         try {
             return (new BlockInstance()).Contains(blockList, textMasks, state.getCurrentBlock().block);
         } catch (Exception e) {

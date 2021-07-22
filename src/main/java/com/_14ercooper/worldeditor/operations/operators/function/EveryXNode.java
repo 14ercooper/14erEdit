@@ -37,7 +37,7 @@ public class EveryXNode extends Node {
     }
 
     @Override
-    public boolean performNode(OperatorState state) {
+    public boolean performNode(OperatorState state, boolean perform) {
         int base = (int) arg2.getValue(state);
         if (arg1 == 0) {
             int value = state.getCurrentBlock().block.getX();

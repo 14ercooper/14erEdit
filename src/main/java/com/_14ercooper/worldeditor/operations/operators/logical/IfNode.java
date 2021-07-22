@@ -48,19 +48,19 @@ public class IfNode extends Node {
     // polished_andesite else if simplex 3 110 4 set
     // 70%andesite;10%gravel;10%stone;10%cobblestone
     @Override
-    public boolean performNode(OperatorState state) {
+    public boolean performNode(OperatorState state, boolean perform) {
         try {
-            boolean isTrue = arg1.performNode(state);
+            boolean isTrue = arg1.performNode(state, true);
             boolean toReturn;
             if (isTrue) {
 //		Main.logDebug("condition true");
-                toReturn = arg2.performNode(state);
+                toReturn = arg2.performNode(state, true);
             } else if (arg3 == null) {
 //		Main.logDebug("no else");
                 return false;
             } else {
 //		Main.logDebug("else");
-                toReturn = arg3.performNode(state);
+                toReturn = arg3.performNode(state, true);
             }
             return toReturn;
         } catch (Exception e) {

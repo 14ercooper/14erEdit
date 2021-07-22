@@ -34,8 +34,8 @@ public class ReplaceNode extends Node {
     }
 
     @Override
-    public boolean performNode(OperatorState state) {
-        return root.performNode(state);
+    public boolean performNode(OperatorState state, boolean perform) {
+        return root.performNode(state, true);
     }
 
     @Override

@@ -28,9 +28,9 @@ public class AndNode extends Node {
     }
 
     @Override
-    public boolean performNode(OperatorState state) {
+    public boolean performNode(OperatorState state, boolean perform) {
         try {
-            return ((arg1.performNode(state)) && (arg2.performNode(state)));
+            return ((arg1.performNode(state, true)) && (arg2.performNode(state, true)));
         } catch (Exception e) {
             Main.logError("Error performing and node. Please check your syntax.", state.getCurrentPlayer(), e);
             return false;

@@ -11,7 +11,7 @@ public class SameNode extends BlockNode {
     }
 
     @Override
-    public boolean performNode(OperatorState state) {
+    public boolean performNode(OperatorState state, boolean perform) {
         return true;
     }
 

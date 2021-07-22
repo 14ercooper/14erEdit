@@ -28,7 +28,7 @@ public class SmallRuinNode extends Node {
     }
 
     @Override
-    public boolean performNode(OperatorState state) {
+    public boolean performNode(OperatorState state, boolean perform) {
         int xSize = Main.randRange((int) xMax.getMin(state), (int) xMax.getMax(state));
         int zSize = Main.randRange((int) zMax.getMin(state), (int) zMax.getMax(state));
 
@@ -46,11 +46,11 @@ public class SmallRuinNode extends Node {
                     // Set block
                     if (currBlockOffset.getType() == Material.AIR) {
                         state.setCurrentBlock(currBlockOffset);
-                        block.performNode(state);
+                        block.performNode(state, true);
                     } else {
                         if (Main.getRand().nextBoolean()) {
                             state.setCurrentBlock(currBlockOffset);
-                            block.performNode(state);
+                            block.performNode(state, true);
                         }
                     }
 
@@ -60,7 +60,7 @@ public class SmallRuinNode extends Node {
                             state.setCurrentBlock(currBlockOffset.getRelative(BlockFace.DOWN, i));
                             if (state.getCurrentBlock().block.getType() == Material.AIR)
                                 i--;
-                            block.performNode(state);
+                            block.performNode(state, true);
                         }
                     }
                 }
@@ -74,7 +74,7 @@ public class SmallRuinNode extends Node {
                             if (Main.getRand().nextInt(5) == 0)
                                 break;
                             state.setCurrentBlock(currBlock.getRelative(xO, i, zO));
-                            block.performNode(state);
+                            block.performNode(state, true);
                         }
                     }
                 }

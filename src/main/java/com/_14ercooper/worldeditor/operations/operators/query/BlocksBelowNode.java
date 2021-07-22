@@ -36,7 +36,7 @@ public class BlocksBelowNode extends Node {
     }
 
     @Override
-    public boolean performNode(OperatorState state) {
+    public boolean performNode(OperatorState state, boolean perform) {
         Block currBlock = state.getCurrentWorld().getBlockAt(state.getCurrentBlock().block.getLocation());
         int x = currBlock.getX();
         int y = currBlock.getY();
@@ -47,7 +47,7 @@ public class BlocksBelowNode extends Node {
 
         for (int dy = y - min; dy >= y - max; dy--) {
             state.setCurrentBlock(state.getCurrentWorld().getBlockAt(x, dy, z));
-            if (!(arg2.performNode(state)))
+            if (!(arg2.performNode(state, true)))
                 blockRangeMet = false;
         }
 

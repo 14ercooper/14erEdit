@@ -41,7 +41,7 @@ public class AngleNode extends Node {
     }
 
     @Override
-    public boolean performNode(OperatorState state) {
+    public boolean performNode(OperatorState state, boolean perform) {
         // Get angle from each block pair
         int dist = (int) distance.getValue(state);
         int maxAngle = getAngle(state.getCurrentBlock().block.getRelative(dist, 0, 0),

@@ -37,7 +37,7 @@ public class RemainderNode extends Node {
     }
 
     @Override
-    public boolean performNode(OperatorState state) {
+    public boolean performNode(OperatorState state, boolean perform) {
         int base = (int) arg2.getValue(state);
         int modBase = base * 2;
         if (arg1 == 0) {

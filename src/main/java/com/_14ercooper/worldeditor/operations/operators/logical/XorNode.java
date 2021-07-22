@@ -28,10 +28,10 @@ public class XorNode extends Node {
     }
 
     @Override
-    public boolean performNode(OperatorState state) {
+    public boolean performNode(OperatorState state, boolean perform) {
         try {
-            boolean x = arg1.performNode(state);
-            boolean y = arg2.performNode(state);
+            boolean x = arg1.performNode(state, true);
+            boolean y = arg2.performNode(state, true);
             return ((x || y) && !(x && y));
         } catch (Exception e) {
             Main.logError("Error performing xor node. Please check your syntax.", state.getCurrentPlayer(), e);

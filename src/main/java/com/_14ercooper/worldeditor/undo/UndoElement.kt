@@ -16,7 +16,7 @@ import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.StandardOpenOption
 
-class UndoElement
+open class UndoElement
     (id: String, parent: UserUndo) {
 
     // What's our state?
@@ -37,18 +37,20 @@ class UndoElement
 
     // Create an undo element if the ID doesn't exist, otherwise load the existing undo
     init {
-        if (Files.exists(Path.of("plugins/14erEdit/undo/${parent.name}/$name"))) {
-            loadFromDisk()
-            Main.logDebug("Loaded undo element $name from disk for user ${parent.name}")
-        } else {
-            Files.createDirectories(Path.of("plugins/14erEdit/undo/${parent.name}/$name"))
-            serialize()
-            Main.logDebug("Created new undo element $name for user ${parent.name}")
+        if (!id.equals("dummy", true)) {
+            if (Files.exists(Path.of("plugins/14erEdit/undo/${parent.name}/$name"))) {
+                loadFromDisk()
+                Main.logDebug("Loaded undo element $name from disk for user ${parent.name}")
+            } else {
+                Files.createDirectories(Path.of("plugins/14erEdit/undo/${parent.name}/$name"))
+                serialize()
+                Main.logDebug("Created new undo element $name for user ${parent.name}")
+            }
         }
     }
 
     // Add a block to the undo
-    fun addBlock(blockFrom: BlockState, blockTo: BlockState): Boolean {
+    open fun addBlock(blockFrom: BlockState, blockTo: BlockState): Boolean {
         if (currentState == UndoMode.IDLE)
             currentState = UndoMode.WAITING_FOR_BLOCKS
         val str =
@@ -129,7 +131,7 @@ class UndoElement
     private var currData: MutableList<String> = mutableListOf()
 
     // Start applying the undo
-    fun startApplyUndo(): Boolean {
+    open fun startApplyUndo(): Boolean {
         currBlock = -1
         dataBlockCount = blockSizes.size
         currData = mutableListOf()
@@ -139,7 +141,7 @@ class UndoElement
     }
 
     // Apply a number of blocks from the undo to the world
-    fun applyUndo(blockCount: Long): Boolean {
+    open fun applyUndo(blockCount: Long): Boolean {
         if (currentState != UndoMode.PERFORMING_UNDO)
             return false
         var remBlocks = blockCount
@@ -178,13 +180,13 @@ class UndoElement
 
     // Check if this undo is finished being applied
     // If it is done, before returning true, clean up, else return false
-    fun finalizeUndo(): Boolean {
+    open fun finalizeUndo(): Boolean {
         Main.logDebug("Finalized applying undo $name for user ${userUndo.name}")
         return currentState == UndoMode.UNDO_FINISHED
     }
 
     // Start applying a redo
-    fun startApplyRedo(): Boolean {
+    open fun startApplyRedo(): Boolean {
         currBlock = -1
         dataBlockCount = blockSizes.size
         currData = mutableListOf()
@@ -194,7 +196,7 @@ class UndoElement
     }
 
     // Apply a number of blocks from the redo to the world
-    fun applyRedo(blockCount: Long): Boolean {
+    open fun applyRedo(blockCount: Long): Boolean {
         if (currentState != UndoMode.PERFORMING_REDO)
             return false
         var remBlocks = blockCount
@@ -233,13 +235,13 @@ class UndoElement
 
     // Check if this redo is finished being applied
     // If it is done, before returning true, clean up, else return false
-    fun finalizeRedo(): Boolean {
+    open fun finalizeRedo(): Boolean {
         Main.logDebug("Finalized applying redo $name for user ${userUndo.name}")
         return currentState == UndoMode.REDO_FINISHED
     }
 
     // Set a block into the world
-    fun setBlock(world: String, x: Int, y: Int, z: Int, type: String, data: String, nbt: String): Boolean {
+    open fun setBlock(world: String, x: Int, y: Int, z: Int, type: String, data: String, nbt: String): Boolean {
         val blk = Bukkit.getServer().getWorld(world)?.getBlockAt(x, y, z)
         return if (blk != null) {
             setMaterial(blk, Material.matchMaterial(type), false, this, Bukkit.getConsoleSender())
@@ -257,7 +259,7 @@ class UndoElement
 
     // Flush all data to disk
     @Suppress("BlockingMethodInNonBlockingContext")
-    suspend fun flush(): Boolean {
+    open suspend fun flush(): Boolean {
         for (j in jobsRunning) {
             j.join()
         }

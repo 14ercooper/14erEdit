@@ -74,7 +74,7 @@ public class NoiseNode extends Node {
     }
 
     @Override
-    public boolean performNode(OperatorState state) {
+    public boolean performNode(OperatorState state, boolean perform) {
         return scaleTo255(getNum(state)) <= cutoff.getValue(state);
     }
 

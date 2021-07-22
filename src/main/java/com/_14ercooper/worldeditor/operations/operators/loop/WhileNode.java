@@ -31,17 +31,17 @@ public class WhileNode extends Node {
     }
 
     @Override
-    public boolean performNode(OperatorState state) {
+    public boolean performNode(OperatorState state, boolean perform) {
         try {
             boolean result = true;
             int loopsRun = 0;
-            while (cond.performNode(state)) {
+            while (cond.performNode(state, true)) {
                 if (loopsRun > maxLoopLength) {
                     Main.logError("Max loop length exceeded. Async queue dropped.", state.getCurrentPlayer(), null);
                     AsyncManager.dropAsync();
                     return false;
                 }
-                boolean result2 = op.performNode(state);
+                boolean result2 = op.performNode(state, true);
                 result = result && result2;
                 loopsRun++;
             }

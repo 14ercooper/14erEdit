@@ -34,7 +34,7 @@ public class SimplexNode extends Node {
     }
 
     @Override
-    public boolean performNode(OperatorState state) {
+    public boolean performNode(OperatorState state, boolean perform) {
         try {
             // The range on all of these are useful for double inaccuracy
             double scale = 4 * scaleFactor.getValue(state);

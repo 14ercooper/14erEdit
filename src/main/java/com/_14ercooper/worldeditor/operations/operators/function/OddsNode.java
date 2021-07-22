@@ -28,7 +28,7 @@ public class OddsNode extends Node {
     }
 
     @Override
-    public boolean performNode(OperatorState state) {
+    public boolean performNode(OperatorState state, boolean perform) {
         double chance = Main.getRand().nextDouble() * 100.0;
         return (chance < arg.getValue(state));
     }

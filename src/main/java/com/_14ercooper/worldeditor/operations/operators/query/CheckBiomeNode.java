@@ -30,7 +30,7 @@ public class CheckBiomeNode extends Node {
     }
 
     @Override
-    public boolean performNode(OperatorState state) {
+    public boolean performNode(OperatorState state, boolean perform) {
         try {
             if (!(state.getCurrentBlock().block.getChunk().isLoaded())) {
                 state.getCurrentBlock().block.getChunk().load(true);

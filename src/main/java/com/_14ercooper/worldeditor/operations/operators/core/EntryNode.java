@@ -14,7 +14,7 @@ public class EntryNode {
 
     public boolean performNode(OperatorState state) {
         try {
-            return node.performNode(state);
+            return node.performNode(state, true);
         } catch (Exception e) {
             Main.logError("Error performing node. Async queue dropped.", state.getCurrentPlayer(), e);
             e.printStackTrace();

@@ -22,6 +22,7 @@ import org.bukkit.plugin.java.JavaPlugin
 import java.io.IOException
 import java.io.PrintWriter
 import java.io.StringWriter
+import java.lang.NullPointerException
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.nio.file.StandardOpenOption
@@ -206,23 +207,28 @@ class Main : JavaPlugin() {
         @JvmStatic
         fun logDebug(message: String?) {
             var hasADebug = false
-            for (p in Bukkit.getOnlinePlayers()) {
-                val playerWrapper = PlayerManager.getPlayerWrapper(p)
-                hasADebug = hasADebug || playerWrapper.isDebug
-            }
-            if (hasADebug) debugText += "§c[DEBUG] $message\n" // ----
             try {
-                if (hasADebug) {
-                    if (!Files.exists(Paths.get("plugins/14erEdit/debug.log"))) Files.createFile(Paths.get("plugins/14erEdit/debug.log"))
-                    Files.writeString(
-                        Paths.get("plugins/14erEdit/debug.log"), """
+                for (p in Bukkit.getOnlinePlayers()) {
+                    val playerWrapper = PlayerManager.getPlayerWrapper(p)
+                    hasADebug = hasADebug || playerWrapper.isDebug
+                }
+                if (hasADebug) debugText += "§c[DEBUG] $message\n" // ----
+                try {
+                    if (hasADebug) {
+                        if (!Files.exists(Paths.get("plugins/14erEdit/debug.log"))) Files.createFile(Paths.get("plugins/14erEdit/debug.log"))
+                        Files.writeString(
+                            Paths.get("plugins/14erEdit/debug.log"), """
      $message
      
      """.trimIndent(), StandardOpenOption.APPEND
-                    )
+                        )
+                    }
+                } catch (e: Exception) {
+                    // Do nothing, this isn't super important
                 }
-            } catch (e: Exception) {
-                // Do nothing, this isn't super important
+            }
+            catch (e : NullPointerException) {
+                // Do nothing
             }
         }
 

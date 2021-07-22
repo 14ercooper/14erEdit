@@ -25,7 +25,7 @@ public class NoiseAtNode extends Node {
     }
 
     @Override
-    public boolean performNode(OperatorState state) {
+    public boolean performNode(OperatorState state, boolean perform) {
         BlockWrapper b = state.getCurrentBlock();
         int x = b.block.getX();
         int z = b.block.getZ();
@@ -36,7 +36,7 @@ public class NoiseAtNode extends Node {
             y = (int) ((noise.getNum(state) * amplitude.getValue(state)) + midplane.getValue(state));
         }
         state.setCurrentBlock(state.getCurrentWorld().getBlockAt(x, y, z));
-        boolean result = function.performNode(state);
+        boolean result = function.performNode(state, true);
         state.setCurrentBlock(b);
         return result;
     }

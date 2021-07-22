@@ -18,7 +18,7 @@ public class GravityNode extends Node {
     }
 
     @Override
-    public boolean performNode(OperatorState state) {
+    public boolean performNode(OperatorState state, boolean perform) {
         try {
             Material mat = state.getCurrentBlock().block.getType();
             Block b = state.getCurrentBlock().block;

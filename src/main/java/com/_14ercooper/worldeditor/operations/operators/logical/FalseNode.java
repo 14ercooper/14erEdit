@@ -12,7 +12,7 @@ public class FalseNode extends Node {
     }
 
     @Override
-    public boolean performNode(OperatorState state) {
+    public boolean performNode(OperatorState state, boolean perform) {
         return false;
     }
 

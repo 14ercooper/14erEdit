@@ -28,7 +28,7 @@ public class LinkerNode extends Node {
     }
 
     @Override
-    public boolean performNode(OperatorState state) {
+    public boolean performNode(OperatorState state, boolean perform) {
         try {
             boolean a1 = arg1.performNode(state);
             boolean a2 = arg2.performNode(state);

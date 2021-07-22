@@ -50,7 +50,7 @@ public class BrushNode extends Node {
     }
 
     @Override
-    public boolean performNode(OperatorState state) {
+    public boolean performNode(OperatorState state, boolean perform) {
         int x = state.getCurrentBlock().x;
         int y = state.getCurrentBlock().y;
         int z = state.getCurrentBlock().z;

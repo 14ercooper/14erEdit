@@ -16,7 +16,7 @@ public class StringNode extends Node {
     }
 
     @Override
-    public boolean performNode(OperatorState state) {
+    public boolean performNode(OperatorState state, boolean perform) {
         try {
             return state.getCurrentBlock().block.getType() == Material.matchMaterial(contents);
         } catch (Exception e) {

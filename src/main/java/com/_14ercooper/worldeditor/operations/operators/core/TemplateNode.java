@@ -36,7 +36,7 @@ public class TemplateNode extends Node {
     }
 
     @Override
-    public boolean performNode(OperatorState state) {
+    public boolean performNode(OperatorState state, boolean perform) {
         CommandSender player = state.getCurrentPlayer();
 
         // Extension expansion

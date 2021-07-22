@@ -31,7 +31,7 @@ public class FacesExposedNode extends Node {
     }
 
     @Override
-    public boolean performNode(OperatorState state) {
+    public boolean performNode(OperatorState state, boolean perform) {
 
         // Count the number of faces
         // Basically check for air in each of the four directions

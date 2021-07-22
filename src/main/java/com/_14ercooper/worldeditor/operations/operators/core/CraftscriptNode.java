@@ -28,7 +28,7 @@ public class CraftscriptNode extends Node {
     }
 
     @Override
-    public boolean performNode(OperatorState state) {
+    public boolean performNode(OperatorState state, boolean perform) {
         try {
             String label = arg.contents.split("\\{")[0];
             LinkedList<String> args = new LinkedList<>(

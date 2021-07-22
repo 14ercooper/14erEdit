@@ -44,7 +44,7 @@ public class BlockAtNode extends BlockNode {
     }
 
     @Override
-    public boolean performNode(OperatorState state) {
+    public boolean performNode(OperatorState state, boolean perform) {
         try {
             BlockWrapper currBlock = state.getCurrentBlock();
             xA = x.isAbsolute;
@@ -53,7 +53,7 @@ public class BlockAtNode extends BlockNode {
             state.setCurrentBlock(state.getCurrentWorld().getBlockAt(
                     x.getInt(state) + (xA ? 0 : currBlock.block.getX()), y.getInt(state) + (yA ? 0 : currBlock.block.getY()),
                     z.getInt(state) + (zA ? 0 : currBlock.block.getZ())));
-            boolean matches = node.performNode(state);
+            boolean matches = node.performNode(state, true);
             state.setCurrentBlock(currBlock);
             return matches;
         } catch (Exception e) {

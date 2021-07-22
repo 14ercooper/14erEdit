@@ -9,7 +9,7 @@ import java.nio.file.Files
 import java.nio.file.Path
 import java.util.*
 
-class UserUndo
+open class UserUndo
     (thisName: String) {
 
     var undoElements: HashMap<String, UndoElement>
@@ -22,11 +22,13 @@ class UserUndo
         undoElements = HashMap()
         undoList = mutableListOf()
         redoList = mutableListOf()
-        loadUndoList()
+        if (!thisName.equals("dummy", true)) {
+            loadUndoList()
+        }
     }
 
     // Get a new undo element to use to register undos
-    fun getNewUndoElement(): UndoElement {
+    open fun getNewUndoElement(): UndoElement {
         val uuid: String = UUID.randomUUID().toString()
         val undoElement = UndoElement(uuid, this)
         undoElements[uuid] = undoElement
@@ -35,7 +37,7 @@ class UserUndo
     }
 
     // Finalize an undo after it's done
-    fun finalizeUndo(undo: UndoElement): Boolean {
+    open fun finalizeUndo(undo: UndoElement): Boolean {
         if (undoElements.containsKey(undo.name)) {
             runBlocking {
                 undo.flush()
@@ -49,7 +51,7 @@ class UserUndo
     }
 
     // Undo a number of changes (undo elements)
-    fun undoChanges(count: Int): Boolean {
+    open fun undoChanges(count: Int): Boolean {
         flush()
         undoList = undoList.filter { it.isNotBlank() } as MutableList<String>
         val undoCount = count.coerceAtMost(undoList.size)
@@ -73,7 +75,7 @@ class UserUndo
     }
 
     // Redo a number of changes (undo elements)
-    fun redoChanges(count: Int): Boolean {
+    open fun redoChanges(count: Int): Boolean {
         flush()
         redoList = redoList.filter { it.isNotBlank() } as MutableList<String>
         val redoCount = count.coerceAtMost(redoList.size)
@@ -146,7 +148,7 @@ class UserUndo
     }
 
     // Flush all data to disk
-    fun flush(): Boolean {
+    open fun flush(): Boolean {
         saveUndoList()
         runBlocking {
             undoElements.forEach { (_, undoElement) -> undoElement.flush() }

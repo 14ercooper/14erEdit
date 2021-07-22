@@ -27,7 +27,7 @@ public class FunctionNode extends NumberNode {
     }
 
     @Override
-    public boolean performNode(OperatorState state) {
+    public boolean performNode(OperatorState state, boolean perform) {
         Function fx = new Function(filename, args, state.getCurrentPlayer(), true, state);
         return Math.abs(fx.run()) > 0.001;
     }

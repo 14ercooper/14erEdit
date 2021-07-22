@@ -19,7 +19,7 @@ public class BlocklightNode extends Node {
     }
 
     @Override
-    public boolean performNode(OperatorState state) {
+    public boolean performNode(OperatorState state, boolean perform) {
         BlockFace[] faces = {BlockFace.UP, BlockFace.DOWN, BlockFace.NORTH, BlockFace.SOUTH, BlockFace.EAST,
                 BlockFace.WEST};
         int light = state.getCurrentBlock().block.getLightFromBlocks();

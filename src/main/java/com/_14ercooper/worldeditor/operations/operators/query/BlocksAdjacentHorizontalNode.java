@@ -37,7 +37,7 @@ public class BlocksAdjacentHorizontalNode extends Node {
     }
 
     @Override
-    public boolean performNode(OperatorState state) {
+    public boolean performNode(OperatorState state, boolean perform) {
         Main.logDebug("Performing faces exposed node"); // -----
 
         // Check if any adjacent blocks match arg1
@@ -48,19 +48,19 @@ public class BlocksAdjacentHorizontalNode extends Node {
         // Check each direction
         Block blockAdj = curBlock.getRelative(BlockFace.NORTH);
         state.setCurrentBlock(blockAdj);
-        if (arg1.performNode(state))
+        if (arg1.performNode(state, true))
             numAdjacentBlocks++;
         blockAdj = curBlock.getRelative(BlockFace.SOUTH);
         state.setCurrentBlock(blockAdj);
-        if (arg1.performNode(state))
+        if (arg1.performNode(state, true))
             numAdjacentBlocks++;
         blockAdj = curBlock.getRelative(BlockFace.EAST);
         state.setCurrentBlock(blockAdj);
-        if (arg1.performNode(state))
+        if (arg1.performNode(state, true))
             numAdjacentBlocks++;
         blockAdj = curBlock.getRelative(BlockFace.WEST);
         state.setCurrentBlock(blockAdj);
-        if (arg1.performNode(state))
+        if (arg1.performNode(state, true))
             numAdjacentBlocks++;
 
         // Reset the current block

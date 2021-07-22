@@ -27,7 +27,7 @@ public class SetNBTNode extends Node {
     }
 
     @Override
-    public boolean performNode(OperatorState state) {
+    public boolean performNode(OperatorState state, boolean perform) {
         try {
             String command = "data merge block ";
             command += state.getCurrentBlock().block.getLocation().getBlockX() + " ";

@@ -26,9 +26,9 @@ public class NotNode extends Node {
     }
 
     @Override
-    public boolean performNode(OperatorState state) {
+    public boolean performNode(OperatorState state, boolean perform) {
         try {
-            return !(arg.performNode(state));
+            return !(arg.performNode(state, true));
         } catch (Exception e) {
             Main.logError("Error performing not node. Please check your syntax.", state.getCurrentPlayer(), e);
             return false;

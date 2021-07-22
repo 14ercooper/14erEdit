@@ -39,11 +39,11 @@ public class AnyOfNode extends Node {
 
     // /fx br s 5 if anyof 1 2 orange_concrete white_concrete set stone
     @Override
-    public boolean performNode(OperatorState state) {
+    public boolean performNode(OperatorState state, boolean perform) {
         int trueCount = 0;
 
         for (Node condition : conditions) {
-            boolean isTrue = condition.performNode(state);
+            boolean isTrue = condition.performNode(state, true);
             if (isTrue)
                 trueCount++;
 

@@ -39,7 +39,7 @@ public class ModulusNode extends Node {
     }
 
     @Override
-    public boolean performNode(OperatorState state) {
+    public boolean performNode(OperatorState state, boolean perform) {
         int base = arg2.getInt(state);
         int cutLow = arg3.getInt(state);
         int cutHigh = arg4.getInt(state);

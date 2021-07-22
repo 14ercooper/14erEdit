@@ -50,7 +50,7 @@ public class SetNode extends Node {
     }
 
     @Override
-    public boolean performNode(OperatorState state) {
+    public boolean performNode(OperatorState state, boolean perform) {
         try {
             // Block at nodes are handled specially
             if (arg instanceof BlockAtNode) {
