@@ -10,6 +10,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.BlockState;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class SchemBlockNode extends BlockNode {
 
     // Stores this node's argument
@@ -57,11 +60,13 @@ public class SchemBlockNode extends BlockNode {
     @Override
     public boolean performNode(OperatorState state, boolean perform) {
         if (!isInSet) {
+            List<String> stateArgs = new ArrayList<>(state.getCurrentBlock().otherArgs);
             BlockState stateBlock = state.getCurrentWorld().getBlockAt(14, 0, 14).getState();
             BlockWrapper currBlock = state.getCurrentBlock();
             boolean retVal = false;
             try {
                 state.setCurrentBlock(state.getCurrentWorld().getBlockAt(14, 0, 14));
+                state.getCurrentBlock().otherArgs.addAll(stateArgs);
                 state.getCurrentBlock().block.setType(Material.matchMaterial(state.getCurrentBlock().otherArgs.get(0)));
                 state.getCurrentBlock().block.setBlockData(Bukkit.getServer().createBlockData(state.getCurrentBlock().otherArgs.get(1)));
                 retVal = arg.performNode(state, true);
@@ -71,6 +76,7 @@ public class SchemBlockNode extends BlockNode {
                 state.getCurrentBlock().block.setType(stateBlock.getType());
                 state.getCurrentBlock().block.setBlockData(stateBlock.getBlockData());
                 state.setCurrentBlock(currBlock);
+                state.getCurrentBlock().otherArgs.addAll(stateArgs);
             }
             return retVal;
         } else {
