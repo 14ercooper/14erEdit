@@ -83,6 +83,7 @@ public class OperatorLoader {
         loadNode("rem", Parser.getOperator(commandSender, ";"));
         loadNode("remainder", Parser.getOperator(commandSender, ";"));
         loadNode("mod", new ModulusNode());
+        loadNode("limit", new LimitNode());
         loadNode("-con", new StringContainsNode());
         loadNode(";;", new EveryXNode());
         loadNode("every", Parser.getOperator(commandSender, ";;"));
