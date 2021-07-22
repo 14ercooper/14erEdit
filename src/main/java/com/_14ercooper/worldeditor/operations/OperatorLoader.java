@@ -77,6 +77,7 @@ public class OperatorLoader {
         loadNode(";", new RemainderNode());
         loadNode("rem", Parser.getOperator(Bukkit.getConsoleSender(), ";"));
         loadNode("remainder", Parser.getOperator(Bukkit.getConsoleSender(), ";"));
+        loadNode("mod", new ModulusNode());
         loadNode("-con", new StringContainsNode());
         loadNode(";;", new EveryXNode());
         loadNode("every", Parser.getOperator(Bukkit.getConsoleSender(), ";;"));
