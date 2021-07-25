@@ -19,7 +19,14 @@ public class FunctionNode extends NumberNode {
     public FunctionNode newNode(ParserState parserState) {
         FunctionNode node = new FunctionNode();
         node.filename = Parser.parseStringNode(parserState).getText();
-        int argNum = (int) Parser.parseNumberNode(parserState).getValue(new DummyState(parserState.getCurrentPlayer()));
+        int argNum;
+        try {
+            argNum = (int) Parser.parseNumberNode(parserState).getValue(new DummyState(parserState.getCurrentPlayer()));
+        }
+        catch (NullPointerException e) {
+            parserState.setIndex(parserState.getIndex() - 1);
+            argNum = (int) Parser.parseNumberNode(parserState).arg;
+        }
         for (int i = 0; i < argNum; i++) {
             node.args.add(Parser.parseStringNode(parserState).getText());
         }

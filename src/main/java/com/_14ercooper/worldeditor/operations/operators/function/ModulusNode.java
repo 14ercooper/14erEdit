@@ -15,10 +15,10 @@ public class ModulusNode extends Node {
     public ModulusNode newNode(ParserState parserState) {
         ModulusNode node = new ModulusNode();
         try {
-            node.arg1 = Parser.parseNumberNode(parserState);
-            node.arg2 = Parser.parseNumberNode(parserState);
-            node.arg3 = Parser.parseNumberNode(parserState);
-            node.arg4 = Parser.parseNumberNode(parserState);
+            node.arg1 = (NumberNode) Parser.parsePart(parserState);
+            node.arg2 = (NumberNode) Parser.parsePart(parserState);
+            node.arg3 = (NumberNode) Parser.parsePart(parserState);
+            node.arg4 = (NumberNode) Parser.parsePart(parserState);
         } catch (Exception e) {
             Main.logError("Could not create modulus node. Please check your syntax.", parserState, e);
             return null;

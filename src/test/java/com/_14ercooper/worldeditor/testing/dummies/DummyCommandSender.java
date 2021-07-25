@@ -716,7 +716,7 @@ public class DummyCommandSender implements Player {
     @NotNull
     @Override
     public Location getLocation() {
-        return null;
+        return new Location(new DummyWorld(), 14, 14, 14);
     }
 
     @Nullable

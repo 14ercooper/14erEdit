@@ -91,7 +91,11 @@ object Parser {
                 logDebug(parserState.parts[oldIndex] + " node created: " + n.toString())
                 n
             } else {
-                if (!numberNode) {
+                var numNode = numberNode
+                if (parserState.parts[parserState.index].matches(Regex("\\d+"))) {
+                    numNode = true
+                }
+                if (!numNode) {
                     parserState.index--
                     val strNode = parseStringNode(parserState)
                     val bn = if (strNode.text.isNotBlank())
@@ -117,7 +121,7 @@ object Parser {
     fun parseNumberNode(parserState: ParserState): NumberNode? {
         logDebug("Number node created") // -----
         return try {
-            parsePart(parserState, true) as NumberNode?
+            parsePart(parserState, true) as NumberNode
         } catch (e: Exception) {
             logError("Number expected. Did not find a number.", parserState.currentPlayer, e)
             null

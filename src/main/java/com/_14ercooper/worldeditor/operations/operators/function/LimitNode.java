@@ -15,8 +15,8 @@ public class LimitNode extends Node {
     public LimitNode newNode(ParserState parserState) {
         LimitNode node = new LimitNode();
         try {
-            node.arg1 = Parser.parseNumberNode(parserState);
-            node.arg2 = Parser.parseNumberNode(parserState);
+            node.arg1 = (NumberNode) Parser.parsePart(parserState);
+            node.arg2 = (NumberNode) Parser.parsePart(parserState);
         } catch (Exception e) {
             Main.logError("Could not create limit node. Please check your syntax.", parserState, e);
             return null;

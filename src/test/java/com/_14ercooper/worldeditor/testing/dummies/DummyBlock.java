@@ -33,19 +33,19 @@ public class DummyBlock implements Block {
     @NotNull
     @Override
     public Block getRelative(int i, int i1, int i2) {
-        return null;
+        return new DummyBlock();
     }
 
     @NotNull
     @Override
     public Block getRelative(@NotNull BlockFace blockFace) {
-        return null;
+        return new DummyBlock();
     }
 
     @NotNull
     @Override
     public Block getRelative(@NotNull BlockFace blockFace, int i) {
-        return null;
+        return new DummyBlock();
     }
 
     @NotNull

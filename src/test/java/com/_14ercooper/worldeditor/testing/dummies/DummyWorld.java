@@ -27,7 +27,7 @@ public class DummyWorld implements World {
     @NotNull
     @Override
     public Block getBlockAt(int i, int i1, int i2) {
-        return null;
+        return new DummyBlock();
     }
 
     @NotNull

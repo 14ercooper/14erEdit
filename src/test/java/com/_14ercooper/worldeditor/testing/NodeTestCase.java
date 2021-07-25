@@ -5,19 +5,36 @@ import com._14ercooper.worldeditor.blockiterator.IteratorLoader;
 import com._14ercooper.worldeditor.brush.BrushLoader;
 import com._14ercooper.worldeditor.macros.MacroLoader;
 import com._14ercooper.worldeditor.operations.OperatorLoader;
+import com._14ercooper.worldeditor.operations.Parser;
+import com._14ercooper.worldeditor.operations.ParserState;
+import com._14ercooper.worldeditor.operations.operators.Node;
 import com._14ercooper.worldeditor.scripts.CraftscriptLoader;
 import com._14ercooper.worldeditor.testing.dummies.DummyBlock;
 import com._14ercooper.worldeditor.testing.dummies.DummyCommandSender;
 import com._14ercooper.worldeditor.operations.OperatorState;
 import com._14ercooper.worldeditor.testing.dummies.DummyUndoElement;
 import com._14ercooper.worldeditor.testing.dummies.DummyWorld;
+import com._14ercooper.worldeditor.undo.UndoElement;
+import org.bukkit.World;
 import org.bukkit.command.CommandSender;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 
+import java.util.Arrays;
+
+import static org.junit.jupiter.api.Assertions.*;
+
 public class NodeTestCase {
     public OperatorState dummyState;
-    public CommandSender dummyCommandSender;
+    private static BlockWrapper dummyWrapper;
+    public static CommandSender dummyCommandSender;
+    private static World dummyWorld;
+    private static UndoElement dummyUndoElement;
+
+    public static Node parseFromString(String operation) {
+        return Parser.parsePart(new ParserState(dummyCommandSender, Arrays.asList(operation.split("\\s+"))));
+    }
 
     @BeforeAll
     public static void setupManagers() {
@@ -30,8 +47,18 @@ public class NodeTestCase {
 
     @BeforeEach
     public void setDummyVariables() {
-        BlockWrapper dummyWrapper = new BlockWrapper(new DummyBlock(), 14, 1414, 141414);
-        dummyState = new OperatorState(dummyWrapper, new DummyCommandSender(), new DummyWorld(), new DummyUndoElement());
+        dummyWrapper = new BlockWrapper(new DummyBlock(), 14, 1414, 141414);
         dummyCommandSender = new DummyCommandSender();
+        dummyWorld = new DummyWorld();
+        dummyUndoElement = new DummyUndoElement();
+        dummyState = new OperatorState(dummyWrapper, dummyCommandSender, dummyWorld, dummyUndoElement);
+    }
+
+    @AfterEach
+    public void assertStateUnchanged() {
+        assertEquals(dummyWrapper, dummyState.getCurrentBlock());
+        assertEquals(dummyCommandSender, dummyState.getCurrentPlayer());
+        assertEquals(dummyWorld, dummyState.getCurrentWorld());
+        assertEquals(dummyUndoElement, dummyState.getCurrentUndo());
     }
 }
