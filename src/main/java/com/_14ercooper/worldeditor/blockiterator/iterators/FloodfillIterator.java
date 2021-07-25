@@ -13,7 +13,7 @@ import java.util.*;
 public class FloodfillIterator extends BlockIterator {
 
     Deque<BlockObject> blockObjects = new ArrayDeque<>();
-    Set<BlockObject> seenBlocks = new HashSet<>();
+    Map<BlockObject,BlockObject> seenBlocks = new HashMap<>();
     int maxDepth;
     long totalBlocks;
     long doneBlocks = 0;
@@ -26,9 +26,9 @@ public class FloodfillIterator extends BlockIterator {
         int x_ = Integer.parseInt(args.get(0));
         int y_ = Integer.parseInt(args.get(1));
         int z_ = Integer.parseInt(args.get(2));
-        BlockObject blkObj = new BlockObject(x_, y_, z_, 0);
+        BlockObject blkObj = new BlockObject(x_, y_, z_, null);
         iter.blockObjects.add(blkObj);
-        iter.seenBlocks.add(blkObj);
+        iter.seenBlocks.put(blkObj, blkObj);
 
         iter.maxDepth = Integer.parseInt(args.get(3));
 
@@ -62,22 +62,33 @@ public class FloodfillIterator extends BlockIterator {
 
         // Process adjacent blocks
         List<BlockObject> adjacents = new ArrayList<>();
-        adjacents.add(new BlockObject(blkObject.x + 1, blkObject.y, blkObject.z, blkObject.depth + 1));
-        adjacents.add(new BlockObject(blkObject.x, blkObject.y + 1, blkObject.z, blkObject.depth + 1));
-        adjacents.add(new BlockObject(blkObject.x, blkObject.y, blkObject.z + 1, blkObject.depth + 1));
-        adjacents.add(new BlockObject(blkObject.x - 1, blkObject.y, blkObject.z, blkObject.depth + 1));
-        adjacents.add(new BlockObject(blkObject.x, blkObject.y - 1, blkObject.z, blkObject.depth + 1));
-        adjacents.add(new BlockObject(blkObject.x, blkObject.y, blkObject.z - 1, blkObject.depth + 1));
+        adjacents.add(new BlockObject(blkObject.x + 1, blkObject.y, blkObject.z, blkObject));
+        adjacents.add(new BlockObject(blkObject.x, blkObject.y + 1, blkObject.z, blkObject));
+        adjacents.add(new BlockObject(blkObject.x, blkObject.y, blkObject.z + 1, blkObject));
+        adjacents.add(new BlockObject(blkObject.x - 1, blkObject.y, blkObject.z, blkObject));
+        adjacents.add(new BlockObject(blkObject.x, blkObject.y - 1, blkObject.z, blkObject));
+        adjacents.add(new BlockObject(blkObject.x, blkObject.y, blkObject.z - 1, blkObject));
         for (BlockObject b : adjacents) {
-            if (!seenBlocks.contains(b)) {
-                seenBlocks.add(b);
-                if (b.depth > maxDepth) {
-                    continue;
-                }
+            if (b.getDepth() > maxDepth) {
+                continue;
+            }
+            if (!seenBlocks.containsKey(b)) {
+                seenBlocks.put(b, b);
                 operatorTempState.setCurrentBlock(b.getBlock(operatorTempState.getCurrentWorld()));
                 boolean result = conditionOperator.operateOnBlock(operatorTempState);
                 if (result) {
                     blockObjects.add(b);
+                }
+            }
+            else {
+                if (seenBlocks.get(b).getDepth() > b.getDepth()) {
+                    seenBlocks.remove(seenBlocks.get(b));
+                    seenBlocks.put(b, b);
+                    operatorTempState.setCurrentBlock(b.getBlock(operatorTempState.getCurrentWorld()));
+                    boolean result = conditionOperator.operateOnBlock(operatorTempState);
+                    if (result) {
+                        blockObjects.add(b);
+                    }
                 }
             }
         }
@@ -103,13 +114,22 @@ public class FloodfillIterator extends BlockIterator {
 
     private static class BlockObject {
         public final int x, y, z;
-        public final int depth;
+        public BlockObject parent;
 
-        private BlockObject(int x, int y, int z, int depth) {
+        public int getDepth() {
+            if (parent == null) {
+                return 0;
+            }
+            else {
+                return parent.getDepth() + 1;
+            }
+        }
+
+        private BlockObject(int x, int y, int z, BlockObject parent) {
             this.x = x;
             this.y = y;
             this.z = z;
-            this.depth = depth;
+            this.parent = parent;
         }
 
         @Override
