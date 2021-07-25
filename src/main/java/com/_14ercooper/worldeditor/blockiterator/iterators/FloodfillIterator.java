@@ -14,6 +14,7 @@ public class FloodfillIterator extends BlockIterator {
 
     Deque<BlockObject> blockObjects = new ArrayDeque<>();
     Map<BlockObject,BlockObject> seenBlocks = new HashMap<>();
+    Set<BlockObject> doneBlockSet = new HashSet<>();
     int maxDepth;
     long totalBlocks;
     long doneBlocks = 0;
@@ -77,6 +78,7 @@ public class FloodfillIterator extends BlockIterator {
                 operatorTempState.setCurrentBlock(b.getBlock(operatorTempState.getCurrentWorld()));
                 boolean result = conditionOperator.operateOnBlock(operatorTempState);
                 if (result) {
+                    doneBlockSet.add(b);
                     blockObjects.add(b);
                 }
             }
@@ -87,6 +89,7 @@ public class FloodfillIterator extends BlockIterator {
                     operatorTempState.setCurrentBlock(b.getBlock(operatorTempState.getCurrentWorld()));
                     boolean result = conditionOperator.operateOnBlock(operatorTempState);
                     if (result) {
+                        doneBlockSet.add(b);
                         blockObjects.add(b);
                     }
                 }
