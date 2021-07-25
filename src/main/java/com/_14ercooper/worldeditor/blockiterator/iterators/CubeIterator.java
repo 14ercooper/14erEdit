@@ -6,6 +6,7 @@ import com._14ercooper.worldeditor.main.Main;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 
+import java.util.ArrayList;
 import java.util.List;
 
 // This is an annoying class
@@ -20,8 +21,12 @@ public class CubeIterator extends BlockIterator {
     int executionOrder = 0;
 
     @Override
-    public CubeIterator newIterator(List<String> args, World world, CommandSender player) {
+    public CubeIterator newIterator(List<String> arg, World world, CommandSender player) {
         try {
+            List<String> args = new ArrayList<>();
+            for (Object s : arg) {
+                args.add((String) s);
+            }
             CubeIterator iterator = new CubeIterator();
             iterator.iterWorld = world;
             iterator.x1 = Integer.parseInt(args.get(0));

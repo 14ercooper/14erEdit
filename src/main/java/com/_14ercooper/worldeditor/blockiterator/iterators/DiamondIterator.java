@@ -6,6 +6,7 @@ import com._14ercooper.worldeditor.main.Main;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DiamondIterator extends BlockIterator {
@@ -15,8 +16,12 @@ public class DiamondIterator extends BlockIterator {
     int radius;
 
     @Override
-    public DiamondIterator newIterator(List<String> args, World world, CommandSender player) {
+    public DiamondIterator newIterator(List<String> arg, World world, CommandSender player) {
         try {
+            List<String> args = new ArrayList<>();
+            for (Object s : arg) {
+                args.add((String) s);
+            }
             DiamondIterator iterator = new DiamondIterator();
             iterator.iterWorld = world;
             iterator.xC = Integer.parseInt(args.get(0));

@@ -9,6 +9,7 @@ import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class SchemBrushIterator extends BlockIterator {
@@ -22,8 +23,12 @@ public class SchemBrushIterator extends BlockIterator {
 //    public static String nbt = "";
 
     @Override
-    public BlockIterator newIterator(List<String> args, World world, CommandSender player) {
+    public BlockIterator newIterator(List<String> arg, World world, CommandSender player) {
         try {
+            List<String> args = new ArrayList<>();
+            for (Object s : arg) {
+                args.add((String) s);
+            }
             SchemBrushIterator iter = new SchemBrushIterator();
             iter.iterWorld = world;
             int x = Integer.parseInt(args.get(0));

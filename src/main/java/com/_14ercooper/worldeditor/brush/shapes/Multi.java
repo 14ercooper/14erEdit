@@ -1,5 +1,6 @@
 package com._14ercooper.worldeditor.brush.shapes;
 
+import com._14ercooper.worldeditor.async.AsyncManager;
 import com._14ercooper.worldeditor.blockiterator.BlockIterator;
 import com._14ercooper.worldeditor.brush.Brush;
 import com._14ercooper.worldeditor.brush.BrushShape;
@@ -8,6 +9,7 @@ import com._14ercooper.worldeditor.operations.Operator;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -138,10 +140,6 @@ public class Multi extends BrushShape {
             // And then construct the operator
             Operator operation = new Operator(opStr, Brush.currentPlayer);
 
-            // Invalid operator?
-            if (operation == null)
-                continue;
-
             // Add to the lists
             iters.add(shapeGenerator.GetBlocks(x, y, z, world, sender));
             ops.add(operation);
@@ -151,6 +149,20 @@ public class Multi extends BrushShape {
     @Override
     public int minArgCount() {
         return Integer.MAX_VALUE;
+    }
+
+    @Override
+    public int operatorCount() {
+        return 0;
+    }
+
+    @Override
+    public void runBrush(List<Operator> operators, double x, double y, double z, Player currentPlayer) {
+        // Create a multi-operator async chain
+        List<BlockIterator> iters = getIters(x, y, z, currentPlayer.getWorld(), currentPlayer);
+        List<Operator> ops = getOps(x, y, z);
+
+        AsyncManager.scheduleEdit(iters, ops, currentPlayer);
     }
 }
 

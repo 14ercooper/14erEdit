@@ -7,9 +7,11 @@ import com._14ercooper.worldeditor.operations.operators.Node;
 
 public class EntryNode {
     public Node node;
+    public final int consumedArgs;
 
-    public EntryNode(Node newNode) {
+    public EntryNode(Node newNode, int consumedArgs) {
         node = newNode;
+        this.consumedArgs = consumedArgs;
     }
 
     public boolean performNode(OperatorState state) {

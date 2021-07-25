@@ -11,13 +11,16 @@ import com._14ercooper.worldeditor.operations.OperatorState;
 import com._14ercooper.worldeditor.operations.Parser;
 import com._14ercooper.worldeditor.operations.ParserState;
 import com._14ercooper.worldeditor.operations.operators.Node;
+import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class BrushNode extends Node {
 
     public BrushShape shape = null;
-    public Node op = null;
+    public final List<EntryNode> entry = new ArrayList<>();
 
     @Override
     public BrushNode newNode(ParserState parserState) {
@@ -38,8 +41,10 @@ public class BrushNode extends Node {
                 throw new Exception();
             }
 
-            if (!(node.shape instanceof Multi))
-                node.op = Parser.parsePart(parserState);
+            if (!(node.shape instanceof Multi)) {
+                Node op = Parser.parsePart(parserState);
+                node.entry.add(new EntryNode(op, parserState.getIndex() + 1));
+            }
 
             return node;
         } catch (Exception e) {
@@ -54,29 +59,12 @@ public class BrushNode extends Node {
         int x = state.getCurrentBlock().x;
         int y = state.getCurrentBlock().y;
         int z = state.getCurrentBlock().z;
-        if (!(shape instanceof Multi)) {
-            // Build an array of all blocks to operate on
-            BlockIterator blockArray = shape.GetBlocks(x, y, z, state.getCurrentBlock().block.getWorld(), state.getCurrentPlayer());
 
-            if (blockArray.getTotalBlocks() == 0) {
-                return false;
-            }
-            EntryNode entry = new EntryNode(op);
-            Operator operation = new Operator(entry);
-
-            Main.logDebug("Block array size is " + blockArray.getTotalBlocks()); // -----
-
-            AsyncManager.scheduleEdit(operation, state.getCurrentPlayer(), blockArray, state.getCurrentUndo());
-
-        } else {
-            // It's a multi-operator
-            Multi multiShape = (Multi) shape;
-            List<BlockIterator> iters = multiShape.getIters(x, y, z, state.getCurrentBlock().block.getWorld(), state.getCurrentPlayer());
-            List<Operator> ops = multiShape.getOps(x, y, z);
-
-            AsyncManager.scheduleEdit(iters, ops, state.getCurrentPlayer(), state.getCurrentUndo());
-
+        List<Operator> operations = new ArrayList<>();
+        for (EntryNode e : entry) {
+            operations.add(new Operator(e));
         }
+        shape.runBrush(operations, x, y, z, (Player) state.getCurrentPlayer());
         return true;
     }
 

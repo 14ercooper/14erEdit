@@ -6,12 +6,21 @@ import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public abstract class BlockIterator {
+
+    public Map<String, Object> objectArgs = new HashMap<>();
+
     // Returns a new instance of the block iterator based on the passed arguments
     // First 3 are the origin of the iterator, the rest vary
     public abstract BlockIterator newIterator(List<String> args, World world, CommandSender player);
+
+    public void setObjectArgs(String key, Object value) {
+        objectArgs.put(key, value);
+    }
 
     // Gets the next block in this block iterator
     public abstract BlockWrapper getNextBlock(CommandSender player, boolean getBlock);

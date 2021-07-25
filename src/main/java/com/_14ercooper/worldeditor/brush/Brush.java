@@ -8,6 +8,7 @@ import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.player.PlayerManager;
 import com._14ercooper.worldeditor.player.PlayerWrapper;
 import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -21,7 +22,7 @@ public class Brush {
 
     // Variables the brush needs
     BrushShape shapeGenerator;
-    Operator operation;
+    List<Operator> operations;
 
     // Static player
     public static Player currentPlayer = null;
@@ -90,10 +91,11 @@ public class Brush {
                         player, null);
             }
 
-            if (!(shapeGenerator instanceof Multi)) {
+            List<String> opArray = new LinkedList<>(Arrays.asList(brushOperation));
+            operations = new ArrayList<>();
+            for (int i = 0; i < shapeGenerator.operatorCount(); i++) {
                 // Construct the operator
-                // Start by removing brush parameters
-                List<String> opArray = new LinkedList<>(Arrays.asList(brushOperation));
+                // Start by removing brush parameters or old operator arguments
                 while (brushOpOffset > 0) {
                     opArray.remove(0);
                     brushOpOffset--;
@@ -104,7 +106,11 @@ public class Brush {
                     opStr = opStr.concat(s).concat(" ");
                 }
                 // And then construct the operator
-                operation = new Operator(opStr, player);
+                Operator newOperator = new Operator(opStr, player);
+                operations.add(newOperator);
+
+                // And update the number of args to remove
+                brushOpOffset = newOperator.getEntryNode().consumedArgs;
             }
 
             // Store the brush and return success
@@ -140,27 +146,7 @@ public class Brush {
     public void operate(double x, double y, double z) {
         try {
             currentPlayer = getOwner();
-
-            if (!(shapeGenerator instanceof Multi)) {
-                // Build an array of all blocks to operate on
-                BlockIterator blockArray = shapeGenerator.GetBlocks(x, y, z, currentPlayer.getWorld(), currentPlayer);
-
-                if (blockArray == null || blockArray.getTotalBlocks() == 0) {
-                    return;
-                }
-                Main.logDebug("Block array size is " + blockArray.getTotalBlocks()); // -----
-
-                AsyncManager.scheduleEdit(operation, getOwner(), blockArray);
-
-            } else {
-                // Create a multi-operator async chain
-                Multi multiShape = (Multi) shapeGenerator;
-                List<BlockIterator> iters = multiShape.getIters(x, y, z, getOwner().getWorld(), currentPlayer);
-                List<Operator> ops = multiShape.getOps(x, y, z);
-
-                AsyncManager.scheduleEdit(iters, ops, getOwner());
-
-            }
+            shapeGenerator.runBrush(operations, x, y, z, currentPlayer);
         } catch (Exception e) {
             e.printStackTrace();
             Main.logError("Error operating with brush. Please check your syntax.", getOwner(), e);

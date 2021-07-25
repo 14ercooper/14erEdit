@@ -60,7 +60,7 @@ object Parser {
 
         // Generate the entry node of the operation
         logDebug("Building entry node from root node") // -----
-        return EntryNode(rootNode)
+        return EntryNode(rootNode, state.index + 1)
     }
 
     // This is the massive recursive nightmare
@@ -86,12 +86,6 @@ object Parser {
                 }
             }
             val oldIndex = parserState.index
-            if (parserState.index == 0 && !operators.containsKey(parserState.parts[parserState.index])) {
-                logError(
-                    "First node parsed was a string node. This is likely a mistake. Please check that you used a valid operator.",
-                    parserState.currentPlayer, null
-                )
-            }
             if (operators.containsKey(parserState.parts[parserState.index])) {
                 val n = operators[parserState.parts[parserState.index]]!!.newNode(parserState)
                 logDebug(parserState.parts[oldIndex] + " node created: " + n.toString())

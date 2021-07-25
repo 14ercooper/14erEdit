@@ -29,6 +29,7 @@ public class BrushLoader {
         RotatedEllipse rotatedEllipse = new RotatedEllipse();
         Spike spike = new Spike();
         Multi multi = new Multi();
+        Floodfill floodfill = new Floodfill();
         Brush.AddBrushShape("cube", cube);
         Brush.AddBrushShape("square", cube);
         Brush.AddBrushShape("diamond", diamond);
@@ -83,5 +84,8 @@ public class BrushLoader {
         Brush.AddBrushShape("spike", spike);
         Brush.AddBrushShape("sp", spike);
         Brush.AddBrushShape("multi", multi);
+        Brush.AddBrushShape("floodfill", floodfill);
+        Brush.AddBrushShape("flood", floodfill);
+        Brush.AddBrushShape("fill", floodfill);
     }
 }

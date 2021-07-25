@@ -232,6 +232,14 @@ object AsyncManager {
                         ignoreCase = true
                     )
                 ) {
+                    val currWorld = if (currentAsyncOp.player is Player) {
+                        (currentAsyncOp.player as Player).world
+                    } else {
+                        Main.plugin!!.server.worlds[0]
+                    }
+
+                    val tempState = OperatorState(BlockWrapper(currWorld.getBlockAt(14, 14, 14), 14, 14, 14), currentAsyncOp.player, currWorld, currentAsyncOp.undo)
+                    currentAsyncOp.blocks!!.setObjectArgs("OperatorState", tempState);
                     val b = getBlock(currentAsyncOp)
                     if (b.isEmpty()) {
                         finishUndo(currentAsyncOp.undo)
@@ -245,11 +253,6 @@ object AsyncManager {
                         continue
                     }
 
-                    val currWorld = if (currentAsyncOp.player is Player) {
-                        (currentAsyncOp.player as Player).world
-                    } else {
-                        Main.plugin!!.server.worlds[0]
-                    }
                     b.stream().forEach {
                         val state = OperatorState(it, currentAsyncOp.player, currWorld, currentAsyncOp.undo)
                         currentAsyncOp.operation!!.operateOnBlock(state)

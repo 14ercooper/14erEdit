@@ -6,6 +6,7 @@ import com._14ercooper.worldeditor.main.Main;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SphereIterator extends BlockIterator {
@@ -44,10 +45,6 @@ public class SphereIterator extends BlockIterator {
             if (incrXYZ(radMax, radMax, radMax, xC, yC, zC, player)) {
                 return null;
             }
-
-//	    if (y > radMax || y + yC > 255) {
-//		return null;
-//	    }
 
             // Max radius check
             if (x * x + y * y + z * z >= (radMax + radCorr) * (radMax + radCorr)) {

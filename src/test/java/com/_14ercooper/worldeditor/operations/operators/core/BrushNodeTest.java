@@ -20,7 +20,7 @@ class BrushNodeTest extends NodeTestCase {
 
         assertTrue(node instanceof BrushNode);
         assertTrue(((BrushNode) node).shape instanceof Voxel);
-        assertTrue(((BrushNode) node).op instanceof TrueNode);
+        assertTrue(((BrushNode) node).entry.get(0).node instanceof TrueNode);
     }
 
     @Test
