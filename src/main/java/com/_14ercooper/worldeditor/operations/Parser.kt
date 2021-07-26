@@ -92,7 +92,7 @@ object Parser {
                 n
             } else {
                 var numNode = numberNode
-                if (parserState.parts[parserState.index].matches(Regex("\\d+"))) {
+                if (parserState.parts[parserState.index].matches(Regex("-?\\d+"))) {
                     numNode = true
                 }
                 if (!numNode) {
