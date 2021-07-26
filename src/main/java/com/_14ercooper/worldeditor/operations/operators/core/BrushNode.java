@@ -28,7 +28,11 @@ public class BrushNode extends Node {
             BrushNode node = new BrushNode();
             node.shape = Brush.GetBrushShape(Parser.parseStringNode(parserState).contents);
             do {
-                String nextText = Parser.parseStringNode(parserState).getText();
+                StringNode stringNode = Parser.parseStringNode(parserState);
+                if (stringNode == null) {
+                    break;
+                }
+                String nextText = stringNode.getText();
                 if (nextText.equalsIgnoreCase("end")) {
                     parserState.setIndex(parserState.getIndex() + 1);
                     break;
@@ -36,12 +40,13 @@ public class BrushNode extends Node {
                 node.shape.addNewArgument(nextText);
             }
             while (node.shape.lastInputProcessed());
+
             parserState.setIndex(parserState.getIndex() - 1);
             if (node.shape.gotEnoughArgs()) {
-                throw new Exception();
+                throw new Exception("Too few arguments for the brush shape");
             }
 
-            if (!(node.shape instanceof Multi)) {
+            for (int i = 0; i < node.shape.operatorCount(); i++) {
                 Node op = Parser.parsePart(parserState);
                 node.entry.add(new EntryNode(op, parserState.getIndex() + 1));
             }

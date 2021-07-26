@@ -17,6 +17,7 @@ import org.bukkit.Material
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import java.io.IOException
+import java.lang.IndexOutOfBoundsException
 import java.lang.NullPointerException
 
 object AsyncManager {
@@ -300,33 +301,38 @@ object AsyncManager {
                     else if (currentAsyncOp.undoList!![0].currentState == UndoMode.PERFORMING_REDO) {
                         currentAsyncOp.undoList!![0].applyRedo(undoBatchSize)
                         doneOperations += undoBatchSize
-
                     }
+                }
+                else if (currentAsyncOp.key.equals("multibrush", ignoreCase = true)) {
+                    var b: BlockWrapper?
 
-                } else if (currentAsyncOp.key.equals("multibrush", ignoreCase = true)) {
-                    var b: List<BlockWrapper>
-                    var doContinue = false
                     while (true) {
-                        b = currentAsyncOp.iterators[0].getNext(opBlockSize, currentAsyncOp.player, true)
-                        if (b.isEmpty()) {
+                        if (currentAsyncOp.iterators.size == 0) {
+                            b = null
                             break
                         }
-                        if (currentAsyncOp.iterators.size > 1) {
-                            currentAsyncOp.iterators.removeAt(0)
+
+                        try {
+                            b = currentAsyncOp.iterators[0].getNextBlock(currentAsyncOp.player, true)
+                        } catch (e: IndexOutOfBoundsException) {
+                            Main.logError("Multibrush error: no iterators (does the file exist?)", currentAsyncOp.player, e)
+                            dropAsync()
+                            return
+                        }
+
+                        if (b == null) {
                             if (currentAsyncOp.iterators[0] is SchemBrushIterator) {
                                 (currentAsyncOp.iterators[0] as SchemBrushIterator).cleanup()
                             }
-                            currentAsyncOp.operations.removeAt(0)
-                            if (currentAsyncOp.iterators.size == 0 || currentAsyncOp.operations.size == 0) {
-                                doContinue = true
-                                break
-                            }
-                        } else {
-                            doContinue = true
+                            currentAsyncOp.iterators.removeFirst()
+                            currentAsyncOp.operations.removeFirst()
+                        }
+                        else {
                             break
                         }
                     }
-                    if (doContinue) {
+
+                    if (b == null) {
                         finishUndo(currentAsyncOp.undo)
                         operations.removeAt(i)
                         i--
@@ -340,12 +346,11 @@ object AsyncManager {
                     } else {
                         Main.plugin!!.server.worlds[0]
                     }
-                    b.stream().forEach {
-                        val state = OperatorState(it, currentAsyncOp.player, currWorld, currentAsyncOp.undo)
-                        currentAsyncOp.operations[0].operateOnBlock(state)
-                    }
-                    doneOperations += b.size
-                } else if (currentAsyncOp.key.equals("saveschem", ignoreCase = true)) {
+                    val state = OperatorState(b, currentAsyncOp.player, currWorld, currentAsyncOp.undo)
+                    currentAsyncOp.operations[0].operateOnBlock(state)
+                    doneOperations += 1
+                }
+                else if (currentAsyncOp.key.equals("saveschem", ignoreCase = true)) {
                     assert(currentAsyncOp.blocks != null)
                     val b = currentAsyncOp.blocks!!.getNext(1, currentAsyncOp.player, true)[0]
                     if (!currentAsyncOp.startedWrite) {

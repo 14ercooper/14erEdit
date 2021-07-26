@@ -98,7 +98,7 @@ object Parser {
                 if (!numNode) {
                     parserState.index--
                     val strNode = parseStringNode(parserState)
-                    val bn = if (strNode.text.isNotBlank())
+                    val bn = if (strNode!!.text.isNotBlank())
                         BlockNode().newNode(strNode.text, parserState)
                     else null
                     if (bn != null) {
@@ -141,7 +141,7 @@ object Parser {
     }
 
     @JvmStatic
-    fun parseStringNode(parserState: ParserState): StringNode {
+    fun parseStringNode(parserState: ParserState): StringNode? {
         parserState.index++
         logDebug("String node created") // -----
         return try {
@@ -150,13 +150,8 @@ object Parser {
             logDebug(node.contents)
             node
         } catch (e: Exception) {
-            logError(
-                "Ran off end of operator (could not create string node). Are you missing arguments?",
-                parserState.currentPlayer, e
-            )
-            val node = StringNode()
-            node.contents = ""
-            node
+            // This isn't always an error
+            null
         }
     }
 }

@@ -159,8 +159,12 @@ public class Multi extends BrushShape {
     @Override
     public void runBrush(List<Operator> operators, double x, double y, double z, Player currentPlayer) {
         // Create a multi-operator async chain
+        Main.logDebug("Multibrush file: " + file);
+        Main.logDebug("Number of arguments to multibrush: " + args.size());
         List<BlockIterator> iters = getIters(x, y, z, currentPlayer.getWorld(), currentPlayer);
+        Main.logDebug("Number of iters in multibrush: " + iters.size());
         List<Operator> ops = getOps(x, y, z);
+        Main.logDebug("Number of ops in multibrush: " + ops.size());
 
         AsyncManager.scheduleEdit(iters, ops, currentPlayer);
     }
