@@ -53,15 +53,16 @@ public class SetNode extends Node {
     public boolean performNode(OperatorState state, boolean perform) {
         try {
             // Block at nodes are handled specially
+            arg.getBlock(state);
             if (arg instanceof BlockAtNode) {
                 // Set material
-                SetBlock.setMaterial(state.getCurrentBlock().block, Material.matchMaterial(arg.getBlock(state)),
+                SetBlock.setMaterial(state.getCurrentBlock().block, Material.matchMaterial(state.getOtherValues().get("BlockMaterial")),
                         state.getIgnoringPhysics(), state.getCurrentUndo(), state.getCurrentPlayer());
                 // Set data
-                state.getCurrentBlock().block.setBlockData(Bukkit.getServer().createBlockData(arg.getData(state)),
+                state.getCurrentBlock().block.setBlockData(Bukkit.getServer().createBlockData(state.getOtherValues().get("BlockData")),
                         state.getIgnoringPhysics());
                 // Clone NBT (if there is any)
-                String nbt = arg.getNBT(state);
+                String nbt = state.getOtherValues().get("BlockNbt");
                 if (nbt.length() > 2) {
                     String command = "data merge block " + state.getCurrentBlock().block.getX() + " "
                             + state.getCurrentBlock().block.getY() + " " + state.getCurrentBlock().block.getZ() + " " + nbt;
@@ -72,8 +73,8 @@ public class SetNode extends Node {
 
             Material storedMaterial = state.getCurrentBlock().block.getType();
             String storedData = state.getCurrentBlock().block.getBlockData().getAsString();
-            String setMaterial = arg.getBlock(state);
-            String setData = arg.getData(state);
+            String setMaterial = state.getOtherValues().get("BlockMaterial");
+            String setData = state.getOtherValues().get("BlockData");
             // Case same
             if (setMaterial.equalsIgnoreCase("same")) {
                 return true;
@@ -111,7 +112,7 @@ public class SetNode extends Node {
             else if (setMaterial.equalsIgnoreCase("nbtonly")) {
                 String command = "data merge block " + state.getCurrentBlock().block.getX() + " " + state.getCurrentBlock().block.getY()
                         + " " + state.getCurrentBlock().block.getZ();
-                command = command + " " + arg.getNBT(state);
+                command = command + " " + state.getOtherValues().get("BlockNbt");
                 Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), command);
                 return true;
             }
@@ -136,8 +137,10 @@ public class SetNode extends Node {
             else {
                 // Case materials match (update data) - this is slightly faster in some cases
                 if (storedMaterial == Material.matchMaterial(setMaterial)) {
+                    BlockState bsBefore = state.getCurrentBlock().block.getState();
                     state.getCurrentBlock().block.setBlockData(Bukkit.getServer().createBlockData(setData),
                             state.getIgnoringPhysics());
+                    state.getCurrentUndo().addBlock(bsBefore, state.getCurrentBlock().block.getState());
                     return !storedData.equalsIgnoreCase(setData);
                 }
                 // Case materials don't match (set all)

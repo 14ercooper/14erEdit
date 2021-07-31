@@ -17,4 +17,6 @@ open class OperatorState(
     fun setCurrentBlock(b: Block) {
         currentBlock = BlockWrapper(b, b.x, b.y, b.z)
     }
+
+    val otherValues : MutableMap<String, String> = mutableMapOf()
 }

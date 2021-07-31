@@ -18,6 +18,7 @@ public class NewCylinderIterator extends BlockIterator {
     double radCorr;
     int height;
     int dirMaxX, dirMaxY, dirMaxZ;
+    int heightAbove, heightBelow;
 
     @Override
     public NewCylinderIterator newIterator(List<String> arg, World world, CommandSender player) {
@@ -37,10 +38,9 @@ public class NewCylinderIterator extends BlockIterator {
             iterator.xS = Double.parseDouble(args.get(6)); // Scaling stuff
             iterator.yS = Double.parseDouble(args.get(7));
             iterator.zS = Double.parseDouble(args.get(8));
-//	    iterator.dirMax = Math.max(iterator.height, iterator.radMax) + 2;
-            iterator.dirMaxX = iterator.xS == 0 ? iterator.height : iterator.radMax;
-            iterator.dirMaxY = iterator.yS == 0 ? iterator.height : iterator.radMax;
-            iterator.dirMaxZ = iterator.zS == 0 ? iterator.height : iterator.radMax;
+            iterator.dirMaxX = doubleIsZero(iterator.xS) ? (iterator.height / 2) + 2 : iterator.radMax;
+            iterator.dirMaxY = doubleIsZero(iterator.yS) ? (iterator.height / 2) + 2 : iterator.radMax;
+            iterator.dirMaxZ = doubleIsZero(iterator.zS) ? (iterator.height / 2) + 2 : iterator.radMax;
             iterator.totalBlocks = (2L * iterator.dirMaxX + 1) * (2L * iterator.dirMaxY + 1) * (2L * iterator.dirMaxZ + 1);
             iterator.x = -iterator.dirMaxX - 1;
             iterator.y = -iterator.dirMaxY;
@@ -48,6 +48,15 @@ public class NewCylinderIterator extends BlockIterator {
             while (iterator.y + iterator.yC < 0) {
                 iterator.y++;
             }
+            for (int i = 1; i < iterator.height; i++) {
+                if (i % 2 == 0) {
+                    iterator.heightBelow++;
+                }
+                else {
+                    iterator.heightAbove++;
+                }
+            }
+            Main.logDebug("Offsets (h=" + iterator.height + "): -" + iterator.heightBelow + "/+" + iterator.heightAbove);
             return iterator;
         } catch (Exception e) {
             Main.logError("Error creating new cylinder iterator. Please check your brush parameters.",
@@ -69,6 +78,21 @@ public class NewCylinderIterator extends BlockIterator {
             }
 
             // Height check
+            if (doubleIsZero(xS)) {
+                if (x < -heightBelow || x > heightAbove) {
+                    continue;
+                }
+            }
+            if (doubleIsZero(yS)) {
+                if (y < -heightBelow || y > heightAbove) {
+                    continue;
+                }
+            }
+            if (doubleIsZero(zS)) {
+                if (z < -heightBelow || z > heightAbove) {
+                    continue;
+                }
+            }
 
             break;
         }
@@ -78,6 +102,10 @@ public class NewCylinderIterator extends BlockIterator {
         } else {
             return new BlockWrapper(null, x + xC, y + yC, z + zC);
         }
+    }
+
+    private static boolean doubleIsZero(double value) {
+        return Math.abs(value) < 0.01;
     }
 
     @Override

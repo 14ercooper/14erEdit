@@ -40,20 +40,11 @@ public class SchemBlockNode extends BlockNode {
 
     // Return the material this node references
     @Override
-    public String getBlock(OperatorState state) {
-        return state.getCurrentBlock().otherArgs.get(0);
-    }
-
-    // Get the data of this block
-    @Override
-    public String getData(OperatorState state) {
-        return state.getCurrentBlock().otherArgs.get(1);
-    }
-
-    // Get the NBT of this block
-    @Override
-    public String getNBT(OperatorState state) {
-        return state.getCurrentBlock().otherArgs.get(2);
+    public boolean getBlock(OperatorState state) {
+        state.getOtherValues().put("BlockMaterial", state.getCurrentBlock().otherArgs.get(0));
+        state.getOtherValues().put("BlockData", state.getCurrentBlock().otherArgs.get(1));
+        state.getOtherValues().put("BlockNbt", state.getCurrentBlock().otherArgs.get(2));
+        return true;
     }
 
     // Check if it's the correct block

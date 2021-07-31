@@ -174,7 +174,6 @@ public class OperatorLoader {
         loadNode("physics", Parser.getOperator(commandSender, "!"));
         loadNode("ignore_physcics", Parser.getOperator(commandSender, "!"));
         loadNode("same", new SameNode());
-        loadNode("facing", new FacingNode());
         loadNode(">>n", new SetNBTNode());
         loadNode("set_nbt", Parser.getOperator(commandSender, ">>n"));
         loadNode(">", new SetNode());

@@ -15,6 +15,7 @@ public class BlockAtNode extends BlockNode {
     NumberNode x, y, z;
     boolean xA = false, yA = false, zA = false;
     Node node;
+    private static final NBTExtractor nbt = new NBTExtractor();
 
     @Override
     public BlockAtNode newNode(ParserState parserState) {
@@ -66,32 +67,22 @@ public class BlockAtNode extends BlockNode {
     int xV, yV, zV;
 
     @Override
-    public String getBlock(OperatorState state) {
+    public boolean getBlock(OperatorState state) {
         xV = x.getInt(state);
         yV = y.getInt(state);
         zV = z.getInt(state);
         xA = x.isAbsolute;
         yA = y.isAbsolute;
         zA = z.isAbsolute;
-        return state.getCurrentWorld().getBlockAt(xV + (xA ? 0 : state.getCurrentBlock().block.getX()),
+        state.getOtherValues().put("BlockMaterial", state.getCurrentWorld().getBlockAt(xV + (xA ? 0 : state.getCurrentBlock().block.getX()),
                 yV + (yA ? 0 : state.getCurrentBlock().block.getY()), zV + (zA ? 0 : state.getCurrentBlock().block.getZ()))
-                .toString();
-    }
-
-    // Get the data of this block
-    @Override
-    public String getData(OperatorState state) {
-        return state.getCurrentWorld().getBlockAt(xV + (xA ? 0 : state.getCurrentBlock().block.getX()),
+                .toString());
+        state.getOtherValues().put("BlockData", state.getCurrentWorld().getBlockAt(xV + (xA ? 0 : state.getCurrentBlock().block.getX()),
                 yV + (yA ? 0 : state.getCurrentBlock().block.getY()), zV + (zA ? 0 : state.getCurrentBlock().block.getZ()))
-                .toString();
-    }
-
-    // Get the NBT of this block
-    @Override
-    public String getNBT(OperatorState state) {
-        NBTExtractor nbt = new NBTExtractor();
-        return nbt.getNBT(state.getCurrentWorld().getBlockAt(xV + (xA ? 0 : state.getCurrentBlock().block.getX()),
-                yV + (yA ? 0 : state.getCurrentBlock().block.getY()), zV + (zA ? 0 : state.getCurrentBlock().block.getZ())));
+                .toString());
+        state.getOtherValues().put("BlockNbt", nbt.getNBT(state.getCurrentWorld().getBlockAt(xV + (xA ? 0 : state.getCurrentBlock().block.getX()),
+                yV + (yA ? 0 : state.getCurrentBlock().block.getY()), zV + (zA ? 0 : state.getCurrentBlock().block.getZ()))));
+        return true;
     }
 
     @Override
