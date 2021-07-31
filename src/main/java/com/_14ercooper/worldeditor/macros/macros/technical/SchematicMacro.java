@@ -68,6 +68,6 @@ public class SchematicMacro extends Macro {
             }
         }
         return SchematicHandler.loadSchematic(useSchem, origin, mirrorOpts, setAir, (Player) state.getCurrentPlayer(),
-                executionOrder, loc);
+                executionOrder, loc, state.getCurrentUndo());
     }
 }

@@ -154,6 +154,12 @@ object AsyncManager {
         queuedOperations.add(AsyncOperation(sl, saveSchem, origin, p, startUndo(p)))
     }
 
+    // Schedule a schematics operation
+    @JvmStatic
+    fun scheduleEdit(sl: SchemLite?, saveSchem: Boolean, p: Player, origin: IntArray, undo : UndoElement) {
+        queuedOperations.add(AsyncOperation(sl, saveSchem, origin, p, undo))
+    }
+
     // Schedule a selection clone operation
     @JvmStatic
     fun scheduleEdit(b: BlockIterator?, offset: IntArray, times: Int, delOriginal: Boolean, p: Player) {
