@@ -18,10 +18,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -141,9 +138,10 @@ public class CommandFx implements CommandExecutor {
     public static class TabComplete implements TabCompleter {
         @Override
         public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
-            List<String> tabArgs = new ArrayList<>();
+            Set<String> tabArgs = new HashSet<>();
 
             int initOffset = 2;
+
             if (args.length < 2) {
                 tabArgs.add("brush");
                 tabArgs.add("br");
@@ -278,7 +276,45 @@ public class CommandFx implements CommandExecutor {
                 }
             }
 
-            return tabArgs;
+            if (args.length >= 2) {
+                if (args[args.length - 2].equalsIgnoreCase("template") || args[args.length - 2].equalsIgnoreCase("tpl")) {
+                    tabArgs = new HashSet<>(getTemplateList());
+                }
+                if (args[args.length - 2].equalsIgnoreCase("multibrush") || args[args.length - 2].equalsIgnoreCase("multi")) {
+                    tabArgs = new HashSet<>(getMultibrushList());
+                }
+                if (args[args.length - 2].equalsIgnoreCase("brush") || args[args.length - 2].equalsIgnoreCase("br")) {
+                    tabArgs = new HashSet<>();
+                    if (args.length == 2) {
+                        tabArgs.add("none");
+                    }
+                    tabArgs.addAll(Brush.brushShapes.keySet());
+                }
+            }
+
+            return new ArrayList<>(tabArgs);
+        }
+    }
+
+    public static List<String> getTemplateList() {
+        try {
+            Stream<Path> files = Files.list(Paths.get("plugins/14erEdit/templates"));
+            List<String> functions = files.map(path -> path.getFileName().toString()).collect(Collectors.toList());
+            files.close();
+            return functions;
+        } catch (IOException e) {
+            return new ArrayList<>(Collections.singleton("<template_name>"));
+        }
+    }
+
+    public static List<String> getMultibrushList() {
+        try {
+            Stream<Path> files = Files.list(Paths.get("plugins/14erEdit/multibrushes"));
+            List<String> functions = files.map(path -> path.getFileName().toString()).collect(Collectors.toList());
+            files.close();
+            return functions;
+        } catch (IOException e) {
+            return new ArrayList<>(Collections.singleton("<multibrush_name>"));
         }
     }
 }
