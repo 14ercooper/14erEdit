@@ -1,6 +1,5 @@
 package com._14ercooper.worldeditor.macros.macros.technical;
 
-import com._14ercooper.worldeditor.macros.MacroLauncher;
 import com._14ercooper.worldeditor.macros.macros.Macro;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.main.SetBlock;
@@ -38,7 +37,7 @@ public class LineMacro extends Macro {
         double x = x1, y = y1, z = z1;
         for (int i = 0; i < 1000; i++) {
             Block b = state.getCurrentWorld().getBlockAt((int) (x + 0.5), (int) (y + 0.5), (int) (z + 0.5));
-            SetBlock.setMaterial(b, mat, MacroLauncher.undoElement, state.getCurrentPlayer());
+            SetBlock.setMaterial(b, mat, state.getCurrentUndo(), state.getCurrentPlayer());
             x += dx;
             y += dy;
             z += dz;

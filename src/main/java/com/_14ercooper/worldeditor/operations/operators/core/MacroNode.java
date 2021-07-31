@@ -28,7 +28,7 @@ public class MacroNode extends Node {
     public boolean performNode(OperatorState state, boolean perform) {
         Main.logDebug("Performing macro node"); // ----
 //	AsyncManager.doneOperations += (GlobalVars.blocksPerAsync * 0.5) + 1;
-        return MacroLauncher.INSTANCE.launchMacro(arg.contents, state.getCurrentBlock().block.getLocation(), state.getCurrentUndo(), state);
+        return MacroLauncher.INSTANCE.launchMacro(arg.contents, state.getCurrentBlock().block.getLocation(), state);
     }
 
     @Override

@@ -53,7 +53,7 @@ public class LineBrushMacro extends Macro {
             int yPos = (int) ((int) (yStart - (yStep * t)) + 0.5);
             int zPos = (int) ((int) (zStart - (zStep * t)) + 0.5);
             Block b = state.getCurrentWorld().getBlockAt(xPos, yPos, zPos);
-            SetBlock.setMaterial(b, m, MacroLauncher.undoElement, state.getCurrentPlayer());
+            SetBlock.setMaterial(b, m, state.getCurrentUndo(), state.getCurrentPlayer());
         }
 
         // Return success

@@ -32,7 +32,7 @@ public class CatenaryMacro extends Macro {
                 int z = (int) ((int) (z0 + (t * dz)) + 0.5);
                 Main.logDebug(x + "," + y + "," + z);
                 Block b = state.getCurrentWorld().getBlockAt(x, y, z);
-                SetBlock.setMaterial(b, Material.matchMaterial(block), MacroLauncher.undoElement, state.getCurrentPlayer());
+                SetBlock.setMaterial(b, Material.matchMaterial(block), state.getCurrentUndo(), state.getCurrentPlayer());
             }
         } catch (Exception e) {
             Main.logError(
