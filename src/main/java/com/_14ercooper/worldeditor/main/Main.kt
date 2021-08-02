@@ -236,10 +236,10 @@ class Main : JavaPlugin() {
             for (p in Bukkit.getOnlinePlayers()) {
                 val playerWrapper = PlayerManager.getPlayerWrapper(p)
                 if (playerWrapper.isDebug && debugText.isNotBlank()) {
-                    Bukkit.getServer().broadcastMessage(debugText)
-                    debugText = ""
+                    p.sendMessage(debugText)
                 }
             }
+            debugText = ""
         }
 
         private fun loadConfig() {

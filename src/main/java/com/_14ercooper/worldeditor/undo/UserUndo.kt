@@ -6,6 +6,7 @@ import kotlinx.coroutines.runBlocking
 import org.bukkit.Bukkit
 import java.io.File
 import java.nio.file.Files
+import java.nio.file.NoSuchFileException
 import java.nio.file.Path
 import java.util.*
 
@@ -149,7 +150,13 @@ open class UserUndo
 
     // Flush all data to disk
     open fun flush(): Boolean {
-        saveUndoList()
+        try {
+            saveUndoList()
+        }
+        catch (e : NoSuchFileException) {
+            Files.createDirectories(Path.of("plugins/14erEdit/undo/${name}"))
+            saveUndoList()
+        }
         runBlocking {
             undoElements.forEach { (_, undoElement) -> undoElement.flush() }
         }
@@ -159,6 +166,6 @@ open class UserUndo
     }
 
     companion object {
-        val maxListSize: Long = 500
+        const val maxListSize: Long = 500
     }
 }
