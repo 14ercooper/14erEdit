@@ -5,6 +5,7 @@ bin/
 target/
 .idea/
 plugins/
+mms/
 *.iml
 bash.exe.stackdump
 MovePlugin.bat
