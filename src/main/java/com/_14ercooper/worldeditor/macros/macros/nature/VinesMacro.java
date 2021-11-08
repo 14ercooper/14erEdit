@@ -2,16 +2,16 @@ package com._14ercooper.worldeditor.macros.macros.nature;
 
 import com._14ercooper.worldeditor.macros.MacroLauncher;
 import com._14ercooper.worldeditor.macros.macros.Macro;
-import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.main.SetBlock;
-import com._14ercooper.worldeditor.operations.Operator;
+import com._14ercooper.worldeditor.operations.OperatorState;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
+import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -24,7 +24,7 @@ public class VinesMacro extends Macro {
     Location pos;
 
     // Create a new macro
-    private void SetupMacro(String[] args, Location loc) {
+    private void SetupMacro(String[] args, Location loc, CommandSender player) {
         try {
             radius = Double.parseDouble(args[0]);
             length = Double.parseDouble(args[1]);
@@ -38,22 +38,22 @@ public class VinesMacro extends Macro {
         } catch (Exception e) {
             Main.logError(
                     "Error parsing vine macro. Did you pass in radius, length, variance, density, and optionally block material?",
-                    Operator.currentPlayer, e);
+                    player, e);
         }
         try {
             Material m = Material.matchMaterial(block);
             if (m == null)
                 throw new Exception();
         } catch (Exception e) {
-            Main.logError("Error parsing vine macro. " + block + " is not a valid block.", Operator.currentPlayer, e);
+            Main.logError("Error parsing vine macro. " + block + " is not a valid block.", player, e);
         }
         pos = loc;
     }
 
     // Run this macro
     @Override
-    public boolean performMacro(String[] args, Location loc) {
-        SetupMacro(args, loc);
+    public boolean performMacro(String[] args, Location loc, OperatorState state) {
+        SetupMacro(args, loc, state.getCurrentPlayer());
 
         // Location of the brush
         double x = pos.getX();
@@ -68,7 +68,7 @@ public class VinesMacro extends Macro {
                 for (int ry = -radiusInt; ry <= radiusInt; ry++) {
                     if (rx * rx + ry * ry + rz * rz <= (radius + 0.5) * (radius + 0.5)) {
                         blockArray.add(
-                                Operator.currentWorld.getBlockAt((int) x + rx, (int) y + ry, (int) z + rz));
+                                state.getCurrentWorld().getBlockAt((int) x + rx, (int) y + ry, (int) z + rz));
                     }
                 }
             }
@@ -88,14 +88,14 @@ public class VinesMacro extends Macro {
         nonsolidBlocks.add(Material.AIR);
         nonsolidBlocks.add(Material.VINE);
         for (BlockState bs : snapshotArray) {
-            Block b = Operator.currentWorld.getBlockAt(bs.getLocation());
+            Block b = state.getCurrentWorld().getBlockAt(bs.getLocation());
             // Make sure this block is air
             if (b.getType() != Material.AIR || b.getRelative(BlockFace.DOWN).getType() != Material.AIR) {
                 continue;
             }
 
             // Check density
-            if (GlobalVars.rand.nextDouble() >= density) {
+            if (Main.getRand().nextDouble() >= density) {
                 continue;
             }
 
@@ -153,7 +153,7 @@ public class VinesMacro extends Macro {
 
                 // Pick the side for the vines that will be below this one
                 if (dirs.size() > 1) {
-                    blockState = dirs.get(GlobalVars.rand.nextInt(dirs.size() - 1));
+                    blockState = dirs.get(Main.getRand().nextInt(dirs.size() - 1));
                 } else {
                     blockState = dirs.get(0);
                 }
@@ -165,25 +165,25 @@ public class VinesMacro extends Macro {
             }
 
             // Determine the length of this vine
-            double actVariance = ((GlobalVars.rand.nextDouble() * 2.0) - 1.0) * variance;
+            double actVariance = ((Main.getRand().nextDouble() * 2.0) - 1.0) * variance;
             int vineLength = (int) Math.round(length + actVariance);
 
             // Grow the vine (checking to make sure only air gets replaced and registering
             // operated blocks)
             // Grow the top vine
-            BlockState state = b.getState();
-            state.setType(Material.matchMaterial(block));
+            BlockState stateBS = b.getState();
+            stateBS.setType(Material.matchMaterial(block));
             if (block.equalsIgnoreCase("vine"))
-                state.setBlockData(Bukkit.getServer().createBlockData("minecraft:vine" + blockState));
-            operatedBlocks.add(state);
+                stateBS.setBlockData(Bukkit.getServer().createBlockData("minecraft:vine" + blockState));
+            operatedBlocks.add(stateBS);
             // Grow all the other vines
             for (int i = 1; i <= vineLength; i++) {
-                state = b.getRelative(BlockFace.DOWN, i).getState();
-                if (state.getType() == Material.AIR) {
-                    state.setType(Material.matchMaterial(block));
+                stateBS = b.getRelative(BlockFace.DOWN, i).getState();
+                if (stateBS.getType() == Material.AIR) {
+                    stateBS.setType(Material.matchMaterial(block));
                     if (block.equalsIgnoreCase("vine"))
-                        state.setBlockData(Bukkit.getServer().createBlockData("minecraft:vine" + blockState));
-                    operatedBlocks.add(state);
+                        stateBS.setBlockData(Bukkit.getServer().createBlockData("minecraft:vine" + blockState));
+                    operatedBlocks.add(stateBS);
                 } else {
                     break; // Don't grow through solid blocks
                 }
@@ -193,8 +193,8 @@ public class VinesMacro extends Macro {
         Main.logDebug("Operated on and now placing " + operatedBlocks.size() + " blocks");
         // Apply the changes to the world
         for (BlockState bs : operatedBlocks) {
-            Block b = Operator.currentWorld.getBlockAt(bs.getLocation());
-            SetBlock.setMaterial(b, bs.getType(), MacroLauncher.undoElement);
+            Block b = state.getCurrentWorld().getBlockAt(bs.getLocation());
+            SetBlock.setMaterial(b, bs.getType(), state.getCurrentUndo(), state.getCurrentPlayer());
             b.setBlockData(bs.getBlockData());
         }
 

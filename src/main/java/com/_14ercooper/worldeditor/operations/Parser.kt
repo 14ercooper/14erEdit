@@ -8,17 +8,16 @@ import com._14ercooper.worldeditor.operations.operators.core.NumberNode
 import com._14ercooper.worldeditor.operations.operators.core.StringNode
 import com._14ercooper.worldeditor.operations.operators.function.RangeNode
 import com._14ercooper.worldeditor.operations.operators.world.BlockNode
+import org.bukkit.command.CommandSender
 import java.util.*
 import kotlin.streams.toList
 
-class Parser {
-    // This starts as -1 since the first thing the parser does is increment it
-    @JvmField
-    var index = -1
-    private var parts: List<String>? = null
-
-    // Store operators
+object Parser {
+    // Store operators that we support
     val operators: MutableMap<String, Node> = HashMap()
+
+    // Add a new operator
+    @JvmStatic
     fun addOperator(name: String, node: Node) {
         if (operators.containsKey(name)) {
             return
@@ -26,80 +25,81 @@ class Parser {
         operators[name] = node
     }
 
-    fun getOperator(name: String): Node? {
+    // Get the node of an operator that corresponds with a string
+    @JvmStatic
+    fun getOperator(currentPlayer: CommandSender, name: String): Node? {
         if (!operators.containsKey(name)) {
             logError(
                 "Operator \"$name\" not found. Please check that you input a valid operator.",
-                Operator.currentPlayer, null
+                currentPlayer, null
             )
             return null
         }
         return operators[name]
     }
 
-    fun parseOperation(op: String): EntryNode? {
-
+    @JvmStatic
+    fun parseOperation(currentPlayer: CommandSender, op: String): EntryNode? {
         // Here there be parsing magic
         // A massive recursive nightmare
-        index = -1
-        parts = Arrays.stream(op.split(" ").toTypedArray()).map { s: String ->
-                if (s.matches(".*\\[.+=.+].*".toRegex())) s.replace(
-                    "[()]+".toRegex(),
-                    ""
-                ) else s.replace("[()\\[\\]]+".toRegex(), "")
-            }.toList()
-        val rootNode = parsePart()
+        val splitParts = Arrays.stream(op.split(" ").toTypedArray()).map { s: String ->
+            if (s.matches(".*\\[.+=.+].*".toRegex())) s.replace(
+                "[()]+".toRegex(),
+                ""
+            ) else s.replace("[()\\[\\]]+".toRegex(), "")
+        }.toList()
+        val state = ParserState(currentPlayer, splitParts)
+        val rootNode = parsePart(state)
 
         // This is an error if this is true
         // Probably user error with an invalid operation
         if (rootNode == null) {
-            logError("Operation parse failed. Please check your syntax.", Operator.currentPlayer, null)
+            logError("Operation parse failed. Please check your syntax.", currentPlayer, null)
             return null
         }
 
         // Generate the entry node of the operation
         logDebug("Building entry node from root node") // -----
-        return EntryNode(rootNode)
+        return EntryNode(rootNode, state.index + 1)
     }
 
     // This is the massive recursive nightmare
     @JvmOverloads
-    fun parsePart(numberNode: Boolean = false): Node? {
-        index++
+    @JvmStatic
+    fun parsePart(parserState: ParserState, numberNode: Boolean = false): Node? {
+        parserState.index++
         return try {
             // Comments
             var commentTicker = -1
-            if (parts!![index].equals("/*", ignoreCase = true)) {
+            if (parserState.parts[parserState.index].equals("/*", ignoreCase = true)) {
                 while (commentTicker > 0 || commentTicker == -1) {
                     if (commentTicker == -1) {
                         commentTicker++
                     }
-                    if (parts!![index].equals("/*", ignoreCase = true)) {
+                    if (parserState.parts[parserState.index].equals("/*", ignoreCase = true)) {
                         commentTicker++
-                    } else if (parts!![index].equals("*/", ignoreCase = true)) {
+                    } else if (parserState.parts[parserState.index].equals("*/", ignoreCase = true)) {
                         commentTicker--
                     }
-                    logDebug("Skipped " + parts!![index] + " with comment ticker " + commentTicker)
-                    index++
+                    logDebug("Skipped " + parserState.parts[parserState.index] + " with comment ticker " + commentTicker)
+                    parserState.index++
                 }
             }
-            val oldIndex = index
-            if (index == 0 && !operators.containsKey(parts!![index])) {
-                logError(
-                    "First node parsed was a string node. This is likely a mistake. Please check that you used a valid operator.",
-                    Operator.currentPlayer, null
-                )
-            }
-            if (operators.containsKey(parts!![index])) {
-                val n = operators[parts!![index]]!!.newNode()
-                logDebug(parts!![oldIndex] + " node created: " + n.toString())
+            val oldIndex = parserState.index
+            if (operators.containsKey(parserState.parts[parserState.index])) {
+                val n = operators[parserState.parts[parserState.index]]!!.newNode(parserState)
+                logDebug(parserState.parts[oldIndex] + " node created: " + n.toString())
                 n
             } else {
-                if (!numberNode) {
-                    index--
-                    val strNode = parseStringNode()
-                    val bn = if (strNode.text.isNotBlank())
-                        BlockNode().newNode(strNode.text)
+                var numNode = numberNode
+                if (parserState.parts[parserState.index].matches(Regex("-?\\d+"))) {
+                    numNode = true
+                }
+                if (!numNode) {
+                    parserState.index--
+                    val strNode = parseStringNode(parserState)
+                    val bn = if (strNode!!.text.isNotBlank())
+                        BlockNode().newNode(strNode.text, parserState)
                     else null
                     if (bn != null) {
                         logDebug("Block node created: $bn")
@@ -109,7 +109,7 @@ class Parser {
                         strNode
                     }
                 } else {
-                    NumberNode().newNode()
+                    NumberNode().newNode(parserState)
                 }
             }
         } catch (e: IndexOutOfBoundsException) {
@@ -117,43 +117,41 @@ class Parser {
         }
     }
 
-    fun parseNumberNode(): NumberNode? {
+    @JvmStatic
+    fun parseNumberNode(parserState: ParserState): NumberNode? {
         logDebug("Number node created") // -----
         return try {
-            parsePart(true) as NumberNode?
+            parsePart(parserState, true) as NumberNode
         } catch (e: Exception) {
-            logError("Number expected. Did not find a number.", Operator.currentPlayer, e)
+            logError("Number expected. Did not find a number.", parserState.currentPlayer, e)
             null
         }
     }
 
-    fun parseRangeNode(): RangeNode? {
-        index++
+    @JvmStatic
+    fun parseRangeNode(parserState: ParserState): RangeNode? {
+        parserState.index++
         logDebug("Range node created") // -----
         return try {
-            RangeNode().newNode()
+            RangeNode().newNode(parserState)
         } catch (e: Exception) {
-            logError("Range node expected. Could not create a range node.", Operator.currentPlayer, e)
+            logError("Range node expected. Could not create a range node.", parserState.currentPlayer, e)
             null
         }
     }
 
-    fun parseStringNode(): StringNode {
-        index++
+    @JvmStatic
+    fun parseStringNode(parserState: ParserState): StringNode? {
+        parserState.index++
         logDebug("String node created") // -----
         return try {
             val node = StringNode()
-            node.contents = parts!![index]
+            node.contents = parserState.parts[parserState.index]
             logDebug(node.contents)
             node
         } catch (e: Exception) {
-            logError(
-                "Ran off end of operator (could not create string node). Are you missing arguments?",
-                Operator.currentPlayer, e
-            )
-            val node = StringNode()
-            node.contents = ""
-            node
+            // This isn't always an error
+            null
         }
     }
 }

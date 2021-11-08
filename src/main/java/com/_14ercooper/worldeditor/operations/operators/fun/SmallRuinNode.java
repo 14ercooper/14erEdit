@@ -1,8 +1,10 @@
 package com._14ercooper.worldeditor.operations.operators.fun;
 
-import com._14ercooper.worldeditor.main.GlobalVars;
+import com._14ercooper.worldeditor.blockiterator.BlockWrapper;
 import com._14ercooper.worldeditor.main.Main;
-import com._14ercooper.worldeditor.operations.Operator;
+import com._14ercooper.worldeditor.operations.OperatorState;
+import com._14ercooper.worldeditor.operations.Parser;
+import com._14ercooper.worldeditor.operations.ParserState;
 import com._14ercooper.worldeditor.operations.operators.Node;
 import com._14ercooper.worldeditor.operations.operators.function.RangeNode;
 import org.bukkit.Material;
@@ -16,26 +18,26 @@ public class SmallRuinNode extends Node {
     RangeNode xMax, zMax;
 
     @Override
-    public SmallRuinNode newNode() {
+    public SmallRuinNode newNode(ParserState parserState) {
         SmallRuinNode node = new SmallRuinNode();
-        node.xMax = GlobalVars.operationParser.parseRangeNode();
-        node.zMax = GlobalVars.operationParser.parseRangeNode();
-        node.stackSize = GlobalVars.operationParser.parseRangeNode();
-        node.block = GlobalVars.operationParser.parsePart();
+        node.xMax = Parser.parseRangeNode(parserState);
+        node.zMax = Parser.parseRangeNode(parserState);
+        node.stackSize = Parser.parseRangeNode(parserState);
+        node.block = Parser.parsePart(parserState);
         return node;
     }
 
     @Override
-    public boolean performNode() {
-        int xSize = Main.randRange((int) xMax.getMin(), (int) xMax.getMax());
-        int zSize = Main.randRange((int) zMax.getMin(), (int) zMax.getMax());
+    public boolean performNode(OperatorState state, boolean perform) {
+        int xSize = Main.randRange((int) xMax.getMin(state), (int) xMax.getMax(state));
+        int zSize = Main.randRange((int) zMax.getMin(state), (int) zMax.getMax(state));
 
-        int stackCount = Main.randRange((int) stackSize.getMin(), (int) stackSize.getMax());
+        int stackCount = Main.randRange((int) stackSize.getMin(state), (int) stackSize.getMax(state));
 
-        Block savedBlock = Operator.currentBlock;
+        BlockWrapper savedBlock = state.getCurrentBlock();
 
         for (int ruinNum = 0; ruinNum < stackCount; ruinNum++) {
-            Block currBlock = savedBlock.getRelative(BlockFace.UP, 4 * ruinNum);
+            Block currBlock = savedBlock.block.getRelative(BlockFace.UP, 4 * ruinNum);
 
             // Create base including fill
             for (int xO = -xSize; xO <= xSize; xO++) {
@@ -43,22 +45,22 @@ public class SmallRuinNode extends Node {
                     Block currBlockOffset = currBlock.getRelative(xO, 0, zO);
                     // Set block
                     if (currBlockOffset.getType() == Material.AIR) {
-                        Operator.currentBlock = currBlockOffset;
-                        block.performNode();
+                        state.setCurrentBlock(currBlockOffset);
+                        block.performNode(state, true);
                     } else {
-                        if (GlobalVars.rand.nextBoolean()) {
-                            Operator.currentBlock = currBlockOffset;
-                            block.performNode();
+                        if (Main.getRand().nextBoolean()) {
+                            state.setCurrentBlock(currBlockOffset);
+                            block.performNode(state, true);
                         }
                     }
 
                     // Do base fill on bottom layer - 1 indexed due to initial offset
                     if (ruinNum == 0) {
                         for (int i = 1; i < 4; i++) {
-                            Operator.currentBlock = currBlockOffset.getRelative(BlockFace.DOWN, i);
-                            if (Operator.currentBlock.getType() == Material.AIR)
+                            state.setCurrentBlock(currBlockOffset.getRelative(BlockFace.DOWN, i));
+                            if (state.getCurrentBlock().block.getType() == Material.AIR)
                                 i--;
-                            block.performNode();
+                            block.performNode(state, true);
                         }
                     }
                 }
@@ -69,10 +71,10 @@ public class SmallRuinNode extends Node {
                 for (int zO = -zSize; zO <= zSize; zO++) {
                     if (xO == -xSize || xO == xSize || zO == -zSize || zO == zSize) {
                         for (int i = 0; i < 5; i++) {
-                            if (GlobalVars.rand.nextInt(5) == 0)
+                            if (Main.getRand().nextInt(5) == 0)
                                 break;
-                            Operator.currentBlock = currBlock.getRelative(xO, i, zO);
-                            block.performNode();
+                            state.setCurrentBlock(currBlock.getRelative(xO, i, zO));
+                            block.performNode(state, true);
                         }
                     }
                 }
@@ -80,7 +82,7 @@ public class SmallRuinNode extends Node {
         }
 
         // Clean up and return
-        Operator.currentBlock = savedBlock;
+        state.setCurrentBlock(savedBlock);
         return true;
     }
 

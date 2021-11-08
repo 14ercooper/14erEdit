@@ -1,8 +1,10 @@
 package com._14ercooper.worldeditor.operations.operators.function;
 
 import com._14ercooper.worldeditor.functions.Function;
-import com._14ercooper.worldeditor.main.GlobalVars;
-import com._14ercooper.worldeditor.operations.Operator;
+import com._14ercooper.worldeditor.operations.DummyState;
+import com._14ercooper.worldeditor.operations.OperatorState;
+import com._14ercooper.worldeditor.operations.Parser;
+import com._14ercooper.worldeditor.operations.ParserState;
 import com._14ercooper.worldeditor.operations.operators.core.NumberNode;
 
 import java.util.ArrayList;
@@ -14,19 +16,26 @@ public class FunctionNode extends NumberNode {
     final List<String> args = new ArrayList<>();
 
     @Override
-    public FunctionNode newNode() {
+    public FunctionNode newNode(ParserState parserState) {
         FunctionNode node = new FunctionNode();
-        node.filename = GlobalVars.operationParser.parseStringNode().getText();
-        int argNum = (int) GlobalVars.operationParser.parseNumberNode().getValue();
+        node.filename = Parser.parseStringNode(parserState).getText();
+        int argNum;
+        try {
+            argNum = (int) Parser.parseNumberNode(parserState).getValue(new DummyState(parserState.getCurrentPlayer()));
+        }
+        catch (NullPointerException e) {
+            parserState.setIndex(parserState.getIndex() - 1);
+            argNum = (int) Parser.parseNumberNode(parserState).arg;
+        }
         for (int i = 0; i < argNum; i++) {
-            node.args.add(GlobalVars.operationParser.parseStringNode().getText());
+            node.args.add(Parser.parseStringNode(parserState).getText());
         }
         return node;
     }
 
     @Override
-    public boolean performNode() {
-        Function fx = new Function(filename, args, Operator.currentPlayer, true);
+    public boolean performNode(OperatorState state, boolean perform) {
+        Function fx = new Function(filename, args, state.getCurrentPlayer(), true, state);
         return Math.abs(fx.run()) > 0.001;
     }
 
@@ -36,25 +45,25 @@ public class FunctionNode extends NumberNode {
     }
 
     @Override
-    public double getValue() {
-        return getValue(0);
+    public double getValue(OperatorState state) {
+        return getValue(state, 0);
     }
 
     @Override
-    public double getValue(double center) {
-        Function fx = new Function(filename, args, Operator.currentPlayer, true);
+    public double getValue(OperatorState state, double center) {
+        Function fx = new Function(filename, args, state.getCurrentPlayer(), true, state);
         //	Main.logDebug("Function return: " + val);
         return fx.run();
     }
 
     @Override
-    public int getInt() {
-        return getInt(0);
+    public int getInt(OperatorState state) {
+        return getInt(state, 0);
     }
 
     @Override
-    public int getInt(int center) {
-        Function fx = new Function(filename, args, Operator.currentPlayer, true);
+    public int getInt(OperatorState state, int center) {
+        Function fx = new Function(filename, args, state.getCurrentPlayer(), true, state);
         //	Main.logDebug("Function return: " + val);
         return (int) fx.run();
     }

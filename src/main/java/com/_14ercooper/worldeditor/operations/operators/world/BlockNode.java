@@ -1,13 +1,15 @@
 package com._14ercooper.worldeditor.operations.operators.world;
 
-import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.main.NBTExtractor;
-import com._14ercooper.worldeditor.operations.Operator;
+import com._14ercooper.worldeditor.operations.OperatorState;
+import com._14ercooper.worldeditor.operations.Parser;
+import com._14ercooper.worldeditor.operations.ParserState;
 import com._14ercooper.worldeditor.operations.operators.Node;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -16,23 +18,22 @@ public class BlockNode extends Node {
     // Stores this node's argument
     public List<BlockInstance> blockList;
     public List<String> textMasks;
-    public BlockInstance nextBlock;
 
     // Creates a new node
     @Override
-    public BlockNode newNode() {
+    public BlockNode newNode(ParserState parserState) {
         BlockNode node = new BlockNode();
-        String[] data = GlobalVars.operationParser.parseStringNode().getText().split(";");
+        String[] data = Parser.parseStringNode(parserState).getText().split(";");
         try {
-            if (loadBlockList(node, data)) return null;
+            if (loadBlockList(node, data, parserState)) return null;
         } catch (Exception e) {
-            Main.logError("Could not parse block node. Block name required, but not found: " + data, Operator.currentPlayer, e);
+            Main.logError("Could not parse block node. Block name required, but not found: " + Arrays.toString(data), parserState.getCurrentPlayer(), e);
             return null;
         }
         return node;
     }
 
-    private boolean loadBlockList(BlockNode node, String[] data) {
+    private boolean loadBlockList(BlockNode node, String[] data, ParserState parserState) {
         node.blockList = new LinkedList<>();
         node.textMasks = new LinkedList<>();
         for (String s : data) {
@@ -42,60 +43,49 @@ public class BlockNode extends Node {
             } else {
                 Main.logDebug("Created block instance");
                 if (!s.isBlank())
-                node.blockList.add(new BlockInstance(s));
+                    node.blockList.add(new BlockInstance(s, parserState));
             }
         }
         if (node.blockList.isEmpty() && node.textMasks.isEmpty()) {
-            Main.logError("Error creating block node. No blocks were provided.", Operator.currentPlayer, null);
+            Main.logError("Error creating block node. No blocks were provided.", parserState.getCurrentPlayer(), null);
             return true;
         }
         return false;
     }
 
-    public BlockNode newNode(String input) {
+    public BlockNode newNode(String input, ParserState parserState) {
         BlockNode node = new BlockNode();
         try {
             String[] data = input.split(";");
-            if (loadBlockList(node, data)) return null;
+            if (loadBlockList(node, data, parserState)) return null;
         } catch (Exception e) {
-            Main.logError("Could not parse block node from input. Block name required, but not found: " + input, Operator.currentPlayer, e);
+            Main.logError("Could not parse block node from input. Block name required, but not found: " + input, parserState.getCurrentPlayer(), e);
             return null;
         }
         return node;
     }
 
     // Return the material this node references
-    public String getBlock() {
+    public boolean getBlock(OperatorState state) {
         try {
-            nextBlock = (new BlockInstance()).GetRandom(blockList);
+            BlockInstance nextBlock = (new BlockInstance()).GetRandom(blockList);
+            state.getOtherValues().put("BlockMaterial", nextBlock.mat);
+            state.getOtherValues().put("BlockData", nextBlock.data);
+            state.getOtherValues().put("BlockNbt", nextBlock.nbt);
+            return true;
         } catch (Exception e) {
-            Main.logError("Error performing block node. Does it contain blocks?", Operator.currentPlayer, e);
-            return null;
+            Main.logError("Error performing block node. Does it contain blocks?", state.getCurrentPlayer(), e);
+            return false;
         }
-        return nextBlock.mat;
-    }
-
-    // Get the data of this block
-    public String getData() {
-        try {
-            return nextBlock.data;
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    // Get the NBT of this block
-    public String getNBT() {
-        return nextBlock.nbt;
     }
 
     // Check if it's the correct block
     @Override
-    public boolean performNode() {
+    public boolean performNode(OperatorState state, boolean perform) {
         try {
-            return (new BlockInstance()).Contains(blockList, textMasks, Operator.currentBlock);
+            return (new BlockInstance()).Contains(blockList, textMasks, state.getCurrentBlock().block);
         } catch (Exception e) {
-            Main.logError("Error performing block node. Does it contain blocks?", Operator.currentPlayer, e);
+            Main.logError("Error performing block node. Does it contain blocks?", state.getCurrentPlayer(), e);
             return false;
         }
     }
@@ -106,15 +96,44 @@ public class BlockNode extends Node {
         return 1;
     }
 
+    // True if the second string's block data node entirely contains the first
+    public static boolean blockDataStringsContained(String first, String second) {
+        String firstString = first.replaceAll("[\\[\\]]", "").toLowerCase();
+        String secondString = second.toLowerCase();
+        String[] firstContents = firstString.split(",");
+        for (String s : firstContents) {
+            if (!secondString.contains(s)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static boolean blockDataStringsMatch(String first, String second) {
+        String firstString = first.split("\\[]")[first.split("\\[]").length - 1].replaceAll("[\\[\\]]", "").toLowerCase();
+        String secondString = second.split("\\[]")[second.split("\\[]").length - 1].replaceAll("[\\[\\]]", "").toLowerCase();
+        String[] firstContents = firstString.split(",");
+        String[] secondContents = secondString.split(",");
+        if (firstContents.length != secondContents.length) {
+            return false;
+        }
+        for (String s : firstContents) {
+            if (!secondString.contains(s)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     // Nested class to make parsing , and % lists easier
-    private static class BlockInstance {
-        String mat;
-        String data;
-        String nbt = "";
-        int weight;
+    public static class BlockInstance {
+        public String mat;
+        public String data;
+        public String nbt = "";
+        public int weight;
 
         // Construct a new block instance from an input string
-        BlockInstance(String input) {
+        BlockInstance(String input, ParserState parserState) {
             if (input.toCharArray()[0] == '[') {
                 Main.logDebug("Data only node");
                 // Data only
@@ -128,7 +147,7 @@ public class BlockNode extends Node {
                 data = null;
                 StringBuilder inputBuilder = new StringBuilder(input);
                 while (inputBuilder.charAt(inputBuilder.length() - 1) != '}') {
-                    inputBuilder.append(" ").append(GlobalVars.operationParser.parseStringNode().getText());
+                    inputBuilder.append(" ").append(Parser.parseStringNode(parserState).getText());
                 }
                 input = inputBuilder.toString();
                 nbt = input.replaceAll("[{}]", "");
@@ -164,20 +183,32 @@ public class BlockNode extends Node {
             if (!list.isEmpty()) {
                 for (BlockInstance bi : list) {
                     try {
-                        if (Material.matchMaterial(bi.mat) == testMat)
-                            return true;
+                        if (Material.matchMaterial(bi.mat) == testMat) {
+                            if (bi.data != null) {
+                                if (!blockDataStringsContained(bi.data.split("\\[")[1], b.getBlockData().getAsString())) {
+                                    return false;
+                                }
+                                else {
+                                    return true;
+                                }
+                            }
+                            else {
+                                return true;
+                            }
+                        }
                     } catch (Exception e) {
                         // No material found. That's okay
                     }
                     if (bi.mat.equalsIgnoreCase("dataonly")) {
-                        if (b.getBlockData().getAsString().toLowerCase()
-                                .contains(bi.data.replaceAll("[\\[\\]]", "").toLowerCase()))
+                        if (blockDataStringsContained(bi.data, b.getBlockData().getAsString())) {
                             return true;
+                        }
                     }
                     if (bi.mat.equalsIgnoreCase("nbtonly")) {
                         NBTExtractor nbt = new NBTExtractor();
-                        if (nbt.getNBT(b).contains(bi.nbt.replaceAll("[{}]", "")))
+                        if (nbt.getNBT(b).contains(bi.nbt.replaceAll("[{}]", ""))) {
                             return true;
+                        }
                     }
                 }
             }
@@ -197,7 +228,7 @@ public class BlockNode extends Node {
             for (BlockInstance bi : list) {
                 totalWeight += bi.weight;
             }
-            int randNum = GlobalVars.rand.nextInt(totalWeight + 1);
+            int randNum = Main.getRand().nextInt(totalWeight + 1);
             for (BlockInstance bi : list) {
                 randNum -= bi.weight;
                 if (randNum <= 0)

@@ -1,7 +1,6 @@
 package com._14ercooper.worldeditor.scripts.bundled.easyedit;
 
 import com._14ercooper.worldeditor.main.Main;
-import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.scripts.Craftscript;
 import com._14ercooper.worldeditor.selection.SelectionManager;
 import org.bukkit.Bukkit;
@@ -26,10 +25,9 @@ public class ScriptCaternary extends Craftscript {
             if (player instanceof Player) {
                 negativeCorner = SelectionManager.getSelectionManager(((Player) player).getUniqueId()).getPositionOne();
                 positiveCorner = SelectionManager.getSelectionManager(((Player) player).getUniqueId()).getPositionTwo();
-            }
-            else {
-                positiveCorner = new double[]{0,0,0};
-                negativeCorner = new double[]{0,0,0};
+            } else {
+                positiveCorner = new double[]{0, 0, 0};
+                negativeCorner = new double[]{0, 0, 0};
             }
             double midpointY = ((positiveCorner[1] + negativeCorner[1]) * 0.5) - droop;
 
@@ -48,7 +46,7 @@ public class ScriptCaternary extends Craftscript {
             Bukkit.getServer().dispatchCommand(player, "run $ catenary{" + x0 + ";" + y0 + ";" + z0 + ";" + dx + ";" + dy + ";" + dy2 + ";"
                     + dz + ";" + step + ";" + block + "}");
         } catch (Exception e) {
-            Main.logError("Error running Catenary script. Did you pass the correct arguments?", Operator.currentPlayer, e);
+            Main.logError("Error running Catenary script. Did you pass the correct arguments?", player, e);
         }
 
     }

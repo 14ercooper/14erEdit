@@ -1,26 +1,20 @@
 package com._14ercooper.worldeditor.macros.macros.technical;
 
-import com._14ercooper.worldeditor.macros.MacroLauncher;
-import com._14ercooper.worldeditor.main.GlobalVars;
-import com._14ercooper.worldeditor.scripts.CraftscriptManager;
-import com._14ercooper.worldeditor.undo.UndoElement;
-import com._14ercooper.worldeditor.undo.UndoSystem;
+import com._14ercooper.worldeditor.macros.macros.Macro;
+import com._14ercooper.worldeditor.main.Main;
+import com._14ercooper.worldeditor.main.SetBlock;
+import com._14ercooper.worldeditor.operations.OperatorState;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 
-import com._14ercooper.worldeditor.macros.macros.Macro;
-import com._14ercooper.worldeditor.main.Main;
-import com._14ercooper.worldeditor.main.SetBlock;
-import com._14ercooper.worldeditor.operations.Operator;
-
 public class LineMacro extends Macro {
 
     @Override
-    public boolean performMacro(String[] args, Location loc) {
-        int x1 = 0, x2 = 0, y1 = 0, y2 = 0, z1 = 0, z2 = 0;
+    public boolean performMacro(String[] args, Location loc, OperatorState state) {
+        int x1, x2, y1, y2, z1, z2;
         double dx, dy, dz;
-        Material mat = null;
+        Material mat;
         try {
             x1 = Integer.parseInt(args[0]);
             y1 = Integer.parseInt(args[1]);
@@ -31,7 +25,7 @@ public class LineMacro extends Macro {
             mat = Material.matchMaterial(args[6]);
         } catch (Exception e) {
             Main.logError("Error parsing line macro. Did you provide start and end coordinates and a block material?",
-                    Operator.currentPlayer, e);
+                    state.getCurrentPlayer(), e);
             return false;
         }
         dx = (x1 - x2) / 1000f;
@@ -42,8 +36,8 @@ public class LineMacro extends Macro {
 
         double x = x1, y = y1, z = z1;
         for (int i = 0; i < 1000; i++) {
-            Block b = Operator.currentWorld.getBlockAt((int) (x + 0.5), (int) (y + 0.5), (int) (z + 0.5));
-            SetBlock.setMaterial(b, mat, MacroLauncher.undoElement);
+            Block b = state.getCurrentWorld().getBlockAt((int) (x + 0.5), (int) (y + 0.5), (int) (z + 0.5));
+            SetBlock.setMaterial(b, mat, state.getCurrentUndo(), state.getCurrentPlayer());
             x += dx;
             y += dy;
             z += dz;

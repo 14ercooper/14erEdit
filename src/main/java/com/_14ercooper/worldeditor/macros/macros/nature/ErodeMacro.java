@@ -2,10 +2,9 @@ package com._14ercooper.worldeditor.macros.macros.nature;
 
 import com._14ercooper.worldeditor.macros.MacroLauncher;
 import com._14ercooper.worldeditor.macros.macros.Macro;
-import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.main.SetBlock;
-import com._14ercooper.worldeditor.operations.Operator;
+import com._14ercooper.worldeditor.operations.OperatorState;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -26,11 +25,11 @@ public class ErodeMacro extends Macro {
     public boolean targetAir = false;
     public Location erodeCenter;
 
-    private void SetupMacro(String[] args, Location loc) {
+    private void SetupMacro(String[] args, Location loc, OperatorState state) {
         try {
             erodeRadius = Integer.parseInt(args[0]);
         } catch (Exception e) {
-            Main.logError("Could not parse erode macro. Is your radius a number?", Operator.currentPlayer, e);
+            Main.logError("Could not parse erode macro. Is your radius a number?", state.getCurrentPlayer(), e);
         }
         erodeCenter = loc;
 
@@ -73,75 +72,75 @@ public class ErodeMacro extends Macro {
                 }
             }
         } catch (Exception e) {
-            Main.logError("Could not parse erode macro. Did you provide a valid mode?", Operator.currentPlayer, e);
+            Main.logError("Could not parse erode macro. Did you provide a valid mode?", state.getCurrentPlayer(), e);
         }
     }
 
     @Override
-    public boolean performMacro(String[] args, Location loc) {
-        SetupMacro(args, loc);
+    public boolean performMacro(String[] args, Location loc, OperatorState state) {
+        SetupMacro(args, loc, state);
 
         // Location of the brush
         double x = erodeCenter.getX();
         double y = erodeCenter.getY();
         double z = erodeCenter.getZ();
 
-        List<BlockState> snapshotArray = generateSnapshotArray(x, y, z);
+        List<BlockState> snapshotArray = generateSnapshotArray(x, y, z, state);
 
         // Melt cut erosion
         if (erodeType == 0 && erodeSubtype == 0) {
-            snapshotArray = meltCutErosion(snapshotArray);
+            snapshotArray = meltCutErosion(snapshotArray, state);
         }
 
         // Melt raise erosion
         if (erodeType == 0 && erodeSubtype == 1) {
-            snapshotArray = meltRaiseErosion(snapshotArray);
+            snapshotArray = meltRaiseErosion(snapshotArray, state);
         }
 
         // Melt smooth erosion
         if (erodeType == 0 && erodeSubtype == 2) {
-            snapshotArray = meltSmoothErosion(snapshotArray);
+            snapshotArray = meltSmoothErosion(snapshotArray, state);
         }
 
         // Melt lift erosion
         if (erodeType == 0 && erodeSubtype == 3) {
-            snapshotArray = meltLiftErosion(snapshotArray);
+            snapshotArray = meltLiftErosion(snapshotArray, state);
         }
 
         // Melt carve erosion
         if (erodeType == 0 && erodeSubtype == 4) {
-            snapshotArray = meltCarveErosion(snapshotArray);
+            snapshotArray = meltCarveErosion(snapshotArray, state);
         }
 
         // Blend erosion
         if (erodeType == 1) {
-            snapshotArray = blendErode(snapshotArray);
+            snapshotArray = blendErode(snapshotArray, state);
         }
 
         // Mix erosion
         if (erodeType == 2 && erodeSubtype == 0) {
-            snapshotArray = mixErosionAdd(snapshotArray, x, y, z);
+            snapshotArray = mixErosionAdd(snapshotArray, x, y, z, state);
         }
 
         if (erodeType == 2 && erodeSubtype == 1) {
-            snapshotArray = mixErosionSubtract(snapshotArray, x, y, z);
+            snapshotArray = mixErosionSubtract(snapshotArray, x, y, z, state);
         }
 
         if (erodeType == 2 && erodeSubtype == 2) {
-            snapshotArray = mixErosionBlend(snapshotArray, x, y, z);
+            snapshotArray = mixErosionBlend(snapshotArray, x, y, z, state);
         }
 
         // Blockblend erosion
         if (erodeType == 3) {
-            snapshotArray = blendBlockErode(snapshotArray);
+            snapshotArray = blendBlockErode(snapshotArray, state);
         }
 
         // Apply the snapshot to the world, thus completing the erosion
-        applyToWorld(snapshotArray);
+        applyToWorld(snapshotArray, state);
         return true;
     }
 
-    private List<BlockState> blendBlockErode(List<BlockState> snapshotArray) {
+    private List<BlockState> blendBlockErode(List<BlockState> snapshotArray, OperatorState state) {
         Main.logDebug("Starting blend block erode");
         List<Material> blockMaterials = new ArrayList<>();
         for (BlockState bs : snapshotArray) {
@@ -160,7 +159,7 @@ public class ErodeMacro extends Macro {
         return snapshotArray;
     }
 
-    private List<BlockState> blendErode(List<BlockState> snapshotArray) {
+    private List<BlockState> blendErode(List<BlockState> snapshotArray, OperatorState state) {
         Main.logDebug("Starting blend erode"); // ----
         // Iterate through each block
         List<BlockState> snapshotCopy = new ArrayList<>();
@@ -172,13 +171,13 @@ public class ErodeMacro extends Macro {
             }
 
             // Make sure the chance is met
-            if (GlobalVars.rand.nextInt(100) >= erodeSubtype) {
+            if (Main.getRand().nextInt(100) >= erodeSubtype) {
                 snapshotCopy.add(b);
                 continue;
             }
 
             // Get the adjacent blocks
-            Block current = Operator.currentWorld.getBlockAt(b.getLocation());
+            Block current = state.getCurrentWorld().getBlockAt(b.getLocation());
             List<Block> adjBlocks = new ArrayList<>();
             adjBlocks.add(current.getRelative(BlockFace.UP));
             adjBlocks.add(current.getRelative(BlockFace.DOWN));
@@ -188,7 +187,7 @@ public class ErodeMacro extends Macro {
             adjBlocks.add(current.getRelative(BlockFace.WEST));
 
             // Pick a random one and update
-            BlockState setMat = adjBlocks.get(GlobalVars.rand.nextInt(adjBlocks.size())).getState();
+            BlockState setMat = adjBlocks.get(Main.getRand().nextInt(adjBlocks.size())).getState();
             b.setType(setMat.getType());
             b.setBlockData(setMat.getBlockData());
             snapshotCopy.add(b);
@@ -196,7 +195,7 @@ public class ErodeMacro extends Macro {
         return snapshotCopy;
     }
 
-    private List<BlockState> generateSnapshotArray(double x, double y, double z) {
+    private List<BlockState> generateSnapshotArray(double x, double y, double z, OperatorState state) {
         // Generate the erode sphere
         List<Block> erosionArray = new ArrayList<>();
         for (int rx = -erodeRadius; rx <= erodeRadius; rx++) {
@@ -204,7 +203,7 @@ public class ErodeMacro extends Macro {
                 for (int ry = -erodeRadius; ry <= erodeRadius; ry++) {
                     if (rx * rx + ry * ry + rz * rz <= (erodeRadius + 0.5) * (erodeRadius + 0.5)) {
                         erosionArray.add(
-                                Operator.currentWorld.getBlockAt((int) x + rx, (int) y + ry, (int) z + rz));
+                                state.getCurrentWorld().getBlockAt((int) x + rx, (int) y + ry, (int) z + rz));
                     }
                 }
             }
@@ -220,80 +219,80 @@ public class ErodeMacro extends Macro {
         return snapshotArray;
     }
 
-    private List<BlockState> mixErosionSubtract(List<BlockState> snapshotArray, double x, double y, double z) {
-        snapshotArray = meltCarveErosion(snapshotArray);
-        applyToWorld(snapshotArray);
-        snapshotArray = generateSnapshotArray(x, y, z);
-        snapshotArray = meltCarveErosion(snapshotArray);
-        applyToWorld(snapshotArray);
-        snapshotArray = generateSnapshotArray(x, y, z);
-        snapshotArray = meltRaiseErosion(snapshotArray);
-        applyToWorld(snapshotArray);
-        snapshotArray = generateSnapshotArray(x, y, z);
-        snapshotArray = meltRaiseErosion(snapshotArray);
-        applyToWorld(snapshotArray);
-        snapshotArray = generateSnapshotArray(x, y, z);
-        snapshotArray = meltSmoothErosion(snapshotArray);
-        applyToWorld(snapshotArray);
-        snapshotArray = generateSnapshotArray(x, y, z);
-        snapshotArray = meltSmoothErosion(snapshotArray);
+    private List<BlockState> mixErosionSubtract(List<BlockState> snapshotArray, double x, double y, double z, OperatorState state) {
+        snapshotArray = meltCarveErosion(snapshotArray, state);
+        applyToWorld(snapshotArray, state);
+        snapshotArray = generateSnapshotArray(x, y, z, state);
+        snapshotArray = meltCarveErosion(snapshotArray, state);
+        applyToWorld(snapshotArray, state);
+        snapshotArray = generateSnapshotArray(x, y, z, state);
+        snapshotArray = meltRaiseErosion(snapshotArray, state);
+        applyToWorld(snapshotArray, state);
+        snapshotArray = generateSnapshotArray(x, y, z, state);
+        snapshotArray = meltRaiseErosion(snapshotArray, state);
+        applyToWorld(snapshotArray, state);
+        snapshotArray = generateSnapshotArray(x, y, z, state);
+        snapshotArray = meltSmoothErosion(snapshotArray, state);
+        applyToWorld(snapshotArray, state);
+        snapshotArray = generateSnapshotArray(x, y, z, state);
+        snapshotArray = meltSmoothErosion(snapshotArray, state);
         return snapshotArray;
     }
 
-    private List<BlockState> mixErosionBlend(List<BlockState> snapshotArray, double x, double y, double z) {
-        snapshotArray = meltCarveErosion(snapshotArray);
-        applyToWorld(snapshotArray);
-        snapshotArray = generateSnapshotArray(x, y, z);
-        snapshotArray = meltRaiseErosion(snapshotArray);
-        applyToWorld(snapshotArray);
-        snapshotArray = generateSnapshotArray(x, y, z);
-        snapshotArray = meltRaiseErosion(snapshotArray);
-        applyToWorld(snapshotArray);
-        snapshotArray = generateSnapshotArray(x, y, z);
-        snapshotArray = meltSmoothErosion(snapshotArray);
-        applyToWorld(snapshotArray);
-        snapshotArray = generateSnapshotArray(x, y, z);
-        snapshotArray = meltSmoothErosion(snapshotArray);
+    private List<BlockState> mixErosionBlend(List<BlockState> snapshotArray, double x, double y, double z, OperatorState state) {
+        snapshotArray = meltCarveErosion(snapshotArray, state);
+        applyToWorld(snapshotArray, state);
+        snapshotArray = generateSnapshotArray(x, y, z, state);
+        snapshotArray = meltRaiseErosion(snapshotArray, state);
+        applyToWorld(snapshotArray, state);
+        snapshotArray = generateSnapshotArray(x, y, z, state);
+        snapshotArray = meltRaiseErosion(snapshotArray, state);
+        applyToWorld(snapshotArray, state);
+        snapshotArray = generateSnapshotArray(x, y, z, state);
+        snapshotArray = meltSmoothErosion(snapshotArray, state);
+        applyToWorld(snapshotArray, state);
+        snapshotArray = generateSnapshotArray(x, y, z, state);
+        snapshotArray = meltSmoothErosion(snapshotArray, state);
         return snapshotArray;
     }
 
-    private List<BlockState> mixErosionAdd(List<BlockState> snapshotArray, double x, double y, double z) {
-        snapshotArray = meltRaiseErosion(snapshotArray);
-        applyToWorld(snapshotArray);
-        snapshotArray = generateSnapshotArray(x, y, z);
-        snapshotArray = meltRaiseErosion(snapshotArray);
-        applyToWorld(snapshotArray);
-        snapshotArray = generateSnapshotArray(x, y, z);
-        snapshotArray = meltSmoothErosion(snapshotArray);
-        applyToWorld(snapshotArray);
-        snapshotArray = generateSnapshotArray(x, y, z);
-        snapshotArray = meltSmoothErosion(snapshotArray);
+    private List<BlockState> mixErosionAdd(List<BlockState> snapshotArray, double x, double y, double z, OperatorState state) {
+        snapshotArray = meltRaiseErosion(snapshotArray, state);
+        applyToWorld(snapshotArray, state);
+        snapshotArray = generateSnapshotArray(x, y, z, state);
+        snapshotArray = meltRaiseErosion(snapshotArray, state);
+        applyToWorld(snapshotArray, state);
+        snapshotArray = generateSnapshotArray(x, y, z, state);
+        snapshotArray = meltSmoothErosion(snapshotArray, state);
+        applyToWorld(snapshotArray, state);
+        snapshotArray = generateSnapshotArray(x, y, z, state);
+        snapshotArray = meltSmoothErosion(snapshotArray, state);
         return snapshotArray;
     }
 
-    private void applyToWorld(List<BlockState> snapshotArray) {
+    private void applyToWorld(List<BlockState> snapshotArray, OperatorState state) {
         for (BlockState b : snapshotArray) {
             Location l = b.getLocation();
-            Block block = Operator.currentWorld.getBlockAt(l);
-            SetBlock.setMaterial(block, b.getType(), MacroLauncher.undoElement);
+            Block block = state.getCurrentWorld().getBlockAt(l);
+            SetBlock.setMaterial(block, b.getType(), state.getCurrentUndo(), state.getCurrentPlayer());
             block.setBlockData(b.getBlockData());
         }
     }
 
-    private List<BlockState> meltSmoothErosion(List<BlockState> snapshotArray) {
+    private List<BlockState> meltSmoothErosion(List<BlockState> snapshotArray, OperatorState state) {
         Main.logDebug("Starting melt smooth erode"); // ----
         int airCut = 4; // Nearby air to make air
         int solidCut = 4; // Nearby solid to make solid
         // Iterate through each block
-        return erodeSnapshotArray(snapshotArray, airCut, solidCut);
+        return erodeSnapshotArray(snapshotArray, airCut, solidCut, state);
     }
 
     @NotNull
-    private List<BlockState> erodeSnapshotArray(List<BlockState> snapshotArray, int airCut, int solidCut) {
+    private List<BlockState> erodeSnapshotArray(List<BlockState> snapshotArray, int airCut, int solidCut, OperatorState state) {
         List<BlockState> snapshotCopy = new ArrayList<>();
         for (BlockState b : snapshotArray) {
             // First get the adjacent blocks
-            Block current = Operator.currentWorld.getBlockAt(b.getLocation());
+            Block current = state.getCurrentWorld().getBlockAt(b.getLocation());
             List<Block> adjBlocks = new ArrayList<>();
             adjBlocks.add(current.getRelative(BlockFace.UP));
             adjBlocks.add(current.getRelative(BlockFace.DOWN));
@@ -351,35 +350,35 @@ public class ErodeMacro extends Macro {
         return snapshotCopy;
     }
 
-    private List<BlockState> meltRaiseErosion(List<BlockState> snapshotArray) {
+    private List<BlockState> meltRaiseErosion(List<BlockState> snapshotArray, OperatorState state) {
         Main.logDebug("Starting melt raise erode"); // ----
         int airCut = 4; // Nearby air to make air
         int solidCut = 2; // Nearby solid to make solid
         // Iterate through each block
-        return erodeSnapshotArray(snapshotArray, airCut, solidCut);
+        return erodeSnapshotArray(snapshotArray, airCut, solidCut, state);
     }
 
-    private List<BlockState> meltLiftErosion(List<BlockState> snapshotArray) {
+    private List<BlockState> meltLiftErosion(List<BlockState> snapshotArray, OperatorState state) {
         Main.logDebug("Starting melt lift erode"); // ----
         int airCut = 4; // Nearby air to make air
         int solidCut = 1; // Nearby solid to make solid
         // Iterate through each block
-        return erodeSnapshotArray(snapshotArray, airCut, solidCut);
+        return erodeSnapshotArray(snapshotArray, airCut, solidCut, state);
     }
 
-    private List<BlockState> meltCutErosion(List<BlockState> snapshotArray) {
+    private List<BlockState> meltCutErosion(List<BlockState> snapshotArray, OperatorState state) {
         Main.logDebug("Starting melt cut erode"); // ----
         int airCut = 3; // Nearby air to make air
         int solidCut = 4; // Nearby solid to make solid
         // Iterate through each block
-        return erodeSnapshotArray(snapshotArray, airCut, solidCut);
+        return erodeSnapshotArray(snapshotArray, airCut, solidCut, state);
     }
 
-    private List<BlockState> meltCarveErosion(List<BlockState> snapshotArray) {
+    private List<BlockState> meltCarveErosion(List<BlockState> snapshotArray, OperatorState state) {
         Main.logDebug("Starting melt cut erode"); // ----
         int airCut = 1; // Nearby air to make air
         int solidCut = 4; // Nearby solid to make solid
         // Iterate through each block
-        return erodeSnapshotArray(snapshotArray, airCut, solidCut);
+        return erodeSnapshotArray(snapshotArray, airCut, solidCut, state);
     }
 }

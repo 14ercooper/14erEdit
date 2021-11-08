@@ -1,8 +1,10 @@
 package com._14ercooper.worldeditor.commands;
 
+import com._14ercooper.worldeditor.blockiterator.BlockWrapper;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.operations.OperatorLoader;
+import com._14ercooper.worldeditor.operations.OperatorState;
 import com._14ercooper.worldeditor.undo.UndoElement;
 import com._14ercooper.worldeditor.undo.UndoSystem;
 import org.bukkit.block.Block;
@@ -37,7 +39,7 @@ public class CommandRun implements CommandExecutor {
                 Operator op = new Operator(opStr, sender);
                 Block b = ((Player) sender).getWorld().getBlockAt(((Player) sender).getLocation());
                 UndoElement undoElement = UndoSystem.findUserUndo(sender).getNewUndoElement();
-                op.operateOnBlock(b, sender, undoElement);
+                op.operateOnBlock(new OperatorState(new BlockWrapper(b, b.getX(), b.getY(), b.getZ()), sender, ((Player) sender).getWorld(), undoElement));
                 undoElement.finalizeUndo();
                 return true;
             }
@@ -57,17 +59,14 @@ public class CommandRun implements CommandExecutor {
             int initOffset = 2;
             if (args.length < initOffset) {
                 tabArgs.addAll(OperatorLoader.nodeNames);
-            }
-            else {
+            } else {
                 String lastArg = args[args.length - initOffset];
                 if (OperatorLoader.nextRange.contains(lastArg)) {
                     tabArgs.addAll(OperatorLoader.rangeNodeNames);
-                }
-                else if (OperatorLoader.nextBlock.contains(lastArg)) {
+                } else if (OperatorLoader.nextBlock.contains(lastArg)) {
                     tabArgs.addAll(OperatorLoader.blockNodeNames);
                     tabArgs.add("<block_name>");
-                }
-                else {
+                } else {
                     tabArgs.addAll(OperatorLoader.nodeNames);
                     tabArgs.add("<block_name>");
                 }

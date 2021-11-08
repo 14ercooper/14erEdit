@@ -7,6 +7,9 @@ package com._14ercooper.worldeditor.main;
 
 public class SimplexNoise { // Simplex noise in 2D, 3D and 4D
 
+    public static int noiseSeed;
+    public static SimplexNoise simplexNoise;
+
     public static final int RANDOMSEED = 0;
     private static final int NUMBEROFSWAPS = 400;
 
@@ -47,14 +50,14 @@ public class SimplexNoise { // Simplex noise in 2D, 3D and 4D
         p = p_supply.clone();
 
         if (seed == RANDOMSEED) {
-            seed = GlobalVars.rand.nextInt();
+            seed = Main.getRand().nextInt();
         }
 
         // the seed determines the swaps that occur between the default order and the
         // order we're actually going to use
         for (int i = 0; i < NUMBEROFSWAPS; i++) {
-            int swapFrom = GlobalVars.rand.nextInt(p.length);
-            int swapTo = GlobalVars.rand.nextInt(p.length);
+            int swapFrom = Main.getRand().nextInt(p.length);
+            int swapTo = Main.getRand().nextInt(p.length);
 
             short temp = p[swapFrom];
             p[swapFrom] = p[swapTo];
@@ -73,7 +76,7 @@ public class SimplexNoise { // Simplex noise in 2D, 3D and 4D
 
         if (seed == RANDOMSEED) {
 //	    seed = rand.nextLong();
-            seed = GlobalVars.rand.nextLong();
+            seed = Main.getRand().nextLong();
         }
 
         // the random for the swaps
@@ -82,8 +85,8 @@ public class SimplexNoise { // Simplex noise in 2D, 3D and 4D
         // the seed determines the swaps that occur between the default order and the
         // order we're actually going to use
         for (int i = 0; i < NUMBEROFSWAPS; i++) {
-            int swapFrom = GlobalVars.rand.nextInt(p.length);
-            int swapTo = GlobalVars.rand.nextInt(p.length);
+            int swapFrom = Main.getRand().nextInt(p.length);
+            int swapTo = Main.getRand().nextInt(p.length);
 
             short temp = p[swapFrom];
             p[swapFrom] = p[swapTo];

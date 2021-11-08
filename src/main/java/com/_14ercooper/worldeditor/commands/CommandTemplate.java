@@ -90,8 +90,7 @@ public class CommandTemplate implements CommandExecutor {
             List<String> functions = files.map(path -> path.getFileName().toString()).collect(Collectors.toList());
             files.close();
             return functions;
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             return new ArrayList<>(Collections.singleton("<template_name>"));
         }
     }
@@ -105,7 +104,7 @@ public class CommandTemplate implements CommandExecutor {
                 tabArgs.addAll(CommandTemplate.getTemplateList());
             }
             if (args.length > 1) {
-                tabArgs.add("[template_arg_" + (args.length-2) + "]");
+                tabArgs.add("[template_arg_" + (args.length - 2) + "]");
             }
 
             return tabArgs;

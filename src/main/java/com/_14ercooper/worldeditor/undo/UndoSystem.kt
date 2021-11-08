@@ -7,16 +7,15 @@ import org.bukkit.entity.Player
 object UndoSystem {
 
     // What user undos do we currently have loaded?
-    private var userUndos : MutableMap<String, UserUndo> = HashMap()
+    private var userUndos: MutableMap<String, UserUndo> = HashMap()
 
     // Find a user's undo using the name of their undo (either UUID or "console")
     @JvmStatic
-    fun findUserUndo(name : String) : UserUndo {
+    fun findUserUndo(name: String): UserUndo {
         return if (userUndos.containsKey(name)) {
             Main.logDebug("Found undo for user $name")
             userUndos[name]!!
-        }
-        else {
+        } else {
             Main.logDebug("Loading new undo for user $name")
             userUndos[name] = UserUndo(name)
             userUndos[name]!!
@@ -25,13 +24,19 @@ object UndoSystem {
 
     // Find the undo, also performing the lookup for the name of the undo
     @JvmStatic
-    fun findUserUndo(user : CommandSender?) : UserUndo {
-        return findUserUndo(if (user is Player) {user.uniqueId.toString()} else {"console"})
+    fun findUserUndo(user: CommandSender?): UserUndo {
+        return findUserUndo(
+            if (user is Player) {
+                user.uniqueId.toString()
+            } else {
+                "console"
+            }
+        )
     }
 
     // Flush the entire undo system to disk
     @JvmStatic
-    fun flush() : Boolean {
+    fun flush(): Boolean {
         userUndos.forEach { (_, userUndo) -> userUndo.flush() }
         userUndos = HashMap()
         Main.logDebug("Flushed undo system")
@@ -39,7 +44,7 @@ object UndoSystem {
     }
 
     @JvmStatic
-    fun isFlushed() : Boolean {
+    fun isFlushed(): Boolean {
         var userUndosEmpty = true
         for ((_, userUndo) in userUndos) {
             userUndosEmpty = userUndosEmpty && userUndo.undoElements.isEmpty()

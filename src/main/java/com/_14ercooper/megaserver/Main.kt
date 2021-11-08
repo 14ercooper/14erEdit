@@ -3,7 +3,6 @@ package com._14ercooper.megaserver
 import java.io.File
 import java.io.IOException
 import java.time.Instant
-import java.util.*
 
 object Main {
     private var javaPath = "java"
@@ -120,6 +119,7 @@ object Main {
                     }
                 }
                 FileIO.copyFile("14erEdit", "profiles/$profile/plugins/14erEdit", true)
+                FileIO.deleteFile("14erEdit/undo", true)
                 // Start server
                 val quarterRam = (ramAmt.toInt() / 4).toString()
                 val eighthRam = (ramAmt.toInt() / 8).toString()

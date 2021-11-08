@@ -1,11 +1,9 @@
 package com._14ercooper.worldeditor.macros.macros.nature;
 
-import com._14ercooper.worldeditor.macros.MacroLauncher;
 import com._14ercooper.worldeditor.macros.macros.Macro;
-import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.main.SetBlock;
-import com._14ercooper.worldeditor.operations.Operator;
+import com._14ercooper.worldeditor.operations.OperatorState;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -21,7 +19,7 @@ public class BasicTreeMacro extends Macro {
     public Location plantOn;
 
     // Type, leaves, trunk, size, variance
-    private void SetupMacro(String[] args, Location loc) {
+    private void SetupMacro(String[] args, Location loc, OperatorState state) {
         plantOn = loc;
         try {
             size = Integer.parseInt(args[3]);
@@ -30,7 +28,7 @@ public class BasicTreeMacro extends Macro {
             trunk = Material.matchMaterial(args[2]);
         } catch (Exception e) {
             Main.logError("Could not parse tree macro. Did you provide all 4 arguments correctly?",
-                    Operator.currentPlayer, e);
+                    state.getCurrentPlayer(), e);
         }
 
         // Type 1 - Trunk with sphere of leaves (oak)
@@ -71,75 +69,75 @@ public class BasicTreeMacro extends Macro {
         }
 
         if (type == -1) {
-            Main.logError("Could not parse tree macro. Did you provide a valid tree type?", Operator.currentPlayer, null);
+            Main.logError("Could not parse tree macro. Did you provide a valid tree type?", state.getCurrentPlayer(), null);
         }
     }
 
     @Override
-    public boolean performMacro(String[] args, Location loc) {
-        SetupMacro(args, loc);
+    public boolean performMacro(String[] args, Location loc, OperatorState state) {
+        SetupMacro(args, loc, state);
 
         // Generator for oak tree
         if (type == 1) {
-            oakTreeGenerator();
+            oakTreeGenerator(state);
             return true;
         }
 
         // Generator for branch tree
         if (type == 2) {
-            branchTreeGenerator();
+            branchTreeGenerator(state);
             return true;
         }
 
         // Generator for big tree
         if (type == 3) {
-            bigTreeGenerator();
+            bigTreeGenerator(state);
             return true;
         }
 
         // Generator for bush tree
         if (type == 4) {
-            bushTreeGenerator();
+            bushTreeGenerator(state);
             return true;
         }
 
         // Generator for birch tree
         if (type == 5) {
-            birchTreeGenerator();
+            birchTreeGenerator(state);
             return true;
         }
 
         // Generator for darkoak tree
         if (type == 6) {
-            darkOakTreeGenerator();
+            darkOakTreeGenerator(state);
             return true;
         }
 
         // Generator for redmushroom tree
         if (type == 7) {
-            redMushroomTreeGenerator();
+            redMushroomTreeGenerator(state);
             return true;
         }
 
         // Generator for brownmushroom tree
         if (type == 8) {
-            brownMushroomTreeGenerator();
+            brownMushroomTreeGenerator(state);
             return true;
         }
 
         // Generator for jungle tree
         if (type == 9) {
-            jungleTreeGenerator();
+            jungleTreeGenerator(state);
             return true;
         }
 
-        Main.logError("Could not perform tree macro. An invalid tree type was given.", Operator.currentPlayer, null);
+        Main.logError("Could not perform tree macro. An invalid tree type was given.", state.getCurrentPlayer(), null);
         return false;
     }
 
-    private void jungleTreeGenerator() {
+    private void jungleTreeGenerator(OperatorState state) {
         // Calculate the size of the tree
-        double actVariance = ((GlobalVars.rand.nextDouble() * 2.0) - 1.0) * variance;
+        double actVariance = ((Main.getRand().nextDouble() * 2.0) - 1.0) * variance;
         double treeSize = size + actVariance;
         double eTopX = treeSize * 0.9;
         double eTopY = eTopX * 0.5;
@@ -153,7 +151,7 @@ public class BasicTreeMacro extends Macro {
         double eBranchY = eBranchX * 0.7;
 
         // Stores the centers of the various ellipoids and starts of branches
-        Block currentBlock = Operator.currentWorld.getBlockAt(plantOn);
+        Block currentBlock = state.getCurrentWorld().getBlockAt(plantOn);
         Block topBlock;
         List<Block> branchEnds = new ArrayList<>();
         List<Block> branchStarts = new ArrayList<>();
@@ -172,7 +170,7 @@ public class BasicTreeMacro extends Macro {
             trunkBlocks.add(currentBlock.getRelative(BlockFace.NORTH_EAST));
 
             // Add a new branch if needed
-            if (GlobalVars.rand.nextDouble() <= branchFrequency && i >= branchStartHeight && i <= treeSize) {
+            if (Main.getRand().nextDouble() <= branchFrequency && i >= branchStartHeight && i <= treeSize) {
                 branchStarts.add(currentBlock);
             }
         }
@@ -183,7 +181,7 @@ public class BasicTreeMacro extends Macro {
             currentBlock = b;
             boolean firstBlock = true;
             BlockFace branchDir;
-            double randNum = GlobalVars.rand.nextDouble();
+            double randNum = Main.getRand().nextDouble();
             if (randNum <= 0.25) {
                 branchDir = BlockFace.NORTH;
                 currentBlock = currentBlock.getRelative(BlockFace.NORTH, 2);
@@ -198,28 +196,28 @@ public class BasicTreeMacro extends Macro {
                 currentBlock = currentBlock.getRelative(BlockFace.WEST);
             }
 
-            double branchLength = branchSize + (((GlobalVars.rand.nextDouble() * 2.0) - 1.0) * branchVariance);
+            double branchLength = branchSize + (((Main.getRand().nextDouble() * 2.0) - 1.0) * branchVariance);
             for (int i = 1; i <= branchLength; i++) {
                 // Maybe curve the branch?
                 if (!firstBlock) {
                     currentBlock = currentBlock.getRelative(branchDir);
-                    if (GlobalVars.rand.nextDouble() <= 0.33) {
+                    if (Main.getRand().nextDouble() <= 0.33) {
                         if (branchDir == BlockFace.NORTH || branchDir == BlockFace.SOUTH) {
-                            if (GlobalVars.rand.nextBoolean()) {
+                            if (Main.getRand().nextBoolean()) {
                                 currentBlock = currentBlock.getRelative(BlockFace.EAST);
                             } else {
                                 currentBlock = currentBlock.getRelative(BlockFace.WEST);
                             }
                         }
                         if (branchDir == BlockFace.EAST || branchDir == BlockFace.WEST) {
-                            if (GlobalVars.rand.nextBoolean()) {
+                            if (Main.getRand().nextBoolean()) {
                                 currentBlock = currentBlock.getRelative(BlockFace.NORTH);
                             } else {
                                 currentBlock = currentBlock.getRelative(BlockFace.SOUTH);
                             }
                         }
                     }
-                    if (GlobalVars.rand.nextDouble() <= 0.15) {
+                    if (Main.getRand().nextDouble() <= 0.15) {
                         currentBlock = currentBlock.getRelative(BlockFace.UP);
                     }
                 }
@@ -239,7 +237,7 @@ public class BasicTreeMacro extends Macro {
                     double ellipsoidValue = (((rx * rx) / (eTopX * eTopX)) + ((ry * ry) / (eTopY * eTopY))
                             + ((rz * rz) / (eTopX * eTopX)));
                     if (ellipsoidValue <= (1.15)) {
-                        leafBlocks.add(Operator.currentWorld.getBlockAt((int) (x + rx), (int) (y + ry),
+                        leafBlocks.add(state.getCurrentWorld().getBlockAt((int) (x + rx), (int) (y + ry),
                                 (int) (z + rz)));
                     }
                 }
@@ -257,7 +255,7 @@ public class BasicTreeMacro extends Macro {
                         double ellipsoidValue = (((rx * rx) / (eBranchX * eBranchX))
                                 + ((ry * ry) / (eBranchY * eBranchY)) + ((rz * rz) / (eBranchX * eBranchX)));
                         if (ellipsoidValue <= (1.15)) {
-                            leafBlocks.add(Operator.currentWorld.getBlockAt((int) (x + rx), (int) (y + ry),
+                            leafBlocks.add(state.getCurrentWorld().getBlockAt((int) (x + rx), (int) (y + ry),
                                     (int) (z + rz)));
                         }
                     }
@@ -268,21 +266,21 @@ public class BasicTreeMacro extends Macro {
         // Place the trunk blocks
         for (Block b : trunkBlocks) {
             if (b.getType() == Material.AIR) {
-                SetBlock.setMaterial(b, trunk, MacroLauncher.undoElement);
+                SetBlock.setMaterial(b, trunk, state.getCurrentUndo(), state.getCurrentPlayer());
             }
         }
 
         // Place the leaf blocks
         for (Block b : leafBlocks) {
             if (b.getType() == Material.AIR) {
-                SetBlock.setMaterial(b, leaves, MacroLauncher.undoElement);
+                SetBlock.setMaterial(b, leaves, state.getCurrentUndo(), state.getCurrentPlayer());
             }
         }
     }
 
-    private void brownMushroomTreeGenerator() {
+    private void brownMushroomTreeGenerator(OperatorState state) {
         // Determine the size of the mushroom
-        double actVariance = ((GlobalVars.rand.nextDouble() * 2.0) - 1.0) * variance;
+        double actVariance = ((Main.getRand().nextDouble() * 2.0) - 1.0) * variance;
         double treeSize = size + actVariance;
         Main.logDebug("Generating mushroom of size " + treeSize); // -----
 
@@ -323,15 +321,15 @@ public class BasicTreeMacro extends Macro {
 
         // Generate the stem of the mushroom
         Main.logDebug("Generating mushroom stem"); // -----
-        Block currentBlock = Operator.currentWorld.getBlockAt(plantOn);
+        Block currentBlock = state.getCurrentWorld().getBlockAt(plantOn);
         BlockFace currentDirection = BlockFace.DOWN;
         for (int i = 1; i <= treeSize; i++) {
             // Update the current block
-            double randNum = GlobalVars.rand.nextDouble();
+            double randNum = Main.getRand().nextDouble();
             if (randNum <= 0.333) {
-                randNum = GlobalVars.rand.nextDouble();
+                randNum = Main.getRand().nextDouble();
                 if (randNum <= 0.125 || currentDirection == BlockFace.DOWN) {
-                    randNum = GlobalVars.rand.nextDouble();
+                    randNum = Main.getRand().nextDouble();
                     if (randNum <= 0.125) {
                         currentDirection = BlockFace.NORTH;
                     } else if (randNum <= 0.25) {
@@ -356,7 +354,7 @@ public class BasicTreeMacro extends Macro {
 
             // Place the current block
             if (currentBlock.getType() == Material.AIR) {
-                SetBlock.setMaterial(currentBlock, trunk, MacroLauncher.undoElement);
+                SetBlock.setMaterial(currentBlock, trunk, state.getCurrentUndo(), state.getCurrentPlayer());
             }
         }
         currentBlock = currentBlock.getRelative(BlockFace.UP);
@@ -370,7 +368,7 @@ public class BasicTreeMacro extends Macro {
         for (double rx = -cap1Cut; rx <= cap1Cut; rx++) {
             for (double rz = -cap1Cut; rz <= cap1Cut; rz++) {
                 if ((rx * rx) + (rz * rz) <= ((cap1Cut + radiusCorrection) * (cap1Cut + radiusCorrection))) {
-                    capBlocks.add(Operator.currentWorld.getBlockAt((int) (x + rx), (int) (y),
+                    capBlocks.add(state.getCurrentWorld().getBlockAt((int) (x + rx), (int) (y),
                             (int) (z + rz)));
                 }
             }
@@ -382,7 +380,7 @@ public class BasicTreeMacro extends Macro {
                 for (int rz = -(int) cap2Cut; rz <= cap2Cut; rz++) {
                     if ((rx * rx) + (rz * rz) <= ((cap2Cut + radiusCorrection) * (cap2Cut + radiusCorrection))
                             && (rx * rx) + (rz * rz) >= ((cap1Cut - radiusCorrection) * (cap1Cut - radiusCorrection))) {
-                        capBlocks.add(Operator.currentWorld.getBlockAt((int) (x + rx), (int) (y - 1),
+                        capBlocks.add(state.getCurrentWorld().getBlockAt((int) (x + rx), (int) (y - 1),
                                 (int) (z + rz)));
                     }
                 }
@@ -395,7 +393,7 @@ public class BasicTreeMacro extends Macro {
                 for (int rz = -(int) cap3Cut; rz <= cap3Cut; rz++) {
                     if ((rx * rx) + (rz * rz) <= ((cap3Cut + radiusCorrection) * (cap3Cut + radiusCorrection))
                             && (rx * rx) + (rz * rz) >= ((cap2Cut - radiusCorrection) * (cap2Cut - radiusCorrection))) {
-                        capBlocks.add(Operator.currentWorld.getBlockAt((int) (x + rx), (int) (y - 2),
+                        capBlocks.add(state.getCurrentWorld().getBlockAt((int) (x + rx), (int) (y - 2),
                                 (int) (z + rz)));
                     }
                 }
@@ -408,7 +406,7 @@ public class BasicTreeMacro extends Macro {
                 for (int rz = -(int) cap4Cut; rz <= cap4Cut; rz++) {
                     if ((rx * rx) + (rz * rz) <= ((cap4Cut + radiusCorrection) * (cap4Cut + radiusCorrection))
                             && (rx * rx) + (rz * rz) >= ((cap3Cut - radiusCorrection) * (cap3Cut - radiusCorrection))) {
-                        capBlocks.add(Operator.currentWorld.getBlockAt((int) (x + rx), (int) (y - 3),
+                        capBlocks.add(state.getCurrentWorld().getBlockAt((int) (x + rx), (int) (y - 3),
                                 (int) (z + rz)));
                     }
                 }
@@ -421,7 +419,7 @@ public class BasicTreeMacro extends Macro {
                 for (int rz = -(int) cap5Cut; rz <= cap5Cut; rz++) {
                     if ((rx * rx) + (rz * rz) <= ((cap5Cut + radiusCorrection) * (cap5Cut + radiusCorrection))
                             && (rx * rx) + (rz * rz) >= ((cap4Cut - radiusCorrection) * (cap4Cut - radiusCorrection))) {
-                        capBlocks.add(Operator.currentWorld.getBlockAt((int) (x + rx), (int) (y - 2),
+                        capBlocks.add(state.getCurrentWorld().getBlockAt((int) (x + rx), (int) (y - 2),
                                 (int) (z + rz)));
                     }
                 }
@@ -433,24 +431,24 @@ public class BasicTreeMacro extends Macro {
         Main.logDebug("Placing cap blocks"); // -----
         for (Block bl : capBlocks) {
             if (bl.getType() == Material.AIR) {
-                SetBlock.setMaterial(bl, leaves, MacroLauncher.undoElement);
+                SetBlock.setMaterial(bl, leaves, state.getCurrentUndo(), state.getCurrentPlayer());
             }
         }
     }
 
-    private void redMushroomTreeGenerator() {
+    private void redMushroomTreeGenerator(OperatorState state) {
         // Create the stem (with a slight curve)
-        double actVariance = ((GlobalVars.rand.nextDouble() * 2.0) - 1.0) * variance;
+        double actVariance = ((Main.getRand().nextDouble() * 2.0) - 1.0) * variance;
         double treeSize = size + actVariance;
-        Block currentBlock = Operator.currentWorld.getBlockAt(plantOn);
+        Block currentBlock = state.getCurrentWorld().getBlockAt(plantOn);
         BlockFace currentDirection = BlockFace.DOWN;
         for (int i = 1; i <= treeSize; i++) {
             // Update the current block
-            double randNum = GlobalVars.rand.nextDouble();
+            double randNum = Main.getRand().nextDouble();
             if (randNum <= 0.25) {
-                randNum = GlobalVars.rand.nextDouble();
+                randNum = Main.getRand().nextDouble();
                 if (randNum <= 0.25 || currentDirection == BlockFace.DOWN) {
-                    randNum = GlobalVars.rand.nextDouble();
+                    randNum = Main.getRand().nextDouble();
                     if (randNum <= 0.125) {
                         currentDirection = BlockFace.NORTH;
                     } else if (randNum <= 0.25) {
@@ -475,7 +473,7 @@ public class BasicTreeMacro extends Macro {
 
             // Place the current block
             if (currentBlock.getType() == Material.AIR) {
-                SetBlock.setMaterial(currentBlock, trunk, MacroLauncher.undoElement);
+                SetBlock.setMaterial(currentBlock, trunk, state.getCurrentUndo(), state.getCurrentPlayer());
             }
         }
 
@@ -529,22 +527,22 @@ public class BasicTreeMacro extends Macro {
         // Place the cap
         for (Block b : leafList) {
             if (b.getType() == Material.AIR) {
-                SetBlock.setMaterial(b, leaves, MacroLauncher.undoElement);
+                SetBlock.setMaterial(b, leaves, state.getCurrentUndo(), state.getCurrentPlayer());
             }
         }
     }
 
-    private void darkOakTreeGenerator() {
+    private void darkOakTreeGenerator(OperatorState state) {
         // Generate the trunk of the tree (build up, with a 2-3 curves to the side;
         // placing a shaft with blocks also the the N/E/NE)
         // Make the trunk 3-wide for particularly large trees, with 6-7 curves to the
         // side
-        double actVariance = ((GlobalVars.rand.nextDouble() * 2.0) - 1.0) * variance;
+        double actVariance = ((Main.getRand().nextDouble() * 2.0) - 1.0) * variance;
         double treeSize = size + actVariance;
-        Block currentBlock = Operator.currentWorld.getBlockAt(plantOn);
+        Block currentBlock = state.getCurrentWorld().getBlockAt(plantOn);
         BlockFace curveDirection;
         // Determine the curve direction
-        double randNum = GlobalVars.rand.nextDouble();
+        double randNum = Main.getRand().nextDouble();
         if (randNum <= 0.125) {
             curveDirection = BlockFace.NORTH;
         } else if (randNum <= 0.25) {
@@ -618,7 +616,7 @@ public class BasicTreeMacro extends Macro {
             }
             for (Block b : blockList) {
                 if (b.getType() == Material.AIR)
-                    SetBlock.setMaterial(b, trunk, MacroLauncher.undoElement);
+                    SetBlock.setMaterial(b, trunk, state.getCurrentUndo(), state.getCurrentPlayer());
             }
         }
 
@@ -632,10 +630,10 @@ public class BasicTreeMacro extends Macro {
                     double ellipsoidValue = (((rx * rx) / (eX * eX)) + ((ry * ry) / (eY * eY))
                             + ((rz * rz) / (eX * eX)));
                     if (ellipsoidValue <= (1.15)) {
-                        Block toPlace = Operator.currentWorld.getBlockAt((int) (x + rx), (int) (y + ry),
+                        Block toPlace = state.getCurrentWorld().getBlockAt((int) (x + rx), (int) (y + ry),
                                 (int) (z + rz));
                         if (toPlace.getType() == Material.AIR) {
-                            SetBlock.setMaterial(toPlace, leaves, MacroLauncher.undoElement);
+                            SetBlock.setMaterial(toPlace, leaves, state.getCurrentUndo(), state.getCurrentPlayer());
                         }
                     }
                 }
@@ -643,15 +641,15 @@ public class BasicTreeMacro extends Macro {
         }
     }
 
-    private void birchTreeGenerator() {
+    private void birchTreeGenerator(OperatorState state) {
         // Create the vertical log
-        double actVariance = ((GlobalVars.rand.nextDouble() * 2.0) - 1.0) * variance;
+        double actVariance = ((Main.getRand().nextDouble() * 2.0) - 1.0) * variance;
         double treeSize = size + actVariance;
-        Block currentBlock = Operator.currentWorld.getBlockAt(plantOn);
+        Block currentBlock = state.getCurrentWorld().getBlockAt(plantOn);
         for (int i = 1; i <= treeSize; i++) {
             currentBlock = currentBlock.getRelative(BlockFace.UP);
             if (currentBlock.getType() == Material.AIR) {
-                SetBlock.setMaterial(currentBlock, trunk, MacroLauncher.undoElement);
+                SetBlock.setMaterial(currentBlock, trunk, state.getCurrentUndo(), state.getCurrentPlayer());
             }
         }
 
@@ -741,31 +739,31 @@ public class BasicTreeMacro extends Macro {
         leafList.add(currentBlock.getRelative(BlockFace.DOWN).getRelative(BlockFace.SOUTH, 2));
         leafList.add(currentBlock.getRelative(BlockFace.DOWN).getRelative(BlockFace.WEST, 2));
         // The eight corner leaves are 50/50
-        if (GlobalVars.rand.nextBoolean()) {
+        if (Main.getRand().nextBoolean()) {
             leafList.add(currentBlock.getRelative(BlockFace.NORTH).getRelative(BlockFace.EAST));
         }
-        if (GlobalVars.rand.nextBoolean()) {
+        if (Main.getRand().nextBoolean()) {
             leafList.add(currentBlock.getRelative(BlockFace.NORTH).getRelative(BlockFace.WEST));
         }
-        if (GlobalVars.rand.nextBoolean()) {
+        if (Main.getRand().nextBoolean()) {
             leafList.add(currentBlock.getRelative(BlockFace.SOUTH).getRelative(BlockFace.EAST));
         }
-        if (GlobalVars.rand.nextBoolean()) {
+        if (Main.getRand().nextBoolean()) {
             leafList.add(currentBlock.getRelative(BlockFace.SOUTH).getRelative(BlockFace.WEST));
         }
-        if (GlobalVars.rand.nextBoolean()) {
+        if (Main.getRand().nextBoolean()) {
             leafList.add(currentBlock.getRelative(BlockFace.DOWN, 2).getRelative(BlockFace.NORTH, 2)
                     .getRelative(BlockFace.EAST, 2));
         }
-        if (GlobalVars.rand.nextBoolean()) {
+        if (Main.getRand().nextBoolean()) {
             leafList.add(currentBlock.getRelative(BlockFace.DOWN, 2).getRelative(BlockFace.NORTH, 2)
                     .getRelative(BlockFace.WEST, 2));
         }
-        if (GlobalVars.rand.nextBoolean()) {
+        if (Main.getRand().nextBoolean()) {
             leafList.add(currentBlock.getRelative(BlockFace.DOWN, 2).getRelative(BlockFace.SOUTH, 2)
                     .getRelative(BlockFace.EAST, 2));
         }
-        if (GlobalVars.rand.nextBoolean()) {
+        if (Main.getRand().nextBoolean()) {
             leafList.add(currentBlock.getRelative(BlockFace.DOWN, 2).getRelative(BlockFace.SOUTH, 2)
                     .getRelative(BlockFace.WEST, 2));
         }
@@ -773,20 +771,20 @@ public class BasicTreeMacro extends Macro {
         // Then place the leaf blocks
         for (Block b : leafList) {
             if (b.getType() == Material.AIR) {
-                SetBlock.setMaterial(b, leaves, MacroLauncher.undoElement);
+                SetBlock.setMaterial(b, leaves, state.getCurrentUndo(), state.getCurrentPlayer());
             }
         }
     }
 
-    private void bushTreeGenerator() {
+    private void bushTreeGenerator(OperatorState state) {
         // Place the log block
-        Block baseBlock = Operator.currentWorld.getBlockAt(plantOn).getRelative(BlockFace.UP);
+        Block baseBlock = state.getCurrentWorld().getBlockAt(plantOn).getRelative(BlockFace.UP);
         if (baseBlock.getType() == Material.AIR) {
-            SetBlock.setMaterial(baseBlock, trunk, MacroLauncher.undoElement);
+            SetBlock.setMaterial(baseBlock, trunk, state.getCurrentUndo(), state.getCurrentPlayer());
         }
 
         // Generate the ellipsoid of leaves
-        double actVariance = ((GlobalVars.rand.nextDouble() * 2.0) - 1.0) * variance;
+        double actVariance = ((Main.getRand().nextDouble() * 2.0) - 1.0) * variance;
         double bushSize = size + actVariance;
         double eX = bushSize * 0.55;
         double eY = eX * 0.333;
@@ -797,14 +795,14 @@ public class BasicTreeMacro extends Macro {
                     double ellipsoidValue = (((rx * rx) / (eX * eX)) + ((ry * ry) / (eY * eY))
                             + ((rz * rz) / (eX * eX)));
                     if (ellipsoidValue <= (1.15)) {
-                        Block toPlace = Operator.currentWorld.getBlockAt((int) (x + rx), (int) (y + ry),
+                        Block toPlace = state.getCurrentWorld().getBlockAt((int) (x + rx), (int) (y + ry),
                                 (int) (z + rz));
                         // Further leaves are less likely to get placed
-                        if (1.0 - (ellipsoidValue * 0.869565217) < (GlobalVars.rand.nextDouble() * 0.5)) {
+                        if (1.0 - (ellipsoidValue * 0.869565217) < (Main.getRand().nextDouble() * 0.5)) {
                             continue;
                         }
                         if (toPlace.getType() == Material.AIR) {
-                            SetBlock.setMaterial(toPlace, leaves, MacroLauncher.undoElement);
+                            SetBlock.setMaterial(toPlace, leaves, state.getCurrentUndo(), state.getCurrentPlayer());
                         }
                     }
                 }
@@ -812,9 +810,9 @@ public class BasicTreeMacro extends Macro {
         }
     }
 
-    private void bigTreeGenerator() {
+    private void bigTreeGenerator(OperatorState state) {
         // Calculate the dimensions of the tree, other needed variables
-        double actVariance = ((GlobalVars.rand.nextDouble() * 2.0) - 1.0) * variance;
+        double actVariance = ((Main.getRand().nextDouble() * 2.0) - 1.0) * variance;
         double treeHeight = size + actVariance;
         int numSplits, baseSize;
         // Splits should be at 1/2; 3/4; 7/8; 15/16; and 31/32 of the tree
@@ -846,7 +844,7 @@ public class BasicTreeMacro extends Macro {
         // circles around it
         double startBranchThickness = baseSize, nextBranchThickness = baseSize;
         List<Location> branchStarts = new ArrayList<>();
-        branchStarts.add(Operator.currentWorld.getBlockAt(plantOn).getRelative(BlockFace.UP).getLocation());
+        branchStarts.add(state.getCurrentWorld().getBlockAt(plantOn).getRelative(BlockFace.UP).getLocation());
         double branchHeight = treeHeight;
         for (int i = 1; i <= (numSplits + 1); i++) {
             Main.logDebug("i value of " + i); // -----
@@ -880,12 +878,12 @@ public class BasicTreeMacro extends Macro {
                         "First branch growing, number of locations equals " + theseBranches.size()); // -----
                 for (Location startLoc : theseBranches) {
                     // Grow up
-                    Block currentBlock = Operator.currentWorld.getBlockAt(startLoc);
+                    Block currentBlock = state.getCurrentWorld().getBlockAt(startLoc);
                     for (int j = 1; j <= branchHeight; j++) {
                         branchThickness -= branchTaper;
                         // Place the central block
                         if (currentBlock.getType() == Material.AIR) {
-                            SetBlock.setMaterial(currentBlock, trunk, MacroLauncher.undoElement);
+                            SetBlock.setMaterial(currentBlock, trunk, state.getCurrentUndo(), state.getCurrentPlayer());
                         }
 
                         // Build the disk
@@ -895,19 +893,19 @@ public class BasicTreeMacro extends Macro {
                         for (int rx = -(int) branchThickness; rx <= branchThickness; rx++) {
                             for (int rz = -(int) branchThickness; rz <= branchThickness; rz++) {
                                 if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
-                                    Block b = Operator.currentWorld.getBlockAt(x + rx, y, z + rz);
+                                    Block b = state.getCurrentWorld().getBlockAt(x + rx, y, z + rz);
                                     if (b.getType() == Material.AIR) {
-                                        SetBlock.setMaterial(b, trunk, MacroLauncher.undoElement);
+                                        SetBlock.setMaterial(b, trunk, state.getCurrentUndo(), state.getCurrentPlayer());
                                     }
                                 }
                             }
                         }
 
                         // Update the current block
-                        if (GlobalVars.rand.nextDouble() <= 0.2) { // 20% chance to move a block to the side by 1 in a
+                        if (Main.getRand().nextDouble() <= 0.2) { // 20% chance to move a block to the side by 1 in a
                             // random
                             // direction
-                            double randNum = GlobalVars.rand.nextDouble();
+                            double randNum = Main.getRand().nextDouble();
                             if (randNum <= 0.125) {
                                 currentBlock = currentBlock.getRelative(BlockFace.UP).getRelative(BlockFace.NORTH);
                             } else if (randNum <= 0.25) {
@@ -941,14 +939,14 @@ public class BasicTreeMacro extends Macro {
                 Main.logDebug("Even branch growing, number of locations " + theseBranches.size()); // -----
                 for (Location startLoc : theseBranches) {
                     // Case N/S
-                    if (GlobalVars.rand.nextBoolean()) {
+                    if (Main.getRand().nextBoolean()) {
                         // North branch
-                        Block currentBlock = Operator.currentWorld.getBlockAt(startLoc);
+                        Block currentBlock = state.getCurrentWorld().getBlockAt(startLoc);
                         for (int j = 1; j <= branchHeight; j++) {
                             branchThickness -= branchTaper;
                             // Place the central block
                             if (currentBlock.getType() == Material.AIR) {
-                                SetBlock.setMaterial(currentBlock, trunk, MacroLauncher.undoElement);
+                                SetBlock.setMaterial(currentBlock, trunk, state.getCurrentUndo(), state.getCurrentPlayer());
                             }
 
                             // Build the disk
@@ -959,17 +957,17 @@ public class BasicTreeMacro extends Macro {
                             for (int rx = -(int) branchThickness; rx <= branchThickness; rx++) {
                                 for (int rz = -(int) branchThickness; rz <= branchThickness; rz++) {
                                     if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
-                                        Block b = Operator.currentWorld.getBlockAt(x + rx, y, z + rz);
+                                        Block b = state.getCurrentWorld().getBlockAt(x + rx, y, z + rz);
                                         if (b.getType() == Material.AIR) {
-                                            SetBlock.setMaterial(b, trunk, MacroLauncher.undoElement);
+                                            SetBlock.setMaterial(b, trunk, state.getCurrentUndo(), state.getCurrentPlayer());
                                         }
                                     }
                                 }
                             }
 
                             // Update the current block
-                            if (GlobalVars.rand.nextDouble() <= 0.2) { // 20% chance to shift to the side
-                                if (GlobalVars.rand.nextBoolean()) {
+                            if (Main.getRand().nextDouble() <= 0.2) { // 20% chance to shift to the side
+                                if (Main.getRand().nextBoolean()) {
                                     currentBlock = currentBlock.getRelative(BlockFace.NORTH).getRelative(BlockFace.UP)
                                             .getRelative(BlockFace.EAST);
                                 } else {
@@ -984,13 +982,13 @@ public class BasicTreeMacro extends Macro {
                         branchStarts.add(currentBlock.getLocation());
 
                         // South branch
-                        currentBlock = Operator.currentWorld.getBlockAt(startLoc);
+                        currentBlock = state.getCurrentWorld().getBlockAt(startLoc);
                         branchThickness = startBranchThickness;
                         for (int j = 1; j <= branchHeight; j++) {
                             branchThickness -= branchTaper;
                             // Place the central block
                             if (currentBlock.getType() == Material.AIR) {
-                                SetBlock.setMaterial(currentBlock, trunk, MacroLauncher.undoElement);
+                                SetBlock.setMaterial(currentBlock, trunk, state.getCurrentUndo(), state.getCurrentPlayer());
                             }
 
                             // Build the disk
@@ -1001,17 +999,17 @@ public class BasicTreeMacro extends Macro {
                             for (int rx = -(int) branchThickness; rx <= branchThickness; rx++) {
                                 for (int rz = -(int) branchThickness; rz <= branchThickness; rz++) {
                                     if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
-                                        Block b = Operator.currentWorld.getBlockAt(x + rx, y, z + rz);
+                                        Block b = state.getCurrentWorld().getBlockAt(x + rx, y, z + rz);
                                         if (b.getType() == Material.AIR) {
-                                            SetBlock.setMaterial(b, trunk, MacroLauncher.undoElement);
+                                            SetBlock.setMaterial(b, trunk, state.getCurrentUndo(), state.getCurrentPlayer());
                                         }
                                     }
                                 }
                             }
 
                             // Update the current block
-                            if (GlobalVars.rand.nextDouble() <= 0.2) { // 20% chance to shift to the side
-                                if (GlobalVars.rand.nextBoolean()) {
+                            if (Main.getRand().nextDouble() <= 0.2) { // 20% chance to shift to the side
+                                if (Main.getRand().nextBoolean()) {
                                     currentBlock = currentBlock.getRelative(BlockFace.SOUTH).getRelative(BlockFace.UP)
                                             .getRelative(BlockFace.EAST);
                                 } else {
@@ -1029,12 +1027,12 @@ public class BasicTreeMacro extends Macro {
                     // Case E/W
                     else {
                         // East branch
-                        Block currentBlock = Operator.currentWorld.getBlockAt(startLoc);
+                        Block currentBlock = state.getCurrentWorld().getBlockAt(startLoc);
                         for (int j = 1; j <= branchHeight; j++) {
                             branchThickness -= branchTaper;
                             // Place the central block
                             if (currentBlock.getType() == Material.AIR) {
-                                SetBlock.setMaterial(currentBlock, trunk, MacroLauncher.undoElement);
+                                SetBlock.setMaterial(currentBlock, trunk, state.getCurrentUndo(), state.getCurrentPlayer());
                             }
 
                             // Build the disk
@@ -1045,17 +1043,17 @@ public class BasicTreeMacro extends Macro {
                             for (int rx = -(int) branchThickness; rx <= branchThickness; rx++) {
                                 for (int rz = -(int) branchThickness; rz <= branchThickness; rz++) {
                                     if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
-                                        Block b = Operator.currentWorld.getBlockAt(x + rx, y, z + rz);
+                                        Block b = state.getCurrentWorld().getBlockAt(x + rx, y, z + rz);
                                         if (b.getType() == Material.AIR) {
-                                            SetBlock.setMaterial(b, trunk, MacroLauncher.undoElement);
+                                            SetBlock.setMaterial(b, trunk, state.getCurrentUndo(), state.getCurrentPlayer());
                                         }
                                     }
                                 }
                             }
 
                             // Update the current block
-                            if (GlobalVars.rand.nextDouble() <= 0.2) { // 20% chance to shift to the side
-                                if (GlobalVars.rand.nextBoolean()) {
+                            if (Main.getRand().nextDouble() <= 0.2) { // 20% chance to shift to the side
+                                if (Main.getRand().nextBoolean()) {
                                     currentBlock = currentBlock.getRelative(BlockFace.EAST).getRelative(BlockFace.UP)
                                             .getRelative(BlockFace.NORTH);
                                 } else {
@@ -1070,13 +1068,13 @@ public class BasicTreeMacro extends Macro {
                         branchStarts.add(currentBlock.getLocation());
 
                         // West branch
-                        currentBlock = Operator.currentWorld.getBlockAt(startLoc);
+                        currentBlock = state.getCurrentWorld().getBlockAt(startLoc);
                         branchThickness = startBranchThickness;
                         for (int j = 1; j <= branchHeight; j++) {
                             branchThickness -= branchTaper;
                             // Place the central block
                             if (currentBlock.getType() == Material.AIR) {
-                                SetBlock.setMaterial(currentBlock, trunk, MacroLauncher.undoElement);
+                                SetBlock.setMaterial(currentBlock, trunk, state.getCurrentUndo(), state.getCurrentPlayer());
                             }
 
                             // Build the disk
@@ -1087,17 +1085,17 @@ public class BasicTreeMacro extends Macro {
                             for (int rx = -(int) branchThickness; rx <= branchThickness; rx++) {
                                 for (int rz = -(int) branchThickness; rz <= branchThickness; rz++) {
                                     if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
-                                        Block b = Operator.currentWorld.getBlockAt(x + rx, y, z + rz);
+                                        Block b = state.getCurrentWorld().getBlockAt(x + rx, y, z + rz);
                                         if (b.getType() == Material.AIR) {
-                                            SetBlock.setMaterial(b, trunk, MacroLauncher.undoElement);
+                                            SetBlock.setMaterial(b, trunk, state.getCurrentUndo(), state.getCurrentPlayer());
                                         }
                                     }
                                 }
                             }
 
                             // Update the current block
-                            if (GlobalVars.rand.nextDouble() <= 0.2) { // 20% chance to shift to the side
-                                if (GlobalVars.rand.nextBoolean()) {
+                            if (Main.getRand().nextDouble() <= 0.2) { // 20% chance to shift to the side
+                                if (Main.getRand().nextBoolean()) {
                                     currentBlock = currentBlock.getRelative(BlockFace.WEST).getRelative(BlockFace.UP)
                                             .getRelative(BlockFace.NORTH);
                                 } else {
@@ -1119,16 +1117,16 @@ public class BasicTreeMacro extends Macro {
             else if (i % 2 == 0) {
                 Main.logDebug("Odd branch growing, number of locations " + theseBranches.size()); // -----
                 for (Location startLoc : theseBranches) {
-                    if (GlobalVars.rand.nextBoolean()) {
+                    if (Main.getRand().nextBoolean()) {
                         // Case N
-                        if (GlobalVars.rand.nextBoolean()) {
+                        if (Main.getRand().nextBoolean()) {
                             // North branch
-                            Block currentBlock = Operator.currentWorld.getBlockAt(startLoc);
+                            Block currentBlock = state.getCurrentWorld().getBlockAt(startLoc);
                             for (int j = 1; j <= branchHeight; j++) {
                                 branchThickness -= branchTaper;
                                 // Place the central block
                                 if (currentBlock.getType() == Material.AIR) {
-                                    SetBlock.setMaterial(currentBlock, trunk, MacroLauncher.undoElement);
+                                    SetBlock.setMaterial(currentBlock, trunk, state.getCurrentUndo(), state.getCurrentPlayer());
                                 }
 
                                 // Build the disk
@@ -1139,17 +1137,17 @@ public class BasicTreeMacro extends Macro {
                                 for (int rx = -(int) branchThickness; rx <= branchThickness; rx++) {
                                     for (int rz = -(int) branchThickness; rz <= branchThickness; rz++) {
                                         if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
-                                            Block b = Operator.currentWorld.getBlockAt(x + rx, y, z + rz);
+                                            Block b = state.getCurrentWorld().getBlockAt(x + rx, y, z + rz);
                                             if (b.getType() == Material.AIR) {
-                                                SetBlock.setMaterial(b, trunk, MacroLauncher.undoElement);
+                                                SetBlock.setMaterial(b, trunk, state.getCurrentUndo(), state.getCurrentPlayer());
                                             }
                                         }
                                     }
                                 }
 
                                 // Update the current block
-                                if (GlobalVars.rand.nextDouble() <= 0.2) { // 20% chance to shift to the side
-                                    if (GlobalVars.rand.nextBoolean()) {
+                                if (Main.getRand().nextDouble() <= 0.2) { // 20% chance to shift to the side
+                                    if (Main.getRand().nextBoolean()) {
                                         currentBlock = currentBlock.getRelative(BlockFace.NORTH)
                                                 .getRelative(BlockFace.UP).getRelative(BlockFace.EAST);
                                     } else {
@@ -1164,13 +1162,13 @@ public class BasicTreeMacro extends Macro {
                             branchStarts.add(currentBlock.getLocation());
 
                             // Southeast branch
-                            currentBlock = Operator.currentWorld.getBlockAt(startLoc);
+                            currentBlock = state.getCurrentWorld().getBlockAt(startLoc);
                             branchThickness = startBranchThickness;
                             for (int j = 1; j <= branchHeight; j++) {
                                 branchThickness -= branchTaper;
                                 // Place the central block
                                 if (currentBlock.getType() == Material.AIR) {
-                                    SetBlock.setMaterial(currentBlock, trunk, MacroLauncher.undoElement);
+                                    SetBlock.setMaterial(currentBlock, trunk, state.getCurrentUndo(), state.getCurrentPlayer());
                                 }
 
                                 // Build the disk
@@ -1181,17 +1179,17 @@ public class BasicTreeMacro extends Macro {
                                 for (int rx = -(int) branchThickness; rx <= branchThickness; rx++) {
                                     for (int rz = -(int) branchThickness; rz <= branchThickness; rz++) {
                                         if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
-                                            Block b = Operator.currentWorld.getBlockAt(x + rx, y, z + rz);
+                                            Block b = state.getCurrentWorld().getBlockAt(x + rx, y, z + rz);
                                             if (b.getType() == Material.AIR) {
-                                                SetBlock.setMaterial(b, trunk, MacroLauncher.undoElement);
+                                                SetBlock.setMaterial(b, trunk, state.getCurrentUndo(), state.getCurrentPlayer());
                                             }
                                         }
                                     }
                                 }
 
                                 // Update the current block
-                                if (GlobalVars.rand.nextDouble() <= 0.2) { // 20% chance to shift to the side
-                                    if (GlobalVars.rand.nextBoolean()) {
+                                if (Main.getRand().nextDouble() <= 0.2) { // 20% chance to shift to the side
+                                    if (Main.getRand().nextBoolean()) {
                                         currentBlock = currentBlock.getRelative(BlockFace.SOUTH_EAST)
                                                 .getRelative(BlockFace.UP).getRelative(BlockFace.NORTH_EAST);
                                     } else {
@@ -1207,13 +1205,13 @@ public class BasicTreeMacro extends Macro {
                             branchStarts.add(currentBlock.getLocation());
 
                             // Southwest branch
-                            currentBlock = Operator.currentWorld.getBlockAt(startLoc);
+                            currentBlock = state.getCurrentWorld().getBlockAt(startLoc);
                             branchThickness = startBranchThickness;
                             for (int j = 1; j <= branchHeight; j++) {
                                 branchThickness -= branchTaper;
                                 // Place the central block
                                 if (currentBlock.getType() == Material.AIR) {
-                                    SetBlock.setMaterial(currentBlock, trunk, MacroLauncher.undoElement);
+                                    SetBlock.setMaterial(currentBlock, trunk, state.getCurrentUndo(), state.getCurrentPlayer());
                                 }
 
                                 // Build the disk
@@ -1224,17 +1222,17 @@ public class BasicTreeMacro extends Macro {
                                 for (int rx = -(int) branchThickness; rx <= branchThickness; rx++) {
                                     for (int rz = -(int) branchThickness; rz <= branchThickness; rz++) {
                                         if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
-                                            Block b = Operator.currentWorld.getBlockAt(x + rx, y, z + rz);
+                                            Block b = state.getCurrentWorld().getBlockAt(x + rx, y, z + rz);
                                             if (b.getType() == Material.AIR) {
-                                                SetBlock.setMaterial(b, trunk, MacroLauncher.undoElement);
+                                                SetBlock.setMaterial(b, trunk, state.getCurrentUndo(), state.getCurrentPlayer());
                                             }
                                         }
                                     }
                                 }
 
                                 // Update the current block
-                                if (GlobalVars.rand.nextDouble() <= 0.2) { // 20% chance to shift to the side
-                                    if (GlobalVars.rand.nextBoolean()) {
+                                if (Main.getRand().nextDouble() <= 0.2) { // 20% chance to shift to the side
+                                    if (Main.getRand().nextBoolean()) {
                                         currentBlock = currentBlock.getRelative(BlockFace.SOUTH_WEST)
                                                 .getRelative(BlockFace.UP).getRelative(BlockFace.SOUTH_EAST);
                                     } else {
@@ -1253,12 +1251,12 @@ public class BasicTreeMacro extends Macro {
                         // Case S
                         else {
                             // South branch
-                            Block currentBlock = Operator.currentWorld.getBlockAt(startLoc);
+                            Block currentBlock = state.getCurrentWorld().getBlockAt(startLoc);
                             for (int j = 1; j <= branchHeight; j++) {
                                 branchThickness -= branchTaper;
                                 // Place the central block
                                 if (currentBlock.getType() == Material.AIR) {
-                                    SetBlock.setMaterial(currentBlock, trunk, MacroLauncher.undoElement);
+                                    SetBlock.setMaterial(currentBlock, trunk, state.getCurrentUndo(), state.getCurrentPlayer());
                                 }
 
                                 // Build the disk
@@ -1269,17 +1267,17 @@ public class BasicTreeMacro extends Macro {
                                 for (int rx = -(int) branchThickness; rx <= branchThickness; rx++) {
                                     for (int rz = -(int) branchThickness; rz <= branchThickness; rz++) {
                                         if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
-                                            Block b = Operator.currentWorld.getBlockAt(x + rx, y, z + rz);
+                                            Block b = state.getCurrentWorld().getBlockAt(x + rx, y, z + rz);
                                             if (b.getType() == Material.AIR) {
-                                                SetBlock.setMaterial(b, trunk, MacroLauncher.undoElement);
+                                                SetBlock.setMaterial(b, trunk, state.getCurrentUndo(), state.getCurrentPlayer());
                                             }
                                         }
                                     }
                                 }
 
                                 // Update the current block
-                                if (GlobalVars.rand.nextDouble() <= 0.2) { // 20% chance to shift to the side
-                                    if (GlobalVars.rand.nextBoolean()) {
+                                if (Main.getRand().nextDouble() <= 0.2) { // 20% chance to shift to the side
+                                    if (Main.getRand().nextBoolean()) {
                                         currentBlock = currentBlock.getRelative(BlockFace.SOUTH)
                                                 .getRelative(BlockFace.UP).getRelative(BlockFace.EAST);
                                     } else {
@@ -1294,13 +1292,13 @@ public class BasicTreeMacro extends Macro {
                             branchStarts.add(currentBlock.getLocation());
 
                             // Northeast branch
-                            currentBlock = Operator.currentWorld.getBlockAt(startLoc);
+                            currentBlock = state.getCurrentWorld().getBlockAt(startLoc);
                             branchThickness = startBranchThickness;
                             for (int j = 1; j <= branchHeight; j++) {
                                 branchThickness -= branchTaper;
                                 // Place the central block
                                 if (currentBlock.getType() == Material.AIR) {
-                                    SetBlock.setMaterial(currentBlock, trunk, MacroLauncher.undoElement);
+                                    SetBlock.setMaterial(currentBlock, trunk, state.getCurrentUndo(), state.getCurrentPlayer());
                                 }
 
                                 // Build the disk
@@ -1311,17 +1309,17 @@ public class BasicTreeMacro extends Macro {
                                 for (int rx = -(int) branchThickness; rx <= branchThickness; rx++) {
                                     for (int rz = -(int) branchThickness; rz <= branchThickness; rz++) {
                                         if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
-                                            Block b = Operator.currentWorld.getBlockAt(x + rx, y, z + rz);
+                                            Block b = state.getCurrentWorld().getBlockAt(x + rx, y, z + rz);
                                             if (b.getType() == Material.AIR) {
-                                                SetBlock.setMaterial(b, trunk, MacroLauncher.undoElement);
+                                                SetBlock.setMaterial(b, trunk, state.getCurrentUndo(), state.getCurrentPlayer());
                                             }
                                         }
                                     }
                                 }
 
                                 // Update the current block
-                                if (GlobalVars.rand.nextDouble() <= 0.2) { // 20% chance to shift to the side
-                                    if (GlobalVars.rand.nextBoolean()) {
+                                if (Main.getRand().nextDouble() <= 0.2) { // 20% chance to shift to the side
+                                    if (Main.getRand().nextBoolean()) {
                                         currentBlock = currentBlock.getRelative(BlockFace.NORTH_EAST)
                                                 .getRelative(BlockFace.UP).getRelative(BlockFace.SOUTH_EAST);
                                     } else {
@@ -1337,13 +1335,13 @@ public class BasicTreeMacro extends Macro {
                             branchStarts.add(currentBlock.getLocation());
 
                             // Northwest branch
-                            currentBlock = Operator.currentWorld.getBlockAt(startLoc);
+                            currentBlock = state.getCurrentWorld().getBlockAt(startLoc);
                             branchThickness = startBranchThickness;
                             for (int j = 1; j <= branchHeight; j++) {
                                 branchThickness -= branchTaper;
                                 // Place the central block
                                 if (currentBlock.getType() == Material.AIR) {
-                                    SetBlock.setMaterial(currentBlock, trunk, MacroLauncher.undoElement);
+                                    SetBlock.setMaterial(currentBlock, trunk, state.getCurrentUndo(), state.getCurrentPlayer());
                                 }
 
                                 // Build the disk
@@ -1354,17 +1352,17 @@ public class BasicTreeMacro extends Macro {
                                 for (int rx = -(int) branchThickness; rx <= branchThickness; rx++) {
                                     for (int rz = -(int) branchThickness; rz <= branchThickness; rz++) {
                                         if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
-                                            Block b = Operator.currentWorld.getBlockAt(x + rx, y, z + rz);
+                                            Block b = state.getCurrentWorld().getBlockAt(x + rx, y, z + rz);
                                             if (b.getType() == Material.AIR) {
-                                                SetBlock.setMaterial(b, trunk, MacroLauncher.undoElement);
+                                                SetBlock.setMaterial(b, trunk, state.getCurrentUndo(), state.getCurrentPlayer());
                                             }
                                         }
                                     }
                                 }
 
                                 // Update the current block
-                                if (GlobalVars.rand.nextDouble() <= 0.2) { // 20% chance to shift to the side
-                                    if (GlobalVars.rand.nextBoolean()) {
+                                if (Main.getRand().nextDouble() <= 0.2) { // 20% chance to shift to the side
+                                    if (Main.getRand().nextBoolean()) {
                                         currentBlock = currentBlock.getRelative(BlockFace.NORTH_WEST)
                                                 .getRelative(BlockFace.UP).getRelative(BlockFace.NORTH_EAST);
                                     } else {
@@ -1381,14 +1379,14 @@ public class BasicTreeMacro extends Macro {
                         }
                     } else {
                         // Case E
-                        if (GlobalVars.rand.nextBoolean()) {
+                        if (Main.getRand().nextBoolean()) {
                             // East branch
-                            Block currentBlock = Operator.currentWorld.getBlockAt(startLoc);
+                            Block currentBlock = state.getCurrentWorld().getBlockAt(startLoc);
                             for (int j = 1; j <= branchHeight; j++) {
                                 branchThickness -= branchTaper;
                                 // Place the central block
                                 if (currentBlock.getType() == Material.AIR) {
-                                    SetBlock.setMaterial(currentBlock, trunk, MacroLauncher.undoElement);
+                                    SetBlock.setMaterial(currentBlock, trunk, state.getCurrentUndo(), state.getCurrentPlayer());
                                 }
 
                                 // Build the disk
@@ -1399,17 +1397,17 @@ public class BasicTreeMacro extends Macro {
                                 for (int rx = -(int) branchThickness; rx <= branchThickness; rx++) {
                                     for (int rz = -(int) branchThickness; rz <= branchThickness; rz++) {
                                         if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
-                                            Block b = Operator.currentWorld.getBlockAt(x + rx, y, z + rz);
+                                            Block b = state.getCurrentWorld().getBlockAt(x + rx, y, z + rz);
                                             if (b.getType() == Material.AIR) {
-                                                SetBlock.setMaterial(b, trunk, MacroLauncher.undoElement);
+                                                SetBlock.setMaterial(b, trunk, state.getCurrentUndo(), state.getCurrentPlayer());
                                             }
                                         }
                                     }
                                 }
 
                                 // Update the current block
-                                if (GlobalVars.rand.nextDouble() <= 0.2) { // 20% chance to shift to the side
-                                    if (GlobalVars.rand.nextBoolean()) {
+                                if (Main.getRand().nextDouble() <= 0.2) { // 20% chance to shift to the side
+                                    if (Main.getRand().nextBoolean()) {
                                         currentBlock = currentBlock.getRelative(BlockFace.EAST)
                                                 .getRelative(BlockFace.UP).getRelative(BlockFace.NORTH);
                                     } else {
@@ -1424,13 +1422,13 @@ public class BasicTreeMacro extends Macro {
                             branchStarts.add(currentBlock.getLocation());
 
                             // Northwest branch
-                            currentBlock = Operator.currentWorld.getBlockAt(startLoc);
+                            currentBlock = state.getCurrentWorld().getBlockAt(startLoc);
                             branchThickness = startBranchThickness;
                             for (int j = 1; j <= branchHeight; j++) {
                                 branchThickness -= branchTaper;
                                 // Place the central block
                                 if (currentBlock.getType() == Material.AIR) {
-                                    SetBlock.setMaterial(currentBlock, trunk, MacroLauncher.undoElement);
+                                    SetBlock.setMaterial(currentBlock, trunk, state.getCurrentUndo(), state.getCurrentPlayer());
                                 }
 
                                 // Build the disk
@@ -1441,17 +1439,17 @@ public class BasicTreeMacro extends Macro {
                                 for (int rx = -(int) branchThickness; rx <= branchThickness; rx++) {
                                     for (int rz = -(int) branchThickness; rz <= branchThickness; rz++) {
                                         if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
-                                            Block b = Operator.currentWorld.getBlockAt(x + rx, y, z + rz);
+                                            Block b = state.getCurrentWorld().getBlockAt(x + rx, y, z + rz);
                                             if (b.getType() == Material.AIR) {
-                                                SetBlock.setMaterial(b, trunk, MacroLauncher.undoElement);
+                                                SetBlock.setMaterial(b, trunk, state.getCurrentUndo(), state.getCurrentPlayer());
                                             }
                                         }
                                     }
                                 }
 
                                 // Update the current block
-                                if (GlobalVars.rand.nextDouble() <= 0.2) { // 20% chance to shift to the side
-                                    if (GlobalVars.rand.nextBoolean()) {
+                                if (Main.getRand().nextDouble() <= 0.2) { // 20% chance to shift to the side
+                                    if (Main.getRand().nextBoolean()) {
                                         currentBlock = currentBlock.getRelative(BlockFace.NORTH_WEST)
                                                 .getRelative(BlockFace.UP).getRelative(BlockFace.NORTH_EAST);
                                     } else {
@@ -1467,13 +1465,13 @@ public class BasicTreeMacro extends Macro {
                             branchStarts.add(currentBlock.getLocation());
 
                             // Southwest branch
-                            currentBlock = Operator.currentWorld.getBlockAt(startLoc);
+                            currentBlock = state.getCurrentWorld().getBlockAt(startLoc);
                             branchThickness = startBranchThickness;
                             for (int j = 1; j <= branchHeight; j++) {
                                 branchThickness -= branchTaper;
                                 // Place the central block
                                 if (currentBlock.getType() == Material.AIR) {
-                                    SetBlock.setMaterial(currentBlock, trunk, MacroLauncher.undoElement);
+                                    SetBlock.setMaterial(currentBlock, trunk, state.getCurrentUndo(), state.getCurrentPlayer());
                                 }
 
                                 // Build the disk
@@ -1484,17 +1482,17 @@ public class BasicTreeMacro extends Macro {
                                 for (int rx = -(int) branchThickness; rx <= branchThickness; rx++) {
                                     for (int rz = -(int) branchThickness; rz <= branchThickness; rz++) {
                                         if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
-                                            Block b = Operator.currentWorld.getBlockAt(x + rx, y, z + rz);
+                                            Block b = state.getCurrentWorld().getBlockAt(x + rx, y, z + rz);
                                             if (b.getType() == Material.AIR) {
-                                                SetBlock.setMaterial(b, trunk, MacroLauncher.undoElement);
+                                                SetBlock.setMaterial(b, trunk, state.getCurrentUndo(), state.getCurrentPlayer());
                                             }
                                         }
                                     }
                                 }
 
                                 // Update the current block
-                                if (GlobalVars.rand.nextDouble() <= 0.2) { // 20% chance to shift to the side
-                                    if (GlobalVars.rand.nextBoolean()) {
+                                if (Main.getRand().nextDouble() <= 0.2) { // 20% chance to shift to the side
+                                    if (Main.getRand().nextBoolean()) {
                                         currentBlock = currentBlock.getRelative(BlockFace.SOUTH_WEST)
                                                 .getRelative(BlockFace.UP).getRelative(BlockFace.SOUTH_EAST);
                                     } else {
@@ -1513,12 +1511,12 @@ public class BasicTreeMacro extends Macro {
                         // Case W
                         else {
                             // West branch
-                            Block currentBlock = Operator.currentWorld.getBlockAt(startLoc);
+                            Block currentBlock = state.getCurrentWorld().getBlockAt(startLoc);
                             for (int j = 1; j <= branchHeight; j++) {
                                 branchThickness -= branchTaper;
                                 // Place the central block
                                 if (currentBlock.getType() == Material.AIR) {
-                                    SetBlock.setMaterial(currentBlock, trunk, MacroLauncher.undoElement);
+                                    SetBlock.setMaterial(currentBlock, trunk, state.getCurrentUndo(), state.getCurrentPlayer());
                                 }
 
                                 // Build the disk
@@ -1529,17 +1527,17 @@ public class BasicTreeMacro extends Macro {
                                 for (int rx = -(int) branchThickness; rx <= branchThickness; rx++) {
                                     for (int rz = -(int) branchThickness; rz <= branchThickness; rz++) {
                                         if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
-                                            Block b = Operator.currentWorld.getBlockAt(x + rx, y, z + rz);
+                                            Block b = state.getCurrentWorld().getBlockAt(x + rx, y, z + rz);
                                             if (b.getType() == Material.AIR) {
-                                                SetBlock.setMaterial(b, trunk, MacroLauncher.undoElement);
+                                                SetBlock.setMaterial(b, trunk, state.getCurrentUndo(), state.getCurrentPlayer());
                                             }
                                         }
                                     }
                                 }
 
                                 // Update the current block
-                                if (GlobalVars.rand.nextDouble() <= 0.2) { // 20% chance to shift to the side
-                                    if (GlobalVars.rand.nextBoolean()) {
+                                if (Main.getRand().nextDouble() <= 0.2) { // 20% chance to shift to the side
+                                    if (Main.getRand().nextBoolean()) {
                                         currentBlock = currentBlock.getRelative(BlockFace.WEST)
                                                 .getRelative(BlockFace.UP).getRelative(BlockFace.NORTH);
                                     } else {
@@ -1554,13 +1552,13 @@ public class BasicTreeMacro extends Macro {
                             branchStarts.add(currentBlock.getLocation());
 
                             // Northeast branch
-                            currentBlock = Operator.currentWorld.getBlockAt(startLoc);
+                            currentBlock = state.getCurrentWorld().getBlockAt(startLoc);
                             branchThickness = startBranchThickness;
                             for (int j = 1; j <= branchHeight; j++) {
                                 branchThickness -= branchTaper;
                                 // Place the central block
                                 if (currentBlock.getType() == Material.AIR) {
-                                    SetBlock.setMaterial(currentBlock, trunk, MacroLauncher.undoElement);
+                                    SetBlock.setMaterial(currentBlock, trunk, state.getCurrentUndo(), state.getCurrentPlayer());
                                 }
 
                                 // Build the disk
@@ -1571,17 +1569,17 @@ public class BasicTreeMacro extends Macro {
                                 for (int rx = -(int) branchThickness; rx <= branchThickness; rx++) {
                                     for (int rz = -(int) branchThickness; rz <= branchThickness; rz++) {
                                         if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
-                                            Block b = Operator.currentWorld.getBlockAt(x + rx, y, z + rz);
+                                            Block b = state.getCurrentWorld().getBlockAt(x + rx, y, z + rz);
                                             if (b.getType() == Material.AIR) {
-                                                SetBlock.setMaterial(b, trunk, MacroLauncher.undoElement);
+                                                SetBlock.setMaterial(b, trunk, state.getCurrentUndo(), state.getCurrentPlayer());
                                             }
                                         }
                                     }
                                 }
 
                                 // Update the current block
-                                if (GlobalVars.rand.nextDouble() <= 0.2) { // 20% chance to shift to the side
-                                    if (GlobalVars.rand.nextBoolean()) {
+                                if (Main.getRand().nextDouble() <= 0.2) { // 20% chance to shift to the side
+                                    if (Main.getRand().nextBoolean()) {
                                         currentBlock = currentBlock.getRelative(BlockFace.NORTH_EAST)
                                                 .getRelative(BlockFace.UP).getRelative(BlockFace.SOUTH_EAST);
                                     } else {
@@ -1597,13 +1595,13 @@ public class BasicTreeMacro extends Macro {
                             branchStarts.add(currentBlock.getLocation());
 
                             // Southeast branch
-                            currentBlock = Operator.currentWorld.getBlockAt(startLoc);
+                            currentBlock = state.getCurrentWorld().getBlockAt(startLoc);
                             branchThickness = startBranchThickness;
                             for (int j = 1; j <= branchHeight; j++) {
                                 branchThickness -= branchTaper;
                                 // Place the central block
                                 if (currentBlock.getType() == Material.AIR) {
-                                    SetBlock.setMaterial(currentBlock, trunk, MacroLauncher.undoElement);
+                                    SetBlock.setMaterial(currentBlock, trunk, state.getCurrentUndo(), state.getCurrentPlayer());
                                 }
 
                                 // Build the disk
@@ -1614,17 +1612,17 @@ public class BasicTreeMacro extends Macro {
                                 for (int rx = -(int) branchThickness; rx <= branchThickness; rx++) {
                                     for (int rz = -(int) branchThickness; rz <= branchThickness; rz++) {
                                         if (((rx * rx) + (rz * rz)) <= thicknessSquared) {
-                                            Block b = Operator.currentWorld.getBlockAt(x + rx, y, z + rz);
+                                            Block b = state.getCurrentWorld().getBlockAt(x + rx, y, z + rz);
                                             if (b.getType() == Material.AIR) {
-                                                SetBlock.setMaterial(b, trunk, MacroLauncher.undoElement);
+                                                SetBlock.setMaterial(b, trunk, state.getCurrentUndo(), state.getCurrentPlayer());
                                             }
                                         }
                                     }
                                 }
 
                                 // Update the current block
-                                if (GlobalVars.rand.nextDouble() <= 0.2) { // 20% chance to shift to the side
-                                    if (GlobalVars.rand.nextBoolean()) {
+                                if (Main.getRand().nextDouble() <= 0.2) { // 20% chance to shift to the side
+                                    if (Main.getRand().nextBoolean()) {
                                         currentBlock = currentBlock.getRelative(BlockFace.SOUTH_EAST)
                                                 .getRelative(BlockFace.UP).getRelative(BlockFace.NORTH_EAST);
                                     } else {
@@ -1668,13 +1666,13 @@ public class BasicTreeMacro extends Macro {
                             // Okay, all blocks in here are in the sphere
                             // Randomness based on distance from center
                             // Further leaves have a lower chance of being placed
-                            if (1.0 - (distFromCenter * invLeafBallSize) < (GlobalVars.rand.nextDouble() * 0.333)) {
+                            if (1.0 - (distFromCenter * invLeafBallSize) < (Main.getRand().nextDouble() * 0.333)) {
                                 continue;
                             }
                             // Set leaves
-                            Block toSet = Operator.currentWorld.getBlockAt(x + rx, y + ry, z + rz);
+                            Block toSet = state.getCurrentWorld().getBlockAt(x + rx, y + ry, z + rz);
                             if (toSet.getType() == Material.AIR) {
-                                SetBlock.setMaterial(toSet, leaves, MacroLauncher.undoElement);
+                                SetBlock.setMaterial(toSet, leaves, state.getCurrentUndo(), state.getCurrentPlayer());
                             }
                         }
                     }
@@ -1683,14 +1681,14 @@ public class BasicTreeMacro extends Macro {
         }
     }
 
-    private void branchTreeGenerator() {
+    private void branchTreeGenerator(OperatorState state) {
         // Figure out the size of the tree (use 3 levels of branches)
-        double actVariance = ((GlobalVars.rand.nextDouble() * 2.0) - 1.0) * variance;
+        double actVariance = ((Main.getRand().nextDouble() * 2.0) - 1.0) * variance;
         double branchSize1 = size + actVariance; // This acts like the trunk
         double leafSize1 = (branchSize1 * 0.461235) + 1.35425;
-        double branchSize2 = branchSize1 * (0.8 * GlobalVars.rand.nextDouble());
+        double branchSize2 = branchSize1 * (0.8 * Main.getRand().nextDouble());
         double leafSize2 = (branchSize2 * 0.411235) + 1.35425;
-        double branchSize3 = branchSize2 * (0.8 * GlobalVars.rand.nextDouble());
+        double branchSize3 = branchSize2 * (0.8 * Main.getRand().nextDouble());
         double leafSize3 = (branchSize3 * 0.361235) + 1.35425;
 
         // These determine the density of branches
@@ -1709,23 +1707,23 @@ public class BasicTreeMacro extends Macro {
         List<Location> branch3Starts = new ArrayList<>();
 
         // Generate the first branch
-        Block currentBlock = Operator.currentWorld.getBlockAt(plantOn);
+        Block currentBlock = state.getCurrentWorld().getBlockAt(plantOn);
         for (int i = 1; i < branchSize1; i++) {
             currentBlock = currentBlock.getRelative(BlockFace.UP);
-            if (i >= branch2StartOffset && GlobalVars.rand.nextDouble() <= branch2StartDensity) {
+            if (i >= branch2StartOffset && Main.getRand().nextDouble() <= branch2StartDensity) {
                 branch2Starts.add(currentBlock.getLocation());
             }
             if (currentBlock.getType() == Material.AIR) {
-                SetBlock.setMaterial(currentBlock, trunk, MacroLauncher.undoElement);
+                SetBlock.setMaterial(currentBlock, trunk, state.getCurrentUndo(), state.getCurrentPlayer());
             }
         }
         branch1Ends.add(currentBlock.getLocation());
 
         // Generate the second branches
         for (Location l : branch2Starts) {
-            currentBlock = Operator.currentWorld.getBlockAt(l);
+            currentBlock = state.getCurrentWorld().getBlockAt(l);
             // Pick an initial direction
-            double randNum = GlobalVars.rand.nextDouble();
+            double randNum = Main.getRand().nextDouble();
             BlockFace dir;
             if (randNum <= 0.25) {
                 dir = BlockFace.NORTH;
@@ -1739,8 +1737,8 @@ public class BasicTreeMacro extends Macro {
 
             for (int i = 1; i < branchSize2; i++) {
                 // Pick a direction to grow, 20% of the time
-                if (GlobalVars.rand.nextDouble() <= 0.2) {
-                    randNum = GlobalVars.rand.nextDouble();
+                if (Main.getRand().nextDouble() <= 0.2) {
+                    randNum = Main.getRand().nextDouble();
                     if (randNum <= 0.1666) {
                         dir = BlockFace.NORTH;
                     } else if (randNum <= 0.3333) {
@@ -1757,11 +1755,11 @@ public class BasicTreeMacro extends Macro {
                 }
                 // Grow there
                 currentBlock = currentBlock.getRelative(dir);
-                if (i >= branch3StartOffset && GlobalVars.rand.nextDouble() <= branch3StartDensity) {
+                if (i >= branch3StartOffset && Main.getRand().nextDouble() <= branch3StartDensity) {
                     branch3Starts.add(currentBlock.getLocation());
                 }
                 if (currentBlock.getType() == Material.AIR) {
-                    SetBlock.setMaterial(currentBlock, trunk, MacroLauncher.undoElement);
+                    SetBlock.setMaterial(currentBlock, trunk, state.getCurrentUndo(), state.getCurrentPlayer());
                 }
             }
             branch2Ends.add(currentBlock.getLocation());
@@ -1769,9 +1767,9 @@ public class BasicTreeMacro extends Macro {
 
         // Generate the third branches
         for (Location l : branch3Starts) {
-            currentBlock = Operator.currentWorld.getBlockAt(l);
+            currentBlock = state.getCurrentWorld().getBlockAt(l);
             // Pick an initial direction
-            double randNum = GlobalVars.rand.nextDouble();
+            double randNum = Main.getRand().nextDouble();
             BlockFace dir;
             if (randNum <= 0.25) {
                 dir = BlockFace.NORTH;
@@ -1785,8 +1783,8 @@ public class BasicTreeMacro extends Macro {
 
             for (int i = 1; i < branchSize3; i++) {
                 // Pick a direction to grow, 20% of the time
-                if (GlobalVars.rand.nextDouble() <= 0.2) {
-                    randNum = GlobalVars.rand.nextDouble();
+                if (Main.getRand().nextDouble() <= 0.2) {
+                    randNum = Main.getRand().nextDouble();
                     if (randNum <= 0.1666) {
                         dir = BlockFace.NORTH;
                     } else if (randNum <= 0.3333) {
@@ -1804,7 +1802,7 @@ public class BasicTreeMacro extends Macro {
                 // Grow there
                 currentBlock = currentBlock.getRelative(dir);
                 if (currentBlock.getType() == Material.AIR) {
-                    SetBlock.setMaterial(currentBlock, trunk, MacroLauncher.undoElement);
+                    SetBlock.setMaterial(currentBlock, trunk, state.getCurrentUndo(), state.getCurrentPlayer());
                 }
             }
             branch3Ends.add(currentBlock.getLocation());
@@ -1827,13 +1825,13 @@ public class BasicTreeMacro extends Macro {
                             // Okay, all blocks in here are in the sphere
                             // Randomness based on distance from center
                             // Further leaves have a lower chance of being placed
-                            if (1.0 - (distFromCenter * invLeafBallSize) < (GlobalVars.rand.nextDouble() * 0.333)) {
+                            if (1.0 - (distFromCenter * invLeafBallSize) < (Main.getRand().nextDouble() * 0.333)) {
                                 continue;
                             }
                             // Set leaves
-                            Block toSet = Operator.currentWorld.getBlockAt(x + rx, y + ry, z + rz);
+                            Block toSet = state.getCurrentWorld().getBlockAt(x + rx, y + ry, z + rz);
                             if (toSet.getType() == Material.AIR) {
-                                SetBlock.setMaterial(toSet, leaves, MacroLauncher.undoElement);
+                                SetBlock.setMaterial(toSet, leaves, state.getCurrentUndo(), state.getCurrentPlayer());
                             }
                         }
                     }
@@ -1858,13 +1856,13 @@ public class BasicTreeMacro extends Macro {
                             // Okay, all blocks in here are in the sphere
                             // Randomness based on distance from center
                             // Further leaves have a lower chance of being placed
-                            if (1.0 - (distFromCenter * invLeafBallSize) < (GlobalVars.rand.nextDouble() * 0.333)) {
+                            if (1.0 - (distFromCenter * invLeafBallSize) < (Main.getRand().nextDouble() * 0.333)) {
                                 continue;
                             }
                             // Set leaves
-                            Block toSet = Operator.currentWorld.getBlockAt(x + rx, y + ry, z + rz);
+                            Block toSet = state.getCurrentWorld().getBlockAt(x + rx, y + ry, z + rz);
                             if (toSet.getType() == Material.AIR) {
-                                SetBlock.setMaterial(toSet, leaves, MacroLauncher.undoElement);
+                                SetBlock.setMaterial(toSet, leaves, state.getCurrentUndo(), state.getCurrentPlayer());
                             }
                         }
                     }
@@ -1889,13 +1887,13 @@ public class BasicTreeMacro extends Macro {
                             // Okay, all blocks in here are in the sphere
                             // Randomness based on distance from center
                             // Further leaves have a lower chance of being placed
-                            if (1.0 - (distFromCenter * invLeafBallSize) < (GlobalVars.rand.nextDouble() * 0.333)) {
+                            if (1.0 - (distFromCenter * invLeafBallSize) < (Main.getRand().nextDouble() * 0.333)) {
                                 continue;
                             }
                             // Set leaves
-                            Block toSet = Operator.currentWorld.getBlockAt(x + rx, y + ry, z + rz);
+                            Block toSet = state.getCurrentWorld().getBlockAt(x + rx, y + ry, z + rz);
                             if (toSet.getType() == Material.AIR) {
-                                SetBlock.setMaterial(toSet, leaves, MacroLauncher.undoElement);
+                                SetBlock.setMaterial(toSet, leaves, state.getCurrentUndo(), state.getCurrentPlayer());
                             }
                         }
                     }
@@ -1904,9 +1902,9 @@ public class BasicTreeMacro extends Macro {
         }
     }
 
-    private void oakTreeGenerator() {
+    private void oakTreeGenerator(OperatorState state) {
         // Figure out the size of the tree
-        double actVariance = ((GlobalVars.rand.nextDouble() * 2.0) - 1.0) * variance;
+        double actVariance = ((Main.getRand().nextDouble() * 2.0) - 1.0) * variance;
         double treeHeight = size + actVariance;
         double leafBallSize = (treeHeight * 0.461235) + 1.35425; // First number is what portion of the tree's height
         // should be leaves (magic)
@@ -1914,11 +1912,11 @@ public class BasicTreeMacro extends Macro {
         // magic)
 
         // Generate the trunk
-        Block currentBlock = Operator.currentWorld.getBlockAt(plantOn);
+        Block currentBlock = state.getCurrentWorld().getBlockAt(plantOn);
         for (int i = 0; i < treeHeight; i++) {
             currentBlock = currentBlock.getRelative(BlockFace.UP);
             if (currentBlock.getType() == Material.AIR) {
-                SetBlock.setMaterial(currentBlock, trunk, MacroLauncher.undoElement);
+                SetBlock.setMaterial(currentBlock, trunk, state.getCurrentUndo(), state.getCurrentPlayer());
             }
         }
         // Populate the leaf sphere
@@ -1938,13 +1936,13 @@ public class BasicTreeMacro extends Macro {
                         // Okay, all blocks in here are in the sphere
                         // Randomness based on distance from center
                         // Further leaves have a lower chance of being placed
-                        if (1.0 - (distFromCenter * invLeafBallSize) < (GlobalVars.rand.nextDouble() * 0.333)) {
+                        if (1.0 - (distFromCenter * invLeafBallSize) < (Main.getRand().nextDouble() * 0.333)) {
                             continue;
                         }
                         // Set leaves
-                        Block toSet = Operator.currentWorld.getBlockAt(x + rx, y + ry, z + rz);
+                        Block toSet = state.getCurrentWorld().getBlockAt(x + rx, y + ry, z + rz);
                         if (toSet.getType() == Material.AIR) {
-                            SetBlock.setMaterial(toSet, leaves, MacroLauncher.undoElement);
+                            SetBlock.setMaterial(toSet, leaves, state.getCurrentUndo(), state.getCurrentPlayer());
                         }
                     }
                 }

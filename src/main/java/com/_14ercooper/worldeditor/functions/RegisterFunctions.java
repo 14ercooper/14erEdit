@@ -1,14 +1,6 @@
 package com._14ercooper.worldeditor.functions;
 
-import com._14ercooper.worldeditor.functions.commands.logic.CompareSlotCommand;
-import com._14ercooper.worldeditor.functions.commands.logic.CompareTextCommand;
-import com._14ercooper.worldeditor.functions.commands.logic.CompareVariableCommand;
-import com._14ercooper.worldeditor.functions.commands.logic.ExitCommand;
-import com._14ercooper.worldeditor.functions.commands.logic.GoIfCommand;
-import com._14ercooper.worldeditor.functions.commands.logic.GoIfNotCommand;
-import com._14ercooper.worldeditor.functions.commands.logic.ReturnCommand;
-import com._14ercooper.worldeditor.functions.commands.logic.WaitCommand;
-import com._14ercooper.worldeditor.functions.commands.logic.WaitTimeCommand;
+import com._14ercooper.worldeditor.functions.commands.logic.*;
 import com._14ercooper.worldeditor.functions.commands.math.*;
 import com._14ercooper.worldeditor.functions.commands.player.*;
 import com._14ercooper.worldeditor.functions.commands.variable.*;

@@ -1,7 +1,6 @@
 package com._14ercooper.worldeditor.scripts.bundled.easyedit;
 
 import com._14ercooper.worldeditor.main.Main;
-import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.scripts.Craftscript;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -28,10 +27,9 @@ public class ScriptLine extends Craftscript {
             if (player instanceof Player) {
                 blockPos = ((Player) player).getLocation().getDirection();
                 playerPos = ((Player) player).getLocation().toVector();
-            }
-            else {
-                blockPos = new Vector(0,0,0);
-                playerPos = new Vector(0,0,0);
+            } else {
+                blockPos = new Vector(0, 0, 0);
+                playerPos = new Vector(0, 0, 0);
             }
 
             int x1 = (int) playerPos.getX();
@@ -46,7 +44,7 @@ public class ScriptLine extends Craftscript {
 
         } catch (Exception e) {
             Main.logError("Could not parse line macro. Did you provide a block material and optionally length?",
-                    Operator.currentPlayer, e);
+                    player, e);
         }
     }
 }

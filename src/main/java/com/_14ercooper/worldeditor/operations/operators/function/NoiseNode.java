@@ -3,8 +3,11 @@ package com._14ercooper.worldeditor.operations.operators.function;
 import com._14ercooper.worldeditor.main.FastNoise;
 import com._14ercooper.worldeditor.main.FastNoise.CellularDistanceFunction;
 import com._14ercooper.worldeditor.main.FastNoise.FractalType;
-import com._14ercooper.worldeditor.main.GlobalVars;
-import com._14ercooper.worldeditor.operations.Operator;
+import com._14ercooper.worldeditor.main.SimplexNoise;
+import com._14ercooper.worldeditor.operations.DummyState;
+import com._14ercooper.worldeditor.operations.OperatorState;
+import com._14ercooper.worldeditor.operations.Parser;
+import com._14ercooper.worldeditor.operations.ParserState;
 import com._14ercooper.worldeditor.operations.operators.Node;
 import com._14ercooper.worldeditor.operations.operators.core.NumberNode;
 import com._14ercooper.worldeditor.operations.operators.core.StringNode;
@@ -27,26 +30,26 @@ public class NoiseNode extends Node {
     // /fx br s 7 0.5 ? both bedrock ## cellular 2 140 4 natural set stone
 
     @Override
-    public NoiseNode newNode() {
+    public NoiseNode newNode(ParserState parserState) {
         NoiseNode node = new NoiseNode();
-        node.noiseType = GlobalVars.operationParser.parseStringNode();
-        node.dimensions = GlobalVars.operationParser.parseNumberNode();
-        node.cutoff = GlobalVars.operationParser.parseNumberNode();
-        node.frequency = GlobalVars.operationParser.parseNumberNode();
+        node.noiseType = Parser.parseStringNode(parserState);
+        node.dimensions = Parser.parseNumberNode(parserState);
+        node.cutoff = Parser.parseNumberNode(parserState);
+        node.frequency = Parser.parseNumberNode(parserState);
 
         node.noise = new FastNoise();
-        node.noise.SetSeed(GlobalVars.noiseSeed);
-        node.noise.SetFrequency((float) (node.frequency.getValue() / 40.0));
+        node.noise.SetSeed(SimplexNoise.noiseSeed);
+        node.noise.SetFrequency((float) (node.frequency.getValue(new DummyState(parserState.getCurrentPlayer())) / 40.0));
 
         if (node.noiseType.getText().contains("Fractal") || node.noiseType.getText().contains("fractal")) {
-            node.octaves = GlobalVars.operationParser.parseNumberNode();
-            node.lacunarity = GlobalVars.operationParser.parseNumberNode();
-            node.gain = GlobalVars.operationParser.parseNumberNode();
-            node.type = GlobalVars.operationParser.parseNumberNode();
-            node.noise.SetFractalOctaves((int) node.octaves.getValue());
-            node.noise.SetFractalLacunarity((float) node.lacunarity.getValue());
-            node.noise.SetFractalGain((float) node.gain.getValue());
-            int fractalType = (int) node.type.getValue();
+            node.octaves = Parser.parseNumberNode(parserState);
+            node.lacunarity = Parser.parseNumberNode(parserState);
+            node.gain = Parser.parseNumberNode(parserState);
+            node.type = Parser.parseNumberNode(parserState);
+            node.noise.SetFractalOctaves((int) node.octaves.getValue(new DummyState(parserState.getCurrentPlayer())));
+            node.noise.SetFractalLacunarity((float) node.lacunarity.getValue(new DummyState(parserState.getCurrentPlayer())));
+            node.noise.SetFractalGain((float) node.gain.getValue(new DummyState(parserState.getCurrentPlayer())));
+            int fractalType = (int) node.type.getValue(new DummyState(parserState.getCurrentPlayer()));
             if (fractalType == 1) {
                 node.noise.SetFractalType(FractalType.FBM);
             } else if (fractalType == 2) {
@@ -57,7 +60,7 @@ public class NoiseNode extends Node {
         }
 
         if (node.noiseType.getText().equalsIgnoreCase("cellular")) {
-            node.distance = GlobalVars.operationParser.parseStringNode();
+            node.distance = Parser.parseStringNode(parserState);
             if (node.distance.getText().equalsIgnoreCase("euclid")) {
                 node.noise.SetCellularDistanceFunction(CellularDistanceFunction.Euclidean);
             } else if (node.distance.getText().equalsIgnoreCase("manhattan")) {
@@ -71,16 +74,16 @@ public class NoiseNode extends Node {
     }
 
     @Override
-    public boolean performNode() {
-        return scaleTo255(getNum()) <= cutoff.getValue();
+    public boolean performNode(OperatorState state, boolean perform) {
+        return scaleTo255(getNum(state)) <= cutoff.getValue(state);
     }
 
-    public float getNum() {
-        int x = Operator.currentBlock.getX();
-        int y = Operator.currentBlock.getY();
-        int z = Operator.currentBlock.getZ();
+    public float getNum(OperatorState state) {
+        int x = state.getCurrentBlock().block.getX();
+        int y = state.getCurrentBlock().block.getY();
+        int z = state.getCurrentBlock().block.getZ();
         int w = (int) ((x + y + z) / 0.33333333);
-        int dim = (int) dimensions.getValue();
+        int dim = (int) dimensions.getValue(state);
 
         if (noiseType.getText().equalsIgnoreCase("value")) {
             if (dim == 2) {
@@ -140,17 +143,7 @@ public class NoiseNode extends Node {
             } else {
                 return 0;
             }
-        } else if (noiseType.getText().equalsIgnoreCase("whitenoise")) {
-            if (dim == 2) {
-                return noise.GetWhiteNoise(x, z);
-            } else if (dim == 3) {
-                return noise.GetWhiteNoise(x, z, y);
-            } else if (dim == 4) {
-                return noise.GetWhiteNoise(x, z, y, w);
-            } else {
-                return 0;
-            }
-        } else if (noiseType.getText().equalsIgnoreCase("whitenoiseint")) {
+        } else if (noiseType.getText().equalsIgnoreCase("whitenoise") || noiseType.getText().equalsIgnoreCase("whitenoiseint")) {
             if (dim == 2) {
                 return noise.GetWhiteNoise(x, z);
             } else if (dim == 3) {

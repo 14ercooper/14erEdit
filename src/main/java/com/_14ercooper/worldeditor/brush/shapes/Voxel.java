@@ -1,9 +1,10 @@
 package com._14ercooper.worldeditor.brush.shapes;
 
 import com._14ercooper.worldeditor.blockiterator.BlockIterator;
+import com._14ercooper.worldeditor.blockiterator.IteratorManager;
 import com._14ercooper.worldeditor.brush.BrushShape;
-import com._14ercooper.worldeditor.main.GlobalVars;
 import org.bukkit.World;
+import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +12,7 @@ import java.util.List;
 public class Voxel extends BrushShape {
 
     @Override
-    public BlockIterator GetBlocks(double x, double y, double z, World world) {
+    public BlockIterator GetBlocks(double x, double y, double z, World world, CommandSender sender) {
         List<String> argList = new ArrayList<>();
         argList.add(Integer.toString((int) x));
         argList.add(Integer.toString((int) y));
@@ -19,7 +20,7 @@ public class Voxel extends BrushShape {
         argList.add("0");
         argList.add("0");
         argList.add("0.5");
-        return GlobalVars.iteratorManager.getIterator("sphere").newIterator(argList, world);
+        return IteratorManager.INSTANCE.getIterator("sphere").newIterator(argList, world, sender);
     }
 
     @Override

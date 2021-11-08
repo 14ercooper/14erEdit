@@ -1,6 +1,6 @@
 package com._14ercooper.worldeditor.commands;
 
-import com._14ercooper.worldeditor.main.GlobalVars;
+import com._14ercooper.worldeditor.main.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -23,8 +23,8 @@ public class CommandError implements CommandExecutor {
             }
         }
 
-        GlobalVars.outputStacktrace = !GlobalVars.outputStacktrace;
-        Bukkit.broadcastMessage("§dVerbose errors toggled to " + GlobalVars.outputStacktrace);
+        Main.setOutputStacktrace(!Main.getOutputStacktrace());
+        Bukkit.broadcastMessage("§dVerbose errors toggled to " + Main.getOutputStacktrace());
         return true;
     }
 

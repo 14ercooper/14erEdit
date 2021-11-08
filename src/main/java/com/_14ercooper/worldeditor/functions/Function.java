@@ -3,8 +3,8 @@ package com._14ercooper.worldeditor.functions;
 import com._14ercooper.worldeditor.async.AsyncManager;
 import com._14ercooper.worldeditor.brush.BrushListener;
 import com._14ercooper.worldeditor.functions.commands.InterpreterCommand;
-import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
+import com._14ercooper.worldeditor.operations.OperatorState;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
@@ -16,6 +16,8 @@ import java.nio.file.Paths;
 import java.util.*;
 
 public class Function {
+
+    public static long maxFunctionIters = 100000;
 
     // Interpreter commands map
     public static final Map<String, InterpreterCommand> commands = new HashMap<>();
@@ -36,18 +38,20 @@ public class Function {
     public int currentLine = -1; // Incremented as the first step
     public double exitVal = 1;
     long iters = 0;
+    // Operator state
+    public OperatorState operatorState;
 
-    public Function(String filename, List<String> args, CommandSender player, boolean isOperator) {
+    public Function(String filename, List<String> args, CommandSender player, boolean isOperator, OperatorState opState) {
         // Set constant variables
         templateArgs.addAll(args);
         this.player = player;
         this.isOperator = isOperator;
+        this.operatorState = opState;
 
         if (player instanceof Player) {
             target = BrushListener.getTargetBlock((Player) player);
-        }
-        else {
-            target = Bukkit.getServer().getWorlds().get(0).getBlockAt(0, 0,0 );
+        } else {
+            target = Bukkit.getServer().getWorlds().get(0).getBlockAt(0, 0, 0);
         }
 
         for (int i = 0; i < 1000; i++) {
@@ -99,7 +103,7 @@ public class Function {
     public static void SetupFunctions() {
         RegisterFunctions.RegisterAll();
 
-        Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(GlobalVars.plugin, Function::CheckWaitingFunctions, 1L, 1L);
+        Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(), Function::CheckWaitingFunctions, 1L, 1L);
     }
 
     // See if any waiting functions are ready to keep running
@@ -129,7 +133,7 @@ public class Function {
                 }
 
                 // Log error and exit if running too long
-                if (iters > GlobalVars.maxFunctionIters) {
+                if (iters > maxFunctionIters) {
                     exit = true;
                     Main.logError("Function max iterations exceeded.", player, null);
                     continue;

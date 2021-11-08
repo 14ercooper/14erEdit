@@ -1,28 +1,27 @@
 package com._14ercooper.worldeditor.operations.operators.core;
 
-import org.bukkit.Material;
-
 import com._14ercooper.worldeditor.main.Main;
-import com._14ercooper.worldeditor.operations.Operator;
+import com._14ercooper.worldeditor.operations.OperatorState;
+import com._14ercooper.worldeditor.operations.ParserState;
 import com._14ercooper.worldeditor.operations.operators.Node;
+import org.bukkit.Material;
 
 public class StringNode extends Node {
 
     public String contents = "undefined";
 
     @Override
-    public StringNode newNode() {
-
+    public StringNode newNode(ParserState parserState) {
         return new StringNode();
     }
 
     @Override
-    public boolean performNode() {
+    public boolean performNode(OperatorState state, boolean perform) {
         try {
-            return Operator.currentBlock.getType() == Material.matchMaterial(contents);
+            return state.getCurrentBlock().block.getType() == Material.matchMaterial(contents);
         } catch (Exception e) {
             Main.logError("Error performing string node. " + contents + " could not be resolved to a block.",
-                    Operator.currentPlayer, e);
+                    state.getCurrentPlayer(), e);
             return false;
         }
     }

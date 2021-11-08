@@ -1,11 +1,9 @@
 package com._14ercooper.worldeditor.scripts.bundled.easyedit;
 
 import com._14ercooper.worldeditor.main.Main;
-import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.scripts.Craftscript;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 import java.util.LinkedList;
 
@@ -35,7 +33,7 @@ public class ScriptOverlay extends Craftscript {
             Bukkit.getServer().dispatchCommand(player, command.toString());
         } catch (Exception e) {
             Main.logError("Could not parse overlay macro. Did you provide the correct arguments?",
-                    Operator.currentPlayer, e);
+                    player, e);
         }
     }
 }

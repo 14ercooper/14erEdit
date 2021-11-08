@@ -1,8 +1,9 @@
 package com._14ercooper.worldeditor.operations.operators.world;
 
-import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
-import com._14ercooper.worldeditor.operations.Operator;
+import com._14ercooper.worldeditor.operations.OperatorState;
+import com._14ercooper.worldeditor.operations.Parser;
+import com._14ercooper.worldeditor.operations.ParserState;
 import com._14ercooper.worldeditor.operations.operators.Node;
 
 public class IgnorePhysicsNode extends Node {
@@ -10,30 +11,30 @@ public class IgnorePhysicsNode extends Node {
     public Node arg;
 
     @Override
-    public IgnorePhysicsNode newNode() {
+    public IgnorePhysicsNode newNode(ParserState parserState) {
         IgnorePhysicsNode node = new IgnorePhysicsNode();
         try {
-            node.arg = GlobalVars.operationParser.parsePart();
+            node.arg = Parser.parsePart(parserState);
         } catch (Exception e) {
-            Main.logError("Error creating physics node. Please check your syntax.", Operator.currentPlayer, e);
+            Main.logError("Error creating physics node. Please check your syntax.", parserState, e);
             return null;
         }
         if (node.arg == null) {
             Main.logError("Could not parse physics node. Requires an operation, but none was provided.",
-                    Operator.currentPlayer, null);
+                    parserState, null);
         }
         return node;
     }
 
     @Override
-    public boolean performNode() {
+    public boolean performNode(OperatorState state, boolean perform) {
         try {
-            Operator.ignoringPhysics = !Operator.ignoringPhysics;
-            boolean output = arg.performNode();
-            Operator.ignoringPhysics = !Operator.ignoringPhysics;
+            state.setIgnoringPhysics(!state.getIgnoringPhysics());
+            boolean output = arg.performNode(state, true);
+            state.setIgnoringPhysics(!state.getIgnoringPhysics());
             return output;
         } catch (Exception e) {
-            Main.logError("Error performing physics node. Please check your syntax.", Operator.currentPlayer, e);
+            Main.logError("Error performing physics node. Please check your syntax.", state.getCurrentPlayer(), e);
             return false;
         }
     }

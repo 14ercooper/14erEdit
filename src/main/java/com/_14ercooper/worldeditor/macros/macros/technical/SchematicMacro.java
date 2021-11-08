@@ -1,11 +1,10 @@
 package com._14ercooper.worldeditor.macros.macros.technical;
 
-import org.bukkit.Location;
-
 import com._14ercooper.worldeditor.macros.macros.Macro;
-import com._14ercooper.worldeditor.main.GlobalVars;
-import com._14ercooper.worldeditor.operations.Operator;
+import com._14ercooper.worldeditor.main.Main;
+import com._14ercooper.worldeditor.operations.OperatorState;
 import com._14ercooper.worldeditor.selection.SchematicHandler;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 public class SchematicMacro extends Macro {
@@ -17,7 +16,7 @@ public class SchematicMacro extends Macro {
     int executionOrder = 0;
 
     // Create a new macro
-    private void SetupMacro(String[] args, Location loc) {
+    private void SetupMacro(String[] args, Location loc, OperatorState state) {
         // Parse the file path
         path = args[0];
         // Parse the offset
@@ -54,21 +53,21 @@ public class SchematicMacro extends Macro {
 
     // Run this macro
     @Override
-    public boolean performMacro(String[] args, Location loc) {
-        SetupMacro(args, loc);
+    public boolean performMacro(String[] args, Location loc, OperatorState state) {
+        SetupMacro(args, loc, state);
         int[] origin = {xPos, yPos, zPos};
         String[] schemNames = path.split("\\|");
-        String useSchem = schemNames[GlobalVars.rand.nextInt(schemNames.length)];
+        String useSchem = schemNames[Main.getRand().nextInt(schemNames.length)];
         if (mirrorOpts.contains("r")) {
             mirrorOpts = "t";
-            if (GlobalVars.rand.nextBoolean()) {
+            if (Main.getRand().nextBoolean()) {
                 mirrorOpts = mirrorOpts + "x";
             }
-            if (GlobalVars.rand.nextBoolean()) {
+            if (Main.getRand().nextBoolean()) {
                 mirrorOpts = mirrorOpts + "z";
             }
         }
-        return SchematicHandler.loadSchematic(useSchem, origin, mirrorOpts, setAir, (Player) Operator.currentPlayer,
-                executionOrder, loc);
+        return SchematicHandler.loadSchematic(useSchem, origin, mirrorOpts, setAir, (Player) state.getCurrentPlayer(),
+                executionOrder, loc, state.getCurrentUndo());
     }
 }

@@ -1,7 +1,8 @@
 package com._14ercooper.worldeditor.brush;
 
-import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
+import com._14ercooper.worldeditor.player.PlayerManager;
+import com._14ercooper.worldeditor.player.PlayerWrapper;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -12,14 +13,9 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.BlockIterator;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class BrushListener implements Listener {
 
-    // Store all active brushes
-    public static final List<Brush> brushes = new ArrayList<>();
-
+    // Used to prevent the double brush if you click a block
     boolean dedupe = false;
 
     @EventHandler
@@ -35,8 +31,9 @@ public class BrushListener implements Listener {
             Player player = event.getPlayer();
             ItemStack item = player.getInventory().getItemInMainHand();
             Brush brush = null;
-            for (Brush b : brushes) {
-                if (b.owner.equals(player.getUniqueId()) && b.item.equals(item)) {
+            PlayerWrapper playerWrapper = PlayerManager.INSTANCE.getPlayerWrapper(player);
+            for (Brush b : playerWrapper.getBrushes()) {
+                if (b.item.equals(item)) {
                     brush = b;
                 }
             }
@@ -79,7 +76,9 @@ public class BrushListener implements Listener {
         while (iter.hasNext()) {
             lastBlock = iter.next();
 
-            if (GlobalVars.brushMask.contains(lastBlock.getType())) {
+            PlayerWrapper playerWrapper = PlayerManager.INSTANCE.getPlayerWrapper(player);
+
+            if (playerWrapper.getBrushMask().contains(lastBlock.getType())) {
                 continue;
             }
 

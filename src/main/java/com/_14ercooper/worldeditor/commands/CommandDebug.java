@@ -1,6 +1,7 @@
 package com._14ercooper.worldeditor.commands;
 
-import com._14ercooper.worldeditor.main.GlobalVars;
+import com._14ercooper.worldeditor.player.PlayerManager;
+import com._14ercooper.worldeditor.player.PlayerWrapper;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -23,8 +24,10 @@ public class CommandDebug implements CommandExecutor {
             }
         }
 
-        GlobalVars.isDebug = !GlobalVars.isDebug;
-        Bukkit.broadcastMessage("§dDebug toggled to " + GlobalVars.isDebug);
+        PlayerWrapper playerWrapper = PlayerManager.INSTANCE.getPlayerWrapper(sender);
+
+        playerWrapper.setDebug(!playerWrapper.isDebug());
+        Bukkit.broadcastMessage("§dDebug toggled to " + playerWrapper.isDebug());
         return true;
     }
 

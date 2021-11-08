@@ -1,11 +1,12 @@
 package com._14ercooper.worldeditor.blockiterator.iterators;
 
 import com._14ercooper.worldeditor.blockiterator.BlockIterator;
+import com._14ercooper.worldeditor.blockiterator.BlockWrapper;
 import com._14ercooper.worldeditor.main.Main;
-import com._14ercooper.worldeditor.operations.Operator;
 import org.bukkit.World;
-import org.bukkit.block.Block;
+import org.bukkit.command.CommandSender;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DiamondIterator extends BlockIterator {
@@ -15,8 +16,12 @@ public class DiamondIterator extends BlockIterator {
     int radius;
 
     @Override
-    public DiamondIterator newIterator(List<String> args, World world) {
+    public DiamondIterator newIterator(List<String> arg, World world, CommandSender player) {
         try {
+            List<String> args = new ArrayList<>();
+            for (Object s : arg) {
+                args.add((String) s);
+            }
             DiamondIterator iterator = new DiamondIterator();
             iterator.iterWorld = world;
             iterator.xC = Integer.parseInt(args.get(0));
@@ -30,15 +35,15 @@ public class DiamondIterator extends BlockIterator {
             return iterator;
         } catch (Exception e) {
             Main.logError("Error creating diamond iterator. Please check your brush parameters.",
-                    Operator.currentPlayer, e);
+                    player, e);
             return null;
         }
     }
 
     @Override
-    public Block getNext() {
+    public BlockWrapper getNextBlock(CommandSender player, boolean getBlock) {
         while (true) {
-            if (incrXYZ(radius, radius, radius, xC, yC, zC)) {
+            if (incrXYZ(radius, radius, radius, xC, yC, zC, player)) {
                 return null;
             }
 
@@ -50,7 +55,11 @@ public class DiamondIterator extends BlockIterator {
             break;
         }
 
-        return iterWorld.getBlockAt(x + xC, y + yC, z + zC);
+        if (getBlock) {
+            return new BlockWrapper(iterWorld.getBlockAt(x + xC, y + yC, z + zC), x + xC, y + yC, z + zC);
+        } else {
+            return new BlockWrapper(null, x + xC, y + yC, z + zC);
+        }
     }
 
     @Override

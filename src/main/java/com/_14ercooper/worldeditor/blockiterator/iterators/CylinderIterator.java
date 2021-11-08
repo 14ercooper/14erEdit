@@ -1,11 +1,12 @@
 package com._14ercooper.worldeditor.blockiterator.iterators;
 
 import com._14ercooper.worldeditor.blockiterator.BlockIterator;
+import com._14ercooper.worldeditor.blockiterator.BlockWrapper;
 import com._14ercooper.worldeditor.main.Main;
-import com._14ercooper.worldeditor.operations.Operator;
 import org.bukkit.World;
-import org.bukkit.block.Block;
+import org.bukkit.command.CommandSender;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CylinderIterator extends BlockIterator {
@@ -13,12 +14,16 @@ public class CylinderIterator extends BlockIterator {
     long totalBlocks;
     int xC, yC, zC;
     double xS, yS, zS;
-    int radMin, radMax;
+    int radMax;
     double radCorr;
 
     @Override
-    public CylinderIterator newIterator(List<String> args, World world) {
+    public CylinderIterator newIterator(List<String> arg, World world, CommandSender player) {
         try {
+            List<String> args = new ArrayList<>();
+            for (Object s : arg) {
+                args.add((String) s);
+            }
             CylinderIterator iterator = new CylinderIterator();
             iterator.iterWorld = world;
             iterator.xC = Integer.parseInt(args.get(0));
@@ -39,15 +44,15 @@ public class CylinderIterator extends BlockIterator {
             return iterator;
         } catch (Exception e) {
             Main.logError("Error creating cylinder iterator. Please check your brush parameters.",
-                    Operator.currentPlayer, e);
+                    player, e);
             return null;
         }
     }
 
     @Override
-    public Block getNext() {
+    public BlockWrapper getNextBlock(CommandSender player, boolean getBlock) {
         while (true) {
-            if (incrXYZ(radMax, radMax, radMax, xC, yC, zC)) {
+            if (incrXYZ(radMax, radMax, radMax, xC, yC, zC, player)) {
                 return null;
             }
 
@@ -59,7 +64,11 @@ public class CylinderIterator extends BlockIterator {
             break;
         }
 
-        return iterWorld.getBlockAt(x + xC, y + yC, z + zC);
+        if (getBlock) {
+            return new BlockWrapper(iterWorld.getBlockAt(x + xC, y + yC, z + zC), x + xC, y + yC, z + zC);
+        } else {
+            return new BlockWrapper(null, x + xC, y + yC, z + zC);
+        }
     }
 
     @Override

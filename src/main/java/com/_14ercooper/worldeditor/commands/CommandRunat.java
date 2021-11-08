@@ -6,10 +6,10 @@ import com._14ercooper.worldeditor.brush.shapes.Voxel;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.operations.OperatorLoader;
-import org.bukkit.Bukkit;
 import org.bukkit.command.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +17,7 @@ import java.util.List;
 public class CommandRunat implements CommandExecutor {
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (sender instanceof Player) {
             if (!sender.isOp()) {
                 sender.sendMessage("You must be opped to use 14erEdit");
@@ -70,8 +70,9 @@ public class CommandRunat implements CommandExecutor {
                 for (int i = 3; i < args.length; i++) {
                     opStr.append(args[i]).append(" ");
                 }
-                Operator op = new Operator(opStr.toString(), (Player) sender);
-                AsyncManager.scheduleEdit(op, null, shape.GetBlocks(x, y, z, sender instanceof Player ? ((Player) sender).getWorld() : Bukkit.getWorlds().get(0)));
+                assert sender instanceof Player;
+                Operator op = new Operator(opStr.toString(), sender);
+                AsyncManager.scheduleEdit(op, null, shape.GetBlocks(x, y, z, ((Player) sender).getWorld(), sender));
                 return true;
             } catch (Exception e) {
                 Main.logError("Error in runat. Please check your syntax.", sender, e);
@@ -85,29 +86,24 @@ public class CommandRunat implements CommandExecutor {
 
     public static class TabComplete implements TabCompleter {
         @Override
-        public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
+        public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String alias, String[] args) {
             List<String> tabArgs = new ArrayList<>();
 
             int initOffset = 4;
             if (args.length < 2) {
                 tabArgs.add("<x>");
-            }
-            else if (args.length == 2) {
+            } else if (args.length == 2) {
                 tabArgs.add("<y>");
-            }
-            else if (args.length == 3) {
+            } else if (args.length == 3) {
                 tabArgs.add("<z>");
-            }
-            else {
+            } else {
                 String lastArg = args[args.length - initOffset];
                 if (OperatorLoader.nextRange.contains(lastArg)) {
                     tabArgs.addAll(OperatorLoader.rangeNodeNames);
-                }
-                else if (OperatorLoader.nextBlock.contains(lastArg)) {
+                } else if (OperatorLoader.nextBlock.contains(lastArg)) {
                     tabArgs.addAll(OperatorLoader.blockNodeNames);
                     tabArgs.add("<block_name>");
-                }
-                else {
+                } else {
                     tabArgs.addAll(OperatorLoader.nodeNames);
                     tabArgs.add("<block_name>");
                 }

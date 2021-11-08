@@ -1,8 +1,10 @@
 package com._14ercooper.worldeditor.operations.operators.logical;
 
-import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
-import com._14ercooper.worldeditor.operations.Operator;
+import com._14ercooper.worldeditor.operations.DummyState;
+import com._14ercooper.worldeditor.operations.OperatorState;
+import com._14ercooper.worldeditor.operations.Parser;
+import com._14ercooper.worldeditor.operations.ParserState;
 import com._14ercooper.worldeditor.operations.operators.Node;
 import com._14ercooper.worldeditor.operations.operators.core.NumberNode;
 
@@ -15,21 +17,21 @@ public class AnyOfNode extends Node {
     final List<Node> conditions = new ArrayList<>();
 
     @Override
-    public AnyOfNode newNode() {
+    public AnyOfNode newNode(ParserState parserState) {
         AnyOfNode node = new AnyOfNode();
         try {
-            node.count = GlobalVars.operationParser.parseNumberNode();
-            node.total = GlobalVars.operationParser.parseNumberNode();
+            node.count = Parser.parseNumberNode(parserState);
+            node.total = Parser.parseNumberNode(parserState);
 
-            for (int i = 0; i < node.total.getInt(); i++) {
-                node.conditions.add(GlobalVars.operationParser.parsePart());
+            for (int i = 0; i < node.total.getInt(new DummyState(parserState.getCurrentPlayer())); i++) {
+                node.conditions.add(Parser.parsePart(parserState));
             }
         } catch (Exception e) {
-            Main.logError("Error creating and node. Please check your syntax.", Operator.currentPlayer, e);
+            Main.logError("Error creating and node. Please check your syntax.", parserState, e);
             return null;
         }
-        if (node.conditions.size() != node.total.getInt()) {
-            Main.logError("Could not create AnyOf node. Did you provide enough arguments?", Operator.currentPlayer, null);
+        if (node.conditions.size() != node.total.getInt(new DummyState(parserState.getCurrentPlayer()))) {
+            Main.logError("Could not create AnyOf node. Did you provide enough arguments?", parserState, null);
             return null;
         }
         return node;
@@ -37,15 +39,15 @@ public class AnyOfNode extends Node {
 
     // /fx br s 5 if anyof 1 2 orange_concrete white_concrete set stone
     @Override
-    public boolean performNode() {
+    public boolean performNode(OperatorState state, boolean perform) {
         int trueCount = 0;
 
         for (Node condition : conditions) {
-            boolean isTrue = condition.performNode();
+            boolean isTrue = condition.performNode(state, true);
             if (isTrue)
                 trueCount++;
 
-            if (trueCount == count.getInt())
+            if (trueCount == count.getInt(state))
                 return true;
         }
 

@@ -1,34 +1,34 @@
 package com._14ercooper.worldeditor.operations.operators.query;
 
-import org.bukkit.block.BlockFace;
-
-import com._14ercooper.worldeditor.main.GlobalVars;
-import com._14ercooper.worldeditor.operations.Operator;
+import com._14ercooper.worldeditor.operations.OperatorState;
+import com._14ercooper.worldeditor.operations.Parser;
+import com._14ercooper.worldeditor.operations.ParserState;
 import com._14ercooper.worldeditor.operations.operators.Node;
 import com._14ercooper.worldeditor.operations.operators.core.NumberNode;
+import org.bukkit.block.BlockFace;
 
 public class BlocklightNode extends Node {
 
     NumberNode arg;
 
     @Override
-    public BlocklightNode newNode() {
+    public BlocklightNode newNode(ParserState parserState) {
         BlocklightNode node = new BlocklightNode();
-        node.arg = GlobalVars.operationParser.parseNumberNode();
+        node.arg = Parser.parseNumberNode(parserState);
         return node;
     }
 
     @Override
-    public boolean performNode() {
+    public boolean performNode(OperatorState state, boolean perform) {
         BlockFace[] faces = {BlockFace.UP, BlockFace.DOWN, BlockFace.NORTH, BlockFace.SOUTH, BlockFace.EAST,
                 BlockFace.WEST};
-        int light = Operator.currentBlock.getLightFromBlocks();
+        int light = state.getCurrentBlock().block.getLightFromBlocks();
         for (BlockFace face : faces) {
-            int l = Operator.currentBlock.getRelative(face).getLightFromBlocks();
+            int l = state.getCurrentBlock().block.getRelative(face).getLightFromBlocks();
             if (l > light)
                 light = l;
         }
-        return light >= arg.getValue();
+        return light >= arg.getValue(state);
     }
 
     @Override

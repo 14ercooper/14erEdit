@@ -1,5 +1,7 @@
 package com._14ercooper.worldeditor.selection;
 
+import com._14ercooper.worldeditor.player.PlayerManager;
+import com._14ercooper.worldeditor.player.PlayerWrapper;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -10,25 +12,16 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.UUID;
 
 public class SelectionWand {
-    public UUID owner; // Store the owner so people can have different selections
-    public SelectionManager manager; // Same reason as above
+    public String owner; // Store the owner so people can have different selections
+    public SelectionManager manager = new SelectionManager(); // Same reason as above
 
     public static final String wandName = "Selection Wand";
 
     // The wand has NBT so that it can be told apart from a standard axe
     // This determines if a new wand is needed, and if so, creates one
     public static SelectionWand giveNewWand(Player player) {
-        for (SelectionWand s : SelectionWandListener.wands) {
-            // Player already has a wand registered to them, give it back
-            if (s.owner.equals(player)) {
-                s.givePlayerWand();
-                return s;
-            }
-        }
-        // Player needs a new wand
-        SelectionWand wand = new SelectionWand();
-        wand.owner = player.getUniqueId();
-        wand.manager = new SelectionManager();
+        PlayerWrapper playerWrapper = PlayerManager.INSTANCE.getPlayerWrapper(player);
+        SelectionWand wand = playerWrapper.getSelectionWand();
         wand.givePlayerWand();
         return wand;
     }
@@ -43,7 +36,7 @@ public class SelectionWand {
         getOwner().getInventory().addItem(item);
     }
 
-    public Player getOwner(){
-        return Bukkit.getServer().getPlayer(owner);
+    public Player getOwner() {
+        return Bukkit.getServer().getPlayer(UUID.fromString(owner));
     }
 }

@@ -1,19 +1,20 @@
 package com._14ercooper.worldeditor.operations.operators.core;
 
-import com._14ercooper.worldeditor.operations.Operator;
+import com._14ercooper.worldeditor.operations.OperatorState;
+import com._14ercooper.worldeditor.operations.ParserState;
 
 public class ZNode extends NumberNode {
 
     // Returns a new node
     @Override
-    public ZNode newNode() {
+    public ZNode newNode(ParserState parserState) {
         return new ZNode();
     }
 
     // Return the number
     @Override
-    public double getValue() {
-        return Operator.currentBlock.getZ();
+    public double getValue(OperatorState state) {
+        return state.getCurrentBlock().z;
     }
 
     // Get how many arguments this type of node takes

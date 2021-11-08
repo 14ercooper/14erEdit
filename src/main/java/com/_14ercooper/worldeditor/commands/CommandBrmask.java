@@ -1,7 +1,8 @@
 package com._14ercooper.worldeditor.commands;
 
-import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
+import com._14ercooper.worldeditor.player.PlayerManager;
+import com._14ercooper.worldeditor.player.PlayerWrapper;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -25,9 +26,10 @@ public class CommandBrmask implements CommandExecutor {
         }
 
         try {
-            GlobalVars.brushMask = new HashSet<>();
+            PlayerWrapper playerWrapper = PlayerManager.INSTANCE.getPlayerWrapper(sender);
+            playerWrapper.setBrushMask(new HashSet<>());
             for (String s : args) {
-                GlobalVars.brushMask.add(Material.matchMaterial(s));
+                playerWrapper.getBrushMask().add(Material.matchMaterial(s));
             }
 
             return true;

@@ -1,10 +1,10 @@
 package com._14ercooper.worldeditor.blockiterator.iterators;
 
 import com._14ercooper.worldeditor.blockiterator.BlockIterator;
+import com._14ercooper.worldeditor.blockiterator.BlockWrapper;
 import com._14ercooper.worldeditor.main.Main;
-import com._14ercooper.worldeditor.operations.Operator;
 import org.bukkit.World;
-import org.bukkit.block.Block;
+import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,8 +15,8 @@ public class MultiIterator extends BlockIterator {
     public final List<BlockIterator> childIterators = new ArrayList<>();
 
     @Override
-    public BlockIterator newIterator(List<String> args, World world) {
-        Main.logError("MultiIterator does not support the standard constructor", Operator.currentPlayer, null);
+    public BlockIterator newIterator(List<String> args, World world, CommandSender player) {
+        Main.logError("MultiIterator does not support the standard constructor", player, null);
         return null;
     }
 
@@ -27,12 +27,12 @@ public class MultiIterator extends BlockIterator {
     }
 
     @Override
-    public Block getNext() {
-        Block next = null;
+    public BlockWrapper getNextBlock(CommandSender player, boolean getBlock) {
+        BlockWrapper next = null;
         while (next == null) {
             if (childIterators.isEmpty())
                 return null;
-            next = childIterators.get(0).getNext();
+            next = childIterators.get(0).getNextBlock(player, getBlock);
             if (next == null) {
                 if (childIterators.isEmpty())
                     return null;

@@ -1,8 +1,10 @@
 package com._14ercooper.worldeditor.operations.operators.core;
 
-import com._14ercooper.worldeditor.main.GlobalVars;
 import com._14ercooper.worldeditor.main.Main;
-import com._14ercooper.worldeditor.operations.Operator;
+import com._14ercooper.worldeditor.operations.DummyState;
+import com._14ercooper.worldeditor.operations.OperatorState;
+import com._14ercooper.worldeditor.operations.Parser;
+import com._14ercooper.worldeditor.operations.ParserState;
 import com._14ercooper.worldeditor.operations.operators.Node;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -22,20 +24,26 @@ public class TemplateNode extends Node {
     final List<String> args = new ArrayList<>();
 
     @Override
-    public TemplateNode newNode() {
+    public TemplateNode newNode(ParserState parserState) {
         TemplateNode node = new TemplateNode();
-        node.filename = "plugins/14erEdit/templates/" + GlobalVars.operationParser.parseStringNode().getText();
-        int argCount = (int) GlobalVars.operationParser.parseNumberNode().getValue();
+        node.filename = "plugins/14erEdit/templates/" + Parser.parseStringNode(parserState).getText();
+        int argCount;
+        if (parserState.getTestDummyState() == null) {
+            argCount = (int) Parser.parseNumberNode(parserState).getValue(new DummyState(parserState.getCurrentPlayer()));
+        }
+        else {
+            argCount = (int) Parser.parseNumberNode(parserState).getValue(parserState.getTestDummyState());
+        }
         for (int i = 0; i < argCount; i++) {
-            node.args.add(GlobalVars.operationParser.parseStringNode().getText());
+            node.args.add(Parser.parseStringNode(parserState).getText());
         }
 
         return node;
     }
 
     @Override
-    public boolean performNode() {
-        CommandSender player = Operator.currentPlayer;
+    public boolean performNode(OperatorState state, boolean perform) {
+        CommandSender player = state.getCurrentPlayer();
 
         // Extension expansion
         if (Files.exists(Paths.get(filename))) {
@@ -73,7 +81,7 @@ public class TemplateNode extends Node {
             if (player instanceof Player) {
                 Player plyr = (Player) player;
                 Location loc = plyr.getLocation();
-                plyr.teleport(Operator.currentBlock.getLocation());
+                plyr.teleport(state.getCurrentBlock().block.getLocation());
                 boolean retVal = Bukkit.dispatchCommand(player, command);
                 plyr.teleport(loc);
                 return retVal;
