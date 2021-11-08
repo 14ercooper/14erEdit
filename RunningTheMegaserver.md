@@ -10,14 +10,16 @@ This method is reccomended since it ensures a consistent environment for running
 
 Notice: This container will only work for Minecraft 1.17.1 and higher, due to Mojang and Spigot doing a lot of strange things with Java versions. If you want to run the megaserver for an older version of Minecraft, please use the alternative image: `ghcr.io/14ercooper/mapmaking_megaserver:java11`. You can also update either script (or duplicate them and edit the copy) to use this image.
 
+The full list of images and tags can be found [here](https://github.com/14ercooper/14erEdit/pkgs/container/mapmaking_megaserver)
+
 #### Manual Install
 
-1) Install Java. If you're going to be using Minecraft  1.17.1 or newer, use Java 17. Otherwise, use Java 11. You can download Java from [Adoptium](https://adoptium.net/)
-2) Download the latest jar file for 14erEdit from [GitHub releases](https://github.com/14ercooper/14erEdit/releases)
-3) Place the jar file in it's own folder - it'll generate a large number of files when run
-4) Open a command prompt, terminal, or equivalent shell and set the working directory to the same folder as the 14erEdit jar
-5) Run the 14erEdit jar with Java
+1) Install Java. If you're going to be using Minecraft  1.17.1 or newer, use Java 17. Otherwise, use Java 11. You can download Java from [Adoptium](https://adoptium.net/), or another vendor of your choice. Make sure to install it in a known location, or set it to the system path.
+2) Download the latest jar file for 14erEdit from [the GitHub releases page](https://github.com/14ercooper/14erEdit/releases)
+3) Place the jar file in it's own folder - it'll generate a large number of files when run relative to the jar file.
+4) Open a command prompt, terminal, or equivalent shell and set the working directory to the same folder as the 14erEdit jar. This can be accomplished using a shell script, right click (linux), shift-right-click (windows), or similar. This can also be accomplished using a `cd` command or similar.
+5) Run the 14erEdit jar with Java. e.g. `java -jar 14erEdit.jar`
 
 Multiple Java Versions:
 - The Megaserver/14erEdit jar must be run with Java 11 or newer
-- If you would like to have multiple Java installs in order to use incompatable Minecraft versions, you can pass the `--javaPath` argument to the Megaserver, providing the path to the java executable to run (e.g. `/java-installs/17/bin/java`)
+- If you would like to have multiple Java installs in order to use incompatable Minecraft versions, you can pass the `--javaPath` argument to the Megaserver, providing the path to the java executable to run (e.g. `/java-installs/17/bin/java`). Thus, a full command would look like `java -jar 14erEdit.jar --javaPath=/java-installs/17/bin/java`.
