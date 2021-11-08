@@ -4,7 +4,7 @@
 
 1) Set up Docker locally (on Windows, this can be done with Docker Desktop. On Mac/Linux, you can just directly install Docker. Google can help a lot with this step).
 2) Run the Mapmaking Megaserver docker image, mounting a local directory to /14erEdit/mms within the container (this is where all megaserver files will be stored), and exposing port 25565/tcp to some port on your local machine. You also need to enable the interactive shell and tty on the docker run. The docker image for the Mapmaking Megaserver can be found at: `ghcr.io/14ercooper/mapmaking_megaserver:latest`
-3) As a helper, a [shell script (Mac and Linux)](https://github.com/14ercooper/14erEdit/blob/master/docker-run.sh) and a [powershell script (Windows)](https://github.com/14ercooper/14erEdit/blob/master/docker-run.ps1) have been provided to run docker with the correct image, a directory `mms` within the working directory of the docker command mapped to the container, and 25565/tcp in the container mapped to 25565 on the machine. Basically, these scripts should work out-of-the-box for 99% of use cases.
+3) As a helper, a [shell script (Mac and Linux)](https://github.com/14ercooper/14erEdit/blob/master/docker-run.sh) and a [powershell script (Windows)](https://github.com/14ercooper/14erEdit/blob/master/docker-run.ps1) have been provided to run docker with the correct image, a directory `mms` within the working directory of the script mapped to the container, and 25565/tcp in the container mapped to 25565 on the machine. Basically, these scripts should work out-of-the-box for 99% of use cases. Just put the script somewhere and run it.
 
 Notice: This container will only work for Minecraft 1.17.1 and higher, due to Mojang and Spigot doing a lot of strange things with Java versions.
 
