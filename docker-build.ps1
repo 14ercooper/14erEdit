@@ -1,2 +1,2 @@
-docker build -t mapmaking_megaserver:0.0.4 .
+docker build -t mapmaking_megaserver-local:0.0.1 .
 
