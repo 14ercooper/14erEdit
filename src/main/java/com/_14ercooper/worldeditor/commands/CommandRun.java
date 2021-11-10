@@ -40,7 +40,7 @@ public class CommandRun implements CommandExecutor {
                 Block b = ((Player) sender).getWorld().getBlockAt(((Player) sender).getLocation());
                 UndoElement undoElement = UndoSystem.findUserUndo(sender).getNewUndoElement();
                 op.operateOnBlock(new OperatorState(new BlockWrapper(b, b.getX(), b.getY(), b.getZ()), sender, ((Player) sender).getWorld(), undoElement));
-                undoElement.finalizeUndo();
+                undoElement.getUserUndo().finalizeUndo(undoElement);
                 return true;
             }
             Main.logError("This must be run as a player.", sender, null);
