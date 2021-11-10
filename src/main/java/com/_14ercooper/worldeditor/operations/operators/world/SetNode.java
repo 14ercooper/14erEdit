@@ -147,8 +147,13 @@ public class SetNode extends Node {
                 else {
                     SetBlock.setMaterial(state.getCurrentBlock().block, Material.matchMaterial(setMaterial),
                             state.getIgnoringPhysics(), state.getCurrentUndo(), state.getCurrentPlayer());
-                    state.getCurrentBlock().block.setBlockData(Bukkit.getServer().createBlockData(setData),
-                            state.getIgnoringPhysics());
+                    try {
+                        state.getCurrentBlock().block.setBlockData(Bukkit.getServer().createBlockData(setData),
+                                state.getIgnoringPhysics());
+                    }
+                    catch (IllegalArgumentException e) {
+                        Main.logError("Could not set block: invalid block data", state.getCurrentPlayer(), e);
+                    }
                     return storedMaterial == Material.matchMaterial(setMaterial)
                             && !storedData.equalsIgnoreCase(setData);
                 }

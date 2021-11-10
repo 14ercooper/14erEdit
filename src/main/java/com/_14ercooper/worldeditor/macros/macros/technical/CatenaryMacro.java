@@ -30,7 +30,6 @@ public class CatenaryMacro extends Macro {
                 int x = (int) ((int) (x0 + (t * dx)) + 0.5);
                 int y = (int) ((int) (y0 + (t * dy) + (t * t * dy2)) + 0.5);
                 int z = (int) ((int) (z0 + (t * dz)) + 0.5);
-                Main.logDebug(x + "," + y + "," + z);
                 Block b = state.getCurrentWorld().getBlockAt(x, y, z);
                 SetBlock.setMaterial(b, Material.matchMaterial(block), state.getCurrentUndo(), state.getCurrentPlayer());
             }
