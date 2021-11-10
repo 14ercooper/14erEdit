@@ -2,6 +2,8 @@ package com._14ercooper.megaserver
 
 import java.io.File
 import java.io.IOException
+import java.nio.file.Files
+import java.nio.file.Paths
 import java.time.Instant
 
 object Main {
@@ -118,8 +120,9 @@ object Main {
                         FileIO.copyFile(path, "profiles/$profile/plugins/$s.jar", false)
                     }
                 }
-                FileIO.copyFile("14erEdit", "profiles/$profile/plugins/14erEdit", true)
-                FileIO.deleteFile("14erEdit/undo", true)
+//                FileIO.copyFile("14erEdit", "profiles/$profile/plugins/14erEdit", true)
+//                FileIO.deleteFile("14erEdit/undo", true)
+                Files.createSymbolicLink(Paths.get("profiles/$profile/plugins/14erEdit").toAbsolutePath(), Paths.get("14erEdit").toAbsolutePath())
                 // Start server
                 val quarterRam = (ramAmt.toInt() / 4).toString()
                 val eighthRam = (ramAmt.toInt() / 8).toString()
@@ -132,8 +135,9 @@ object Main {
                     // Things to do while server is running can go here
                 }
                 // Clean up server & move 14erEdit data
-                FileIO.copyFile("profiles/$profile/plugins/14erEdit", "14erEdit", true)
-                FileIO.deleteFile("profiles/$profile/plugins/14erEdit", true)
+//                FileIO.copyFile("profiles/$profile/plugins/14erEdit", "14erEdit", true)
+//                FileIO.deleteFile("profiles/$profile/plugins/14erEdit", true)
+                FileIO.deleteFile("profiles/$profile/plugins/14erEdit", false) // Delete the symlink
                 FileIO.deleteFile("profiles/$profile/logs", true)
                 FileIO.deleteFile("profiles/$profile/server.jar", false)
                 for (s in plugins) {
