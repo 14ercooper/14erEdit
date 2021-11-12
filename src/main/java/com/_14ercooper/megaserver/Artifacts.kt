@@ -13,6 +13,7 @@ object Artifacts {
 
     // Root of artifacts
     private const val artifactsBase = "https://files.14erc.com/edit/mms/"
+    public const val artifactTreeRoot = "https://files.14erc.com/megaserverRoot/ArtifactRoot.txt"
 
     // Map of artifacts by type
     private var buildTools: List<String> = ArrayList()
@@ -143,7 +144,7 @@ object Artifacts {
     // Check for internet connectivity
     fun internetConnected(): Boolean {
         return if (forceOffline) false else try {
-            val url = URL(artifactsBase + "Artifacts.txt")
+            val url = URL(artifactsBase + "ArtifactsOld.txt")
             val connection = url.openConnection()
             connection.connect()
             true
@@ -159,7 +160,7 @@ object Artifacts {
         buildTools = ArrayList()
         servers = ArrayList()
         plugins = ArrayList()
-        rows.addAll(listOf(*getTextFromURL(artifactsBase + "Artifacts.txt").split("&").toTypedArray()))
+        rows.addAll(listOf(*getTextFromURL(artifactsBase + "ArtifactsOld.txt").split("&").toTypedArray()))
         var found = 0
         while (rows.size > 0) {
             val data = rows[0].split(";").toTypedArray()
@@ -198,7 +199,7 @@ object Artifacts {
 
     // Returns the contents of a URL as a string
     @Throws(IOException::class)
-    private fun getTextFromURL(url: String): String {
+    fun getTextFromURL(url: String): String {
         val website = URL(url)
         val connection = website.openConnection()
         val `in` = BufferedReader(InputStreamReader(connection.getInputStream()))

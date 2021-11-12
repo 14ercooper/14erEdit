@@ -9,8 +9,7 @@ import java.time.Instant
 object Main {
     private var javaPath = "java"
 
-    @JvmStatic
-    fun main(args: Array<String>) {
+    fun mainStageTwo(args: Array<String>) {
         var updateArtifacts = false
         while (true) {
             try {

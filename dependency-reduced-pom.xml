@@ -23,7 +23,7 @@
           <archive>
             <manifest>
               <addClasspath>true</addClasspath>
-              <mainClass>com._14ercooper.megaserver.Main</mainClass>
+              <mainClass>com._14ercooper.megaserver.StageOne</mainClass>
             </manifest>
           </archive>
         </configuration>
