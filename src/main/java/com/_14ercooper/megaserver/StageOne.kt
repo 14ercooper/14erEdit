@@ -12,16 +12,16 @@ object StageOne {
     fun main(args : Array<String>) {
         if (args.contains("--stage-two")) {
             Main.mainStageTwo(args)
-            return;
+            return
         }
 
         if (args.contains("--force-offline")) {
-            runStageTwo(args);
+            runStageTwo(args)
             return
         }
 
         if (!Artifacts.internetConnected()) {
-            runStageTwo(args);
+            runStageTwo(args)
             return
         }
 
@@ -40,7 +40,7 @@ object StageOne {
         }
 
         if (remoteHash != localHash) {
-            println("Found remote file with hash $remoteHash, have local file with hash $localHash");
+            println("Found remote file with hash $remoteHash, have local file with hash $localHash")
             Files.deleteIfExists(Paths.get(targetPath))
             Artifacts.downloadFromURL(dlPath, targetPath)
             Files.deleteIfExists(Paths.get(dlPath.split("/").toTypedArray().last()))
@@ -57,7 +57,7 @@ object StageOne {
         command.add(targetPath)
         command.addAll(args)
         command.add("--stage-two")
-        val p = runProcess(command);
+        val p = runProcess(command)
         while (p.isAlive) {
             Thread.sleep(5000)
             // Things to do while server is running can go here

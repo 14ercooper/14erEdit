@@ -126,8 +126,14 @@ object Main {
                     )
                 }
                 catch (e : Exception) {
-                    FileIO.copyFile("14erEdit", "profiles/$profile/plugins/14erEdit", true)
-                    FileIO.deleteFile("14erEdit/undo", true)
+                    try {
+                        FileIO.copyFile("14erEdit", "profiles/$profile/plugins/14erEdit", true)
+                    }
+                    catch (e: Exception) {}
+                    try {
+                        FileIO.deleteFile("14erEdit/undo", true)
+                    }
+                    catch (e: Exception) {}
                 }
                 // Start server
                 val quarterRam = (ramAmt.toInt() / 4).toString()
@@ -145,8 +151,14 @@ object Main {
                     FileIO.deleteFile("profiles/$profile/plugins/14erEdit", false) // Delete the symlink
                 }
                 catch (e : Exception) {
-                    FileIO.copyFile("profiles/$profile/plugins/14erEdit", "14erEdit", true)
-                    FileIO.deleteFile("profiles/$profile/plugins/14erEdit", true)
+                    try {
+                        FileIO.copyFile("profiles/$profile/plugins/14erEdit", "14erEdit", true)
+                    }
+                    catch (e: Exception) {}
+                    try {
+                        FileIO.deleteFile("profiles/$profile/plugins/14erEdit", true)
+                    }
+                    catch (e: Exception) {}
                 }
                 FileIO.deleteFile("profiles/$profile/logs", true)
                 FileIO.deleteFile("profiles/$profile/server.jar", false)
