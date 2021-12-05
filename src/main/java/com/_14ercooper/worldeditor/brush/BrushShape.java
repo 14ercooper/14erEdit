@@ -11,7 +11,14 @@ import org.bukkit.entity.Player;
 import java.util.List;
 
 public abstract class BrushShape {
-    public abstract BlockIterator GetBlocks(double x, double y, double z, World world, CommandSender sender);
+
+    public BlockIterator GetBlocks(double x, double y, double z, World world, CommandSender sender) {
+        BlockIterator iter = this.GetBlocks_impl(x, y, z, world, sender);
+        iter.setOrigin((int) x, (int) y, (int) z);
+        return iter;
+    }
+    
+    public abstract BlockIterator GetBlocks_impl(double x, double y, double z, World world, CommandSender sender);
 
     public abstract void addNewArgument(String argument);
 

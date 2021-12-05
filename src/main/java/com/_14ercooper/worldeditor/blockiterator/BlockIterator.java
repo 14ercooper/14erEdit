@@ -14,9 +14,29 @@ public abstract class BlockIterator {
 
     public Map<String, Object> objectArgs = new HashMap<>();
 
+    private int originX, originY, originZ;
+
     // Returns a new instance of the block iterator based on the passed arguments
     // First 3 are the origin of the iterator, the rest vary
     public abstract BlockIterator newIterator(List<String> args, World world, CommandSender player);
+
+    public void setOrigin(int originX, int originY, int originZ) {
+        this.originX = originX;
+        this.originY= originY;
+        this.originZ = originZ;
+    }
+
+    public int getOriginX() {
+        return originX;
+    }
+
+    public int getOriginY() {
+        return originY;
+    }
+
+    public int getOriginZ() {
+        return originZ;
+    }
 
     public void setObjectArgs(String key, Object value) {
         objectArgs.put(key, value);
