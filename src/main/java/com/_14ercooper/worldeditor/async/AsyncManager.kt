@@ -434,8 +434,7 @@ object AsyncManager {
                             currentAsyncOp.offset[0] * (1 + timesDone),
                             currentAsyncOp.offset[1] * (1 + timesDone), currentAsyncOp.offset[2] * (1 + timesDone)
                         )
-                        setMaterial(toEdit, b.block.type, false, currentAsyncOp.undo, currentAsyncOp.player)
-                        toEdit.setBlockData(b.block.blockData, false)
+                        setMaterial(toEdit, b.block.type, b.block.blockData, false, currentAsyncOp.undo, currentAsyncOp.player)
                         val nbt = NBTExtractor()
                         val nbtStr = nbt.getNBT(b.block)
                         if (nbtStr.length > 2) {

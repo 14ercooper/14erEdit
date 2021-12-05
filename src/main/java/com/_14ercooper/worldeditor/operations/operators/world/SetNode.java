@@ -1,5 +1,6 @@
 package com._14ercooper.worldeditor.operations.operators.world;
 
+import com._14ercooper.worldeditor.async.AsyncManager;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.main.SetBlock;
 import com._14ercooper.worldeditor.operations.OperatorState;
@@ -55,12 +56,10 @@ public class SetNode extends Node {
             // Block at nodes are handled specially
             arg.getBlock(state);
             if (arg instanceof BlockAtNode) {
-                // Set material
+                // Set material and data
                 SetBlock.setMaterial(state.getCurrentBlock().block, Material.matchMaterial(state.getOtherValues().get("BlockMaterial")),
+                        Bukkit.getServer().createBlockData(state.getOtherValues().get("BlockData")),
                         state.getIgnoringPhysics(), state.getCurrentUndo(), state.getCurrentPlayer());
-                // Set data
-                state.getCurrentBlock().block.setBlockData(Bukkit.getServer().createBlockData(state.getOtherValues().get("BlockData")),
-                        state.getIgnoringPhysics());
                 // Clone NBT (if there is any)
                 String nbt = state.getOtherValues().get("BlockNbt");
                 if (nbt.length() > 2) {
@@ -103,8 +102,8 @@ public class SetNode extends Node {
                 }
                 newData = new StringBuilder(newData.substring(0, newData.length() - 1));
                 newData.append("]");
-                state.getCurrentBlock().block.setBlockData(Bukkit.getServer().createBlockData(newData.toString()),
-                        state.getIgnoringPhysics());
+                SetBlock.setMaterial(state.getCurrentBlock().block, state.getCurrentBlock().block.getType(), Bukkit.getServer().createBlockData(newData.toString()),
+                        state.getIgnoringPhysics(), state.getCurrentUndo(), state.getCurrentPlayer());
                 state.getCurrentUndo().addBlock(oldBS, state.getCurrentBlock().block.getState());
                 return storedMaterial == Material.matchMaterial(setMaterial) && !storedData.equalsIgnoreCase(setData);
             }
@@ -118,44 +117,36 @@ public class SetNode extends Node {
             }
             // Case no data to set
             else if (setData == null) {
-                // Try carry over data
-                SetBlock.setMaterial(state.getCurrentBlock().block, Material.matchMaterial(setMaterial),
-                        state.getIgnoringPhysics(), state.getCurrentUndo(), state.getCurrentPlayer());
+
+                BlockData data = null;
                 try {
                     if (!setMaterial.contains("minecraft:"))
                         setMaterial = "minecraft:" + setMaterial;
                     String newData = setMaterial + "[" + storedData.split("\\[")[1];
-                    BlockData data = Bukkit.getServer().createBlockData(newData);
+                    data = Bukkit.getServer().createBlockData(newData);
                     state.getCurrentBlock().block.setBlockData(data, state.getIgnoringPhysics());
                 } catch (Exception e) {
                     // Nothing needs to be done, new block can't take the existing data so no
                     // worries
                 }
+
+                // Try carry over data
+                SetBlock.setMaterial(state.getCurrentBlock().block, Material.matchMaterial(setMaterial), data,
+                        state.getIgnoringPhysics(), state.getCurrentUndo(), state.getCurrentPlayer());
                 return storedMaterial == Material.matchMaterial(setMaterial);
             }
             // If both provided
             else {
-                // Case materials match (update data) - this is slightly faster in some cases
-                if (storedMaterial == Material.matchMaterial(setMaterial)) {
-                    BlockState bsBefore = state.getCurrentBlock().block.getState();
-                    state.getCurrentBlock().block.setBlockData(Bukkit.getServer().createBlockData(setData),
-                            state.getIgnoringPhysics());
-                    state.getCurrentUndo().addBlock(bsBefore, state.getCurrentBlock().block.getState());
-                    return !storedData.equalsIgnoreCase(setData);
-                }
-                // Case materials don't match (set all)
-                else {
-                    SetBlock.setMaterial(state.getCurrentBlock().block, Material.matchMaterial(setMaterial),
-                            state.getIgnoringPhysics(), state.getCurrentUndo(), state.getCurrentPlayer());
-                    state.getCurrentBlock().block.setBlockData(Bukkit.getServer().createBlockData(setData),
-                            state.getIgnoringPhysics());
-                    return storedMaterial == Material.matchMaterial(setMaterial)
-                            && !storedData.equalsIgnoreCase(setData);
-                }
+                SetBlock.setMaterial(state.getCurrentBlock().block, Material.matchMaterial(setMaterial),
+                        Bukkit.getServer().createBlockData(setData),
+                        state.getIgnoringPhysics(), state.getCurrentUndo(), state.getCurrentPlayer());
+                return storedMaterial == Material.matchMaterial(setMaterial)
+                        && !storedData.equalsIgnoreCase(setData);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            Main.logError("Error performing block set node. Please check your syntax.", state.getCurrentPlayer(), e);
+            Main.logError("Error performing block set node, async queue has been dropped. Please check your syntax.", state.getCurrentPlayer(), e);
+            AsyncManager.dropAsync();
             return false;
         }
     }
