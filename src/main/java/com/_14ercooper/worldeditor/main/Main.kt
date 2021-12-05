@@ -107,6 +107,8 @@ class Main : JavaPlugin() {
         getCommand("funct")!!.tabCompleter = CommandFunction.TabComplete()
         getCommand("limit")!!.setExecutor(CommandLimit())
         getCommand("limit")!!.tabCompleter = CommandLimit.TabComplete()
+        getCommand("gmask")!!.setExecutor(CommandGmask())
+        getCommand(("gmask"))!!.tabCompleter = CommandGmask.TabComplete()
 
         // Register listeners for brushes and wands
         server.pluginManager.registerEvents(SelectionWandListener(), this)
