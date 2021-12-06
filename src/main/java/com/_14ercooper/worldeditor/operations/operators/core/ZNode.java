@@ -17,6 +17,11 @@ public class ZNode extends NumberNode {
         return state.getCurrentBlock().z;
     }
 
+    @Override
+    public int getInt(OperatorState state) {
+        return state.getCurrentBlock().z;
+    }
+
     // Get how many arguments this type of node takes
     @Override
     public int getArgCount() {
