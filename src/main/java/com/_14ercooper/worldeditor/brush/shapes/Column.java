@@ -3,6 +3,7 @@ package com._14ercooper.worldeditor.brush.shapes;
 import com._14ercooper.worldeditor.blockiterator.BlockIterator;
 import com._14ercooper.worldeditor.blockiterator.IteratorManager;
 import com._14ercooper.worldeditor.brush.BrushShape;
+import com._14ercooper.worldeditor.player.PlayerManager;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 
@@ -15,10 +16,10 @@ public class Column extends BrushShape {
     public BlockIterator GetBlocks_impl(double x, double y, double z, World world, CommandSender sender) {
         List<String> argList = new ArrayList<>();
         argList.add(Integer.toString((int) x));
-        argList.add(Long.toString(Long.MIN_VALUE));
+        argList.add(Integer.toString((int) PlayerManager.getPlayerWrapper(sender).getMinEditY()));
         argList.add(Integer.toString((int) z));
         argList.add(Integer.toString((int) x));
-        argList.add(Long.toString(Long.MAX_VALUE));
+        argList.add(Integer.toString((int) PlayerManager.getPlayerWrapper(sender).getMaxEditY()));
         argList.add(Integer.toString((int) z));
         return IteratorManager.INSTANCE.getIterator("cube").newIterator(argList, world, sender);
     }

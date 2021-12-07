@@ -72,7 +72,7 @@ public abstract class BlockIterator {
 
     public boolean incrXYZ(int radX, int radY, int radZ, int xOff, int yOff, int zOff, CommandSender player) {
 
-        PlayerWrapper playerManager = PlayerManager.INSTANCE.getPlayerWrapper(player);
+        PlayerWrapper playerManager = PlayerManager.getPlayerWrapper(player);
 
         x++;
         doneBlocks++;

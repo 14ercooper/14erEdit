@@ -12,7 +12,7 @@ import java.util.List;
 
 public abstract class BrushShape {
 
-    public BlockIterator GetBlocks(double x, double y, double z, World world, CommandSender sender) {
+    public final BlockIterator GetBlocks(double x, double y, double z, World world, CommandSender sender) {
         BlockIterator iter = this.GetBlocks_impl(x, y, z, world, sender);
         iter.setOrigin((int) x, (int) y, (int) z);
         return iter;
@@ -36,7 +36,7 @@ public abstract class BrushShape {
         // Build an array of all blocks to operate on
         BlockIterator blockArray = GetBlocks(x, y, z, currentPlayer.getWorld(), currentPlayer);
 
-        if (blockArray == null || blockArray.getTotalBlocks() == 0) {
+        if (blockArray.getTotalBlocks() == 0) {
             return;
         }
         Main.logDebug("Block array size is " + blockArray.getTotalBlocks()); // -----

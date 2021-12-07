@@ -26,8 +26,8 @@ class PlayerWrapper(val playerName: String) {
 
     init {
         if (Main.majorVer >= 17) {
-            minEditY = Bukkit.getServer().worlds[0].minHeight.toLong()
-            maxEditY = Bukkit.getServer().worlds[0].maxHeight.toLong()
+            minEditY = Bukkit.getServer().worlds[0].minHeight.toLong() - 1
+            maxEditY = Bukkit.getServer().worlds[0].maxHeight.toLong() + 1
         }
     }
 
