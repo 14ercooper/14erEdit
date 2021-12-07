@@ -57,7 +57,7 @@ public class CommandGmask implements CommandExecutor {
             List<String> tabArgs = new ArrayList<>();
 
             if (args.length == 1) {
-                tabArgs.add("<block>");
+                tabArgs.addAll(Main.getBlockNames(args[args.length - 1]));
                 tabArgs.add("clear");
             }
             else if (args.length > 1) {

@@ -16,6 +16,7 @@ import com._14ercooper.worldeditor.scripts.CraftscriptLoader
 import com._14ercooper.worldeditor.selection.SelectionWandListener
 import com._14ercooper.worldeditor.undo.UndoSystem
 import org.bukkit.Bukkit
+import org.bukkit.Material
 import org.bukkit.command.CommandSender
 import org.bukkit.plugin.Plugin
 import org.bukkit.plugin.java.JavaPlugin
@@ -136,6 +137,9 @@ class Main : JavaPlugin() {
 
         // Initialize the WE syntax compat layer
         WorldEditCompat.init()
+
+        // Initialize our block list
+        getBlockNames("")
     }
 
     companion object {
@@ -289,6 +293,46 @@ class Main : JavaPlugin() {
             logDebugs = plugin!!.config.getBoolean("logDebugs")
             logErrors = plugin!!.config.getBoolean("logErrors")
             this.isDebugDefault = plugin!!.config.getBoolean("defaultDebug")
+        }
+
+        private var blockNamesFull = mutableMapOf<String,MutableList<String>>()
+        @JvmStatic
+        fun getBlockNames(existing: String): List<String> {
+            if (blockNamesFull.isEmpty()) {
+                // Build our map
+                for (m : Material in Material.values()) {
+                    if (m.isBlock) {
+                        val key = m.key.key
+                        for (i in 0..key.length) {
+                            val mapIdx = key.take(i)
+                            val keyRem = key.takeLast(key.length - i)
+                            if (!blockNamesFull.containsKey(mapIdx)) {
+                                blockNamesFull[mapIdx] = mutableListOf()
+                            }
+                            blockNamesFull[mapIdx]?.add(keyRem)
+                        }
+                        if (!blockNamesFull.containsKey(key)) {
+                            blockNamesFull[key] = mutableListOf()
+                        }
+                        blockNamesFull[key]?.add(";")
+                    }
+                }
+            }
+
+            val blockSegments = existing.split(";")
+            val blockName = blockSegments[blockSegments.size - 1].split("%")
+            val finalSegment = blockName[blockName.size - 1]
+
+            return if (blockNamesFull.containsKey(finalSegment)) {
+                val finalList = mutableListOf<String>()
+                for (elem in blockNamesFull[finalSegment]!!) {
+                    finalList.add("$existing$elem")
+                }
+                finalList
+            }
+            else {
+                mutableListOf()
+            }
         }
     }
 }
