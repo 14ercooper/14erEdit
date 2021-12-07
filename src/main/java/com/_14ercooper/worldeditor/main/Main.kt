@@ -24,6 +24,7 @@ import java.io.IOException
 import java.io.PrintWriter
 import java.io.StringWriter
 import java.lang.NullPointerException
+import java.lang.NumberFormatException
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.nio.file.StandardOpenOption
@@ -328,6 +329,11 @@ class Main : JavaPlugin() {
                 for (elem in blockNamesFull[finalSegment]!!) {
                     finalList.add("$existing$elem")
                 }
+                try {
+                    Integer.parseInt(finalSegment)
+                    finalList.add("$existing%")
+                }
+                catch (ignored: NumberFormatException) {}
                 finalList
             }
             else {
