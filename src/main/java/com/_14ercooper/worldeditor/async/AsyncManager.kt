@@ -13,6 +13,7 @@ import com._14ercooper.worldeditor.undo.UndoElement
 import com._14ercooper.worldeditor.undo.UndoMode
 import com._14ercooper.worldeditor.undo.UndoSystem
 import org.bukkit.Bukkit
+import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
@@ -245,7 +246,8 @@ object AsyncManager {
                         Main.plugin!!.server.worlds[0]
                     }
 
-                    val tempState = OperatorState(BlockWrapper(currWorld.getBlockAt(14, 14, 14), 14, 14, 14), currentAsyncOp.player, currWorld, currentAsyncOp.undo)
+                    val tempState = OperatorState(BlockWrapper(currWorld.getBlockAt(14, 14, 14), 14, 14, 14), currentAsyncOp.player, currWorld, currentAsyncOp.undo,
+                    Location(currWorld, 14.0, 14.0, 14.0))
                     currentAsyncOp.blocks!!.setObjectArgs("OperatorState", tempState);
                     val b = getBlock(currentAsyncOp)
                     if (b.isEmpty()) {
@@ -261,7 +263,12 @@ object AsyncManager {
                     }
 
                     b.stream().forEach {
-                        val state = OperatorState(it, currentAsyncOp.player, currWorld, currentAsyncOp.undo)
+                        val state = OperatorState(it, currentAsyncOp.player, currWorld, currentAsyncOp.undo, Location(
+                            currWorld,
+                            currentAsyncOp.blocks!!.originX.toDouble(),
+                            currentAsyncOp.blocks!!.originY.toDouble(), currentAsyncOp.blocks!!.originZ.toDouble()
+                        )
+                        )
                         currentAsyncOp.operation!!.operateOnBlock(state)
                     }
                     doneOperations += b.size
@@ -311,6 +318,9 @@ object AsyncManager {
                 }
                 else if (currentAsyncOp.key.equals("multibrush", ignoreCase = true)) {
                     var b: BlockWrapper?
+                    var originX = 14
+                    var originY = 14
+                    var originZ = 14
 
                     while (true) {
                         if (currentAsyncOp.iterators.size == 0) {
@@ -320,6 +330,9 @@ object AsyncManager {
 
                         try {
                             b = currentAsyncOp.iterators[0].getNextBlock(currentAsyncOp.player, true)
+                            originX = currentAsyncOp.iterators[0].originX
+                            originY = currentAsyncOp.iterators[0].originY
+                            originZ = currentAsyncOp.iterators[0].originZ
                         } catch (e: IndexOutOfBoundsException) {
                             Main.logError("Multibrush error: no iterators (does the file exist?)", currentAsyncOp.player, e)
                             dropAsync()
@@ -352,7 +365,10 @@ object AsyncManager {
                     } else {
                         Main.plugin!!.server.worlds[0]
                     }
-                    val state = OperatorState(b, currentAsyncOp.player, currWorld, currentAsyncOp.undo)
+                    val state = OperatorState(b, currentAsyncOp.player, currWorld, currentAsyncOp.undo, Location(currWorld,
+                        originX.toDouble(), originY.toDouble(), originZ.toDouble()
+                    )
+                    )
                     currentAsyncOp.operations[0].operateOnBlock(state)
                     doneOperations += 1
                 }
@@ -434,8 +450,7 @@ object AsyncManager {
                             currentAsyncOp.offset[0] * (1 + timesDone),
                             currentAsyncOp.offset[1] * (1 + timesDone), currentAsyncOp.offset[2] * (1 + timesDone)
                         )
-                        setMaterial(toEdit, b.block.type, false, currentAsyncOp.undo, currentAsyncOp.player)
-                        toEdit.setBlockData(b.block.blockData, false)
+                        setMaterial(toEdit, b.block.type, b.block.blockData, false, currentAsyncOp.undo, currentAsyncOp.player)
                         val nbt = NBTExtractor()
                         val nbtStr = nbt.getNBT(b.block)
                         if (nbtStr.length > 2) {

@@ -17,7 +17,7 @@ public class RandomSphere extends BrushShape {
     int gotArgs;
 
     @Override
-    public BlockIterator GetBlocks(double x, double y, double z, World world, CommandSender sender) {
+    public BlockIterator GetBlocks_impl(double x, double y, double z, World world, CommandSender sender) {
         List<String> argList = new LinkedList<>();
 //	int radius = rand.nextInt(radiusMax - radiusMin) + radiusMin;
         int radius = Main.randRange(radiusMin, radiusMax);

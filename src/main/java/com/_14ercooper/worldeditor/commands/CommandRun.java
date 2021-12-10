@@ -39,8 +39,8 @@ public class CommandRun implements CommandExecutor {
                 Operator op = new Operator(opStr, sender);
                 Block b = ((Player) sender).getWorld().getBlockAt(((Player) sender).getLocation());
                 UndoElement undoElement = UndoSystem.findUserUndo(sender).getNewUndoElement();
-                op.operateOnBlock(new OperatorState(new BlockWrapper(b, b.getX(), b.getY(), b.getZ()), sender, ((Player) sender).getWorld(), undoElement));
-                undoElement.getUserUndo().finalizeUndo(undoElement);
+                op.operateOnBlock(new OperatorState(new BlockWrapper(b, b.getX(), b.getY(), b.getZ()), sender, ((Player) sender).getWorld(), undoElement, b.getLocation()));
+                undoElement.finalizeUndo();
                 return true;
             }
             Main.logError("This must be run as a player.", sender, null);
@@ -65,10 +65,10 @@ public class CommandRun implements CommandExecutor {
                     tabArgs.addAll(OperatorLoader.rangeNodeNames);
                 } else if (OperatorLoader.nextBlock.contains(lastArg)) {
                     tabArgs.addAll(OperatorLoader.blockNodeNames);
-                    tabArgs.add("<block_name>");
+                    tabArgs.addAll(Main.getBlockNames(args[args.length - 1]));
                 } else {
                     tabArgs.addAll(OperatorLoader.nodeNames);
-                    tabArgs.add("<block_name>");
+                    tabArgs.addAll(Main.getBlockNames(args[args.length - 1]));
                 }
             }
 

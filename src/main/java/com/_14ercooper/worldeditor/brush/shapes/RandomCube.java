@@ -16,7 +16,7 @@ public class RandomCube extends BrushShape {
     int argsSeen = 0;
 
     @Override
-    public BlockIterator GetBlocks(double x, double y, double z, World world, CommandSender sender) {
+    public BlockIterator GetBlocks_impl(double x, double y, double z, World world, CommandSender sender) {
         List<String> argList = new ArrayList<>();
 //	int cubeRad = (int) (rand.nextInt(sideMax - sideMin) + sideMin / 2);
         int cubeRad = Main.randRange(sideMin, sideMax) / 2;

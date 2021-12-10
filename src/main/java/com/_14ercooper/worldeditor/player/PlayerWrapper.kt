@@ -26,12 +26,12 @@ class PlayerWrapper(val playerName: String) {
 
     init {
         if (Main.majorVer >= 17) {
-            minEditY = Bukkit.getServer().worlds[0].minHeight.toLong()
-            maxEditY = Bukkit.getServer().worlds[0].maxHeight.toLong()
+            minEditY = Bukkit.getServer().worlds[0].minHeight.toLong() - 1
+            maxEditY = Bukkit.getServer().worlds[0].maxHeight.toLong() + 1
         }
     }
 
-    fun inEditRegion(x: Long, y: Long, z: Long): Boolean {
+    fun outsideEditRegion(x: Long, y: Long, z: Long): Boolean {
         return (x <= minEditX || y <= minEditY || z <= minEditZ
                 || x >= maxEditX || y >= maxEditY || z >= maxEditZ)
     }
@@ -42,5 +42,15 @@ class PlayerWrapper(val playerName: String) {
 
     init {
         selectionWand.owner = playerName
+    }
+
+    var globalMask = mutableListOf<Material>()
+
+    fun shouldEdit(material: Material): Boolean {
+        return globalMask.size == 0 || globalMask.contains(material)
+    }
+
+    fun resetGlobalMask(): Unit {
+        globalMask = mutableListOf()
     }
 }

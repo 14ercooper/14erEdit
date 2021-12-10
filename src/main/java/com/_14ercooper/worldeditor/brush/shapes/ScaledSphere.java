@@ -15,7 +15,7 @@ public class ScaledSphere extends BrushShape {
     boolean lastProcessed = true;
 
     @Override
-    public BlockIterator GetBlocks(double x, double y, double z, World world, CommandSender sender) {
+    public BlockIterator GetBlocks_impl(double x, double y, double z, World world, CommandSender sender) {
         List<String> argList = new ArrayList<>();
         argList.add(Integer.toString((int) x));
         argList.add(Integer.toString((int) y));

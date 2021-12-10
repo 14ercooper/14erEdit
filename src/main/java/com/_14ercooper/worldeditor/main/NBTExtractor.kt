@@ -11,7 +11,12 @@ class NBTExtractor {
             val unsafeClass: Class<*> = Class.forName(className)
             val cb = unsafeClass.cast(bs)
             val ntc = unsafeClass.getMethod("getSnapshotNBT").invoke(cb)
-            ntc.javaClass.getMethod("asString").invoke(ntc) as String
+            try {
+                ntc.javaClass.getMethod("asString").invoke(ntc) as String
+            }
+            catch (e: Exception) {
+                ntc.javaClass.getMethod("toString").invoke(ntc) as String
+            }
         } else {
             ""
         }
@@ -23,7 +28,7 @@ class NBTExtractor {
             return versionId as String
         }
         for (majorMajor in 1..10) {
-            for (major in 13..100) {
+            for (major in 0..100) {
                 for (minor in 0..25) {
                     var didCrash = false
                     try {

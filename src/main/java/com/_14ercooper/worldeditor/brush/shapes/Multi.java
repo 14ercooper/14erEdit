@@ -27,7 +27,7 @@ public class Multi extends BrushShape {
     List<Operator> ops = null;
 
     @Override
-    public BlockIterator GetBlocks(double x, double y, double z, World world, CommandSender sender) {
+    public BlockIterator GetBlocks_impl(double x, double y, double z, World world, CommandSender sender) {
         Main.logError("Multibrush used in a normal brush context. This is an error.", Bukkit.getConsoleSender(), null);
         return null;
     }

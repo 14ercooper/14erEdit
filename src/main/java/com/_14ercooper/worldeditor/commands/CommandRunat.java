@@ -102,10 +102,10 @@ public class CommandRunat implements CommandExecutor {
                     tabArgs.addAll(OperatorLoader.rangeNodeNames);
                 } else if (OperatorLoader.nextBlock.contains(lastArg)) {
                     tabArgs.addAll(OperatorLoader.blockNodeNames);
-                    tabArgs.add("<block_name>");
+                    tabArgs.addAll(Main.getBlockNames(args[args.length - 1]));
                 } else {
                     tabArgs.addAll(OperatorLoader.nodeNames);
-                    tabArgs.add("<block_name>");
+                    tabArgs.addAll(Main.getBlockNames(args[args.length - 1]));
                 }
             }
 

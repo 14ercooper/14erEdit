@@ -194,8 +194,7 @@ public class VinesMacro extends Macro {
         // Apply the changes to the world
         for (BlockState bs : operatedBlocks) {
             Block b = state.getCurrentWorld().getBlockAt(bs.getLocation());
-            SetBlock.setMaterial(b, bs.getType(), state.getCurrentUndo(), state.getCurrentPlayer());
-            b.setBlockData(bs.getBlockData());
+            SetBlock.setMaterial(b, bs.getType(), bs.getBlockData(), state.getCurrentUndo(), state.getCurrentPlayer());
         }
 
         return true;

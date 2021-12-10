@@ -15,7 +15,7 @@ public class Diamond extends BrushShape {
     int gotArgs = 0;
 
     @Override
-    public BlockIterator GetBlocks(double x, double y, double z, World world, CommandSender sender) {
+    public BlockIterator GetBlocks_impl(double x, double y, double z, World world, CommandSender sender) {
         // This uses the Manhattan distance
         List<String> argList = new ArrayList<>();
         argList.add(Integer.toString((int) x));

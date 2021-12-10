@@ -7,17 +7,21 @@ import com._14ercooper.worldeditor.undo.UndoMode
 import org.bukkit.Material
 import org.bukkit.block.Block
 import org.bukkit.block.BlockState
+import org.bukkit.block.data.BlockData
 import org.bukkit.block.data.type.Leaves
 import org.bukkit.command.CommandSender
 
 object SetBlock {
     @JvmStatic
-    fun setMaterial(b: Block, mat: Material?, undo: UndoElement, currentPlayer: CommandSender) {
+    fun setMaterial(b: Block, mat: Material?, undo: UndoElement, currentPlayer: CommandSender): Boolean {
         if (AsyncManager.countEdits) {
             ++AsyncManager.doneOperations
         }
-        if (PlayerManager.getPlayerWrapper(currentPlayer).inEditRegion(b.x.toLong(), b.y.toLong(), b.z.toLong())) {
-            return
+        if (PlayerManager.getPlayerWrapper(currentPlayer).outsideEditRegion(b.x.toLong(), b.y.toLong(), b.z.toLong())) {
+            return false
+        }
+        if (!PlayerManager.getPlayerWrapper(currentPlayer).shouldEdit(b.type)) {
+            return false
         }
         try {
             val bs = b.state
@@ -25,18 +29,29 @@ object SetBlock {
             if (undo.currentState != UndoMode.PERFORMING_UNDO && undo.currentState != UndoMode.PERFORMING_REDO)
                 undo.addBlock(bs, b.state)
             updateLeafData(mat, b)
+            return true
         } catch (e: Exception) {
             invalidMaterial(mat, e, currentPlayer)
+            return false
         }
     }
 
     @JvmStatic
-    fun setMaterial(b: Block, mat: Material?, physics: Boolean, undo: UndoElement, currentPlayer: CommandSender) {
+    fun setMaterial(
+        b: Block,
+        mat: Material?,
+        physics: Boolean,
+        undo: UndoElement,
+        currentPlayer: CommandSender
+    ): Boolean {
         if (AsyncManager.countEdits) {
             ++AsyncManager.doneOperations
         }
-        if (PlayerManager.getPlayerWrapper(currentPlayer).inEditRegion(b.x.toLong(), b.y.toLong(), b.z.toLong())) {
-            return
+        if (PlayerManager.getPlayerWrapper(currentPlayer).outsideEditRegion(b.x.toLong(), b.y.toLong(), b.z.toLong())) {
+            return false
+        }
+        if (!PlayerManager.getPlayerWrapper(currentPlayer).shouldEdit(b.type)) {
+            return false
         }
         try {
             val bs = b.state
@@ -44,8 +59,81 @@ object SetBlock {
             if (undo.currentState != UndoMode.PERFORMING_UNDO && undo.currentState != UndoMode.PERFORMING_REDO)
                 undo.addBlock(bs, b.state)
             updateLeafData(mat, b)
+            return true
         } catch (e: Exception) {
             invalidMaterial(mat, e, currentPlayer)
+            return false
+        }
+    }
+
+    @JvmStatic
+    fun setMaterial(
+        b: Block,
+        mat: Material?,
+        data: BlockData?,
+        undo: UndoElement,
+        currentPlayer: CommandSender
+    ): Boolean {
+        if (AsyncManager.countEdits) {
+            ++AsyncManager.doneOperations
+        }
+        if (PlayerManager.getPlayerWrapper(currentPlayer).outsideEditRegion(b.x.toLong(), b.y.toLong(), b.z.toLong())) {
+            return false
+        }
+        if (!PlayerManager.getPlayerWrapper(currentPlayer).shouldEdit(b.type)) {
+            return false
+        }
+        try {
+            val bs = b.state
+            b.setType(mat!!, false)
+            if (undo.currentState != UndoMode.PERFORMING_UNDO && undo.currentState != UndoMode.PERFORMING_REDO)
+                undo.addBlock(bs, b.state)
+            updateLeafData(mat, b)
+            try {
+                if (data != null)
+                    b.setBlockData(data, false)
+            } catch (ignored: Exception) {
+            };
+            return true
+        } catch (e: Exception) {
+            invalidMaterial(mat, e, currentPlayer)
+            return false
+        }
+    }
+
+    @JvmStatic
+    fun setMaterial(
+        b: Block,
+        mat: Material?,
+        data: BlockData?,
+        physics: Boolean,
+        undo: UndoElement,
+        currentPlayer: CommandSender
+    ): Boolean {
+        if (AsyncManager.countEdits) {
+            ++AsyncManager.doneOperations
+        }
+        if (PlayerManager.getPlayerWrapper(currentPlayer).outsideEditRegion(b.x.toLong(), b.y.toLong(), b.z.toLong())) {
+            return false
+        }
+        if (!PlayerManager.getPlayerWrapper(currentPlayer).shouldEdit(b.type)) {
+            return false
+        }
+        try {
+            val bs = b.state
+            b.setType(mat!!, physics)
+            if (undo.currentState != UndoMode.PERFORMING_UNDO && undo.currentState != UndoMode.PERFORMING_REDO)
+                undo.addBlock(bs, b.state)
+            updateLeafData(mat, b)
+            try {
+                if (data != null)
+                    b.setBlockData(data, physics)
+            } catch (ignored: Exception) {
+            };
+            return true
+        } catch (e: Exception) {
+            invalidMaterial(mat, e, currentPlayer)
+            return false
         }
     }
 
@@ -58,12 +146,15 @@ object SetBlock {
     }
 
     @JvmStatic
-    fun setMaterial(b: BlockState, mat: Material?, undo: UndoElement, currentPlayer: CommandSender) {
+    fun setMaterial(b: BlockState, mat: Material?, undo: UndoElement, currentPlayer: CommandSender): Boolean {
         if (AsyncManager.countEdits) {
             ++AsyncManager.doneOperations
         }
-        if (PlayerManager.getPlayerWrapper(currentPlayer).inEditRegion(b.x.toLong(), b.y.toLong(), b.z.toLong())) {
-            return
+        if (PlayerManager.getPlayerWrapper(currentPlayer).outsideEditRegion(b.x.toLong(), b.y.toLong(), b.z.toLong())) {
+            return false
+        }
+        if (!PlayerManager.getPlayerWrapper(currentPlayer).shouldEdit(b.type)) {
+            return false
         }
         try {
             val bs = b.block.state
@@ -71,8 +162,45 @@ object SetBlock {
             if (undo.currentState != UndoMode.PERFORMING_UNDO && undo.currentState != UndoMode.PERFORMING_REDO)
                 undo.addBlock(bs, b)
             updateLeafDataState(mat, b)
+            return true
         } catch (e: Exception) {
             invalidMaterial(mat, e, currentPlayer)
+            return false
+        }
+    }
+
+    @JvmStatic
+    fun setMaterial(
+        b: BlockState,
+        mat: Material?,
+        data: BlockData?,
+        undo: UndoElement,
+        currentPlayer: CommandSender
+    ): Boolean {
+        if (AsyncManager.countEdits) {
+            ++AsyncManager.doneOperations
+        }
+        if (PlayerManager.getPlayerWrapper(currentPlayer).outsideEditRegion(b.x.toLong(), b.y.toLong(), b.z.toLong())) {
+            return false
+        }
+        if (!PlayerManager.getPlayerWrapper(currentPlayer).shouldEdit(b.type)) {
+            return false
+        }
+        try {
+            val bs = b.block.state
+            b.type = mat!!
+            if (undo.currentState != UndoMode.PERFORMING_UNDO && undo.currentState != UndoMode.PERFORMING_REDO)
+                undo.addBlock(bs, b)
+            updateLeafDataState(mat, b)
+            try {
+                if (data != null)
+                    b.blockData = data
+            } catch (ignored: Exception) {
+            };
+            return true
+        } catch (e: Exception) {
+            invalidMaterial(mat, e, currentPlayer)
+            return false
         }
     }
 

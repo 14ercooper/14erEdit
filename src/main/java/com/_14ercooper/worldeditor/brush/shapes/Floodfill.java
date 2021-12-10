@@ -3,7 +3,6 @@ package com._14ercooper.worldeditor.brush.shapes;
 import com._14ercooper.worldeditor.async.AsyncManager;
 import com._14ercooper.worldeditor.blockiterator.BlockIterator;
 import com._14ercooper.worldeditor.blockiterator.IteratorManager;
-import com._14ercooper.worldeditor.blockiterator.iterators.FloodfillIterator;
 import com._14ercooper.worldeditor.brush.BrushShape;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.Operator;
@@ -21,7 +20,7 @@ public class Floodfill extends BrushShape {
     private String depth;
 
     @Override
-    public BlockIterator GetBlocks(double x, double y, double z, World world, CommandSender sender) {
+    public BlockIterator GetBlocks_impl(double x, double y, double z, World world, CommandSender sender) {
         List<String> argList = new ArrayList<>();
         argList.add(Integer.toString((int) x));
         argList.add(Integer.toString((int) y));

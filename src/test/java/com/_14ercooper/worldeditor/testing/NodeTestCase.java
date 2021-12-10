@@ -15,6 +15,7 @@ import com._14ercooper.worldeditor.operations.OperatorState;
 import com._14ercooper.worldeditor.testing.dummies.DummyUndoElement;
 import com._14ercooper.worldeditor.testing.dummies.DummyWorld;
 import com._14ercooper.worldeditor.undo.UndoElement;
+import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.junit.jupiter.api.AfterEach;
@@ -31,6 +32,7 @@ public class NodeTestCase {
     public static CommandSender dummyCommandSender;
     private static World dummyWorld;
     private static UndoElement dummyUndoElement;
+    private static Location dummyOrigin;
 
     public static Node parseFromString(String operation) {
         return Parser.parsePart(new ParserState(dummyCommandSender, Arrays.asList(operation.split("\\s+"))));
@@ -51,7 +53,8 @@ public class NodeTestCase {
         dummyCommandSender = new DummyCommandSender();
         dummyWorld = new DummyWorld();
         dummyUndoElement = new DummyUndoElement();
-        dummyState = new OperatorState(dummyWrapper, dummyCommandSender, dummyWorld, dummyUndoElement);
+        dummyOrigin = new Location(dummyWorld, 14, 14, 14);
+        dummyState = new OperatorState(dummyWrapper, dummyCommandSender, dummyWorld, dummyUndoElement, dummyOrigin);
     }
 
     @AfterEach

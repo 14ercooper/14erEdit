@@ -188,6 +188,8 @@ public class OperatorLoader {
         loadNode("schematic", Parser.getOperator(commandSender, "schem"));
         loadNode(">r", new ReplaceNode());
         loadNode("replace", Parser.getOperator(commandSender, ">r"));
+        loadNode("bonemeal", new BonemealNode());
+        loadNode("bone", Parser.getOperator(commandSender, "bonemeal"));
     }
 
     private static void LoadFun(CommandSender commandSender) {

@@ -15,5 +15,6 @@ public class IteratorLoader {
         IteratorManager.INSTANCE.addIterator("rotatedellipse", new RotatedEllipseIterator());
         IteratorManager.INSTANCE.addIterator("spike", new SpikeIterator());
         IteratorManager.INSTANCE.addIterator("floodfill", new FloodfillIterator());
+        IteratorManager.INSTANCE.addIterator("blob", new BlobIterator());
     }
 }

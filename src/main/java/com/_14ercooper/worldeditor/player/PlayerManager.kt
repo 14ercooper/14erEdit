@@ -7,6 +7,7 @@ import java.util.*
 object PlayerManager {
     val playerWrapperMap = mutableMapOf<String, PlayerWrapper>()
 
+    @JvmStatic
     fun getPlayerWrapper(player: CommandSender): PlayerWrapper {
         return getPlayerWrapper(
             if (player is Player) {
@@ -17,10 +18,12 @@ object PlayerManager {
         )
     }
 
+    @JvmStatic
     fun getPlayerWrapper(player: UUID): PlayerWrapper {
         return getPlayerWrapper(player.toString())
     }
 
+    @JvmStatic
     fun getPlayerWrapper(playerName: String): PlayerWrapper {
         return if (playerWrapperMap.containsKey(playerName)) {
             playerWrapperMap[playerName]!!
@@ -31,6 +34,7 @@ object PlayerManager {
         }
     }
 
+    @JvmStatic
     fun deletePlayerWrapper(player: String) {
         if (playerWrapperMap.containsKey(player)) {
             playerWrapperMap.remove(player)

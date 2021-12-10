@@ -274,8 +274,7 @@ public class ErodeMacro extends Macro {
         for (BlockState b : snapshotArray) {
             Location l = b.getLocation();
             Block block = state.getCurrentWorld().getBlockAt(l);
-            SetBlock.setMaterial(block, b.getType(), state.getCurrentUndo(), state.getCurrentPlayer());
-            block.setBlockData(b.getBlockData());
+            SetBlock.setMaterial(block, b.getType(), b.getBlockData(), state.getCurrentUndo(), state.getCurrentPlayer());
         }
     }
 

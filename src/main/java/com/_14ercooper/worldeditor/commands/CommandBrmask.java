@@ -45,7 +45,7 @@ public class CommandBrmask implements CommandExecutor {
             List<String> tabArgs = new ArrayList<>();
 
             if (args.length == 1) {
-                tabArgs.add("[block_name]");
+                tabArgs.addAll(Main.getBlockNames(args[args.length - 1]));
             }
 
             return tabArgs;
