@@ -79,6 +79,9 @@ public class BlobIterator extends BlockIterator {
             double modAmp = 0;
             for (int i = 0; i < vectorCount; i++) {
                 double dot = pointNorm.dot(vectors.get(i));
+                if (dot < 0) {
+                    continue;
+                }
                 modAmp += dot * amplitudes.get(i) * radius;
             }
             double radius = point.magnitude() + modAmp;
