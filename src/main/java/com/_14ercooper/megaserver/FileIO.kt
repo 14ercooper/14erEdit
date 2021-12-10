@@ -3,6 +3,7 @@ package com._14ercooper.megaserver
 import java.io.*
 import java.nio.file.*
 import java.nio.file.attribute.BasicFileAttributes
+import java.util.zip.CRC32
 import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
 
@@ -174,6 +175,18 @@ object FileIO {
             }
             `in`!!.close()
             out!!.close()
+        }
+    }
+
+    fun getHash(file: String): String {
+        Files.newInputStream(Paths.get(file)).use {
+            val crc = CRC32()
+            var c = 0
+            while (c != -1) {
+                c = it.read()
+                crc.update(c)
+            }
+            return Integer.toHexString(crc.value.toInt())
         }
     }
 }

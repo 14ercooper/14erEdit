@@ -2,13 +2,14 @@ package com._14ercooper.megaserver
 
 import java.io.File
 import java.io.IOException
+import java.nio.file.Files
+import java.nio.file.Paths
 import java.time.Instant
 
 object Main {
     private var javaPath = "java"
 
-    @JvmStatic
-    fun main(args: Array<String>) {
+    fun mainStageTwo(args: Array<String>) {
         var updateArtifacts = false
         while (true) {
             try {
@@ -118,8 +119,22 @@ object Main {
                         FileIO.copyFile(path, "profiles/$profile/plugins/$s.jar", false)
                     }
                 }
-                FileIO.copyFile("14erEdit", "profiles/$profile/plugins/14erEdit", true)
-                FileIO.deleteFile("14erEdit/undo", true)
+                try {
+                    Files.createSymbolicLink(
+                        Paths.get("profiles/$profile/plugins/14erEdit").toAbsolutePath(),
+                        Paths.get("14erEdit").toAbsolutePath()
+                    )
+                }
+                catch (e : Exception) {
+                    try {
+                        FileIO.copyFile("14erEdit", "profiles/$profile/plugins/14erEdit", true)
+                    }
+                    catch (e: Exception) {}
+                    try {
+                        FileIO.deleteFile("14erEdit/undo", true)
+                    }
+                    catch (e: Exception) {}
+                }
                 // Start server
                 val quarterRam = (ramAmt.toInt() / 4).toString()
                 val eighthRam = (ramAmt.toInt() / 8).toString()
@@ -132,8 +147,19 @@ object Main {
                     // Things to do while server is running can go here
                 }
                 // Clean up server & move 14erEdit data
-                FileIO.copyFile("profiles/$profile/plugins/14erEdit", "14erEdit", true)
-                FileIO.deleteFile("profiles/$profile/plugins/14erEdit", true)
+                try {
+                    FileIO.deleteFile("profiles/$profile/plugins/14erEdit", false) // Delete the symlink
+                }
+                catch (e : Exception) {
+                    try {
+                        FileIO.copyFile("profiles/$profile/plugins/14erEdit", "14erEdit", true)
+                    }
+                    catch (e: Exception) {}
+                    try {
+                        FileIO.deleteFile("profiles/$profile/plugins/14erEdit", true)
+                    }
+                    catch (e: Exception) {}
+                }
                 FileIO.deleteFile("profiles/$profile/logs", true)
                 FileIO.deleteFile("profiles/$profile/server.jar", false)
                 for (s in plugins) {

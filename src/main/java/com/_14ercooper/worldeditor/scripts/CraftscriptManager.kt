@@ -30,7 +30,7 @@ object CraftscriptManager  // Create a new manager
             currentPlayer = player
             registeredScripts[label]!!.perform(args, player, label)
             if (usedUndo) {
-                undoElement!!.finalizeUndo()
+                undoElement!!.userUndo.finalizeUndo(undoElement!!)
             }
         } catch (e: Exception) {
             logError("Error performing CraftScript. Check your syntax?", player, e)

@@ -5,7 +5,7 @@ RUN mvn clean test package
 WORKDIR /
 RUN cp /14erEditCode/target/14erEdit-*.jar 14erEdit.jar
 
-FROM ghcr.io/graalvm/graalvm-ce:java17-21
+FROM ghcr.io/graalvm/graalvm-ce:java11-21
 LABEL \
 	org.opencontainers.image.url='https://github.com/users/14ercooper/packages/container/package/mapmaking_megaserver' \
 	org.opencontainers.image.source='https://github.com/14ercooper/14erEdit' \
