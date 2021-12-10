@@ -6,6 +6,7 @@ import com._14ercooper.worldeditor.operations.OperatorLoader;
 import com._14ercooper.worldeditor.player.PlayerManager;
 import com._14ercooper.worldeditor.selection.SchematicHandler;
 import com._14ercooper.worldeditor.selection.SelectionCommand;
+import com._14ercooper.worldeditor.selection.SelectionManager;
 import com._14ercooper.worldeditor.selection.SelectionWand;
 import com._14ercooper.worldeditor.undo.UndoSystem;
 import org.bukkit.command.Command;
@@ -45,9 +46,29 @@ public class CommandFx implements CommandExecutor {
                 if (args[argOffset].equalsIgnoreCase("wand")) {
                     SelectionWand wand = (SelectionWand.giveNewWand(((Player) sender).getPlayer()));
                     return true;
-                } else if (args[argOffset].equalsIgnoreCase("reset")) {
+                }
+
+                // Reset a player
+                else if (args[argOffset].equalsIgnoreCase("reset")) {
                     PlayerManager.INSTANCE.deletePlayerWrapper(((Player) sender).getUniqueId().toString());
                     return true;
+                }
+
+                // Multiselection stuff
+                if (args[argOffset].equalsIgnoreCase("multi")) {
+                    SelectionManager manager = SelectionManager.getSelectionManager(((Player) sender).getUniqueId());
+                    if (args.length == argOffset + 1) {
+                        manager.toggleMode(((Player) sender).getUniqueId().toString());
+                        return true;
+                    }
+                    else if (args[argOffset + 1].equalsIgnoreCase("reset")) {
+                        manager.resetMultiSelect(((Player) sender).getUniqueId().toString());
+                        return true;
+                    }
+                    else if (args[argOffset + 1].equalsIgnoreCase("remove")) {
+                        manager.removeAdditionalPoint(((Player) sender).getUniqueId().toString());
+                        return true;
+                    }
                 }
 
                 // Calls the brush command, handling the creation of a new brush
@@ -150,6 +171,7 @@ public class CommandFx implements CommandExecutor {
                 tabArgs.add("sel");
                 tabArgs.add("schem");
                 tabArgs.add("reset");
+                tabArgs.add("multi");
             } else if (args.length == 2) {
                 if (args[0].equalsIgnoreCase("brush") || args[0].equalsIgnoreCase("br")) {
                     tabArgs.add("none");
@@ -289,6 +311,13 @@ public class CommandFx implements CommandExecutor {
                         tabArgs.add("none");
                     }
                     tabArgs.addAll(Brush.brushShapes.keySet());
+                }
+            }
+
+            if (args[0].equalsIgnoreCase("multi")) {
+                if (args.length == 2) {
+                    tabArgs.add("reset");
+                    tabArgs.add("remove");
                 }
             }
 

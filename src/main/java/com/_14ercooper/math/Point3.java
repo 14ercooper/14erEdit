@@ -10,6 +10,12 @@ public class Point3 {
         this.z = z;
     }
 
+    public Point3(Point3 original) {
+        this.x = original.x;
+        this.y = original.y;
+        this.z = original.z;
+    }
+
     public void normalize() {
         double invMag = 1.0 / magnitude();
         x *= invMag;

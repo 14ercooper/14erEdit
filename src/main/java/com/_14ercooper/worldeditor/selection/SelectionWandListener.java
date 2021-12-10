@@ -28,7 +28,7 @@ public class SelectionWandListener implements Listener {
         // do anything
         Player p = event.getPlayer();
         boolean isValidPlayer;
-        PlayerWrapper playerWrapper = PlayerManager.INSTANCE.getPlayerWrapper(p);
+        PlayerWrapper playerWrapper = PlayerManager.getPlayerWrapper(p);
         SelectionWand wand = playerWrapper.getSelectionWand();
 
         // Check the wand
@@ -55,7 +55,12 @@ public class SelectionWandListener implements Listener {
         // Player left clicked, update position one
         if (event.getAction().equals(Action.LEFT_CLICK_BLOCK)) {
             Block b = event.getClickedBlock();
-            wand.manager.updatePositionOne(b.getX(), b.getY(), b.getZ(), p.getUniqueId().toString());
+            if (wand.manager.isMultiMode()) {
+                wand.manager.setAnchorPoint(b.getX(), b.getY(), b.getZ(), p.getUniqueId().toString());
+            }
+            else {
+                wand.manager.updatePositionOne(b.getX(), b.getY(), b.getZ(), p.getUniqueId().toString());
+            }
             event.setCancelled(true);
         }
 
@@ -66,7 +71,12 @@ public class SelectionWandListener implements Listener {
             // conflicts)
             if (e.equals(EquipmentSlot.HAND)) {
                 Block b = event.getClickedBlock();
-                wand.manager.updatePositionTwo(b.getX(), b.getY(), b.getZ(), p.getUniqueId().toString());
+                if (wand.manager.isMultiMode()) {
+                    wand.manager.addAdditionalPoint(b.getX(), b.getY(), b.getZ(), p.getUniqueId().toString());
+                }
+                else {
+                    wand.manager.updatePositionTwo(b.getX(), b.getY(), b.getZ(), p.getUniqueId().toString());
+                }
                 event.setCancelled(true);
             }
         }

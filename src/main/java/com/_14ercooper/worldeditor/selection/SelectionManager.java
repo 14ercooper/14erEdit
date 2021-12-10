@@ -1,5 +1,6 @@
 package com._14ercooper.worldeditor.selection;
 
+import com._14ercooper.math.Point3;
 import com._14ercooper.worldeditor.blockiterator.BlockIterator;
 import com._14ercooper.worldeditor.blockiterator.IteratorManager;
 import com._14ercooper.worldeditor.player.PlayerManager;
@@ -13,6 +14,8 @@ import java.util.List;
 import java.util.UUID;
 
 public class SelectionManager {
+    private Mode mode = Mode.SELECTION;
+
     protected final int[] clipboardOffset = {0, 0, 0};
     private double[] positionOne = {-1.0, -1.0, -1.0};
     private double[] positionTwo = {-1.0, -1.0, -1.0};
@@ -23,14 +26,14 @@ public class SelectionManager {
     private double[] mostPositiveCorner = new double[3];
 
     public static SelectionManager getSelectionManager(UUID player) {
-        PlayerWrapper playerWrapper = PlayerManager.INSTANCE.getPlayerWrapper(player);
+        PlayerWrapper playerWrapper = PlayerManager.getPlayerWrapper(player);
         return playerWrapper.getSelectionWand().manager;
     }
 
     public boolean updatePositionOne(double x, double y, double z, String player) {
         positionOne[0] = x;
         // Use nested ternary operators to clamp y between 0 and 255
-        PlayerWrapper playerWrapper = PlayerManager.INSTANCE.getPlayerWrapper(player);
+        PlayerWrapper playerWrapper = PlayerManager.getPlayerWrapper(player);
         positionOne[1] = y < playerWrapper.getMinEditY() ? playerWrapper.getMinEditY() : y > playerWrapper.getMaxEditY() ? playerWrapper.getMaxEditY() : y;
         positionOne[2] = z;
         getPlayer(player).sendMessage("§dFirst position updated to (" + x + ", " + y + ", "
@@ -45,7 +48,7 @@ public class SelectionManager {
     public boolean updatePositionTwo(double x, double y, double z, String player) {
         positionTwo[0] = x;
         // Use nested ternary operators to clamp y between 0 and 255
-        PlayerWrapper playerWrapper = PlayerManager.INSTANCE.getPlayerWrapper(player);
+        PlayerWrapper playerWrapper = PlayerManager.getPlayerWrapper(player);
         positionTwo[1] = y < playerWrapper.getMinEditY() ? playerWrapper.getMinEditY() : y > playerWrapper.getMaxEditY() ? playerWrapper.getMaxEditY() : y;
         positionTwo[2] = z;
         getPlayer(player).sendMessage("§dSecond position updated to (" + x + ", " + y + ", "
@@ -186,5 +189,87 @@ public class SelectionManager {
 
     public Player getPlayer(String player) {
         return Bukkit.getServer().getPlayer(UUID.fromString(player));
+    }
+
+    // --- Functions for multiselect mode
+
+    Point3 anchorPoint = null;
+    List<Point3> additionalPoints = new ArrayList<>();
+
+    public Mode toggleMode(String player) {
+        if (mode == Mode.SELECTION) {
+            mode = Mode.MULTI;
+            getPlayer(player).sendMessage("§dWand mode is now Multiselect");
+        }
+        else {
+            mode = Mode.SELECTION;
+            getPlayer(player).sendMessage("§dWand mode is now Selection");
+        }
+        return mode;
+    }
+
+    public boolean isMultiMode() {
+        return mode == Mode.MULTI;
+    }
+
+    public boolean setAnchorPoint(double x, double y, double z, String player) {
+        this.anchorPoint = new Point3(x, y, z);
+        getPlayer(player).sendMessage("§dAnchor point updated");
+        return true;
+    }
+
+    public boolean addAdditionalPoint(double x, double y, double z, String player) {
+        Point3 point = new Point3(x, y, z);
+        additionalPoints.add(point);
+        getPlayer(player).sendMessage("§dAdditional point added (" + additionalPoints.size() + " points)");
+        return true;
+    }
+
+    public boolean removeAdditionalPoint(String player) {
+        additionalPoints.remove(additionalPoints.size() - 1);
+        getPlayer(player).sendMessage("§dAdditional point removed (" + additionalPoints.size() + " points)");
+        return true;
+    }
+
+    public boolean resetMultiSelect(String player) {
+        this.anchorPoint = null;
+        this.additionalPoints = new ArrayList<>();
+        getPlayer(player).sendMessage("§dMultiselection reset");
+        return true;
+    }
+
+    public Point3 getAnchorPoint() {
+        return new Point3(this.anchorPoint);
+    }
+
+    public List<Point3> getAdditionalPoints() {
+        List<Point3> points = new ArrayList<>();
+        for (Point3 additionalPoint : this.additionalPoints) {
+            points.add(new Point3(additionalPoint));
+        }
+        return points;
+    }
+
+    public List<Point3> getAllPoints() {
+        List<Point3> points = new ArrayList<>();
+        points.add(new Point3(this.anchorPoint));
+        for (Point3 additionalPoint : this.additionalPoints) {
+            points.add(new Point3(additionalPoint));
+        }
+        return points;
+    }
+
+    /**
+     * Is this multiselect valid?
+     *
+     * @return True if at least one anchor point and one additional point exist
+     */
+    public boolean isValidMultiselect() {
+        return anchorPoint != null && additionalPoints.size() > 0;
+    }
+
+    public enum Mode {
+        SELECTION,
+        MULTI
     }
 }
