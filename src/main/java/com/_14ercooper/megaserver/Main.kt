@@ -123,7 +123,7 @@ object Main {
                 // Start server
                 val quarterRam = (ramAmt.toInt() / 4).toString()
                 val eighthRam = (ramAmt.toInt() / 8).toString()
-                val command = (javaPath + " -jar -DIReallyKnowWhatIAmDoingISwear=true -Xmx" + ramAmt + "M -Xms" + ramAmt
+                val command = (javaPath + " -jar -Dlog4j2.formatMsgNoLookups=true -DIReallyKnowWhatIAmDoingISwear=true -Xmx" + ramAmt + "M -Xms" + ramAmt
                         + "M -Xss" + eighthRam + "M -Xmn" + quarterRam + "M -XX:+UseParallelGC server.jar nogui")
                 clearConsole()
                 val p = runProcess(command, "profiles/$profile")
