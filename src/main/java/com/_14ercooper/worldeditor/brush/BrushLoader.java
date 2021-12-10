@@ -30,6 +30,8 @@ public class BrushLoader {
         Spike spike = new Spike();
         Multi multi = new Multi();
         Floodfill floodfill = new Floodfill();
+        Blob blob = new Blob();
+        RandomBlob randomBlob = new RandomBlob();
         Brush.AddBrushShape("cube", cube);
         Brush.AddBrushShape("square", cube);
         Brush.AddBrushShape("diamond", diamond);
@@ -50,12 +52,8 @@ public class BrushLoader {
         Brush.AddBrushShape("oldcylinder", cylinder);
         Brush.AddBrushShape("splatter", splatter);
         Brush.AddBrushShape("splat", splatter);
-        Brush.AddBrushShape("blob", splatter);
-        Brush.AddBrushShape("b", splatter);
         Brush.AddBrushShape("randomsplatter", randomSplatter);
         Brush.AddBrushShape("rsplat", randomSplatter);
-        Brush.AddBrushShape("randomblob", randomSplatter);
-        Brush.AddBrushShape("rb", randomSplatter);
         Brush.AddBrushShape("randomellipse", randomEllipse);
         Brush.AddBrushShape("re", randomEllipse);
         Brush.AddBrushShape("randomoldcylinder", randomCylinder);
@@ -87,5 +85,11 @@ public class BrushLoader {
         Brush.AddBrushShape("floodfill", floodfill);
         Brush.AddBrushShape("flood", floodfill);
         Brush.AddBrushShape("fill", floodfill);
+        Brush.AddBrushShape("blob", blob);
+        Brush.AddBrushShape("b", blob);
+        Brush.AddBrushShape("randomblob", randomBlob);
+        Brush.AddBrushShape("randblob", randomBlob);
+        Brush.AddBrushShape("rblob", randomBlob);
+        Brush.AddBrushShape("rb", randomBlob);
     }
 }
