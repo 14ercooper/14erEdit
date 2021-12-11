@@ -41,6 +41,13 @@ public class Point3 {
         return new Point3(xN, yN, zN);
     }
 
+    public Point3 sub(Point3 other) {
+        double xN = x - other.x;
+        double yN = y - other.y;
+        double zN = z - other.z;
+        return new Point3(xN, yN, zN);
+    }
+
     public Point3 mult(double magnitude) {
         return new Point3(x * magnitude, y * magnitude, z * magnitude);
     }
@@ -59,5 +66,27 @@ public class Point3 {
 
     public double getZ() {
         return z;
+    }
+
+    @Override
+    public String toString() {
+        return "Point3{" +
+                "x=" + x +
+                ", y=" + y +
+                ", z=" + z +
+                '}';
+    }
+
+    public static Point3 fromString(String string) {
+        if (!string.startsWith("Point3")) {
+            return null;
+        }
+        String minusStart = string.substring(7);
+        String minusEnd = minusStart.substring(0, minusStart.length() - 1);
+        String[] split = minusEnd.split(",");
+        double x = Double.parseDouble(split[0].trim().substring(2));
+        double y = Double.parseDouble(split[1].trim().substring(2));
+        double z = Double.parseDouble(split[2].trim().substring(2));
+        return new Point3(x, y, z);
     }
 }

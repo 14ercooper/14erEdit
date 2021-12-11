@@ -4,10 +4,7 @@ import com._14ercooper.worldeditor.brush.Brush;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.operations.OperatorLoader;
 import com._14ercooper.worldeditor.player.PlayerManager;
-import com._14ercooper.worldeditor.selection.SchematicHandler;
-import com._14ercooper.worldeditor.selection.SelectionCommand;
-import com._14ercooper.worldeditor.selection.SelectionManager;
-import com._14ercooper.worldeditor.selection.SelectionWand;
+import com._14ercooper.worldeditor.selection.*;
 import com._14ercooper.worldeditor.undo.UndoSystem;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -68,6 +65,9 @@ public class CommandFx implements CommandExecutor {
                     else if (args[argOffset + 1].equalsIgnoreCase("remove")) {
                         manager.removeAdditionalPoint(((Player) sender).getUniqueId().toString());
                         return true;
+                    }
+                    else {
+                        return MultiselectCommandHandler.handleCommand(manager, ((Player) sender).getUniqueId().toString(), args);
                     }
                 }
 
@@ -286,6 +286,9 @@ public class CommandFx implements CommandExecutor {
                 if (args[1].equalsIgnoreCase("brush") || args[1].equalsIgnoreCase("br")) {
                     initOffset = 3 + Brush.GetBrushShape(args[3]).minArgCount();
                 }
+                if (args[1].equalsIgnoreCase("multi")) {
+                    initOffset = 3;
+                }
                 String lastArg = args[args.length - initOffset];
                 if (OperatorLoader.nextRange.contains(lastArg)) {
                     tabArgs.addAll(OperatorLoader.rangeNodeNames);
@@ -318,6 +321,9 @@ public class CommandFx implements CommandExecutor {
                 if (args.length == 2) {
                     tabArgs.add("reset");
                     tabArgs.add("remove");
+                    tabArgs.add("spline");
+                    tabArgs.add("uniformspline");
+                    tabArgs.add("chordalspline");
                 }
             }
 

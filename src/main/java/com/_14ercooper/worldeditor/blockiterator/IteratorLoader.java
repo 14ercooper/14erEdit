@@ -16,5 +16,6 @@ public class IteratorLoader {
         IteratorManager.INSTANCE.addIterator("spike", new SpikeIterator());
         IteratorManager.INSTANCE.addIterator("floodfill", new FloodfillIterator());
         IteratorManager.INSTANCE.addIterator("blob", new BlobIterator());
+        IteratorManager.INSTANCE.addIterator("spline", new SplineIterator());
     }
 }

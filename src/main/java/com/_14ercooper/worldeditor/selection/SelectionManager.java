@@ -252,7 +252,9 @@ public class SelectionManager {
 
     public List<Point3> getAllPoints() {
         List<Point3> points = new ArrayList<>();
-        points.add(new Point3(this.anchorPoint));
+        if (anchorPoint != null) {
+            points.add(new Point3(this.anchorPoint));
+        }
         for (Point3 additionalPoint : this.additionalPoints) {
             points.add(new Point3(additionalPoint));
         }
