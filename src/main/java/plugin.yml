@@ -55,6 +55,6 @@ commands:
     limit:
         description: Change the XYZ limits on operations
         usage: "Usage: /limit <axis> <limit>"
-    gmask:
+    globalmask:
         description: Changes this player's global block mask
-        usage: "Usage: /gmask <block... | clear>"
+        usage: "Usage: /globalmask <block... | clear>"
