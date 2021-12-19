@@ -78,8 +78,6 @@ public class BasicTreeMacro extends Macro {
     public boolean performMacro(String[] args, Location loc, OperatorState state) {
         SetupMacro(args, loc, state);
 
-        AsyncManager.incrementDoneOperations(Integer.MAX_VALUE / 4);
-
         // Generator for oak tree
         if (type == 1) {
             oakTreeGenerator(state);
