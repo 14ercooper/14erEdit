@@ -1,5 +1,6 @@
 package com._14ercooper.worldeditor.macros.macros.nature;
 
+import com._14ercooper.worldeditor.async.AsyncManager;
 import com._14ercooper.worldeditor.macros.macros.Macro;
 import com._14ercooper.worldeditor.main.Main;
 import com._14ercooper.worldeditor.main.SetBlock;
@@ -76,6 +77,8 @@ public class BasicTreeMacro extends Macro {
     @Override
     public boolean performMacro(String[] args, Location loc, OperatorState state) {
         SetupMacro(args, loc, state);
+
+        AsyncManager.incrementDoneOperations(Integer.MAX_VALUE / 4);
 
         // Generator for oak tree
         if (type == 1) {

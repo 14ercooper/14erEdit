@@ -1,5 +1,6 @@
 package com._14ercooper.worldeditor.macros.macros.nature;
 
+import com._14ercooper.worldeditor.async.AsyncManager;
 import com._14ercooper.worldeditor.macros.MacroLauncher;
 import com._14ercooper.worldeditor.macros.macros.Macro;
 import com._14ercooper.worldeditor.main.Main;
@@ -79,6 +80,8 @@ public class ErodeMacro extends Macro {
     @Override
     public boolean performMacro(String[] args, Location loc, OperatorState state) {
         SetupMacro(args, loc, state);
+
+        AsyncManager.incrementDoneOperations((long) erodeRadius * erodeRadius * erodeRadius / 64);
 
         // Location of the brush
         double x = erodeCenter.getX();

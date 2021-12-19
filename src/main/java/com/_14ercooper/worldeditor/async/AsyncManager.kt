@@ -25,7 +25,7 @@ object AsyncManager {
     var blocksPerAsync: Long = 10000
     var ticksPerAsync: Long = 4
     var countEdits = false
-    private const val opBlockSize = 128
+    private const val opBlockSize = 1
 
     // Flag queue dropped
     private var queueDropped = false
@@ -171,6 +171,11 @@ object AsyncManager {
     @JvmStatic
     fun scheduleEdit(undos: MutableList<UndoElement>, player: CommandSender) {
         queuedOperations.add(AsyncOperation(undos, player))
+    }
+
+    @JvmStatic
+    fun incrementDoneOperations(amount: Long) {
+        doneOperations += amount
     }
 
     // Scheduled task to operate

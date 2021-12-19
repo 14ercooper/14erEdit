@@ -27,11 +27,13 @@ object MacroLauncher {
         AsyncManager.countEdits = true
         return try {
             val returnVal = macros[macroName]!!.performMacro(macroArgs, location, state)
-            AsyncManager.countEdits = false
             returnVal
         } catch (e : NullPointerException) {
             // Do nothing, this is a test
             false
+        }
+        finally {
+            AsyncManager.countEdits = false
         }
     }
 

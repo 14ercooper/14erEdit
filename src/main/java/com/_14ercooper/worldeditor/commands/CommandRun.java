@@ -6,6 +6,7 @@ import com._14ercooper.worldeditor.operations.Operator;
 import com._14ercooper.worldeditor.operations.OperatorLoader;
 import com._14ercooper.worldeditor.operations.OperatorState;
 import com._14ercooper.worldeditor.undo.UndoElement;
+import com._14ercooper.worldeditor.undo.UndoMode;
 import com._14ercooper.worldeditor.undo.UndoSystem;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
@@ -40,7 +41,8 @@ public class CommandRun implements CommandExecutor {
                 Block b = ((Player) sender).getWorld().getBlockAt(((Player) sender).getLocation());
                 UndoElement undoElement = UndoSystem.findUserUndo(sender).getNewUndoElement();
                 op.operateOnBlock(new OperatorState(new BlockWrapper(b, b.getX(), b.getY(), b.getZ()), sender, ((Player) sender).getWorld(), undoElement, b.getLocation()));
-                undoElement.finalizeUndo();
+                if (undoElement.getCurrentState() == UndoMode.WAITING_FOR_BLOCKS)
+                    undoElement.getUserUndo().finalizeUndo(undoElement);
                 return true;
             }
             Main.logError("This must be run as a player.", sender, null);
