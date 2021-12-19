@@ -81,7 +81,7 @@ public class ErodeMacro extends Macro {
     public boolean performMacro(String[] args, Location loc, OperatorState state) {
         SetupMacro(args, loc, state);
 
-        AsyncManager.incrementDoneOperations((long) erodeRadius * erodeRadius * erodeRadius / 64);
+        AsyncManager.incrementDoneOperations((long) erodeRadius * erodeRadius * erodeRadius / 6);
 
         // Location of the brush
         double x = erodeCenter.getX();
