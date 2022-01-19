@@ -1,3 +1,7 @@
+// Licensed Under GPL v3.0
+//https://github.com/14ercooper/14erEdit
+
+
 package com._14ercooper.worldeditor.main;
 
 // Treat this code like a black box, it can generate 2D, 3D, 4D simplex noise

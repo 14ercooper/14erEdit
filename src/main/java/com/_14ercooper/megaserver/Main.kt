@@ -1,3 +1,7 @@
+// Licensed Under GPL v3.0
+//https://github.com/14ercooper/14erEdit
+
+
 package com._14ercooper.megaserver
 
 import java.io.File
@@ -139,7 +143,7 @@ object Main {
                 val quarterRam = (ramAmt.toInt() / 4).toString()
                 val eighthRam = (ramAmt.toInt() / 8).toString()
                 val command = (javaPath + " -jar -Dlog4j2.formatMsgNoLookups=true -DIReallyKnowWhatIAmDoingISwear=true -Xmx" + ramAmt + "M -Xms" + ramAmt
-                        + "M -Xss" + eighthRam + "M -Xmn" + quarterRam + "M -XX:+UseParallelGC server.jar nogui")
+                        + "M -XX:+UseZGC server.jar nogui")
                 clearConsole()
                 val p = runProcess(command, "profiles/$profile")
                 while (p.isAlive) {

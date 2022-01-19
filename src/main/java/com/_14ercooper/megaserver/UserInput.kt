@@ -1,3 +1,7 @@
+// Licensed Under GPL v3.0
+//https://github.com/14ercooper/14erEdit
+
+
 package com._14ercooper.megaserver
 
 import java.util.regex.Pattern
