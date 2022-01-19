@@ -9,7 +9,7 @@ Directly access the operations system for maximum power and customizability, or 
 14erEdit currently only supports Spigot. More platforms may be coming in the future.
 
 ### Support
-  - Please email 14ergames+ctmc-14eredit-2-issue-@gmail.com with the details of your issue. We will get back to you shortly. Please check spam for emails from gitlab@dev.14er.games
+  - Please file an issue.
 
 ### Highlights
  - Manipulate the world with direct access to the underlying operations system
