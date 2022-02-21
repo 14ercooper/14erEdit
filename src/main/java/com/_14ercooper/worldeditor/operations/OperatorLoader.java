@@ -182,6 +182,9 @@ public class OperatorLoader {
         loadNode("@h", new BlocksAdjacentHorizontalNode());
         loadNode("adjh", Parser.getOperator(commandSender, "@h"));
         loadNode("adjacent_horizontal", Parser.getOperator(commandSender, "@h"));
+        loadNode("@d", new BlocksAdjacentHorizontalNode());
+        loadNode("adjd", Parser.getOperator(commandSender, "@h"));
+        loadNode("adjacent_diagonal", Parser.getOperator(commandSender, "@h"));
     }
 
     private static void LoadWorld(CommandSender commandSender) {
