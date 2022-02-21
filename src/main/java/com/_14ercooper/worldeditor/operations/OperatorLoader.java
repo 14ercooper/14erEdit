@@ -23,6 +23,7 @@ import com._14ercooper.worldeditor.operations.operators.fun.SmallRuinNode;
 import com._14ercooper.worldeditor.operations.operators.function.*;
 import com._14ercooper.worldeditor.operations.operators.logical.*;
 import com._14ercooper.worldeditor.operations.operators.loop.WhileNode;
+import com._14ercooper.worldeditor.operations.operators.math.*;
 import com._14ercooper.worldeditor.operations.operators.query.*;
 import com._14ercooper.worldeditor.operations.operators.world.*;
 import org.bukkit.Bukkit;
@@ -40,6 +41,7 @@ public class OperatorLoader {
         LoadQuery(commandSender);
         LoadWorld(commandSender);
         LoadFun(commandSender);
+        LoadMath(commandSender);
     }
 
     public static void LoadOperators() {
@@ -213,5 +215,57 @@ public class OperatorLoader {
         loadNode("smallruin", new SmallRuinNode());
         loadNode("template", new TemplateNode());
         loadNode("tpl", Parser.getOperator(commandSender, "template"));
+    }
+
+    private static void LoadMath(CommandSender commandSender) {
+        loadNode("rx", new RXNode());
+        loadNode("ry", new RYNode());
+        loadNode("rz", new RZNode());
+        loadNode("r", new RadiusNode());
+        loadNode("r2", new RadiusSquaredNode());
+        loadNode("theta", new ThetaNode());
+        loadNode("phi", new PhiNode());
+        loadNode("add", new AddNode());
+        loadNode("sub", new SubtractNode());
+        loadNode("mult", new MultiplyNode());
+        loadNode("div", new DivideNode());
+        loadNode("neg", new NegateNode());
+        loadNode("sin", new SineNode());
+        loadNode("cos", new CosineNode());
+        loadNode("tan", new TangentNode());
+        loadNode("cot", new CotangentNode());
+        loadNode("sec", new SecantNode());
+        loadNode("csc", new CosecantNode());
+        loadNode("sqrt", new SquareRootNode());
+        loadNode("square", new SquareNode());
+        loadNode("abs", new AbsoluteValueNode());
+        loadNode("log10", new Log10Node());
+        loadNode("log2", new Log2Node());
+        loadNode("ln", new NaturalLogNode());
+        loadNode("2deg", new ToDegreesNode());
+        loadNode("2rad", new ToRadiansNode());
+        loadNode("asin", new ArcsineNode());
+        loadNode("acos", new ArccosineNode());
+        loadNode("atan", new ArctangentNode());
+        loadNode("ceil", new CeilingNode());
+        loadNode("floor", new FloorNode());
+        loadNode("round", new RoundNode());
+        loadNode("sinh", new HyperbolicSineNode());
+        loadNode("cosh", new HyperbolicCosineNode());
+        loadNode("tanh", new HyperbolicTangentNode());
+        loadNode("sign", new SignNode());
+        loadNode("sigmoid", new SigmoidNode());
+        loadNode("e", new ENode());
+        loadNode("pi", new PiNode());
+        loadNode("rand", new RandomNode());
+        loadNode("log", new LogarithmNode());
+        loadNode("pow", new PowerNode());
+        loadNode("eq", new EqualsNode());
+        loadNode("equals", Parser.getOperator(commandSender, "eq"));
+        loadNode("lt", new LessThanNode());
+        loadNode("lessthan", Parser.getOperator(commandSender, "lt"));
+        loadNode("gt", new GreaterThanNode());
+        loadNode("greaterthan", Parser.getOperator(commandSender, "gt"));
+        loadNode("between", new BetweenNode());
     }
 }

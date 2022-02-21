@@ -140,7 +140,7 @@ object Parser {
         return try {
             parsePart(parserState, true) as NumberNode
         } catch (e: Exception) {
-            logError("Number expected. Did not find a number.", parserState.currentPlayer, e)
+            logError("Number node expected. Did not find a number node.", parserState.currentPlayer, e)
             null
         }
     }
