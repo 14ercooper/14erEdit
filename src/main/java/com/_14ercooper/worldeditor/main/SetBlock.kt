@@ -103,14 +103,14 @@ object SetBlock {
         try {
             val bs = b.state
             b.setType(mat!!, false)
-            if (undo.currentState != UndoMode.PERFORMING_UNDO && undo.currentState != UndoMode.PERFORMING_REDO)
-                undo.addBlock(bs, b.state)
             updateLeafData(mat, b)
             try {
                 if (data != null)
                     b.setBlockData(data, false)
             } catch (ignored: Exception) {
             };
+            if (undo.currentState != UndoMode.PERFORMING_UNDO && undo.currentState != UndoMode.PERFORMING_REDO)
+                undo.addBlock(bs, b.state)
             return true
         } catch (e: Exception) {
             invalidMaterial(mat, e, currentPlayer)
@@ -139,14 +139,14 @@ object SetBlock {
         try {
             val bs = b.state
             b.setType(mat!!, physics)
-            if (undo.currentState != UndoMode.PERFORMING_UNDO && undo.currentState != UndoMode.PERFORMING_REDO)
-                undo.addBlock(bs, b.state)
             updateLeafData(mat, b)
             try {
                 if (data != null)
                     b.setBlockData(data, physics)
             } catch (ignored: Exception) {
             };
+            if (undo.currentState != UndoMode.PERFORMING_UNDO && undo.currentState != UndoMode.PERFORMING_REDO)
+                undo.addBlock(bs, b.state)
             return true
         } catch (e: Exception) {
             invalidMaterial(mat, e, currentPlayer)
@@ -206,14 +206,14 @@ object SetBlock {
         try {
             val bs = b.block.state
             b.type = mat!!
-            if (undo.currentState != UndoMode.PERFORMING_UNDO && undo.currentState != UndoMode.PERFORMING_REDO)
-                undo.addBlock(bs, b)
             updateLeafDataState(mat, b)
             try {
                 if (data != null)
                     b.blockData = data
             } catch (ignored: Exception) {
             };
+            if (undo.currentState != UndoMode.PERFORMING_UNDO && undo.currentState != UndoMode.PERFORMING_REDO)
+                undo.addBlock(bs, b)
             return true
         } catch (e: Exception) {
             invalidMaterial(mat, e, currentPlayer)
