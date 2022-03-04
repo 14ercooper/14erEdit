@@ -68,18 +68,18 @@ public class IfNode extends Node {
     public boolean performNode(OperatorState state, boolean perform) {
         try {
             boolean isTrue = arg1.performNode(state, true);
-            boolean toReturn;
             if (isTrue) {
 //		Main.logDebug("condition true");
-                toReturn = arg2.performNode(state, true);
+                arg2.performNode(state, true);
+                return true;
             } else if (arg3 == null) {
 //		Main.logDebug("no else");
                 return false;
             } else {
 //		Main.logDebug("else");
-                toReturn = arg3.performNode(state, true);
+                arg3.performNode(state, true);
+                return false;
             }
-            return toReturn;
         } catch (Exception e) {
             Main.logError("Error performing if node. Please check your syntax.", state.getCurrentPlayer(), e);
             return false;

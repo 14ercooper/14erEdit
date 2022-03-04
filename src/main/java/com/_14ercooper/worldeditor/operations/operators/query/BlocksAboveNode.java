@@ -60,16 +60,18 @@ public class BlocksAboveNode extends Node {
         int z = currBlock.getZ();
         int min = (int) arg1.getMin(state);
         int max = (int) arg1.getMax(state);
-        boolean blockRangeMet = true;
 
-        for (int dy = y + min; dy <= y + max; dy++) {
-            state.setCurrentBlock(state.getCurrentWorld().getBlockAt(x, dy, z));
-            if (!(arg2.performNode(state, true)))
-                blockRangeMet = false;
+        try {
+            for (int dy = y + min; dy <= y + max; dy++) {
+                state.setCurrentBlock(state.getCurrentWorld().getBlockAt(x, dy, z));
+                if (!(arg2.performNode(state, true)))
+                    return false;
+            }
+            return true;
         }
-
-        state.setCurrentBlock(currBlock);
-        return blockRangeMet;
+        finally {
+            state.setCurrentBlock(currBlock);
+        }
     }
 
     @Override
