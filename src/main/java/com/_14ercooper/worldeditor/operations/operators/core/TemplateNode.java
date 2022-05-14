@@ -88,7 +88,18 @@ public class TemplateNode extends Node {
 
         // Fill in template
         for (int i = args.size() - 1; i >= 0; i--) {
-            command = command.replaceAll("\\$" + (i + 1), args.get(i));
+            String thisArg = args.get(i);
+            // TODO migrate the args list to support parsing nodes as nodes, but this requires a refactor of how block nodes are parsed so that they know their "text" form
+            if (thisArg.equalsIgnoreCase("x")) {
+                thisArg = Integer.toString(state.getCurrentBlock().x);
+            }
+            else if (thisArg.equalsIgnoreCase("y")) {
+                thisArg = Integer.toString(state.getCurrentBlock().y);
+            }
+            else if (thisArg.equalsIgnoreCase("z")) {
+                thisArg = Integer.toString(state.getCurrentBlock().z);
+            }
+            command = command.replaceAll("\\$" + (i + 1), thisArg);
         }
 
         Main.logDebug("Template command: " + command);
