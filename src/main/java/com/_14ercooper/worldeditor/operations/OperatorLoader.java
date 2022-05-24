@@ -25,6 +25,7 @@ import com._14ercooper.worldeditor.operations.operators.logical.*;
 import com._14ercooper.worldeditor.operations.operators.loop.WhileNode;
 import com._14ercooper.worldeditor.operations.operators.math.*;
 import com._14ercooper.worldeditor.operations.operators.query.*;
+import com._14ercooper.worldeditor.operations.operators.variable.*;
 import com._14ercooper.worldeditor.operations.operators.world.*;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -42,6 +43,7 @@ public class OperatorLoader {
         LoadWorld(commandSender);
         LoadFun(commandSender);
         LoadMath(commandSender);
+        LoadVariable(commandSender);
     }
 
     public static void LoadOperators() {
@@ -270,5 +272,14 @@ public class OperatorLoader {
         loadNode("gt", new GreaterThanNode());
         loadNode("greaterthan", Parser.getOperator(commandSender, "gt"));
         loadNode("between", new BetweenNode());
+    }
+
+    private static void LoadVariable(CommandSender sender) {
+        loadNode("setVar", new SetOperatorVariableNode());
+        loadNode("getVar", new GetOperatorVariableNode());
+        loadNode("resetVars", new ResetOperatorVariablesNode());
+        loadNode("setPlayerVar", new SetPlayerVariableNode());
+        loadNode("getPlayerVar", new GetPlayerVariableNode());
+        loadNode("resetPlayerVars", new ResetPlayerVariablesNode());
     }
 }

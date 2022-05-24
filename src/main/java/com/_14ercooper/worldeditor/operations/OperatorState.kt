@@ -38,4 +38,18 @@ open class OperatorState(
     }
 
     val otherValues : MutableMap<String, String> = mutableMapOf()
+
+    var variables = mutableMapOf<String,Double>()
+
+    fun setVariable(name: String, value: Double) {
+        variables[name] = value
+    }
+
+    fun getVariable(name: String): Double {
+        return variables.getOrDefault(name, 0.0)
+    }
+
+    fun resetVariables() {
+        variables = mutableMapOf()
+    }
 }

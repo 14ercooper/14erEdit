@@ -67,7 +67,21 @@ class PlayerWrapper(val playerName: String) {
         return globalMask.size == 0 || globalMask.contains(material)
     }
 
-    fun resetGlobalMask(): Unit {
+    fun resetGlobalMask() {
         globalMask = mutableListOf()
+    }
+
+    var variables = mutableMapOf<String,Double>()
+
+    fun setVariable(name: String, value: Double) {
+        variables[name] = value
+    }
+
+    fun getVariable(name: String): Double {
+        return variables.getOrDefault(name, 0.0)
+    }
+
+    fun resetVariables() {
+        variables = mutableMapOf()
     }
 }
