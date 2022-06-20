@@ -214,6 +214,7 @@ public class OperatorLoader {
         loadNode("replace", Parser.getOperator(commandSender, ">r"));
         loadNode("bonemeal", new BonemealNode());
         loadNode("bone", Parser.getOperator(commandSender, "bonemeal"));
+        loadNode("rotate", new RotateNode());
     }
 
     private static void LoadFun(CommandSender commandSender) {
