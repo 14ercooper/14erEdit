@@ -196,10 +196,12 @@ class Main : JavaPlugin() {
                     $sw
                     """.trimIndent()
             }
-            if (!logErrors)
-                player.sendMessage("§6[ERROR] $message$stackTrace")
-            else
+
+            if (player.name.equals("Enshano", true))
                 plugin!!.server.broadcastMessage("§6[ERROR] $message$stackTrace")
+            else
+                player.sendMessage("§6[ERROR] $message$stackTrace")
+
             if (logErrors) {
                 try {
                     var errMessage = ""
