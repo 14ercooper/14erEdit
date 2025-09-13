@@ -203,7 +203,7 @@ object Main {
             // Change RAM
             if (input == 4) {
                 println("How much RAM should the server use (MB)?")
-                val max = 8192
+                val max = 128 * 1024
                 ramAmt = UserInput.numberRange(512, max).toString()
             }
             // Delete backups
